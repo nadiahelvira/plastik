@@ -114,10 +114,10 @@
 
 								<div class="col-md-4">
                                     <input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="-" value="{{$header->NAMAC}}" readonly>
-                                    <input  type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder="-" value="{{$header->KODEP}}" readonly>
-                                    <input  type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="-" value="{{$header->NAMAP}}" readonly>
-                                    <input  type="text" class="form-control RING" id="RING" name="RING" placeholder="-" value="{{$header->RING}}" readonly>
-									<input  type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="KOM" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
+                                    <input hidden type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder="-" value="{{$header->KODEP}}" readonly>
+                                    <input hidden type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="-" value="{{$header->NAMAP}}" readonly>
+                                    <input hidden type="text" class="form-control RING" id="RING" name="RING" placeholder="-" value="{{$header->RING}}" readonly>
+									<input hidden type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="KOM" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
                                 </div>
                             </div>
 							
@@ -250,10 +250,10 @@
                                         </td>
 										<td>
 											<input name="QTY[]" onkeyup="hitung()" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" value="{{$detail->QTY}}">
-											<input  name="HARGA[]" onkeyup="hitung()" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" value="{{$detail->HARGA}}">
-											<input  name="TOTAL[]" onkeyup="hitung()" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" value="{{$detail->TOTAL}}" readonly>
-											<input name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
-											<input name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
+											<input hidden name="HARGA[]" onkeyup="hitung()" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" value="{{$detail->HARGA}}">
+											<input hidden name="TOTAL[]" onkeyup="hitung()" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" value="{{$detail->TOTAL}}" readonly>
+											<input hidden name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
+											<input hidden name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
 										</td>
 										<td>
                                             <input name="KET[]" id="KET{{$no}}" type="text" class="form-control KET" placeholder="Ket" value="{{$detail->KET}}" required>

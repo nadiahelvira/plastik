@@ -124,10 +124,10 @@
                                     <input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="-" value="{{$header->NAMAC}}" readonly>
 									
 									
-									<input  type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder="-" value="{{$header->KODEP}}" readonly>
-									<input  type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="-" value="{{$header->NAMAP}}" readonly>
-									<input  type="text" class="form-control RING" id="RING" name="RING" placeholder="-" value="{{$header->RING}}" readonly>
-									<input  type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="KOM" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
+									<input hidden type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder="-" value="{{$header->KODEP}}" readonly>
+									<input hidden type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="-" value="{{$header->NAMAP}}" readonly>
+									<input hidden type="text" class="form-control RING" id="RING" name="RING" placeholder="-" value="{{$header->RING}}" readonly>
+									<input hidden type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="KOM" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
                                 
 								</div>
                             </div>
