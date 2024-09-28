@@ -32,8 +32,8 @@ class StockbController extends Controller
     {
         if ( $request->flagz == 'KZ' ) {
             $this->judul = "Koreksi Stock Barang";
-        } else if ( $request->flagz == '' ) {
-            $this->judul = "";
+        } else if ( $request->flagz == 'MT' ) {
+            $this->judul = "Koreksi Stock Mutasi";
         }
 
         $this->FLAGZ = $request->flagz;

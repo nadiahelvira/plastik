@@ -600,13 +600,18 @@
                   <p>Koreksi Stock Bahan </p>
                 </a>
               </li>
-
-  
 			  
               <li class="nav-item">
                 <a href="{{url('stockb?flagz=KZ')}}" class="nav-link">
                   <!-- <i class="nav-icon fas fa-flag icon-white"></i> -->
                   <p>Koreksi Stock Barang </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{url('stockb?flagz=MT')}}" class="nav-link">
+                  <!-- <i class="nav-icon fas fa-flag icon-white"></i> -->
+                  <p>Koreksi Stock Mutasi </p>
                 </a>
               </li>
 			 
