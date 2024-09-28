@@ -784,7 +784,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBBarang.row.add([
-							'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\',\''+resp[i].NA_BRG+'\', \''+resp[i].SATUAN+'\' , \''+resp[i].QTY+'\' , \''+resp[i].KIRIM+'\' , \''+resp[i].SISA+'\' , \''+resp[i].HARGA+'\' , \''+resp[i].DPP+'\' , \''+resp[i].PPN+'\'  )">'+resp[i].KD_BRG+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\',\''+resp[i].NA_BRG+'\', \''+resp[i].SATUAN+'\' , \''+resp[i].SISA+'\' , \''+resp[i].HARGA+'\' , \''+resp[i].DPP+'\' , \''+resp[i].PPN+'\'  )">'+resp[i].KD_BRG+'</a>',
 							resp[i].NA_BRG,
 							resp[i].SATUAN,
 							resp[i].QTY,
@@ -808,25 +808,25 @@
 			$("#browseBarangModal").modal("show");
 		}
 		
-		chooseBarang = function(KD_BRG, NA_BRG, SATUAN, QTY, KIRIM, SISA, HARGA, DPP, PPN){
+		chooseBarang = function(KD_BRG, NA_BRG, SATUAN, SISA, HARGA, DPP, PPN){
 			$("#KD_BRG"+rowidBarang).val(KD_BRG);
 			$("#NA_BRG"+rowidBarang).val(NA_BRG);
 			$("#SATUAN"+rowidBarang).val(SATUAN);
 			$("#QTY"+rowidBarang).val(SISA);
 			$("#HARGA"+rowidBarang).val(HARGA);			
 			$("#DPP"+rowidBarang).val(DPP);			
-			$("#PPN"+rowidBarang).val(PPN);			
+			$("#PPNX"+rowidBarang).val(PPN);			
 			$("#browseBarangModal").modal("hide");
 			hitung();
 		}
 		
 		
-		$("#KD_BRG0").keypress(function(e){
-			if(e.keyCode == 46){
-				e.preventDefault();
-				browseBarang(0);
-			}
-		}); 
+		// $("#KD_BRG0").keypress(function(e){
+		// 	if(e.keyCode == 46){
+		// 		e.preventDefault();
+		// 		browseBarang(0);
+		// 	}
+		// }); 
 	});
 
 

@@ -107,9 +107,10 @@ class SoController extends Controller
 			$filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' AND a.KD_BRG = b.KD_BRG ";
 		}
 		$sod = DB::SELECT("SELECT a.REC, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
-                            b.SATUAN AS SATUANX, a.DPP, a.PPN
+                            b.SATUAN AS SATUANX, a.DPP AS DPP, a.PPN AS PPN
                             from sod a, brg b
-                            $filterbukti ORDER BY NO_BUKTI ");
+                            $filterbukti AND a.KD_BRG = b.KD_BRG
+                            ORDER BY NO_BUKTI ");
 	
 
 		return response()->json($sod);
