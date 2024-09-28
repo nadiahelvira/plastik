@@ -175,8 +175,8 @@
 										<th width="200px" style="text-align:center">Harga</th>
 
 										<th width="200px" style="text-align:center">Total</th>							
-										<th width="200px" tyle="text-align: center;">DPP</th>								
-										<th width="200px" style="text-align: center;">PPN</th>	
+										<th width="200px" tyle="text-align: center;">PPN</th>								
+										<th width="200px" style="text-align: center;">DPP</th>	
 
 										<th width="200px" style="text-align:center">Ket</th>
 										<th></th>										
@@ -840,9 +840,11 @@
 			let z = $(this).closest('tr');
 			var QTYX = parseFloat(z.find('.QTY').val().replace(/,/g, ''));
 			// var HARGAX = parseFloat(z.find('.HARGA').val().replace(/,/g, ''));
-			var PPNX = parseFloat(z.find('.PPNX').val().replace(/,/g, ''));
+			//var PPNX = parseFloat(z.find('.PPNX').val().replace(/,/g, ''));
 
 			var PKP = parseFloat($('#PKP').val().replace(/,/g, ''));
+
+/////////////////////////////////////////////////////////////////////////////////////////			 
 
 			var HARGA1X = parseFloat(z.find('.HARGA1').val().replace(/,/g, ''));
 			var HARGA2X = parseFloat(z.find('.HARGA2').val().replace(/,/g, ''));
@@ -851,39 +853,53 @@
 			var HARGA5X = parseFloat(z.find('.HARGA5').val().replace(/,/g, ''));
 			var HARGAX = 0;
 
-			if (QTYX >= 100) 
+            if( QTYX > 0 )
 			{
-				var HARGAX = HARGA5X;
+					if (QTYX >= 100) 
+					{
+						var HARGAX = HARGA5X;
 
+					}
+					
+					if ( (QTYX < 100) && (QTYX >=50) )
+					{
+
+					var HARGAX = HARGA4X;
+					} 
+					
+					if ( ( QTYX <  50 ) && ( QTYX >=25 )  )
+					{
+						var HARGAX = HARGA3X;
+					}
+					
+					if ( (QTYX <  25) && (QTYX >=6) )
+					{
+
+						var HARGAX = HARGA2X;
+					}                             
+					
+					if ( QTYX <  6  )
+					{
+
+						var HARGAX = HARGA1X;
+
+					}  			 
+			 
 			}
-			else if ( QTYX < 100 and QTYX >=75 )
-			{
+			
+			z.find('.HARGA').val(HARGAX);	
 
-				var HARGAX = HARGA4X;
-			} 
-			else if ( QTYX <  50 and QTYX >=25 )
-			{
-				var HARGAX = HARGA3X;
-			}
-			else if ( QTYX <  25 and QTYX >=6 )
-			{
-
-				var HARGAX = HARGA2X;
-			}                             
-			else if ( QTYX <  6  )
-			{
-
-				var HARGAX = HARGA1X;
-
-			}    
+		    z.find('.HARGA').autoNumeric('update');				 
+			 
+			 
 
 
+///////////////////////////////////////////////////////////////////////////////////////
             var TOTALX  =  ( QTYX * HARGAX );
 			z.find('.TOTAL').val(TOTALX);
 
 			var dpp = Math.floor(TOTALX / ((100+11)/100) );
 			z.find('.DPP').val(dpp);
-
 
 			if (PKP == 1) {
 				var PPNX = parseFloat((Math.round(TOTALX * 0.11 * 100) / 100).toFixed(0));

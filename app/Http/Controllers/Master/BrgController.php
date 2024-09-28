@@ -525,14 +525,14 @@ class BrgController extends Controller
                 );
             } else {
                 // Update jika NO_ID sudah ada
-                $upsert = FoDetail::updateOrCreate(
+                $upsert = BrgDetail::updateOrCreate(
                     [
                         'KD_BRG'  => ($request['KD_BRG'] == null) ? "" : $request['KD_BRG'],
                         'NO_ID'     => (int) str_replace(',', '', $NO_ID[$i])
                     ],
 
                     [
-                        'REC'        => $RECX[$i],
+                        'REC'        => $REC[$i],
                         				
 						'NA_BRG'     => ($request['NA_BRG'] == null) ? "" : $request['NA_BRG'],		
 						'RING'       => ($RING[$i]==null) ? "" :  $RING[$i],				

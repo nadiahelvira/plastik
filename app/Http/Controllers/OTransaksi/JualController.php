@@ -280,8 +280,12 @@ class JualController extends Controller
                 'PPN'            => (float) str_replace(',', '', $request['PPN']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
                 'SISA'            => (float) str_replace(',', '', $request['NETT']),
-       
 	   
+                'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
+                'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
+                'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
+                'KOM'            => (float) str_replace(',', '', $request['KOM']),
+
                 'USRNM'            => Auth::user()->username,
                 'TG_SMP'           => Carbon::now(),
 				'created_by'       => Auth::user()->username,
@@ -588,8 +592,11 @@ class JualController extends Controller
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
                 'PPN'            => (float) str_replace(',', '', $request['PPN']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
-                'SISA'            => (float) str_replace(',', '', $request['NETT']),
-
+	   
+                'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
+                'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
+                'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
+                'KOM'            => (float) str_replace(',', '', $request['KOM']),
 
 				'USRNM'            => Auth::user()->username,
                 'TG_SMP'           => Carbon::now(),

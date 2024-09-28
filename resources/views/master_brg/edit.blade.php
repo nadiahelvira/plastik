@@ -926,7 +926,7 @@
 
 				<td>
 					<input name='NO_ID[]' id='NO_ID${idrow}' type='hidden' class='form-control NO_ID' value='new' readonly> 
-					<input name='RECX[]' id='RECX${idrow}' type='text' class='RECX form-control' onkeypress='return tabE(this,event)' readonly>
+					<input name='REC[]' id='REC${idrow}' type='text' class='REC form-control' onkeypress='return tabE(this,event)' readonly>
 				</td>		
 				
 				<td>

@@ -84,20 +84,29 @@
 									<label style="color:red">*</label>									
                                     <label for="NOTES" class="form-label">Notes</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <input type="text" class="form-control NOTES" id="NOTES" name="NOTES" value="{{$header->NOTES}}" placeholder="Masukkan Notes" >
                                 </div>
 
 								<div class="col-md-1">								
                                     <label for="KODEP" class="form-label">Sales</label>
                                 </div>
-                               	<div class="col-md-2 input-group" >
+
+                               	<div class="col-md-1 input-group" >
                                   <input type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder=""value="{{$header->KODEP}}" style="text-align: left" readonly >
         						</div>
         
                                 <div class="col-md-3">
                                     <input type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="" value="{{$header->NAMAP}}" readonly>
                                 </div>
+
+								<div class="col-md-1">								
+                                    <label for="KOM" class="form-label">Komisi</label>
+                                </div>
+                               	
+								<div class="col-md-2">
+									<input type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
+								</div> 
         
                             </div>
 
@@ -397,7 +406,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBCust.row.add([
-							'<a href="javascript:void(0);" onclick="chooseCustomer(\''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\')">'+resp[i].KODEC+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseCustomer(\''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].KOM+'\')">'+resp[i].KODEC+'</a>',
 							resp[i].NAMAC,
 							resp[i].ALAMAT,
 							resp[i].KOTA,
@@ -417,13 +426,14 @@
 			$("#browseCustModal").modal("show");
 		}
 		
-		chooseCustomer = function(KODEC,NAMAC, ALAMAT, KOTA, KODEP, NAMAP){
+		chooseCustomer = function(KODEC,NAMAC, ALAMAT, KOTA, KODEP, NAMAP, KOM){
 			$("#KODEC").val(KODEC);
 			$("#NAMAC").val(NAMAC);
 			$("#ALAMAT").val(ALAMAT);
 			$("#KOTA").val(KOTA);			
 			$("#KODEP").val(KODEP);			
 			$("#NAMAP").val(NAMAP);			
+			$("#KOM").val(KOM);			
 			$("#browseCustModal").modal("hide");
 		}
 		
@@ -669,12 +679,15 @@
 
     function hitung() {
 		var TBAYAR = 0;
+		var TKOM = 0;
 
 		$(".BAYAR").each(function() {
 			
 			let z = $(this).closest('tr');
 			var TOTALX = parseFloat(z.find('.TOTAL').val().replace(/,/g, ''));
 			var BAYARX = parseFloat(z.find('.BAYAR').val().replace(/,/g, ''));
+
+			var KOM = parseFloat($('#KOM').val().replace(/,/g, ''));
 		
             var SISAX  = TOTALX - BAYARX;
 			z.find('.SISA').val(SISAX);
@@ -687,11 +700,17 @@
 		
 		});
 		
-		
+		TKOM =  TBAYAR * KOM / 100;
+
 		if(isNaN(TBAYAR)) TBAYAR = 0;
 
 		$('#TBAYAR').val(numberWithCommas(TBAYAR));		
 		$("#TBAYAR").autoNumeric('update');
+
+		if(isNaN(TKOM)) TKOM = 0;
+
+		$('#TKOM').val(numberWithCommas(TKOM));		
+		$("#TKOM").autoNumeric('update');
 		
 	}
 

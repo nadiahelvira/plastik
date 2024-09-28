@@ -5,7 +5,7 @@ namespace App\Models\Master;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BrgxDetail extends Model
+class BrgDetail extends Model
 {
     use HasFactory;
 
@@ -15,6 +15,6 @@ class BrgxDetail extends Model
 
     protected $fillable =
     [
-        "ID", "KD_BRG", "RING", "HARGA", "HARGA2", "HARGA3", "HARGA4", "HARGA5"  
+        "ID", "KD_BRG", "RING", "HARGA", "HARGA2", "HARGA3", "HARGA4", "HARGA5", "REC"  
     ];
 }

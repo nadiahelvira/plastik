@@ -280,6 +280,8 @@ class SoController extends Controller
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
+                'PPN'            => (float) str_replace(',', '', $request['PPN']),
+                'NETT'            => (float) str_replace(',', '', $request['NETT']),
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
@@ -300,6 +302,14 @@ class SoController extends Controller
         $HARGA      = $request->input('HARGA');		
         $TOTAL      = $request->input('TOTAL');	
         $KET        = $request->input('KET');  
+        $PPNX        = $request->input('PPNX');  
+        $DPP        = $request->input('DPP');  
+
+        $HARGA1        = $request->input('HARGA1');  
+        $HARGA2        = $request->input('HARGA2');  
+        $HARGA3        = $request->input('HARGA3');  
+        $HARGA4        = $request->input('HARGA4');  
+        $HARGA5        = $request->input('HARGA5');  
 
         // Check jika value detail ada/tidak
         if ($REC) {
@@ -324,6 +334,15 @@ class SoController extends Controller
  
                 $detail->HARGA       = (float) str_replace(',', '', $HARGA[$key]);
                 $detail->TOTAL       = (float) str_replace(',', '', $TOTAL[$key]); 
+                $detail->PPN       = (float) str_replace(',', '', $PPNX[$key]); 
+                $detail->DPP       = (float) str_replace(',', '', $DPP[$key]); 
+
+                $detail->HARGA1       = (float) str_replace(',', '', $HARGA1[$key]); 
+                $detail->HARGA2       = (float) str_replace(',', '', $HARGA2[$key]); 
+                $detail->HARGA3       = (float) str_replace(',', '', $HARGA3[$key]); 
+                $detail->HARGA4       = (float) str_replace(',', '', $HARGA4[$key]); 
+                $detail->HARGA5       = (float) str_replace(',', '', $HARGA5[$key]); 
+
 				$detail->KET         = ($KET[$key] == null) ? "" :  $KET[$key];				
                 $detail->save();
             }
@@ -578,6 +597,8 @@ class SoController extends Controller
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
+                'PPN'            => (float) str_replace(',', '', $request['PPN']),
+                'NETT'            => (float) str_replace(',', '', $request['NETT']),
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
@@ -607,6 +628,14 @@ class SoController extends Controller
         $HARGA    = $request->input('HARGA');
         $TOTAL    = $request->input('TOTAL');
         $KET = $request->input('KET');			
+        $PPNX = $request->input('PPNX');			
+        $DPP = $request->input('DPP');	
+
+        $HARGA1        = $request->input('HARGA1');  
+        $HARGA2        = $request->input('HARGA2');  
+        $HARGA3        = $request->input('HARGA3');  
+        $HARGA4        = $request->input('HARGA4');  
+        $HARGA5        = $request->input('HARGA5');  
 
         $query = DB::table('sod')->where('NO_BUKTI', $request->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
 
@@ -631,6 +660,15 @@ class SoController extends Controller
 
                         'HARGA'      => (float) str_replace(',', '', $HARGA[$i]),
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
+                        'PPN'      => (float) str_replace(',', '', $PPNX[$i]),
+                        'DPP'      => (float) str_replace(',', '', $DPP[$i]),
+
+                        'HARGA1'      => (float) str_replace(',', '', $HARGA1[$i]),
+                        'HARGA2'      => (float) str_replace(',', '', $HARGA2[$i]),
+                        'HARGA3'      => (float) str_replace(',', '', $HARGA3[$i]),
+                        'HARGA4'      => (float) str_replace(',', '', $HARGA4[$i]),
+                        'HARGA5'      => (float) str_replace(',', '', $HARGA5[$i]),
+
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],	
 						
                     ]
@@ -659,6 +697,15 @@ class SoController extends Controller
 
                         'HARGA'      => (float) str_replace(',', '', $HARGA[$i]),
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
+                        'PPN'      => (float) str_replace(',', '', $PPNX[$i]),
+                        'DPP'      => (float) str_replace(',', '', $DPP[$i]),
+
+                        'HARGA1'      => (float) str_replace(',', '', $HARGA1[$i]),
+                        'HARGA2'      => (float) str_replace(',', '', $HARGA2[$i]),
+                        'HARGA3'      => (float) str_replace(',', '', $HARGA3[$i]),
+                        'HARGA4'      => (float) str_replace(',', '', $HARGA4[$i]),
+                        'HARGA5'      => (float) str_replace(',', '', $HARGA5[$i]),
+                        
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],							
                     ]
                 );

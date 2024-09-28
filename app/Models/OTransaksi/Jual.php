@@ -19,7 +19,9 @@ class Jual extends Model
 //ganti 3
     protected $fillable = 
     [
-        "NO_BUKTI", "TGL", "PER", "FLAG", "NO_JUAL", "TRUCK", "SOPIR", "KODEC", "NAMAC", "ALAMAT", "KOTA", 
-        "NOTES", "TOTAL_QTY", "TOTAL", "PPN", "NETT", "USRNM", "TG_SMP", "NO_SO", "GOL", "NO_SURAT", "CBG"
+        "NO_BUKTI", "TGL", "PER", "FLAG", "NO_JUAL", "TRUCK", "SOPIR", "KODEC", "NAMAC", "ALAMAT",
+        "KOTA", 
+        "NOTES", "TOTAL_QTY", "TOTAL", "PPN", "NETT", "USRNM", "TG_SMP", "NO_SO", "GOL", "NO_SURAT", 
+        "CBG", "KODEP", "NAMAP", "RING", "KOM"
     ];
 }

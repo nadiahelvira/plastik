@@ -102,9 +102,10 @@
                                     <label for="NO_SO" class="form-label">SO#</label>
                                 </div>
                                	<div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control NO_SO" id="NO_SO" name="NO_SO" placeholder="Pilih SO"value="{{$header->NO_SO}}" style="text-align: left" readonly >
+                                  	<input type="text" class="form-control NO_SO" id="NO_SO" name="NO_SO" placeholder="Pilih SO"value="{{$header->NO_SO}}" style="text-align: left" readonly >
         						  <!-- <button type="button" class="btn btn-primary" onclick="browseCust()"><i class="fa fa-search"></i></button> -->
-                                </div>
+								
+								</div>
                             </div>
 							
 
@@ -121,7 +122,14 @@
                                 </div>
 								<div class="col-md-4">
                                     <input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="-" value="{{$header->NAMAC}}" readonly>
-                                </div>
+									
+									
+									<input  type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder="-" value="{{$header->KODEP}}" readonly>
+									<input  type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="-" value="{{$header->NAMAP}}" readonly>
+									<input  type="text" class="form-control RING" id="RING" name="RING" placeholder="-" value="{{$header->RING}}" readonly>
+									<input  type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="KOM" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
+                                
+								</div>
                             </div>
 							
 							
@@ -574,7 +582,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBSurats.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSurats(\''+resp[i].NO_BUKTI+'\' , \''+resp[i].NO_SO+'\', \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\')">'+resp[i].NO_BUKTI+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseSurats(\''+resp[i].NO_BUKTI+'\' , \''+resp[i].NO_SO+'\', \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\')">'+resp[i].NO_BUKTI+'</a>',
 							resp[i].NO_SO,
 							resp[i].KODEC,
 							resp[i].NAMAC,
@@ -596,13 +604,17 @@
 			$("#browseSuratsModal").modal("show");
 		}
 		
-		chooseSurats = function(NO_BUKTI, NO_SO, KODEC,NAMAC, ALAMAT, KOTA){
+		chooseSurats = function(NO_BUKTI, NO_SO, KODEC,NAMAC, ALAMAT, KOTA, KODEP, NAMAP, KOM, RING){
 			$("#NO_SURAT").val(NO_BUKTI);
 			$("#NO_SO").val(NO_SO);
 			$("#KODEC").val(KODEC);
 			$("#NAMAC").val(NAMAC);
 			$("#ALAMAT").val(ALAMAT);
 			$("#KOTA").val(KOTA);			
+			$("#KODEP").val(KODEP);			
+			$("#NAMAP").val(NAMAP);			
+			$("#KOM").val(KOM);			
+			$("#RING").val(RING);			
 			$("#browseSuratsModal").modal("hide");
 		}
 		
