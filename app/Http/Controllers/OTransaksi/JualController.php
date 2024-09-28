@@ -267,7 +267,7 @@ class JualController extends Controller
                 'GOL'              => $GOLZ,			
                 'NO_SO'            => ($request['NO_SO'] == null) ? "" : $request['NO_SO'],
                 'NO_JUAL'            => ($request['NO_JUAL'] == null) ? "" : $request['NO_JUAL'],
-                'NO_SURAT'            => ($request['NO_SURAT'] == null) ? "" : $request['NO_SURAT'],
+                'NO_SURATS'            => ($request['NO_SURATS'] == null) ? "" : $request['NO_SURATS'],
  
                 'KODEC'            => ($request['KODEC'] == null) ? "" : $request['KODEC'],
                 'NAMAC'            => ($request['NAMAC'] == null) ? "" : $request['NAMAC'],
@@ -578,7 +578,7 @@ class JualController extends Controller
             [
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
                 'NO_SO'            => ($request['NO_SO'] == null) ? "" : $request['NO_SO'],
-                'NO_SURAT'            => ($request['NO_SURAT'] == null) ? "" : $request['NO_SURAT'],
+                'NO_SURATS'            => ($request['NO_SURATS'] == null) ? "" : $request['NO_SURATS'],
                 'NO_JUAL'            => ($request['NO_JUAL'] == null) ? "" : $request['NO_JUAL'],
  
                 'KODEC'            => ($request['KODEC'] == null) ? "" : $request['KODEC'],

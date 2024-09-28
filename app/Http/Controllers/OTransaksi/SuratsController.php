@@ -65,7 +65,8 @@ class SuratsController extends Controller
         $CBG = Auth::user()->CBG;
 		
         $surats = DB::SELECT("SELECT distinct surats.NO_BUKTI, surats.NO_SO, surats.KODEC, surats.NAMAC, 
-		                  surats.ALAMAT, surats.KOTA from surats, suratsd 
+		                  surats.ALAMAT, surats.KOTA, surats.KODEP, surats.NAMAP, surats.KOM, surats.RING
+                          from surats, suratsd 
                           WHERE surats.NO_BUKTI = suratsD.NO_BUKTI AND surats.GOL ='$golz' 
                           AND surats.CBG = '$CBG' AND suratsd.SISA > 0	");
         return response()->json($surats);
@@ -102,7 +103,8 @@ class SuratsController extends Controller
 
         //     $filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' ";
         // }
-        $sod = DB::SELECT("SELECT REC, KD_BHN, NA_BHN, SATUAN , QTY, HARGA, KIRIM, SISA, TOTAL, KET, KD_BRG, NA_BRG
+        $sod = DB::SELECT("SELECT REC, KD_BHN, NA_BHN, SATUAN , QTY, HARGA, KIRIM, SISA, TOTAL, KET, 
+                                KD_BRG, NA_BRG, PPN, DPP
                             from sod
                             where NO_BUKTI='".$request->nobukti."' ORDER BY NO_BUKTI ");
 	
@@ -120,7 +122,7 @@ class SuratsController extends Controller
 			$filterbukti = " WHERE NO_BUKTI='".$request->NO_PO."' AND a.KD_BRG = b.KD_BRG ";
 		}
 		$suratsd = DB::SELECT("SELECT a.REC, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
-                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, '1' AS X 
+                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, '1' AS X, a.DPP, a.PPN
                             from suratsd a, brg b
                             $filterbukti ORDER BY NO_BUKTI ");
 	

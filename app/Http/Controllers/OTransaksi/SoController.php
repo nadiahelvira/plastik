@@ -88,7 +88,8 @@ class SoController extends Controller
 	
 			$filterbukti = " WHERE a.NO_BUKTI='".$request->NO_SO."' AND a.KD_BHN = b.KD_BHN ";
 		}
-		$sod = DB::SELECT("SELECT a.REC, a.KD_BHN, a.NA_BHN, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, b.SATUAN AS SATUANX 
+		$sod = DB::SELECT("SELECT a.REC, a.KD_BHN, a.NA_BHN, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA,
+                             b.SATUAN AS SATUANX , a.DPP, a.PPN
                             from sod a, bhn b 
                             $filterbukti ORDER BY NO_BUKTI ");
 	
@@ -105,7 +106,8 @@ class SoController extends Controller
 	
 			$filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' AND a.KD_BRG = b.KD_BRG ";
 		}
-		$sod = DB::SELECT("SELECT a.REC, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, b.SATUAN AS SATUANX 
+		$sod = DB::SELECT("SELECT a.REC, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
+                            b.SATUAN AS SATUANX, a.DPP, a.PPN
                             from sod a, brg b
                             $filterbukti ORDER BY NO_BUKTI ");
 	
@@ -705,7 +707,7 @@ class SoController extends Controller
                         'HARGA3'      => (float) str_replace(',', '', $HARGA3[$i]),
                         'HARGA4'      => (float) str_replace(',', '', $HARGA4[$i]),
                         'HARGA5'      => (float) str_replace(',', '', $HARGA5[$i]),
-                        
+
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],							
                     ]
                 );

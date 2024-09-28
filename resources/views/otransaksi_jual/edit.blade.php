@@ -81,10 +81,10 @@
 							<div class="form-group row">
 								<div {{( $flagz =='JL') ? '' : 'hidden' }} class="col-md-1" align="right">
 									<label style="color:red">*</label>									
-                                    <label for="NO_SURAT" class="form-label">SJ#</label>
+                                    <label for="NO_SURATS" class="form-label">SJ#</label>
                                 </div>
                                	<div {{( $flagz =='JL') ? '' : 'hidden' }} class="col-md-2 input-group" >
-                                  <input type="text" class="form-control NO_SURAT" id="NO_SURAT" name="NO_SURAT" placeholder="Pilih SJ"value="{{$header->NO_SURAT}}" style="text-align: left" readonly >
+                                  <input type="text" class="form-control NO_SURATS" id="NO_SURATS" name="NO_SURATS" placeholder="Pilih SJ"value="{{$header->NO_SURATS}}" style="text-align: left" readonly >
         						  <button type="button" class="btn btn-primary" onclick="browseSurats()"><i class="fa fa-search"></i></button>
                                 </div>
 
@@ -605,7 +605,7 @@
 		}
 		
 		chooseSurats = function(NO_BUKTI, NO_SO, KODEC,NAMAC, ALAMAT, KOTA, KODEP, NAMAP, KOM, RING){
-			$("#NO_SURAT").val(NO_BUKTI);
+			$("#NO_SURATS").val(NO_BUKTI);
 			$("#NO_SO").val(NO_SO);
 			$("#KODEC").val(KODEC);
 			$("#NAMAC").val(NAMAC);
@@ -618,7 +618,7 @@
 			$("#browseSuratsModal").modal("hide");
 		}
 		
-		$("#NO_SURAT").keypress(function(e){
+		$("#NO_SURATS").keypress(function(e){
 
 			if(e.keyCode == 46){
 				 e.preventDefault();
@@ -711,7 +711,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBBahan.row.add([
-							'<a href="javascript:void(0);" onclick="chooseBahan(\''+resp[i].KD_BHN+'\',\''+resp[i].NA_BHN+'\', \''+resp[i].SATUAN+'\' , \''+resp[i].QTY+'\', \''+resp[i].KIRIM+'\' , \''+resp[i].SISA+'\' , \''+resp[i].HARGA+'\' )">'+resp[i].KD_BHN+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseBahan(\''+resp[i].KD_BHN+'\',\''+resp[i].NA_BHN+'\', \''+resp[i].SATUAN+'\' , \''+resp[i].QTY+'\', \''+resp[i].KIRIM+'\' , \''+resp[i].SISA+'\' , \''+resp[i].HARGA+'\', \''+resp[i].DPP+'\', \''+resp[i].PPN+'\' )">'+resp[i].KD_BHN+'</a>',
 							resp[i].NA_BHN,
 							resp[i].SATUAN,
 							resp[i].QTY,
@@ -736,12 +736,14 @@
 			$("#browseBahanModal").modal("show");
 		}
 		
-		chooseBahan = function(KD_BHN, NA_BHN, SATUAN, QTY, KIRIM, SISA, HARGA ){
+		chooseBahan = function(KD_BHN, NA_BHN, SATUAN, QTY, KIRIM, SISA, HARGA, DPP, PPN ){
 			$("#KD_BHN"+rowidBahan).val(KD_BHN);
 			$("#NA_BHN"+rowidBahan).val(NA_BHN);
 			$("#SATUAN"+rowidBahan).val(SATUAN);
 			$("#QTY"+rowidBahan).val(SISA);
 			$("#HARGA"+rowidBahan).val(HARGA);
+			$("#DPP"+rowidBahan).val(DPP);
+			$("#PPN"+rowidBahan).val(PPN);
 			hitung();
 			
 			
@@ -782,7 +784,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBBarang.row.add([
-							'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\',\''+resp[i].NA_BRG+'\', \''+resp[i].SATUAN+'\' , \''+resp[i].QTY+'\' , \''+resp[i].KIRIM+'\' , \''+resp[i].SISA+'\' , \''+resp[i].HARGA+'\'  )">'+resp[i].KD_BRG+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\',\''+resp[i].NA_BRG+'\', \''+resp[i].SATUAN+'\' , \''+resp[i].QTY+'\' , \''+resp[i].KIRIM+'\' , \''+resp[i].SISA+'\' , \''+resp[i].HARGA+'\' , \''+resp[i].DPP+'\' , \''+resp[i].PPN+'\'  )">'+resp[i].KD_BRG+'</a>',
 							resp[i].NA_BRG,
 							resp[i].SATUAN,
 							resp[i].QTY,
@@ -806,12 +808,14 @@
 			$("#browseBarangModal").modal("show");
 		}
 		
-		chooseBarang = function(KD_BRG, NA_BRG, SATUAN, QTY, KIRIM, SISA, HARGA){
+		chooseBarang = function(KD_BRG, NA_BRG, SATUAN, QTY, KIRIM, SISA, HARGA, DPP, PPN){
 			$("#KD_BRG"+rowidBarang).val(KD_BRG);
 			$("#NA_BRG"+rowidBarang).val(NA_BRG);
 			$("#SATUAN"+rowidBarang).val(SATUAN);
 			$("#QTY"+rowidBarang).val(SISA);
 			$("#HARGA"+rowidBarang).val(HARGA);			
+			$("#DPP"+rowidBarang).val(DPP);			
+			$("#PPN"+rowidBarang).val(PPN);			
 			$("#browseBarangModal").modal("hide");
 			hitung();
 		}

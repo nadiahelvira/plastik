@@ -355,6 +355,8 @@
 
 		
 		$("#TBAYAR").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});		
+		$("#TKOM").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});		
+		$("#KOM").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});		
 
 		jumlahdata = 100;
 		for (i = 0; i <= jumlahdata; i++) {
@@ -513,7 +515,7 @@
 		
 		chooseJual = function(NO_BUKTI,KODEC, NAMAC, TOTAL, BAYAR, SISA){
 			$("#NO_FAKTUR"+rowidJual).val(NO_BUKTI);
-			$("#TOTAL"+rowidJual).val(SISA);
+			$("#TOTAL"+rowidJual).val(TOTAL);
 			$("#BAYAR"+rowidJual).val(SISA);	
 			$("#TOTAL"+rowidJual).autoNumeric('update');
 			$("#BAYAR"+rowidJual).autoNumeric('update');
@@ -687,8 +689,6 @@
 			var TOTALX = parseFloat(z.find('.TOTAL').val().replace(/,/g, ''));
 			var BAYARX = parseFloat(z.find('.BAYAR').val().replace(/,/g, ''));
 
-			var KOM = parseFloat($('#KOM').val().replace(/,/g, ''));
-		
             var SISAX  = TOTALX - BAYARX;
 			z.find('.SISA').val(SISAX);
 
@@ -699,6 +699,8 @@
             TBAYAR +=BAYARX;				
 		
 		});
+		
+		var KOM = parseFloat($('#KOM').val().replace(/,/g, ''));
 		
 		TKOM =  TBAYAR * KOM / 100;
 
