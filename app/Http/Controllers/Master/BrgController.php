@@ -104,6 +104,29 @@ class BrgController extends Controller
                                 ORDER BY brg.KD_BRG ");			
             }
 
+        } else {
+
+            if (!empty($request->KD_BRG)) {
+			
+                $filter_kd_brg = " WHERE brg.KD_BRG ='".$request->KD_BRG."' ";
+            } 
+                
+                $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
+                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                FROM brg, brgdx
+                                $filter_kd_brg AND brg.KD_BRG = brgdx.KD_BRG
+                                AND brg.GOL='$golz'
+                                ORDER BY brg.KD_BRG  ");
+                            
+            if	( empty($brg) ) {
+                
+                $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
+                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                FROM brg, brgdx AND brg.KD_BRG = brgdx.KD_BRG
+                                AND brg.GOL='$golz'
+                                ORDER BY brg.KD_BRG ");			
+            }
+
         }
 		
         
