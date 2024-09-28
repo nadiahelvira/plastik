@@ -192,6 +192,12 @@ class PiuController extends Controller
 				'NOTES'            => ($request['NOTES']==null) ? "" : $request['NOTES'],
                 'BAYAR'            => (float) str_replace(',', '', $request['TBAYAR']),
                 'LAIN'             => (float) str_replace(',', '', $request['TLAIN']),
+                
+				'KODEP'            => ($request['KODEP']==null) ? "" : $request['KODEP'],
+				'NAMAP'            => ($request['NAMAP']==null) ? "" : $request['NAMAP'],
+                'KOM'             => (float) str_replace(',', '', $request['KOM']),
+                'TKOM'             => (float) str_replace(',', '', $request['TKOM']),
+
 				'USRNM'            => Auth::user()->username,
 				'TG_SMP'           => Carbon::now(),
 				'CBG'              => $CBG
@@ -466,6 +472,12 @@ class PiuController extends Controller
 				'NOTES'            => ($request['NOTES']==null) ? "" : $request['NOTES'],
                 'BAYAR'            => (float) str_replace(',', '', $request['TBAYAR']),
                 'LAIN'             => (float) str_replace(',', '', $request['TLAIN']),
+                
+				'KODEP'            => ($request['KODEP']==null) ? "" : $request['KODEP'],
+				'NAMAP'            => ($request['NAMAP']==null) ? "" : $request['NAMAP'],
+                'KOM'             => (float) str_replace(',', '', $request['KOM']),
+                'TKOM'             => (float) str_replace(',', '', $request['TKOM']),
+
 				'USRNM'            => Auth::user()->username,
 				'TG_SMP'           => Carbon::now(),
 				'CBG'              => $CBG	
