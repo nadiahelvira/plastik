@@ -17,7 +17,7 @@
         <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-               <h1 class="m-0">Data Suplier</h1>	
+               <h1 class="m-0">Data Vendor</h1>	
             </div>
 
         </div><!-- /.row -->
@@ -45,7 +45,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#bankInfo" data-toggle="tab">Bank Info</a>
                             </li>
-							<li class="nav-item">
+							<!-- <li class="nav-item">
                                 <a class="nav-link" href="#deliveryInfo" data-toggle="tab">Lead Delivery Time</a>
                             </li>
 							<li class="nav-item">
@@ -53,7 +53,7 @@
                             </li>
 							<li class="nav-item">
                                 <a class="nav-link" href="#nilaiInfo" data-toggle="tab">Penilaian</a>
-                            </li>
+                            </li> -->
                         </ul>
         
                         <div class="tab-content mt-3">
@@ -163,27 +163,27 @@
 									<div class="col-md-1" align="right">
 										<label for="EMAIL" class="form-label">Email</label>
 									</div>
-									<div class="col-md-2">
+									<div class="col-md-3">
 										<input type="text" class="form-control EMAIL" id="EMAIL" name="EMAIL" placeholder="" value="{{$header->EMAIL}}" >
 									</div>
 
 									<div class="col-md-1" align="right">
 										<label for="NPWP" class="form-label">NPWP</label>
 									</div>
-									<div class="col-md-2">
+									<div class="col-md-3">
 										<input type="text" class="form-control NPWP" id="NPWP" name="NPWP" placeholder="" value="{{$header->NPWP}}" >
 									</div>
 								</div>
 
-								<div class="form-group row">
+								<!-- <div class="form-group row">
 
-									<div class="col-md-1" align="right">
+									<div class="col-md-1" align="left">
 										<label for="EMAIL" class="form-label">Pembayaran</label>
 									</div>
 									<div class="col-md-2">
 										<input type="text" class="form-control EMAIL" id="EMAIL" name="EMAIL" placeholder="" value="{{$header->EMAIL}}" >
 									</div>
-								</div> 
+								</div>  -->
 
 								<div class="form-group row">
 									<div class="col-md-1" align="left">
