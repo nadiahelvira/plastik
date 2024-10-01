@@ -368,7 +368,7 @@
            @endif			 		
           </li>
 			
-          <li class="nav-item">
+          <!-- <li class="nav-item">
           @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="purchase"))
 			      <a href="#" class="nav-link">
               <i class="nav-icon fas fa-hand-holding-heart icon-red"></i>
@@ -381,49 +381,25 @@
 			      <ul class="nav nav-treeview">
               <li class="nav-item {{ (Request::is('po*')) ? 'active' : '' }}">
                 <a href="{{url('po?flagz=PO&golz=B')}}" class="nav-link">
-                   <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
                   <p>PO Bahan</p>
                 </a>
               </li>
 			  
               <li class="nav-item">
                 <a href="{{url('beli?flagz=BL&golz=B')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
                   <p>Pembelian Bahan</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="{{url('beli?flagz=RB&golz=B')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
                   <p>Retur Pembelian Bahan</p>
                 </a>
               </li>
               
-
-              <!-- <li class="nav-item">
-                <a href="{{url('utbeli?flagz=UM')}}" class="nav-link">
-                  <p>Uang Muka Pembelian</p>
-                </a>
-              </li>
-              
-
-              <li class="nav-item">
-                <a href="{{url('utbeli?flagz=TH')}}" class="nav-link">
-                  <p>Transaksi Hutang</p>
-                </a>
-              </li>
-              
-			  
-              <li class="nav-item">
-                <a href="{{url('hut?flagz=B')}}" class="nav-link">
-                  <p>Pembayaran Hutang</p>
-                </a>
-              </li> -->
-              
             </ul>
            @endif			 		
-          </li>
+          </li> -->
 
           <li class="nav-item">
           @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
@@ -496,7 +472,7 @@
           @endif			 		
           </li> 
 
-          <li class="nav-item">
+          <!-- <li class="nav-item">
           @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
 			      <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cash-register icon-purple"></i>
@@ -509,7 +485,6 @@
 			      <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{url('so?flagz=SO&golz=B')}}" class="nav-link">
-                   <!-- <i class="nav-icon fas fa-car icon-white"></i> -->
                   <p>SO Bahan</p>
                 </a>
               </li>
@@ -522,14 +497,12 @@
 
               <li class="nav-item">
                 <a href="{{url('jual?flagz=JL&golz=B')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
                   <p>Penjualan Bahan</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="{{url('jual?flagz=AJ&golz=B')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
                   <p>Retur Penjualan Bahan</p>
                 </a>
               </li>
@@ -542,7 +515,7 @@
 			 
             </ul>
           @endif			 		
-          </li> 
+          </li>  -->
 
           
 
@@ -551,37 +524,33 @@
 			      <a href="#" class="nav-link">
               <i class="nav-icon fas fa-seedling icon-green"></i>
               <p>
-                Produksi
+                Koreksi Stok
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
 			
 			      <ul class="nav nav-treeview">
 
-              <li class="nav-item {{ (Request::is('po*')) ? 'active' : '' }}">
+              <!-- <li class="nav-item {{ (Request::is('po*')) ? 'active' : '' }}">
                 <a href="{{url('pp?flagz=PP&golz=J')}}" class="nav-link">
-                   <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
                   <p>Purchase Request</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="{{url('orderk?flagz=OK&golz=J')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-crosshairs icon-red"></i> -->
                   <p>Order Kerja </p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="{{url('kik/index-posting')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-archive icon-white "></i> -->
                   <p>Kartu Instruksi Kerja</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="{{url('pakai?flagz=PK&golz=J')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-desktop icon-aqua"></i> -->
                   <p>Pemakaian</p>
                 </a>
               </li>
@@ -589,28 +558,24 @@
 			  
               <li class="nav-item">
                 <a href="{{url('terima?flagz=HP&golz=J')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-download icon-brown"></i> -->
                   <p>Hasil Produksi </p>
                 </a>
               </li>		
 			  
               <li class="nav-item">
                 <a href="{{url('stocka?flagz=KB')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-film icon-yellow"></i> -->
                   <p>Koreksi Stock Bahan </p>
                 </a>
-              </li>
+              </li> -->
 			  
               <li class="nav-item">
                 <a href="{{url('stockb?flagz=KZ')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-flag icon-white"></i> -->
                   <p>Koreksi Stock Barang </p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="{{url('stockb?flagz=MT')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-flag icon-white"></i> -->
                   <p>Koreksi Stock Mutasi </p>
                 </a>
               </li>

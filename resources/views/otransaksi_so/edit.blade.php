@@ -226,10 +226,10 @@
  										<td><input name="TOTAL[]" onclick='select()' onblur="hitung()" value="{{$detail->TOTAL}}" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" readonly ></td>
                                         
 										<td>
-											<input name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
+											<input name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
 										</td>
 										<td>
-											<input name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
+											<input name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
 										</td>
 										<td>
                                             <input name="KET[]" id="KET{{$no}}" type="text" value="{{$detail->KET}}" class="form-control KET" >

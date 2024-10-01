@@ -121,7 +121,7 @@
                                             <label for="BACNO" class="form-label">Faktur#</label></th>
                                         <th width="200px" style="text-align:right">Total</th>
                                         <th width="200px" style="text-align:right">Bayar</th>
-                                        <th width="200px" style="text-align:right">Sisa</th> 
+                                        <!-- <th width="200px" style="text-align:right">Sisa</th> -->
                                         <th></th>										
                                     </tr>
                                 </thead>
@@ -140,16 +140,12 @@
                                             <input name="NO_FAKTUR[]" id="NO_FAKTUR{{$no}}" type="text" class="form-control NO_FAKTUR" value="{{$detail->NO_FAKTUR}}" readonly required>
                                         </td>
 										<td>
-										    <input name="TOTAL[]"  onblur="hitung()" value="{{$detail->TOTAL}}" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL" readonly >
+										    <input name="TOTAL[]" onclick="select()" onblur="hitung()" value="{{$detail->TOTAL}}" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL" readonly >
 										</td>    
 										<td>
-										    <input name="BAYAR[]"  onblur="hitung()" value="{{$detail->BAYAR}}" id="BAYAR{{$no}}" type="text" style="text-align: right"  class="form-control BAYAR">
+										    <input name="BAYAR[]" onclick="select()" onblur="hitung()" value="{{$detail->BAYAR}}" id="BAYAR{{$no}}" type="text" style="text-align: right"  class="form-control BAYAR">
 										</td>       
-
-										<td>
-										    <input name="SISA[]"  value="{{$detail->SISA}}" id="SISA{{$no}}" type="text" style="text-align: right"  class="form-control SISA" readonly >
-										</td>   
-										
+											
 										<td>
 											<button type='button' id='DELETEX{{$no}}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
 										</td>
@@ -169,6 +165,9 @@
                                 </tfoot>
                             </table>				
 								
+						</form>
+					</div>                               
+				</div>
 
 						<div class="col-md-2 row">
 							<a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
@@ -183,7 +182,7 @@
                                     <label for="TBAYAR" class="form-label">Total Bayar</label>
                                 </div>
                                 <div class="col-md-2">
-                                     <td><input class="form-control TBAYAR  text-bold font-weight-bold" style="text-align: right"  id="TBAYAR" name="TBAYAR" value="{{$header->BAYAR}}" readonly></td>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TBAYAR" id="TBAYAR" name="TBAYAR" placeholder="TBAYAR" value="{{$header->BAYAR}}" style="text-align: right" readonly>
                                 </div>
 							</div>
 
@@ -192,7 +191,7 @@
                                     <label for="TKOM" class="form-label">Total Komisi</label>
                                 </div>
                                 <div class="col-md-2">
-                                     <td><input class="form-control TKOM  text-bold font-weight-bold" style="text-align: right"  id="TKOM" name="TKOM" value="{{$header->TKOM}}" readonly></td>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TKOM" id="TKOM" name="TKOM" placeholder="TKOM" value="{{$header->TKOM}}" style="text-align: right" readonly>
                                 </div>
 							</div>
 							
@@ -219,9 +218,6 @@
 						</div>
 			
 			            
-						</form>
-					</div>                               
-				</div>
 						
 						
 			
@@ -366,7 +362,6 @@
 		for (i = 0; i <= jumlahdata; i++) {
 			$("#TOTAL" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#BAYAR" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-			$("#SISA" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 		}	
 
 
@@ -627,8 +622,6 @@
 		var tahunPer = "<?=session()->get('periode')['tahun']?>";
 		//var TBAYARX = parseFloat($('#TBAYAR').val().replace(/,/g, ''));
 		
-
-		
         var check = '0';
 		
 			if (cekDetail())
@@ -671,12 +664,6 @@
 			
 			if ( check == '0' )
 			{
-
-		var tbayar = $('#TBAYAR').val();
-		var tkom = $('#TKOM').val();
-		alert(tbayar);
-		alert(tkom);	
-		
 		    	document.getElementById("entri").submit();  
 			}
 
@@ -794,7 +781,6 @@
 			$("#NO_FAKTUR" + i.toString()).attr("readonly", true);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#BAYAR" + i.toString()).attr("readonly", false);
-			$("#SISA" + i.toString()).attr("readonly", true);
 			$("#DELETEX" + i.toString()).attr("hidden", false);
 
 			$tipx = $('#tipx').val();
@@ -847,8 +833,6 @@
 			$("#NO_FAKTUR" + i.toString()).attr("readonly", true);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#BAYAR" + i.toString()).attr("readonly", true);
-			$("#SISA" + i.toString()).attr("readonly", true);
-
 			$("#DELETEX" + i.toString()).attr("hidden", true);
 		}
 
@@ -864,11 +848,7 @@
 		 $('#KODEC').val("");	
 		 $('#NAMAC').val("");		
 		 $('#NOTES').val("");	
-		 $('#KODEP').val("");	
-		 $('#NAMAP').val("");
-		 $('#KOM').val("0.00");
-		 $('#TBAYAR').val("0.00");	
-		 $('#TKOM').val("0.00");
+
 		 
 		var html = '';
 		$('#detailx').html(html);	
@@ -915,17 +895,13 @@
                 </td>
 				
 				<td>
-		            <input name='TOTAL[]' onblur='hitung()' value='0' id='TOTAL${idrow}' type='text' style='text-align: right' class='form-control TOTAL text-primary' required readonly >
+		            <input name='TOTAL[]' onclick='select()' onblur='hitung()' value='0' id='TOTAL${idrow}' type='text' style='text-align: right' class='form-control TOTAL text-primary' required readonly >
                 </td>
 
 				<td>
-		            <input name='BAYAR[]'  onblur='hitung()' value='0' id='BAYAR${idrow}' type='text' style='text-align: right' class='form-control BAYAR text-primary' required >
+		            <input name='BAYAR[]' onclick='select()' onblur='hitung()' value='0' id='BAYAR${idrow}' type='text' style='text-align: right' class='form-control BAYAR text-primary' required >
                 </td>
-
-				<td>
-		            <input name='SISA[]'  onblur='hitung()' value='0' id='SISA${idrow}' type='text' style='text-align: right' class='form-control SISA text-primary' readonly >
-                </td>
-                
+				
                 <td>
 					<button type='button' id='DELETEX${idrow}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
                 </td>				
