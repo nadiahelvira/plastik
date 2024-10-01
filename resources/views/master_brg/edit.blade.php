@@ -193,7 +193,7 @@
 									value="{{ number_format( $header->ROP, 0, '.', ',') }}" style="text-align: right" >
                                 </div>
 
-								<div class="col-md-1">
+								<div class="col-md-1" hidden>
 									<label for="HJUAL" class="form-label">Harga Jual</label>
 								</div>
 								<div class="col-md-2">
@@ -272,11 +272,13 @@
 										<th style="text-align: center;">
 									       <label style="color:red;font-size:20px">* </label>									
                                            <label for="KD_PRS" class="form-label">Ring#</label></th>
-										<th style="text-align: center;">Ecer</th>
-                                        <th style="text-align: center;">Ecer 6</th>
-										<th style="text-align: center;">Ecer 25</th>
-										<th style="text-align: center;">Ecer 50</th>
-										<th style="text-align: center;">Ecer 100</th>
+										<th style="text-align: center;">Paket 1</th>
+                                        <th style="text-align: center;">Paket 6</th>
+										<th style="text-align: center;">Paket 25</th>
+										<th style="text-align: center;">Paket 50</th>
+										<th style="text-align: center;">Paket 100</th>
+										<th style="text-align: center;">Paket 150</th>
+										<th style="text-align: center;">Paket 200</th>
                                         <th></th>
                                        						
                                     </tr>
@@ -311,6 +313,12 @@
 										</td>
 										<td>
 											<input name="HARGA5[]" onclick="select()" onkeyup="hitung()" value="{{$detail->HARGA5}}" id="HARGA5{{$no}}" type="text" style="text-align: right"  class="form-control HARGA5 text-primary">
+										</td>
+										<td>
+											<input name="HARGA6[]" onclick="select()" onkeyup="hitung()" value="{{$detail->HARGA6}}" id="HARGA6{{$no}}" type="text" style="text-align: right"  class="form-control HARGA6 text-primary">
+										</td>
+										<td>
+											<input name="HARGA7[]" onclick="select()" onkeyup="hitung()" value="{{$detail->HARGA7}}" id="HARGA7{{$no}}" type="text" style="text-align: right"  class="form-control HARGA7 text-primary">
 										</td>
                                         
 										<td>

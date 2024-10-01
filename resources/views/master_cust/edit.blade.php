@@ -75,7 +75,7 @@
                                     placeholder="Masukkan Nama Customer" value="{{$header->NAMAC}}">
                                 </div> 
 							
-								<div class="col-md-4">
+								<div class="col-md-4" hidden>
 									<input type="checkbox" class="form-check-input" id="AKT"name="AKT"
 									placeholder="Masukkan Aktif/Tidak" value="1" {{ ($header->AKT == 1) ? 'checked' : '' }}>
 									<label for="AKT">Aktif</label>
@@ -144,17 +144,12 @@
 
 							<div class="form-group row">
 
-								<div class="col-md-1">
-									<label for="GOL" class="form-label">Golongan</label>
-								</div>
-								<div class="col-md-2">
-									<select id="GOL" class="form-control"  name="GOL">
-										<option value="Y" {{ ($header->GOL == 'Y') ? 'selected' : '' }}>Y</option>
-										<option value="Z" {{ ($header->GOL == 'Z') ? 'selected' : '' }}>Z</option>
-									</select>
-								</div>
-
-								<div class="col-md-1">
+                                <div class="col-md-1">
+                                    <label for="EMAIL" class="form-label">Email</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control EMAIL" id="EMAIL"name="EMAIL"
+                                    placeholder="Masukkan Email" value="{{$header->EMAIL}}">
                                 </div>
 
 								<div class="col-md-1">
@@ -172,29 +167,7 @@
                             </div>
  
 							<div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="EMAIL" class="form-label">Email</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control EMAIL" id="EMAIL"name="EMAIL"
-                                    placeholder="Masukkan Email" value="{{$header->EMAIL}}">
-                                </div>
 
-								<div class="col-md-1">
-									<label style="color:red">*</label>	
-									<label for="RING" class="form-label">Ring</label>
-								</div>
-								<div class="col-md-1">
-									<select id="RING" class="form-control"  name="RING">
-										<option value="0" {{ ($header->RING == '0') ? 'selected' : '' }}>Local</option>
-										<option value="1" {{ ($header->RING == '1') ? 'selected' : '' }}>Ring 1</option>
-										<option value="2" {{ ($header->RING == '2') ? 'selected' : '' }}>Ring 2</option>
-										<option value="3" {{ ($header->RING == '3') ? 'selected' : '' }}>Ring 3</option>
-									</select>
-								</div>
-                            </div> 
- 
-							<div class="form-group row">
                                 <div class="col-md-1">
                                     <label for="NPWP" class="form-label">NPWP</label>
                                 </div>
@@ -202,8 +175,32 @@
                                     <input type="text" class="form-control NPWP" id="NPWP"name="NPWP"
                                     placeholder="Masukkan NPWP" value="{{$header->NPWP}}">
                                 </div>
-                            </div>
 
+								<div class="col-md-1" >
+									<label style="color:red">*</label>	
+									<label for="RING" class="form-label">Ring</label>
+								</div>
+								<div class="col-md-1">
+									<select id="RING" class="form-control"  name="RING">
+										<option value="0" {{ ($header->RING == '0') ? 'selected' : '' }}>Lokal</option>
+										<option value="1" {{ ($header->RING == '1') ? 'selected' : '' }}>Ring 1</option>
+										<option value="2" {{ ($header->RING == '2') ? 'selected' : '' }}>Ring 2</option>
+										<option value="3" {{ ($header->RING == '3') ? 'selected' : '' }}>Ring 3</option>
+										<option value="4" {{ ($header->RING == '4') ? 'selected' : '' }}>Ring 4</option>
+									</select>
+								</div>
+
+								<div class="col-md-1">
+									<label for="GOL" class="form-label">Golongan</label>
+								</div>
+								<div class="col-md-1">
+									<select id="GOL" class="form-control"  name="GOL">
+										<option value="Y" {{ ($header->GOL == 'Y') ? 'selected' : '' }}>Y</option>
+										<option value="Z" {{ ($header->GOL == 'Z') ? 'selected' : '' }}>Z</option>
+									</select>
+                            	</div> 
+                            </div> 
+ 
 							
 							<div class="form-group row">
                                 <div class="col-md-1">

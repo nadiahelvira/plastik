@@ -83,7 +83,7 @@
 										<label for="PKP">PKP</label>
 									</div>					
 									
-									<div class="col-md-1">
+									<div class="col-md-1" hidden>
 										<input type="checkbox" class="form-check-input" id="AKT" name="AKT" value="1" {{ ($header->AKT == 1) ? 'checked' : '' }}>
 										<label for="AKT">AKTIF</label>
 									</div>	
@@ -102,11 +102,29 @@
 			
 								<div class="form-group row">
 									<div class="col-md-1">
-										<label for="ALAMAT" class="form-label">Alamat</label>
+										<label for="ALAMAT" class="form-label">Alamat 1</label>
 									</div>
 									<div class="col-md-4">
 										<input type="text" class="form-control ALAMAT" id="ALAMAT" name="ALAMAT"
 										placeholder="Masukkan Alamat" value="{{$header->ALAMAT}}">
+									</div>
+
+									<div class="col-md-1">
+									</div>
+
+									<div class="col-md-1" align="right">
+										<label for="ALAMAT2" class="form-label">Alamat 2</label>
+									</div>
+									
+									<div class="col-md-4">
+										<input type="text" class="form-control ALAMAT2" id="ALAMAT2" name="ALAMAT2"
+										placeholder="Masukkan Alamat" value="{{$header->ALAMAT2}}">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-md-1" align="left">
+										<label for="KOTA" class="form-label">Kota</label>
 									</div>
 
 									<div class="col-md-2">
@@ -120,13 +138,22 @@
 										<label for="TELPON1" class="form-label">Telpon</label>
 									</div>
 									<div class="col-md-2">
-										<input type="text" class="form-control TELPON1" id="TELPON1" name="TELPON1" placeholder="" value="{{$header->TELPON1}}" >
+										<input type="text" onclick="select()" class="form-control TELPON1" id="TELPON1" name="TELPON1" placeholder="Masukkan Telpon" 
+										value="{{ number_format( $header->TELPON1, 0, '.', ',') }}" style="text-align: right" >
 									</div>
 
+									<div class="col-md-1" align="right">
+										<label for="HP" class="form-label">HP</label>
+									</div>
 									<div class="col-md-2">
+										<input type="text" onclick="select()" class="form-control HP" id="HP" name="HP" placeholder="Masukkan HP" 
+										value="{{ number_format( $header->HP, 0, '.', ',') }}" style="text-align: right" >
+									</div>
+
+									<div class="col-md-1" align="right">
                                         <label for="GOL" class="form-label">Golongan</label>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-1">
                                         <select id="GOL" class="form-control"  name="GOL">
 											<option value="Y" {{ ($header->GOL == 'Y') ? 'selected' : '' }}>Y</option>
 											<option value="Z" {{ ($header->GOL == 'Z') ? 'selected' : '' }}>Z</option>
@@ -140,15 +167,6 @@
 									</div>
 									<div class="col-md-2">
 										<input type="text" class="form-control FAX" id="FAX" name="FAX" placeholder="" value="{{$header->FAX}}" >
-									</div>
-								</div>
-	
-								<div class="form-group row">
-									<div class="col-md-1" align="left">
-										<label for="HP" class="form-label">HP</label>
-									</div>
-									<div class="col-md-2">
-										<input type="text" class="form-control HP" id="HP" name="HP" placeholder="" value="{{$header->HP}}" >
 									</div>
 								</div>
 
@@ -634,6 +652,10 @@
 			 //mati();	
     		 ganti();
 		}    
+
+		$("#TELPON1").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999'});
+		$("#HP").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999'});
+		
 	
     });
 

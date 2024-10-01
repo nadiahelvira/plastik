@@ -44,6 +44,94 @@ class BrgController extends Controller
     
 	// }
 
+    public function browse_beli(Request $request)
+    {   
+		$kd_brgx = $request->KD_BRG;
+		$pkpx = $request->PKP;
+        $golz = $request->GOL;
+
+		$filter_kd_brg='';
+
+        if( $pkpx == '0' ){
+
+            if (!empty($request->KD_BRG)) {
+			
+                $filter_kd_brg = " WHERE brg.KD_BRG ='".$request->KD_BRG."' ";
+            } 
+                
+                $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
+                                brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                FROM brg, brgdx
+                                $filter_kd_brg and brg.KD_BRG = brgdx.KD_BRG
+                                AND brg.PN='0'
+                                AND brg. GOL='$golz'
+                                ORDER BY brg.KD_BRG  ");
+                            
+            if	( empty($brg) ) {
+                
+                $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
+                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                FROM brg, brgdx
+                                WHERE brg.KD_BRG = brgdx.KD_BRG
+                                AND brg.PN='0'
+                                AND brg. GOL='$golz'
+                                ORDER BY brg.KD_BRG ");			
+            }
+
+        } elseif ($pkpx =! '0')  {
+
+            if (!empty($request->KD_BRG)) {
+			
+                $filter_kd_brg = " WHERE brg.KD_BRG ='".$request->KD_BRG."' ";
+            } 
+                
+                $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
+                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                FROM brg, brgdx
+                                $filter_kd_brg AND brg.KD_BRG = brgdx.KD_BRG
+                                AND brg.PN<>'0'
+                                AND brg.GOL='$golz'
+                                ORDER BY brg.KD_BRG  ");
+                            
+            if	( empty($brg) ) {
+                
+                $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
+                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                FROM brg, brgdx
+                                WHERE brg.PN<>'0' AND brg.KD_BRG = brgdx.KD_BRG
+                                AND brg.GOL='$golz'
+                                ORDER BY brg.KD_BRG ");			
+            }
+
+        } else {
+
+            if (!empty($request->KD_BRG)) {
+			
+                $filter_kd_brg = " WHERE brg.KD_BRG ='".$request->KD_BRG."' ";
+            } 
+                
+                $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
+                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                FROM brg, brgdx
+                                $filter_kd_brg AND brg.KD_BRG = brgdx.KD_BRG
+                                AND brg.GOL='$golz'
+                                ORDER BY brg.KD_BRG  ");
+                            
+            if	( empty($brg) ) {
+                
+                $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
+                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                FROM brg, brgdx
+                                WHERE brg.KD_BRG = brgdx.KD_BRG
+                                AND brg.GOL='$golz'
+                                ORDER BY brg.KD_BRG ");			
+            }
+
+        }
+        
+        return response()->json($brg);
+    }
+
     public function browse(Request $request)
     {   
 		$kd_brgx = $request->KD_BRG;
@@ -104,34 +192,8 @@ class BrgController extends Controller
                                 ORDER BY brg.KD_BRG ");			
             }
 
-        } else {
-
-            if (!empty($request->KD_BRG)) {
-			
-                $filter_kd_brg = " WHERE brg.KD_BRG ='".$request->KD_BRG."' ";
-            } 
-                
-                $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
-                                FROM brg, brgdx
-                                $filter_kd_brg AND brg.KD_BRG = brgdx.KD_BRG
-                                AND brg.GOL='$golz'
-                                ORDER BY brg.KD_BRG  ");
-                            
-            if	( empty($brg) ) {
-                
-                $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
-                                FROM brg, brgdx AND brg.KD_BRG = brgdx.KD_BRG
-                                AND brg.GOL='$golz'
-                                ORDER BY brg.KD_BRG ");			
-            }
-
         }
-		
-        
 
-		
         return response()->json($brg);
     }
 

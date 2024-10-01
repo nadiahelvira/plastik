@@ -669,7 +669,7 @@
 			$.ajax(
 			{
 				type: 'GET',    
-				url: "{{url('brg/browse')}}",
+				url: "{{url('brg/browse_beli')}}",
 				async : false,
 				data: {
 						'KD_BRG': $("#KD_BRG"+rowidBarang).val(),
