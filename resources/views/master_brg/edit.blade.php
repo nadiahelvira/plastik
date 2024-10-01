@@ -956,6 +956,12 @@
 				<td>
 					<input name='HARGA5[]' onclick='select()' onblur='hitung()' value='0' id='HARGA5${idrow}' type='text' style='text-align: right' class='form-control HARGA5 text-primary' required >
 				</td>
+				<td>
+					<input name='HARGA6[]' onclick='select()' onblur='hitung()' value='0' id='HARGA6${idrow}' type='text' style='text-align: right' class='form-control HARGA6 text-primary' required >
+				</td>
+				<td>
+					<input name='HARGA7[]' onclick='select()' onblur='hitung()' value='0' id='HARGA7${idrow}' type='text' style='text-align: right' class='form-control HARGA7 text-primary' required >
+				</td>
 				
 				<td>
 					<button type='button' id='DELETEX${idrow}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete del1' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
