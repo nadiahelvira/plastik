@@ -352,7 +352,7 @@ class BankController extends Controller
 		  
     		$bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from Bank
             		  where PER ='$per' and TYPE ='$this->FLAGZ'   
-		              AND CGB = '$CGB'
+		              AND CGB = '$CGB' xx
                       ORDER BY NO_BUKTI DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 
