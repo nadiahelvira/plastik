@@ -46,98 +46,7 @@
           </li>
           
 
-        @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="assistant") )
-          <li class="nav-header">PPIC</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-plus icon-pink"></i>
-              <p>
-                PPC Menu
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-
-            <ul class="nav nav-treeview">
-              
-              <!-- <li class="nav-item">
-                <a href="{{url('so')}}" class="nav-link">
-                  <i class="nav-icon fas fa-crop icon-orange"></i>
-                  <p>Sales Order </p>
-                </a>
-              </li> -->
-              
         
-              <li class="nav-item">
-                <a href="{{url('so/multiSo')}}" class="nav-link">
-                  <i class="nav-icon fas fa-crop icon-orange"></i>
-                  <p>Multiple SO ke Order Kerja</p>
-                </a>
-              </li>
-        
-              <li class="nav-item">
-                <a href="{{url('orderk?JNSOK=OK')}}" class="nav-link">
-                  <i class="nav-icon fas fa-crop icon-orange"></i>
-                  <p>Order Kerja </p>
-                </a>
-              </li>
-        
-              <li class="nav-item">
-                <a href="{{url('orderk?JNSOK=OW')}}" class="nav-link">
-                  <i class="nav-icon fas fa-crop icon-orange"></i>
-                  <p>Order Kerja WIP</p>
-                </a>
-              </li>
-        
-              <li class="nav-item">
-                <a href="{{url('pakai?JNSPK=PK')}}" class="nav-link">
-                  <i class="nav-icon fas fa-crop icon-orange"></i>
-                  <p>Pemakaian </p>
-                </a>
-              </li>
-        
-              <li class="nav-item">
-                <a href="{{url('pakai?JNSPK=PW')}}" class="nav-link">
-                  <i class="nav-icon fas fa-crop icon-orange"></i>
-                  <p>Pemakaian WIP</p>
-                </a>
-              </li>
-        
-              <li class="nav-item">
-                <a href="{{url('terima?JNSHP=HP')}}" class="nav-link">
-                  <i class="nav-icon fas fa-crop icon-orange"></i>
-                  <p>Terima </p>
-                </a>
-              </li>
-        
-              <li class="nav-item">
-                <a href="{{url('terima?JNSHP=HW')}}" class="nav-link">
-                  <i class="nav-icon fas fa-crop icon-orange"></i>
-                  <p>Terima WIP</p>
-                </a>
-              </li>
-              <!--
-        
-              <li class="nav-item">
-                <a href="{{url('hasilpro')}}" class="nav-link">
-                  <i class="nav-icon fas fa-crop icon-orange"></i>
-                  <p>Hasil Produksi </p>
-                </a>
-              </li>
-              -->
-        
-              
-              <!--
-        
-              <li class="nav-item">
-                <a href="{{url('jual')}}" class="nav-link">
-                  <i class="nav-icon fas fa-crop icon-orange"></i>
-                  <p>Penjualan </p>
-                </a>
-              </li>
-              -->
-            </ul>
-          </li>
-        @endif
           
           <li class="nav-header">Operational</li>
           <li class="nav-item">
@@ -200,9 +109,36 @@
 
               @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
               <li class="nav-item">
+                <a href="{{url('grup')}}" class="nav-link">
+                  <i class="nav-icon fas fa-anchor icon-red"></i>
+                  <p>Grup</p>
+                </a>
+              </li>
+              @endif
+
+              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
+              <li class="nav-item">
+                <a href="{{url('kota')}}" class="nav-link">
+                  <i class="nav-icon fas fa-anchor icon-red"></i>
+                  <p>Kota</p>
+                </a>
+              </li>
+              @endif
+
+              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
+              <li class="nav-item">
                 <a href="{{url('gdg')}}" class="nav-link">
                   <i class="nav-icon fas fa-anchor icon-red"></i>
                   <p>Gudang</p>
+                </a>
+              </li>
+              @endif
+
+              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
+              <li class="nav-item">
+                <a href="{{url('truck')}}" class="nav-link">
+                  <i class="nav-icon fas fa-anchor icon-red"></i>
+                  <p>Truck</p>
                 </a>
               </li>
               @endif
@@ -311,7 +247,7 @@
            @endif			 		
           </li>
 
-          <li class="nav-item">
+          <!-- <li class="nav-item">
           @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="purchase"))
 			      <a href="#" class="nav-link">
               <i class="nav-icon fas fa-hand-holding-heart icon-ocean"></i>
@@ -324,49 +260,25 @@
 			      <ul class="nav nav-treeview">
               <li class="nav-item {{ (Request::is('po*')) ? 'active' : '' }}">
                 <a href="{{url('po?flagz=PO&golz=N')}}" class="nav-link">
-                   <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
                   <p>PO Non</p>
                 </a>
               </li>
 			  
               <li class="nav-item">
                 <a href="{{url('beli?flagz=BL&golz=N')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
                   <p>Pembelian Non</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="{{url('beli?flagz=RB&golz=N')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
                   <p>Retur Pembelian Non</p>
                 </a>
               </li>
               
-
-              <!-- <li class="nav-item">
-                <a href="{{url('utbeli?flagz=UM')}}" class="nav-link">
-                  <p>Uang Muka Pembelian</p>
-                </a>
-              </li>
-              
-
-              <li class="nav-item">
-                <a href="{{url('utbeli?flagz=TH')}}" class="nav-link">
-                  <p>Transaksi Hutang</p>
-                </a>
-              </li>
-              
-			  
-              <li class="nav-item">
-                <a href="{{url('hut?flagz=B')}}" class="nav-link">
-                  <p>Pembayaran Hutang</p>
-                </a>
-              </li> -->
-              
             </ul>
            @endif			 		
-          </li>
+          </li> -->
 			
           <!-- <li class="nav-item">
           @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="purchase"))
@@ -646,7 +558,7 @@
               <li class="nav-item">
                 <a href="{{url('rpo')}}" class="nav-link">
                   <!-- <i class="nav-icon fas fa-flask icon-red"></i> -->
-                  <p>Purchase Order Bahan</p>
+                  <p>Purchase Order</p>
                 </a>
               </li>
               @endif

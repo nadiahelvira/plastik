@@ -191,14 +191,14 @@
 											<th style="text-align: center;">Qty</th>
 											<th style="text-align: center;">Harga</th>
 											<th style="text-align: center;">Total</th>								
-											<th style="text-align: center;">DPP</th>								
 											<th style="text-align: center;">PPN</th>								
+											<th style="text-align: center;">DPP</th>								
 											<th style="text-align: center;">Ket</th>
 											<th></th>										
 										</tr>
 										
 									</thead>
-									<tbody>
+									<tbody id="detailJuald">
 									
 									<?php $no=0 ?>
 									@foreach ($detail as $detail)
@@ -237,10 +237,10 @@
 												<input name="TOTAL[]"  onblur="hitung()" value="{{$detail->TOTAL}}" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" readonly >
 											</td>
 											<td>
-												<input name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
+												<input name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
 											</td>
 											<td>
-												<input name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
+												<input name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
 											</td>
 											<td>
 												<input name="KET[]" id="KET{{$no}}" type="text" value="{{$detail->KET}}" class="form-control KET" >
@@ -269,10 +269,10 @@
 								</table>					
 							</div>
 
-							<div class="col-md-2 row">
+							<!-- <div class="col-md-2 row">
 								<a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
 
-							</div>			
+							</div>			 -->
 							
                         </div> 
 						
@@ -525,7 +525,7 @@
         if ( $tipx == 'new' )
 		{
 			 baru();	
-             tambah();				 
+            //  tambah();				 
 		}
 
         if ( $tipx != 'new' )
@@ -552,6 +552,7 @@
 		$('body').on('click', '.btn-delete', function() {
 			var val = $(this).parents("tr").remove();
 			baris--;
+			hitung();
 			nomor();
 		});
 		
@@ -616,6 +617,9 @@
 			$("#KOM").val(KOM);			
 			$("#RING").val(RING);			
 			$("#browseSuratsModal").modal("hide");
+
+			getSuratsd(NO_BUKTI);
+
 		}
 		
 		$("#NO_SURATS").keypress(function(e){
@@ -626,6 +630,90 @@
 			}
 		}); 
 ////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+
+
+function getSuratsd(bukti)
+	{
+		
+		var mulai = (idrow==baris) ? idrow-1 : idrow;
+
+		$.ajax(
+			{
+				type: 'GET',    
+				url: "{{url('surats/browse_suratsd')}}",
+				data: {
+					nobukti: bukti,
+				},
+				success: function( resp )
+				{
+					var html = '';
+					for(i=0; i<resp.length; i++){
+						html+=`<tr>
+                                    <td><input name='REC[]' id='REC${i}' value=${resp[i].REC+1} type='text' class='REC form-control' onkeypress='return tabE(this,event)' readonly></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }} ><input name='KD_BRG[]' data-rowid=${i} id='KD_BRG${i}' value="${resp[i].KD_BRG}" type='text' class='form-control KD_BRG' readonly></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }}><input name='NA_BRG[]' data-rowid=${i} id='NA_BRG${i}' value="${resp[i].NA_BRG}" type='text' class='form-control  NA_BRG' readonly></td>
+                                    <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='KD_BHN[]' data-rowid=${i} id='KD_BHN${i}' value="${resp[i].KD_BHN}" type='text' class='form-control KD_BHN' readonly></td>
+                                    <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='NA_BHN[]' data-rowid=${i} id='NA_BHN${i}' value="${resp[i].NA_BHN}" type='text' class='form-control  NA_BHN' readonly></td>
+                                    <td><input name='SATUAN[]' data-rowid=${i} id='SATUAN${i}' value="${resp[i].SATUAN}" type='text' class='form-control  SATUAN' placeholder="Satuan"  readonly></td>
+                                    <td>
+										<input name='QTY[]' onclick='select()' onkeyup='hitung()' id='QTY${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY text-primary' readonly >
+									</td>
+									<td>
+										<input name='HARGA[]' onclick='select()' onkeyup='hitung()' id='HARGA${i}' value="${resp[i].HARGA}" type='text' style='text-align: right' class='form-control HARGA text-primary' readonly> 
+									</td>
+									<td>
+										<input name='TOTAL[]' onclick='select()' onkeyup='hitung()' id='TOTAL${i}' value="${resp[i].TOTAL}" type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly> 
+									</td>
+									<td>
+										<input name='PPNX[]' onclick='select()' onkeyup='hitung()' id='PPNX${i}' value="${resp[i].PPN}" type='text' style='text-align: right' class='form-control PPNX text-primary' readonly> 
+									</td>
+									<td>
+										<input name='DPP[]' onclick='select()' onkeyup='hitung()' id='DPP${i}' value="${resp[i].DPP}" type='text' style='text-align: right' class='form-control DPP text-primary' readonly> 
+									</td>
+                                    <td><input name='KET[]' id='KET${i}' value="${resp[i].KET}" type='text' class='form-control  KET' required></td>
+                                    <td><button type='button' class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button></td>
+                                </tr>`;
+					}
+					$('#detailJuald').html(html);
+
+					$(".QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".QTY").autoNumeric('update');
+
+					$(".HARGA").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".HARGA").autoNumeric('update');
+
+					$(".TOTAL").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".TOTAL").autoNumeric('update');
+
+					$(".PPNX").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".PPNX").autoNumeric('update');
+
+					$(".DPP").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".DPP").autoNumeric('update');
+					/*
+					$(".KD_BHN").each(function() {
+						var getid = $(this).attr('id');
+						var noid = getid.substring(6,11);
+
+						$("#KD_BHN"+noid).keypress(function(e){
+							if(e.keyCode == 46){
+								e.preventDefault();
+								browseBhn(noid);
+							}
+						}); 
+					});*/
+
+					idrow=resp.length;
+					baris=resp.length;
+
+					nomor();
+				}
+			});
+	}
+
+//////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////
 
@@ -913,6 +1001,7 @@
 			let z = $(this).closest('tr');
 			var QTYX = parseFloat(z.find('.QTY').val().replace(/,/g, ''));
 			var HARGAX = parseFloat(z.find('.HARGA').val().replace(/,/g, ''));
+			var PPNX1 = parseFloat(z.find('.PPNX').val().replace(/,/g, ''));
 
 			var FLAGZ = $('#flagz').val();
 	
@@ -926,11 +1015,11 @@
 			var TOTALX = QTYX * HARGAX;
 
 			// var dpp = Math.floor(TOTALX / ((100+11)/100) );
-			var dpp = Math.floor(TOTALX - ppn );
-			z.find('.DPP').val(dpp);
+			// var dpp = Math.floor(TOTALX - ppn );
+			// z.find('.DPP').val(dpp);
 
-			var ppn = TOTALX - dpp;
-			z.find('.PPNX').val(ppn);	
+			// var ppn = TOTALX - dpp;
+			// z.find('.PPNX').val(ppn);	
 		
 			z.find('.QTY').val(QTYX);			
 		    z.find('.QTY').autoNumeric('update');
@@ -943,11 +1032,12 @@
 
 		
             TTOTAL_QTY +=QTYX;				
-            TTOTAL +=TOTALX;	
+            TTOTAL +=TOTALX;
+			PPNX += PPNX1;	
 			
 		});
 		
-	    PPNX =  TTOTAL * 11 / 100;
+
 		NETTX = PPNX + TTOTAL;
 		
 		if(isNaN(TTOTAL_QTY)) TTOTAL_QTY = 0;

@@ -16,6 +16,7 @@ class SuratsDetail extends Model
     protected $fillable =
     [
         "NO_BUKTI", "NO_SO", "REC", "PER", "FLAG", "TYP", "NO_TERIMA", "KD_BRG", "NA_BRG", "SATUAN", "QTY", 
-        "SISA", "HARGA", "TOTAL", "MERK", "NO_SERI", "KET", "ID", "ID_SOD", "GOL", "KD_BHN", "NA_BHN"
+        "SISA", "HARGA", "TOTAL", "MERK", "NO_SERI", "KET", "ID", "ID_SOD", "GOL", "KD_BHN", "NA_BHN", "PPN",
+        "DPP", "QTY_KIRIM"
     ];
 }

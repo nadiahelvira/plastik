@@ -188,7 +188,7 @@ class PiuController extends Controller
                 'PER'              => $periode,
                 'KODEC'            => ($request['KODEC']==null) ? "" : $request['KODEC'],			
                 'NAMAC'            => ($request['NAMAC']==null) ? "" : $request['NAMAC'],
-				'FLAG'             => 'B',
+				'FLAG'             => $FLAGZ,
 				'NOTES'            => ($request['NOTES']==null) ? "" : $request['NOTES'],
                 'BAYAR'            => (float) str_replace(',', '', $request['TBAYAR']),
                 'LAIN'             => (float) str_replace(',', '', $request['TLAIN']),
@@ -221,7 +221,7 @@ class PiuController extends Controller
 				$detail->NO_BUKTI = $no_bukti;			
 				$detail->REC	= $REC[$key];
 				$detail->PER	= $periode;
-				$detail->FLAG	= 'B';
+				$detail->FLAG	= $FLAGZ;
 				$detail->NO_FAKTUR = ($NO_FAKTUR[$key]==null) ? "" :  $NO_FAKTUR[$key];
 				$detail->TOTAL	= (float) str_replace(',', '', $TOTAL[$key]);
 				$detail->BAYAR	= (float) str_replace(',', '', $BAYAR[$key]);					
@@ -431,7 +431,7 @@ class PiuController extends Controller
  
          
          return view('otransaksi_piu.edit', $data)
-		 ->with(['tipx' => $tipx, 'idx' => $idx, 'flagz' =>$this->FLAGZ, 'judul', $this->judul ]);
+		 ->with(['tipx' => $tipx, 'idx' => $idx, 'flagz' =>$this->FLAGZ, 'judul'=> $this->judul ]);
       
     }
 
@@ -480,7 +480,8 @@ class PiuController extends Controller
 
 				'USRNM'            => Auth::user()->username,
 				'TG_SMP'           => Carbon::now(),
-				'CBG'              => $CBG	
+				'CBG'              => $CBG,	
+				'FLAG'              => $FLAGZ	
             ]
         );
 
@@ -508,7 +509,7 @@ class PiuController extends Controller
                         'NO_BUKTI'   => $request->NO_BUKTI,
                         'REC'        => $REC[$i],
 				        'PER'        => $periode,
-                        'FLAG'       => 'B',	  							
+                        'FLAG'       => $FLAGZ,	  							
                         'NO_FAKTUR'  => ($NO_FAKTUR[$i]==null) ? "" :  $NO_FAKTUR[$i],
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'BAYAR'      => (float) str_replace(',', '', $BAYAR[$i]),

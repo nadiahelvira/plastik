@@ -17,7 +17,7 @@
         <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-            <h1 class="m-0">Data Customer </h1>
+            <h1 class="m-0">Data Pegawai </h1>
             </div>
             <!-- /.col -->
         </div><!-- /.row -->
@@ -79,6 +79,7 @@
 									<select id="STA" class="form-control"  name="STA">
 										<option value="SALES" {{ ($header->STA == 'SALES') ? 'selected' : '' }}>Sales</option>
 										<option value="PEGAWAI" {{ ($header->STA == 'PEGAWAI') ? 'selected' : '' }}>Pegawai</option>
+										<option value="SOPIR" {{ ($header->STA == 'SOPIR') ? 'selected' : '' }}>Sopir</option>
 									</select>
 								</div>
                             </div>
@@ -138,98 +139,28 @@
  
 							<div class="form-group row">
                                 <div class="col-md-1">
-                                    <label for="UMAKAN" class="form-label">Uang Makan</label>
+                                    <label for="UMAKAN" class="form-label">Uang Makan / hari</label>
                                 </div>
 								<div class="col-md-2">
 									<input type="text" class="form-control UMAKAN" onclick="select()"  id="UMAKAN" name="UMAKAN" placeholder="" value="{{ number_format($header->UMAKAN, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
 								</div> 
 
                                 <div class="col-md-1">
-                                    <label for="KOM" class="form-label">Komisi</label>
+                                    <label for="KOM" class="form-label">Komisi (%)</label>
                                 </div>
 								<div class="col-md-2">
 									<input type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
 								</div> 
 
 								<div class="col-md-1">
-									<label for="GAJI" class="form-label">Gaji</label>
+									<label for="GAJI" class="form-label">Gaji / hari</label>
 								</div>
 								<div class="col-md-2">
 									<input type="text" class="form-control GAJI" onclick="select()"  id="GAJI" name="GAJI" placeholder="" value="{{ number_format($header->GAJI, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
 								</div>
                             </div> 
 							
-							<!-- <div id="bankInfo" class="tab-pane">
-				
-								<div class="form-group row">
-									<div class="col-md-1">
-										<label for="BANK" class="form-label">Bank</label>
-									</div>
-									<div class="col-md-2">
-										<select name="BANK" id="BANK" class="form-control BANK" style="width: 300px">
-											<option value="">--Pilih Bank--</option>
-											@foreach($pilihbank as $pilihbankD)
-												<option value="{{$pilihbankD->KODE}}" {{ $header->BANK == $pilihbankD->KODE ? 'selected' : '' }}>{{ $pilihbankD->NAMA }}</option>
-											@endforeach
-										</select>
-									</div>                                  
-								</div>
-
-								<div class="form-group row">							       
-									<div class="col-md-1">
-										<label for="BANK_CAB" class="form-label">Cabang</label>
-									</div>
-									<div class="col-md-4">
-										<input type="text" class="form-control BANK_CAB" id="BANK_CAB" name="BANK_CAB" placeholder="Masukkan Cabang" value="{{$header->BANK_CAB}}">
-									</div>
-								</div>
-
-								<div class="form-group row">							       
-									<div class="col-md-1">
-										<label for="BANK_KOTA" class="form-label">Kota</label>
-									</div>
-									<div class="col-md-2">
-										<input type="text" class="form-control BANK_KOTA" id="BANK_KOTA" name="BANK_KOTA" placeholder="Masukkan Kota" value="{{$header->BANK_KOTA}}">
-									</div>
-								</div>
-								
-								<div class="form-group row">
-									<div class="col-md-1">
-										<label for="BANK_NAMA" class="form-label">A/N</label>
-									</div>
-									<div class="col-md-4">
-										<input type="text" class="form-control BANK_NAMA" id="BANK_NAMA" name="BANK_NAMA" placeholder="Masukkan Nama" value="{{$header->BANK_NAMA}}">
-									</div>                                
-								</div>
-								
-								<div class="form-group row">
-									<div class="col-md-1">
-										<label for="BANK_REK" class="form-label">Rek</label>
-									</div>
-									<div class="col-md-4">
-										<input type="text" class="form-control BANK_REK" id="BANK_REK" name="BANK_REK" placeholder="Masukkan Nomor Rekening" value="{{$header->BANK_REK}}">
-									</div>                                
-								</div>
-								
-								<div class="form-group row">
-									<div class="col-md-1">
-										<label for="LIM" class="form-label">Kredit Limit</label>
-									</div>
-									<div class="col-md-2">
-										<input type="text" class="form-control LIM" onclick="select()"  id="LIM" name="LIM" placeholder="LIM" value="{{ number_format($header->LIM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
-									</div>                                
-								</div>
-								
-								<div class="form-group row">
-									<div class="col-md-1">
-										<label for="HARI" class="form-label">Jatuh Tempo (Hari)</label>
-									</div>
-									<div class="col-md-2">
-										<input type="text" class="form-control HARI" onclick="select()" id="HARI" name="HARI" placeholder="Masukkan Jumlah Hari" style="text-align: right; width:140px" value="{{$header->HARI}}">
-									</div>                                
-								</div>
-								
-							</div> -->
+							
 						</div>
                                 
                         </div>
@@ -497,12 +428,12 @@
 	
 
      var hasilCek;
-	function cekCust(kodec) {
+	function cekPegawai(kodep) {
 		$.ajax({
 			type: "GET",
 			url: "{{url('pegawai/cekpegawai')}}",
             async: false,
-			data: ({ KODEP: kodec, }),
+			data: ({ KODEP: kodep, }),
 			success: function(data) {
                 if (data.length > 0) {
                     $.each(data, function(i, item) {
@@ -511,16 +442,23 @@
                 }
 			},
 			error: function() {
-				alert('Error cekCust occured');
+				alert('Error cekPegawai occured');
 			}
 		});
 		return hasilCek;
 	}
     
 	function simpan() {
-        //cekCust($('#KODEP').val());
-        //(hasilCek==0) ? document.getElementById("entri").submit() : alert('Customer '+$('#KODEP').val()+' sudah ada!');
-        document.getElementById("entri").submit() 
+        hasilCek=0;
+		$tipx = $('#tipx').val();
+				
+        if ( $tipx == 'new' )
+		{
+			cekPegawai($('#KODEP').val());		
+		}
+		
+
+        (hasilCek==0) ? document.getElementById("entri").submit() : alert('Pegawai '+$('#KODEP').val()+' sudah ada!');
 	}
 </script>
 @endsection

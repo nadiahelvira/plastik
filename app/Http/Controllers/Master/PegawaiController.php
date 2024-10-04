@@ -30,12 +30,6 @@ class PegawaiController extends Controller
     // ganti 4
     public function browse(Request $request)
     {
-        // $gol = 'Y';
-        // if($request->GOL){
-        //     $gol = $request->GOL;
-        // }
-        // $pegawai = DB::table('pegawai')->select('KODEP', 'NAMAP', 'ALAMAT', 'KOTA')->where('GOL', $gol)->orderBy('KODEP', 'ASC')->get();
-        // $pegawai = DB::table('pegawai')->select('KODEP', 'NAMAP', 'ALAMAT', 'KOTA')->orderBy('KODEP', 'ASC')->get();
         $pegawai = DB::SELECT("SELECT NO_ID, KODEP, NAMAP, ALAMAT, KOTA
                             FROM pegawai
                             WHERE STA='SALES'
@@ -44,7 +38,15 @@ class PegawaiController extends Controller
         return response()->json($pegawai);
     }
 
+    public function browse_sopir(Request $request)
+    {
+        $pegawai = DB::SELECT("SELECT NO_ID, KODEP, NAMAP, ALAMAT, KOTA
+                            FROM pegawai
+                            WHERE STA='SOPIR'
+                            ORDER BY KODEP");
 
+        return response()->json($pegawai);
+    }
 
 
     public function getPegawai()
@@ -197,7 +199,7 @@ class PegawaiController extends Controller
 	public function edit(Request $request ,  Pegawai $pegawai)
     { 
         
-        $pilihbank = DB::table('bang')->select('KODE', 'NAMA')->orderBy('KODE', 'ASC')->get();
+        // $pilihbank = DB::table('bang')->select('KODE', 'NAMA')->orderBy('KODE', 'ASC')->get();
 
         // ganti 16
 
@@ -336,7 +338,7 @@ class PegawaiController extends Controller
 		 $data = [
 						'header' => $pegawai,
 			        ];				
-			return view('master_pegawai.edit', $data)->with(['tipx' => $tipx, 'idx' => $idx ])->with(['pilihbank' => $pilihbank]);
+			return view('master_pegawai.edit', $data)->with(['tipx' => $tipx, 'idx' => $idx ]);
 		 
 	 
     }

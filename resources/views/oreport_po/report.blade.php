@@ -30,8 +30,8 @@
 							<label><strong>Gol :</strong></label>
 							
 							<select name="gol" id="gol" class="form-control gol">
-								<option value="B" {{ session()->get('filter_gol')=='B' ? 'selected': ''}}>B</option>
 								<option value="J" {{ session()->get('filter_gol')=='J' ? 'selected': ''}}>J</option>
+								<option value="B" {{ session()->get('filter_gol')=='B' ? 'selected': ''}}>B</option>
 							</select>
 						</div>
 						<div class="col-md-2">						

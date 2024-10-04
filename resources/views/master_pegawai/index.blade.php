@@ -98,7 +98,7 @@
                 },
 				
                 {data: 'KODEP', name: 'KODEP'},
-                {data: 'NAMAP', name: 'NAMAC' },
+                {data: 'NAMAP', name: 'NAMAP' },
                 {data: 'STA', name: 'STA'},
                 {data: 'ALAMAT', name: 'ALAMAT' },				
                 {data: 'KOTA', name: 'KOTA'},

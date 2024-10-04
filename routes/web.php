@@ -159,6 +159,7 @@ Route::get('/rpegawai', 'App\Http\Controllers\OReport\RPegawaiController@report'
     // GET pegawai
     Route::get('/get-pegawai', 'App\Http\Controllers\Master\PegawaiController@getpegawai')->middleware(['auth'])->name('get-pegawai');
     Route::get('/pegawai/browse', 'App\Http\Controllers\Master\PegawaiController@browse')->middleware(['auth'])->name('pegawai/browse');
+    Route::get('/pegawai/browse_sopir', 'App\Http\Controllers\Master\PegawaiController@browse_sopir')->middleware(['auth'])->name('pegawai/browse_sopir');
     Route::get('/get-pegawai-report', 'App\Http\Controllers\OReport\RpegawaiController@getpegawaiReport')->middleware(['auth'])->name('get-pegawai-report');
     Route::post('/jasper-pegawai-report', 'App\Http\Controllers\OReport\RPegawaiController@jasperpegawaiReport')->middleware(['auth'])->name('jasper-pegawai-report');
     Route::get('pegawai/cekpegawai', 'App\Http\Controllers\Master\PegawaiController@cekpegawai')->middleware(['auth']);
@@ -168,6 +169,47 @@ Route::get('/rpegawai', 'App\Http\Controllers\OReport\RPegawaiController@report'
 Route::get('/pegawai/edit', 'App\Http\Controllers\Master\PegawaiController@edit')->middleware(['auth'])->name('pegawai.edit');
 Route::post('/pegawai/update/{pegawai}', 'App\Http\Controllers\Master\PegawaiController@update')->middleware(['auth'])->name('pegawai.update');
 Route::get('/pegawai/delete/{pegawai}', 'App\Http\Controllers\Master\PegawaiController@destroy')->middleware(['auth'])->name('pegawai.delete');
+
+
+// Master Kota
+Route::get('/kota', 'App\Http\Controllers\Master\KotaController@index')->middleware(['auth'])->name('kota');
+Route::post('/kota/store', 'App\Http\Controllers\Master\KotaController@store')->middleware(['auth'])->name('kota/store');
+    // GET Kota
+    Route::get('/get-kota', 'App\Http\Controllers\Master\KotaController@getKota')->middleware(['auth'])->name('get-kota');
+    Route::get('/kota/browse', 'App\Http\Controllers\Master\KotaController@browse')->middleware(['auth'])->name('kota/browse');
+    Route::get('kota/cekkota', 'App\Http\Controllers\Master\KotaController@cekkota')->middleware(['auth']);
+// Dynamic Kota
+Route::get('/kota/edit', 'App\Http\Controllers\Master\KotaController@edit')->middleware(['auth'])->name('kota.edit');
+Route::post('/kota/update/{kota}', 'App\Http\Controllers\Master\KotaController@update')->middleware(['auth'])->name('kota.update');
+Route::get('/kota/delete/{kota}', 'App\Http\Controllers\Master\KotaController@destroy')->middleware(['auth'])->name('kota.delete');
+
+
+
+// Master Grup
+Route::get('/grup', 'App\Http\Controllers\Master\GrupController@index')->middleware(['auth'])->name('grup');
+Route::post('/grup/store', 'App\Http\Controllers\Master\GrupController@store')->middleware(['auth'])->name('grup/store');
+    // GET Grup
+    Route::get('/get-grup', 'App\Http\Controllers\Master\GrupController@getGrup')->middleware(['auth'])->name('get-grup');
+    Route::get('/grup/browse', 'App\Http\Controllers\Master\GrupController@browse')->middleware(['auth'])->name('grup/browse');
+    Route::get('grup/cekgrup', 'App\Http\Controllers\Master\GrupController@cekgrup')->middleware(['auth']);
+// Dynamic Grup
+Route::get('/grup/edit', 'App\Http\Controllers\Master\GrupController@edit')->middleware(['auth'])->name('grup.edit');
+Route::post('/grup/update/{grup}', 'App\Http\Controllers\Master\GrupController@update')->middleware(['auth'])->name('grup.update');
+Route::get('/grup/delete/{grup}', 'App\Http\Controllers\Master\GrupController@destroy')->middleware(['auth'])->name('grup.delete');
+
+
+// Master Truck
+Route::get('/truck', 'App\Http\Controllers\Master\TruckController@index')->middleware(['auth'])->name('truck');
+Route::post('/truck/store', 'App\Http\Controllers\Master\TruckController@store')->middleware(['auth'])->name('truck/store');
+    // GET Truck
+    Route::get('/get-truck', 'App\Http\Controllers\Master\TruckController@getTruck')->middleware(['auth'])->name('get-truck');
+    Route::get('/truck/browse', 'App\Http\Controllers\Master\TruckController@browse')->middleware(['auth'])->name('truck/browse');
+    Route::get('truck/cektruck', 'App\Http\Controllers\Master\TruckController@cektruck')->middleware(['auth']);
+// Dynamic Truck
+Route::get('/truck/edit', 'App\Http\Controllers\Master\TruckController@edit')->middleware(['auth'])->name('truck.edit');
+Route::post('/truck/update/{truck}', 'App\Http\Controllers\Master\TruckController@update')->middleware(['auth'])->name('truck.update');
+Route::get('/truck/delete/{truck}', 'App\Http\Controllers\Master\TruckController@destroy')->middleware(['auth'])->name('truck.delete');
+
 
 
 // Master Gudang
@@ -181,6 +223,8 @@ Route::post('/gdg/store', 'App\Http\Controllers\Master\GdgController@store')->mi
 Route::get('/gdg/edit', 'App\Http\Controllers\Master\GdgController@edit')->middleware(['auth'])->name('gdg.edit');
 Route::post('/gdg/update/{gdg}', 'App\Http\Controllers\Master\GdgController@update')->middleware(['auth'])->name('gdg.update');
 Route::get('/gdg/delete/{gdg}', 'App\Http\Controllers\Master\GdgController@destroy')->middleware(['auth'])->name('gdg.delete');
+
+
 
 
 // Master Fo
@@ -465,6 +509,7 @@ Route::get('/surats/delete/{surats}', 'App\Http\Controllers\OTransaksi\SuratsCon
 Route::get('/surats/browseCust', 'App\Http\Controllers\OTransaksi\SuratsController@browseCust')->middleware(['auth']);
 Route::get('/surats/browseSo', 'App\Http\Controllers\OTransaksi\SuratsController@browseSo')->middleware(['auth']);
 Route::get('/surats/browse_detail', 'App\Http\Controllers\OTransaksi\SuratsController@browse_detail')->middleware(['auth']);
+Route::get('/surats/browse_suratsd', 'App\Http\Controllers\OTransaksi\SuratsController@browse_suratsd')->middleware(['auth']);
 
 Route::post('/jasper-surats-report', 'App\Http\Controllers\OReport\RSuratsController@jasperSuratsReport')->middleware(['auth']);
 Route::get('/jssuratsc/{surats:NO_ID}', 'App\Http\Controllers\OTransaksi\SuratsController@jssuratsc')->middleware(['auth']);

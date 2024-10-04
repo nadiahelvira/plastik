@@ -302,6 +302,7 @@ class BeliController extends Controller
                 'FLAG'             => $FLAGZ,					
                 'GOL'              => $GOLZ,					
                 'NOTES'            => ($request['NOTES'] == null) ? "" : $request['NOTES'],
+                // 'GUDANG'            => ($request['GUDANG'] == null) ? "" : $request['GUDANG'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
 				'PPN'               => (float) str_replace(',', '', $request['PPN']),
@@ -562,7 +563,7 @@ class BeliController extends Controller
  
          
          return view('otransaksi_beli.edit', $data)
-		 ->with(['tipx' => $tipx, 'idx' => $idx, 'flagz' =>$this->FLAGZ, 'judul', $this->judul, 'golz' =>$this->GOLZ ]);
+		 ->with(['tipx' => $tipx, 'idx' => $idx, 'flagz' =>$this->FLAGZ, 'judul' => $this->judul, 'golz' => $this->GOLZ ]);
       
     }
 

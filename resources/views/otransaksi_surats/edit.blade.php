@@ -105,7 +105,18 @@
 
 							<div class="form-group row">
 								<div class="col-md-1" align="left">
-									<label style="color:red;font-size:20px">* </label>	
+									<label style="color:red">*</label>									
+									<label for="NO_SO" class="form-label">SO#</label>
+								</div>
+								<div class="col-md-2 input-group" >
+								<input type="text" class="form-control NO_SO" id="NO_SO" name="NO_SO" placeholder="Pilih SO"value="{{$header->NO_SO}}" style="text-align: left" readonly >
+								<button type="button" class="btn btn-primary" onclick="browseSo()"><i class="fa fa-search"></i></button>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<div class="col-md-1" align="left">
+									<!-- <label style="color:red;font-size:20px">* </label>	 -->
                                     <label for="KODEC" class="form-label">Cust</label>
                                 </div>
                                 <div class="col-md-2">
@@ -138,17 +149,6 @@
                             </div>
 
 							<div class="form-group row">
-								<div class="col-md-1" align="left">
-									<label style="color:red">*</label>									
-                                    <label for="NO_SO" class="form-label">SO#</label>
-                                </div>
-                               	<div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control NO_SO" id="NO_SO" name="NO_SO" placeholder="Pilih SO"value="{{$header->NO_SO}}" style="text-align: left" readonly >
-        						  <button type="button" class="btn btn-primary" onclick="browseSo()"><i class="fa fa-search"></i></button>
-                                </div>
-                            </div>
-
-							<div class="form-group row">
                                 <div class="col-md-1" align="left">
 									<label style="color:red;font-size:20px">* </label>	
                                     <label for="TRUCK" class="form-label">Truck</label>
@@ -165,12 +165,12 @@
                                     <input type="text" class="form-control SOPIR" id="SOPIR" name="SOPIR" placeholder="Sopir" value="{{$header->SOPIR}}">
                                 </div>
 								
-								<div class="col-md-1" align="left">
+								<!-- <div class="col-md-1" align="left">
                                     <label class="form-label">Via</label>
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text" class="form-control VIA" id="VIA" name="VIA" placeholder="Via" value="{{$header->VIA}}">
-                                </div>
+                                </div> -->
                             </div>
 
 							<div class="form-group row">
@@ -191,7 +191,7 @@
                             <table id="datatable" class="table table-striped table-border">
                                 <thead>
                                     <tr>
-										<th style="text-align: center;">No.</th>
+										<th width="50px" style="text-align: center;">No.</th>
                                         <!-- <th style="text-align: center;">
 									       <label style="color:red;font-size:20px">* </label>									
                                            <label for="KD_BRG" class="form-label">SO#</label></th> -->
@@ -208,7 +208,7 @@
                                     </tr>
                                 </thead>
         
-                                <tbody id="detailSod">
+                                <tbody id="detailSuratsd">
 								<?php $no=0 ?>
 								@foreach ($detail as $detail)		
                                     <tr>
@@ -250,6 +250,7 @@
                                         </td>
 										<td>
 											<input name="QTY[]" onkeyup="hitung()" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" value="{{$detail->QTY}}">
+											<input hidden name="QTY_KIRIM[]" onkeyup="hitung()" id="QTY_KIRIM{{$no}}" type="text" style="text-align: right"  class="form-control QTY_KIRIM text-primary" value="{{$detail->QTY_KIRIM}}">
 											<input hidden name="HARGA[]" onkeyup="hitung()" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" value="{{$detail->HARGA}}">
 											<input hidden name="TOTAL[]" onkeyup="hitung()" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" value="{{$detail->TOTAL}}" readonly>
 											<input hidden name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
@@ -277,10 +278,10 @@
                                 </tfoot>
                             </table>
 
-							<div class="col-md-2 row">
+							<!-- <div class="col-md-2 row">
 								<a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
 
-							</div>	
+							</div>	 -->
 						
 					</div>
                         </div> 
@@ -419,6 +420,62 @@
 		</div>
 	  </div>
 	</div>
+
+	<div class="modal fade" id="browseSopirModal" tabindex="-1" role="dialog" aria-labelledby="browseSopirModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseSopirModalLabel">Cari Sopir</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-sopir">
+				<thead>
+					<tr>
+						<th>Kode</th>
+						<th>Nama</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="browseTruckModal" tabindex="-1" role="dialog" aria-labelledby="browseTruckModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseTruckModalLabel">Cari Truck</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-truck">
+				<thead>
+					<tr>
+						<th>Kode</th>
+						<th>Nopol</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
 	
 	
 	
@@ -516,6 +573,7 @@
         $('body').on('click', '.btn-delete', function() {
 			var val = $(this).parents("tr").remove();
 			baris--;
+			hitung();
 			nomor();
 			
 		});
@@ -528,147 +586,167 @@
  	
 		
 ///////////////////////////////////////////////////////////////////////
-		var dTableCustomer;
-		loadDataCustomer = function(){
+		// var dTableCustomer;
+		// loadDataCustomer = function(){
+		// 	$.ajax(
+		// 	{
+		// 		type: 'GET',    
+		// 		url: "{{url('surats/browseCust')}}",
+		// 		// data: {
+		// 		// 	'GOL': "{{$golz}}",
+		// 		// },
+		// 		success: function( resp )
+		// 		{
+		// 			if(dTableCustomer){
+		// 				dTableCustomer.clear();
+		// 			}
+		// 			for(i=0; i<resp.length; i++){
+						
+		// 				dTableCustomer.row.add([
+		// 					'<a href="javascript:void(0);" onclick="chooseCustomer(\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\')">'+resp[i].KODEC+'</a>',
+		// 					resp[i].NAMAC,
+		// 					resp[i].ALAMAT,
+		// 					resp[i].KOTA,
+		// 				]);
+		// 			}
+		// 			dTableCustomer.draw();
+		// 		}
+		// 	});
+		// }
+		
+		// dTableCustomer = $("#table-customer").DataTable({
+			
+		// });
+		
+		// browseCust = function(){
+		// 	loadDataCustomer();
+		// 	$("#browseCustModal").modal("show");
+		// }
+		
+		// chooseCustomer = function(kodec,namac,alamat,kota){
+		// 	$("#KODEC").val(kodec);
+		// 	$("#NAMAC").val(namac);
+		// 	$("#ALAMAT").val(alamat);
+		// 	$("#KOTA").val(kota);
+		// 	$("#browseCustModal").modal("hide");
+		// }
+		
+		// $("#KODEC").keypress(function(e){
+		// 	if(e.keyCode == 46){
+		// 		e.preventDefault();
+		// 		browseCust();
+		// 	}
+		// }); 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		//CHOOSE Sopir
+		var dTableBSopir;
+		loadDataBSopir = function(){
 			$.ajax(
 			{
 				type: 'GET',    
-				url: "{{url('surats/browseCust')}}",
-				// data: {
-				// 	'GOL': "{{$golz}}",
-				// },
-				success: function( resp )
+				url: '{{url('pegawai/browse_sopir')}}',
+
+				success: function( response )
 				{
-					if(dTableCustomer){
-						dTableCustomer.clear();
+			
+					resp = response;
+					if(dTableBSopir){
+						dTableBSopir.clear();
 					}
 					for(i=0; i<resp.length; i++){
 						
-						dTableCustomer.row.add([
-							'<a href="javascript:void(0);" onclick="chooseCustomer(\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\')">'+resp[i].KODEC+'</a>',
-							resp[i].NAMAC,
-							resp[i].ALAMAT,
-							resp[i].KOTA,
+						dTableBSopir.row.add([
+							'<a href="javascript:void(0);" onclick="chooseSopir( \''+resp[i].NAMAP+'\' )">'+resp[i].KODEP+'</a>',
+							resp[i].NAMAP,
 						]);
 					}
-					dTableCustomer.draw();
+					dTableBSopir.draw();
 				}
 			});
 		}
 		
-		dTableCustomer = $("#table-customer").DataTable({
+		dTableBSopir = $("#table-sopir").DataTable({
 			
 		});
 		
-		browseCust = function(){
-			loadDataCustomer();
-			$("#browseCustModal").modal("show");
+		browseSopir = function(){
+			loadDataBSopir();
+			$("#browseSopirModal").modal("show");
 		}
 		
-		chooseCustomer = function(kodec,namac,alamat,kota){
-			$("#KODEC").val(kodec);
-			$("#NAMAC").val(namac);
-			$("#ALAMAT").val(alamat);
-			$("#KOTA").val(kota);
-			$("#browseCustModal").modal("hide");
+		chooseSopir = function(NAMAP){
+			$("#SOPIR").val(NAMAP);
+			$("#browseSopirModal").modal("hide");
 		}
 		
-		$("#KODEC").keypress(function(e){
+		$("#SOPIR").keypress(function(e){
+
 			if(e.keyCode == 46){
 				e.preventDefault();
-				browseCust();
+				browseSopir();
 			}
 		}); 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 	var dTableSo;
-	// 	var rowidSo;
-	// 	loadDataSo = function(){
-	// 		var dataDetailSO = $("input[name='NO_SO[]']").map(function() {
-	// 			var isi = "''";
-	// 			if ($(this).val()) {
-	// 				isi = "'" + $(this).val() + "'";
-	// 			}
-	// 			return isi;
-	// 		}).get();
-	// 		var dataDetailBrg = $("input[name='KD_BRG[]']").map(function() {
-	// 			var isi = "''";
-	// 			if ($(this).val()) {
-	// 				isi = "'" + $(this).val() + "'";
-	// 			}
-	// 			return isi;
-	// 		}).get();
+		
+		
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// 		$.ajax(
-	// 		{
-	// 			type: 'GET',    
-	// 			url: "{{url('surats/browseSo')}}",
-	// 			data: {
-	// 				kodec: $("#KODEC").val(),
-	// 				'GOL': "{{$golz}}",
-	// 			},
-	// 			success: function( resp )
-	// 			{
-	// 				if(dTableSo){
-	// 					dTableSo.clear();
-	// 				}
-	// 				for(i=0; i<resp.length; i++){
-						
-	// 					dTableSo.row.add([
-	// 						'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].SISA+'\', \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\')">'+resp[i].NO_BUKTI+'</a>',
-	// 						resp[i].TGL,
-	// 						resp[i].NAMAC,
-	// 						resp[i].KD_BRG,
-	// 						resp[i].NA_BRG,
-	// 						resp[i].SATUAN,
-	// 						resp[i].QTY,
-	// 						resp[i].KIRIM,
-	// 						resp[i].SISA,
-	// 					]);
-	// 				}
-	// 				dTableSo.draw();
-	// 			}
-	// 		});
-	// 	}
-		
-	// 	dTableSo = $("#table-so").DataTable({
-    //         columnDefs: 
-    //         [
-    //             {
-    //                 className: "dt-right", 
-    //                 targets: [6,7,8],
-    //             },		
-    //             {
-    //               targets: 1,
-    //               render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ),
-    //             }
-    //         ],
-	// 	});
-		
-	// 	browseSo = function(rid){
-	// 		rowidSo = rid;
-	// 		loadDataSo();
-	// 		$("#browseSoModal").modal("show");
-	// 	}
-		
-	// 	chooseSo = function(NO_BUKTI,KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA){
-	// 		$("#NO_SO"+rowidSo).val(NO_BUKTI);
-	// 		$("#KD_BRG"+rowidSo).val(KD_BRG);
-	// 		$("#NA_BRG"+rowidSo).val(NA_BRG);
-	// 		$("#SATUAN"+rowidSo).val(SATUAN);
-	// 		$("#QTY"+rowidSo).val(QTY!=0 ? QTY : 0);
-	// 		$("#ID_SOD"+rowidSo).val(NO_ID);
-	// 		$("#HARGA"+rowidSo).val(HARGA);
-	// 		$("#browseSoModal").modal("hide");
+
+		//CHOOSE Truck
+		var dTableBTruck;
+		loadDataBTruck = function(){
+			$.ajax(
+			{
+				type: 'GET',    
+				url: '{{url('truck/browse')}}',
+
+				success: function( response )
+				{
 			
-	// 		hitung();
-	// 	}
+					resp = response;
+					if(dTableBTruck){
+						dTableBTruck.clear();
+					}
+					for(i=0; i<resp.length; i++){
+						
+						dTableBTruck.row.add([
+							'<a href="javascript:void(0);" onclick="chooseTruck( \''+resp[i].NOPOL+'\' )">'+resp[i].KODE+'</a>',
+							resp[i].NOPOL,
+						]);
+					}
+					dTableBTruck.draw();
+				}
+			});
+		}
 		
-	// 	$("#NO_SO0").keypress(function(e){
-	// 		if(e.keyCode == 46){
-	// 			e.preventDefault();
-	// 			browseSo(0);
-	// 		}
-	// 	}); 
+		dTableBTruck = $("#table-truck").DataTable({
+			
+		});
+		
+		browseTruck = function(){
+			loadDataBTruck();
+			$("#browseTruckModal").modal("show");
+		}
+		
+		chooseTruck = function(NOPOL){
+			$("#TRUCK").val(NOPOL);
+			$("#browseTruckModal").modal("hide");
+		}
+		
+		$("#TRUCK").keypress(function(e){
+
+			if(e.keyCode == 46){
+				e.preventDefault();
+				browseTruck();
+			}
+		}); 
+		
+		
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 //////////////////////////////////////////////////////////////////
@@ -684,7 +762,7 @@
 			data: {
 				// kdbrg: kode,
 				'GOL': "{{$golz}}",
-				kodec: $("#KODEC").val(),
+				// kodec: $("#KODEC").val(),
 			},
 			success: function( response )
 			{
@@ -695,7 +773,7 @@
 				for(i=0; i<resp.length; i++){
 					
 					dTableSo.row.add([
-						'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].SISA+'\', \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\')">'+resp[i].NO_BUKTI+'</a>',
+						'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].SISA+'\', \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\')">'+resp[i].NO_BUKTI+'</a>',
 						resp[i].TGL,
 						resp[i].NAMAC,
 						resp[i].KD_BRG,
@@ -733,12 +811,16 @@
 			$("#browseSoModal").modal("show");
 		}
 	
-	chooseSo = function(NO_BUKTI,KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA, KODEP, NAMAP, RING, KOM){
+	chooseSo = function(NO_BUKTI,KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA){
 		$("#NO_SO").val(NO_BUKTI);
 		$("#KODEP").val(KODEP);
 		$("#NAMAP").val(NAMAP);
 		$("#RING").val(RING);
 		$("#KOM").val(KOM);
+		$("#KODEC").val(KODEC);
+		$("#NAMAC").val(NAMAC);
+		$("#ALAMAT").val(ALAMAT);
+		$("#KOTA").val(KOTA);
 		$("#KD_BRG"+rowidSo).val(KD_BRG);
 		$("#NA_BRG"+rowidSo).val(NA_BRG);
 		$("#SATUAN"+rowidSo).val(SATUAN);
@@ -761,7 +843,7 @@
 
 //////////////////////////////////////////////////
 
-var dTableBSurats;
+		var dTableBSurats;
 		loadDataBSurats = function(){
 		
 			$.ajax(
@@ -780,7 +862,7 @@ var dTableBSurats;
 					for(i=0; i<resp.length; i++){
 						
 						dTableBSurats.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSurats(\''+resp[i].NO_BUKTI+'\' , \''+resp[i].NO_SO+'\', \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\')">'+resp[i].NO_BUKTI+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseSurats(\''+resp[i].NO_BUKTI+'\' , \''+resp[i].NO_SO+'\', \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].SOPIR+'\',  \''+resp[i].TRUCK+'\')">'+resp[i].NO_BUKTI+'</a>',
 							resp[i].NO_SO,
 							resp[i].KODEC,
 							resp[i].NAMAC,
@@ -802,14 +884,18 @@ var dTableBSurats;
 			$("#browseSuratsModal").modal("show");
 		}
 		
-		chooseSurats = function(NO_BUKTI, NO_SO, KODEC,NAMAC, ALAMAT, KOTA){
+		chooseSurats = function(NO_BUKTI, NO_SO, KODEC,NAMAC, ALAMAT, KOTA, SOPIR, TRUCK){
 			$("#NO_SURAT").val(NO_BUKTI);
 			$("#NO_SO").val(NO_SO);
 			$("#KODEC").val(KODEC);
 			$("#NAMAC").val(NAMAC);
 			$("#ALAMAT").val(ALAMAT);
 			$("#KOTA").val(KOTA);			
+			$("#SOPIR").val(SOPIR);			
+			$("#TRUCK").val(TRUCK);			
 			$("#browseSuratsModal").modal("hide");
+
+			getSuratsd(NO_BUKTI);
 		}
 		
 		$("#NO_SURAT").keypress(function(e){
@@ -819,6 +905,7 @@ var dTableBSurats;
 				 browseSurats();
 			}
 		}); 
+
 ////////////////////////////////////////////////////////////////////
 
 
@@ -847,16 +934,17 @@ var dTableBSurats;
                                     <td><input name='SATUAN[]' data-rowid=${i} id='SATUAN${i}' value="${resp[i].SATUAN}" type='text' class='form-control  SATUAN' placeholder="Satuan"  readonly></td>
                                     <td>
 										<input name='QTY[]' onclick='select()' onkeyup='hitung()' id='QTY${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY text-primary' readonly >
-										<input  name='HARGA[]' onclick='select()' onkeyup='hitung()' id='HARGA${i}' value="${resp[i].HARGA}" type='text' style='text-align: right' class='form-control HARGA text-primary' readonly> 
-										<input  name='TOTAL[]' onclick='select()' onkeyup='hitung()' id='TOTAL${i}' value="${resp[i].TOTAL}" type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly> 
-										<input  name='PPNX[]' onclick='select()' onkeyup='hitung()' id='PPNX${i}' value="${resp[i].PPNX}" type='text' style='text-align: right' class='form-control PPNX text-primary' readonly> 
-										<input  name='DPP[]' onclick='select()' onkeyup='hitung()' id='DPP${i}' value="${resp[i].DPP}" type='text' style='text-align: right' class='form-control DPP text-primary' readonly> 
+										<input hidden name='QTY_KIRIM[]' onclick='select()' onkeyup='hitung()' id='QTY_KIRIM${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY_KIRIM text-primary' readonly >
+										<input hidden name='HARGA[]' onclick='select()' onkeyup='hitung()' id='HARGA${i}' value="${resp[i].HARGA}" type='text' style='text-align: right' class='form-control HARGA text-primary' readonly> 
+										<input hidden name='TOTAL[]' onclick='select()' onkeyup='hitung()' id='TOTAL${i}' value="${resp[i].TOTAL}" type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly> 
+										<input hidden name='PPNX[]' onclick='select()' onkeyup='hitung()' id='PPNX${i}' value="${resp[i].PPNX}" type='text' style='text-align: right' class='form-control PPNX text-primary' readonly> 
+										<input hidden name='DPP[]' onclick='select()' onkeyup='hitung()' id='DPP${i}' value="${resp[i].DPP}" type='text' style='text-align: right' class='form-control DPP text-primary' readonly> 
 									</td>
                                     <td><input name='KET[]' id='KET${i}' value="${resp[i].KET}" type='text' class='form-control  KET' required></td>
                                     <td><button type='button' class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button></td>
                                 </tr>`;
 					}
-					$('#detailSod').html(html);
+					$('#detailSuratsd').html(html);
 
 					$(".QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 					$(".QTY").autoNumeric('update');
@@ -894,6 +982,83 @@ var dTableBSurats;
 	}
 
 //////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+
+
+	function getSuratsd(bukti)
+	{
+		
+		var mulai = (idrow==baris) ? idrow-1 : idrow;
+
+		$.ajax(
+			{
+				type: 'GET',    
+				url: "{{url('surats/browse_suratsd')}}",
+				data: {
+					nobukti: bukti,
+				},
+				success: function( resp )
+				{
+					var html = '';
+					for(i=0; i<resp.length; i++){
+						html+=`<tr>
+                                    <td><input name='REC[]' id='REC${i}' value=${resp[i].REC+1} type='text' class='REC form-control' onkeypress='return tabE(this,event)' readonly></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }} ><input name='KD_BRG[]' data-rowid=${i} id='KD_BRG${i}' value="${resp[i].KD_BRG}" type='text' class='form-control KD_BRG' readonly></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }}><input name='NA_BRG[]' data-rowid=${i} id='NA_BRG${i}' value="${resp[i].NA_BRG}" type='text' class='form-control  NA_BRG' readonly></td>
+                                    <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='KD_BHN[]' data-rowid=${i} id='KD_BHN${i}' value="${resp[i].KD_BHN}" type='text' class='form-control KD_BHN' readonly></td>
+                                    <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='NA_BHN[]' data-rowid=${i} id='NA_BHN${i}' value="${resp[i].NA_BHN}" type='text' class='form-control  NA_BHN' readonly></td>
+                                    <td><input name='SATUAN[]' data-rowid=${i} id='SATUAN${i}' value="${resp[i].SATUAN}" type='text' class='form-control  SATUAN' placeholder="Satuan"  readonly></td>
+                                    <td>
+										<input name='QTY[]' onclick='select()' onkeyup='hitung()' id='QTY${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY text-primary' readonly >
+										<input hidden name='HARGA[]' onclick='select()' onkeyup='hitung()' id='HARGA${i}' value="${resp[i].HARGA}" type='text' style='text-align: right' class='form-control HARGA text-primary' readonly> 
+										<input hidden name='TOTAL[]' onclick='select()' onkeyup='hitung()' id='TOTAL${i}' value="${resp[i].TOTAL}" type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly> 
+										<input hidden name='PPNX[]' onclick='select()' onkeyup='hitung()' id='PPNX${i}' value="${resp[i].PPNX}" type='text' style='text-align: right' class='form-control PPNX text-primary' readonly> 
+										<input hidden name='DPP[]' onclick='select()' onkeyup='hitung()' id='DPP${i}' value="${resp[i].DPP}" type='text' style='text-align: right' class='form-control DPP text-primary' readonly> 
+									</td>
+                                    <td><input name='KET[]' id='KET${i}' value="${resp[i].KET}" type='text' class='form-control  KET' required></td>
+                                    <td><button type='button' class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button></td>
+                                </tr>`;
+					}
+					$('#detailSuratsd').html(html);
+
+					$(".QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".QTY").autoNumeric('update');
+
+					$(".HARGA").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".HARGA").autoNumeric('update');
+
+					$(".TOTAL").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".TOTAL").autoNumeric('update');
+
+					$(".PPNX").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".PPNX").autoNumeric('update');
+
+					$(".DPP").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".DPP").autoNumeric('update');
+					/*
+					$(".KD_BHN").each(function() {
+						var getid = $(this).attr('id');
+						var noid = getid.substring(6,11);
+
+						$("#KD_BHN"+noid).keypress(function(e){
+							if(e.keyCode == 46){
+								e.preventDefault();
+								browseBhn(noid);
+							}
+						}); 
+					});*/
+
+					idrow=resp.length;
+					baris=resp.length;
+
+					nomor();
+				}
+			});
+	}
+
+//////////////////////////////////////////////////////////////////
+
 
 
 }); 
@@ -1083,8 +1248,8 @@ var dTableBSurats;
 			$("#NAMAS").attr("readonly", true);			
 			$("#ALAMAT").attr("readonly", true);
 			$("#KOTA").attr("readonly", true);
-			$("#TRUCK").attr("readonly", false);
-			$("#SOPIR").attr("readonly", false);
+			$("#TRUCK").attr("readonly", true);
+			$("#SOPIR").attr("readonly", true);
 			$("#VIA").attr("readonly", false);
 
 			

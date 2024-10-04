@@ -15,6 +15,6 @@ class BrgDetail extends Model
 
     protected $fillable =
     [
-        "ID", "KD_BRG", "RING", "HARGA", "HARGA2", "HARGA3", "HARGA4", "HARGA5", "REC"  
+        "ID", "KD_BRG", "RING", "HARGA", "HARGA2", "HARGA3", "HARGA4", "HARGA5", "REC", "HARGA6", "HARGA7"
     ];
 }

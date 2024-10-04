@@ -93,14 +93,14 @@ class PoController extends Controller
         if( $golx == 'B'){
 
             $pod = DB::SELECT("SELECT a.REC, a.KD_BHN, a.NA_BHN, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
-                                    b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, '1' AS KALI
+                                    b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, b.KALI AS KALI
                                 from pod a, bhn b 
                                 where a.NO_BUKTI='".$request->nobukti."' AND a.KD_BHN = b.KD_BHN");
 
         } else {
 
             $pod = DB::SELECT("SELECT a.REC, a.KD_BRG, a.NA_BRG, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
-                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, '1' AS KALI
+                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, b.KALI AS KALI
                             from pod a, brg b 
                             where a.NO_BUKTI='".$request->nobukti."' AND a.KD_BRG = b.KD_BRG");
 
@@ -119,7 +119,7 @@ class PoController extends Controller
 			$filterbukti = " WHERE a.NO_BUKTI='".$request->NO_PO."' AND a.KD_BHN = b.KD_BHN ";
 		}
 		$pod = DB::SELECT("SELECT a.REC, a.KD_BHN, a.NA_BHN, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
-                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, '1' AS KALI
+                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, b.KALI AS KALI
                             from pod a, bhn b 
                             $filterbukti ORDER BY NO_BUKTI ");
 	
@@ -137,7 +137,7 @@ class PoController extends Controller
 			$filterbukti = " WHERE NO_BUKTI='".$request->NO_PO."' AND a.KD_BRG = b.KD_BRG ";
 		}
 		$pod = DB::SELECT("SELECT a.REC, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
-                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, '1' AS KALI 
+                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, b.KALI AS KALI 
                             from pod a, brg b
                             $filterbukti ORDER BY NO_BUKTI ");
 	

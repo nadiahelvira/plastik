@@ -290,6 +290,26 @@
 
 		idrow=<?php echo $no; ?>;
 		baris=<?php echo $no; ?>;
+
+		$('body').on('keydown', 'input, select', function(e) {
+			if (e.key === "Enter") {
+				var self = $(this), form = self.parents('form:eq(0)'), focusable, next;
+				focusable = form.find('input,select,textarea').filter(':visible');
+				next = focusable.eq(focusable.index(this)+1);
+				console.log(next);
+				if (next.length) {
+					next.focus().select();
+				} else {
+					tambah();
+					// var nomer = idrow-1;
+					// console.log("REC"+nomor);
+					// document.getElementById("REC"+nomor).focus();
+					// form.submit();
+				}
+				return false;
+			}
+		});
+
 		$("#TJUMLAH").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 
 		jumlahdata = 100;
@@ -346,6 +366,7 @@
 		$('body').on('click', '.btn-delete', function() {
 			var val = $(this).parents("tr").remove();
 			baris--;
+			hitung();
 			nomor();
 		});
 

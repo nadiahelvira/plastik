@@ -62,6 +62,15 @@
 
 								
                                 <div class="col-md-1">
+                                    <label for="NA_BRG" class="form-label">Nama</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control NA_BRG" id="NA_BRG" name="NA_BRG"
+                                    placeholder="Masukkan Nama Barang" value="{{$header->NA_BRG}}" >
+                                </div>
+
+								
+                                <div class="col-md-1">
 									<label for="GOL" class="form-label">Golongan</label>
 								</div>
 								<div class="col-md-1">
@@ -83,23 +92,31 @@
 								</div>	
 								
 							
-								<div class="col-md-1">
+								<div class="col-md-1" hidden>
                                     <input type="checkbox" class="form-check-input" id="AKTIF"name="AKTIF"
                                     placeholder="Masukkan Aktif/Tidak" value="1" {{ ($header->AKTIF == 1) ? 'checked' : '' }}>
 									<label for="AKTIF">Aktif</label>
                                 </div>
 
                             </div>
-        
-                            <div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="NA_BRG" class="form-label">Nama</label>
+
+							
+							<div class="form-group row">
+								<div class="col-md-1">
+									<label style="color:red">*</label>	
+                                    <label for="KD_GRUP" class="form-label">Grup</label>
                                 </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control NA_BRG" id="NA_BRG" name="NA_BRG"
-                                    placeholder="Masukkan Nama Barang" value="{{$header->NA_BRG}}" >
+								
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control KD_GRUP" id="KD_GRUP" name="KD_GRUP"
+                                    placeholder="" value="{{$header->KD_GRUP}}" readonly>
                                 </div>
-                            </div>
+
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control NA_GRUP" id="NA_GRUP" name="NA_GRUP"
+                                    placeholder="" value="{{$header->NA_GRUP}}" readonly>
+                                </div>
+							</div>
 							
                             <div class="form-group row">
                                 <div class="col-md-1">
@@ -136,7 +153,7 @@
 								</div>
 								<div class="col-md-2">
                                     <input type="text" class="form-control MERK" id="MERK" name="MERK"
-                                    placeholder="Masukkan Barang" value="{{$header->MERK}}">
+                                    placeholder="Masukkan Merk" value="{{$header->MERK}}">
                                 </div>
 
                                 <div class="col-md-1">
@@ -144,7 +161,7 @@
 								</div>
 								<div class="col-md-2">
                                     <input type="text" class="form-control JENIS" id="JENIS" name="JENIS"
-                                    placeholder="Masukkan Barang" value="{{$header->JENIS}}">
+                                    placeholder="Masukkan Jenis" value="{{$header->JENIS}}">
                                 </div>
 								
                             </div>
@@ -196,7 +213,7 @@
 								<div class="col-md-1" hidden>
 									<label for="HJUAL" class="form-label">Harga Jual</label>
 								</div>
-								<div class="col-md-2">
+								<div class="col-md-2" hidden>
 									<input type="text" onclick="select()" class="form-control HJUAL" id="HJUAL" name="HJUAL" placeholder="Masukkan HJUAL" 
 									value="{{ number_format( $header->HJUAL, 0, '.', ',') }}" style="text-align: right" >
 								</div>
@@ -279,7 +296,7 @@
 										<th style="text-align: center;">Paket 100</th>
 										<th style="text-align: center;">Paket 150</th>
 										<th style="text-align: center;">Paket 200</th>
-                                        <th></th>
+                                        <!-- <th></th> -->
                                        						
                                     </tr>
                                 </thead>
@@ -296,7 +313,7 @@
                                         </td>
 
 										<td>
-                                            <input name="RING[]" data-rowid={{$no}} onblur="browseProses({{$no}})" id="RING{{$no}}" type="text" value="{{$detail->RING}}" class="form-control RING" readonly required>
+                                            <input name="RING[]" data-rowid={{$no}} id="RING{{$no}}" type="text" value="{{$detail->RING}}" class="form-control RING" readonly>
                                         </td>
 										
 										<td>
@@ -321,11 +338,11 @@
 											<input name="HARGA7[]" onclick="select()" onkeyup="hitung()" value="{{$detail->HARGA7}}" id="HARGA7{{$no}}" type="text" style="text-align: right"  class="form-control HARGA7 text-primary">
 										</td>
                                         
-										<td>
+										<!-- <td>
                                             <button type="button" class="btn btn-sm btn-circle btn-outline-danger btn-delete del1" onclick="">
                                                 <i class="fa fa-fw fa-trash"></i>
                                             </button>
-                                        </td>
+                                        </td> -->
 
                                     </tr>
 								
@@ -344,9 +361,9 @@
                                 </tfoot>
                             </table>
 							
-                            <div class="col-md-2 row">
+                            <!-- <div class="col-md-2 row">
                                <a type="button" id='PLUSX1' onclick="tambah()" class="fas fa-plus fa-sm md-3" ></a>					
-							</div>		
+							</div>		 -->
 							
 						</div>
 
@@ -473,6 +490,34 @@
 	  </div>
 	</div>
 
+	<div class="modal fade" id="browseGrupModal" tabindex="-1" role="dialog" aria-labelledby="browseGrupModalLabel" aria-hidden="true">
+	 <div class="modal-dialog mw-100 w-75" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseGrupModalLabel">Cari Grup</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-bgrup">
+				<thead>
+					<tr>
+						<th>Grup</th>
+						<th>Nama</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
 @endsection
 @section('footer-scripts')
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
@@ -506,7 +551,7 @@
 				if (next.length) {
 					next.focus().select();
 				} else {
-					tambah();
+					// tambah();
 					// var nomer = idrow-1;
 					// console.log("REC"+nomor);
 					// document.getElementById("REC"+nomor).focus();
@@ -521,7 +566,16 @@
         if ( $tipx == 'new' )
 		{
 			 baru();	
-             tambah();			
+             tambah();
+			 
+			 $("#RING0").val('LOKAL');
+			 tambah();
+			 $("#RING1").val('1');
+			 tambah();
+			 $("#RING2").val('2');
+			 tambah();
+			 $("#RING3").val('3');
+			 
 		}
 
         if ( $tipx != 'new' )
@@ -545,6 +599,8 @@
 			$("#HARGA3" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#HARGA4" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#HARGA5" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#HARGA6" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#HARGA7" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 		
 		}	
 
@@ -729,6 +785,61 @@
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		//CHOOSE Grup
+		var dTableBGrup;
+		loadDataBGrup = function(){
+			$.ajax(
+			{
+				type: 'GET',    
+				url: '{{url('grup/browse')}}',
+
+				success: function( response )
+				{
+			
+					resp = response;
+					if(dTableBGrup){
+						dTableBGrup.clear();
+					}
+					for(i=0; i<resp.length; i++){
+						
+						dTableBGrup.row.add([
+							'<a href="javascript:void(0);" onclick="chooseGrup(\''+resp[i].KODE+'\',  \''+resp[i].NAMA+'\' )">'+resp[i].KODE+'</a>',
+							resp[i].NAMA,
+						]);
+					}
+					dTableBGrup.draw();
+				}
+			});
+		}
+		
+		dTableBGrup = $("#table-bgrup").DataTable({
+			
+		});
+		
+		browseGrup = function(){
+			loadDataBGrup();
+			$("#browseGrupModal").modal("show");
+		}
+		
+		chooseGrup = function(KODE,NAMA){
+			$("#KD_GRUP").val(KODE);
+			$("#NA_GRUP").val(NAMA);
+			$("#browseGrupModal").modal("hide");
+		}
+		
+		$("#KD_GRUP").keypress(function(e){
+
+			if(e.keyCode == 46){
+				e.preventDefault();
+				browseGrup();
+			}
+		}); 
+		
+		
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -843,6 +954,8 @@
 		$("#GRUP").attr("readonly", false);		
 		$("#DR").attr("readonly", false);	
 		$("#SUB").attr("readonly", false);			
+		$("#KD_GRUP").attr("readonly", true);			
+		$("#NA_GRUP").attr("readonly", true);			
 	
 	}
 
@@ -862,10 +975,9 @@
 	    $("#CLOSEX").attr("disabled", false);
 		
 		$("#KD_BRG").attr("readonly", true);			
-		$("#NA_BRG").attr("readonly", true);	
-		$("#GRUP").attr("readonly", true);	
-		$("#DR").attr("readonly", true);
-		$("#SUB").attr("readonly", true);
+		$("#NA_BRG").attr("readonly", true);		
+		$("#KD_GRUP").attr("readonly", true);			
+		$("#NA_GRUP").attr("readonly", true);
 		
 	}
 
@@ -938,7 +1050,7 @@
 				</td>		
 				
 				<td>
-					<input name='RING[]'   id='RING${idrow}' type='text' class='form-control  RING' required>
+					<input name='RING[]'   id='RING${idrow}' type='text' class='form-control  RING' readonly>
 				</td>
 
 				<td>
@@ -961,11 +1073,7 @@
 				</td>
 				<td>
 					<input name='HARGA7[]' onclick='select()' onblur='hitung()' value='0' id='HARGA7${idrow}' type='text' style='text-align: right' class='form-control HARGA7 text-primary' required >
-				</td>
-				
-				<td>
-					<button type='button' id='DELETEX${idrow}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete del1' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
-				</td>				
+				</td>			
 		</tr>`;
 				
 		x.innerHTML = html;

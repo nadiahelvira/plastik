@@ -123,7 +123,7 @@ class RSoController extends Controller
 				'NAMAC' => $query[$key]->NAMAC,
 				'KD_BRG' => $query[$key]->KD_BRG,
 				'NA_BRG' => $query[$key]->NA_BRG,
-				'KG' => $query[$key]->KG,
+				'QTY' => $query[$key]->QTY,
 				'HARGA' => $query[$key]->HARGA,
 				'TOTAL' => $query[$key]->TOTAL,
 				'NOTES' => $query[$key]->NOTES,

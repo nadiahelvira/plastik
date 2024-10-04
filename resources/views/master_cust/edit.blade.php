@@ -93,11 +93,12 @@
                                 </div>
 								
                                 <div class="col-md-1">
+									<label style="color:red">*</label>	
                                     <label for="KOTA" class="form-label">Kota</label>
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text" class="form-control KOTA" id="KOTA" name="KOTA"
-                                    placeholder="Masukkan Kota" value="{{$header->KOTA}}">
+                                    placeholder="Masukkan Kota" value="{{$header->KOTA}}" readonly >
                                 </div>
 							</div>
         
@@ -180,15 +181,18 @@
 									<label style="color:red">*</label>	
 									<label for="RING" class="form-label">Ring</label>
 								</div>
-								<div class="col-md-1">
+								<!-- <div class="col-md-1">
 									<select id="RING" class="form-control"  name="RING">
-										<option value="0" {{ ($header->RING == '0') ? 'selected' : '' }}>Lokal</option>
+										<option value="LOKAL" {{ ($header->RING == 'LOKAL') ? 'selected' : '' }}>Lokal</option>
 										<option value="1" {{ ($header->RING == '1') ? 'selected' : '' }}>Ring 1</option>
 										<option value="2" {{ ($header->RING == '2') ? 'selected' : '' }}>Ring 2</option>
 										<option value="3" {{ ($header->RING == '3') ? 'selected' : '' }}>Ring 3</option>
-										<option value="4" {{ ($header->RING == '4') ? 'selected' : '' }}>Ring 4</option>
 									</select>
-								</div>
+								</div> -->
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control RING" id="RING"name="RING"
+                                    placeholder="Masukkan RING" value="{{$header->RING}}" readonly>
+                                </div>
 
 								<div class="col-md-1">
 									<label for="GOL" class="form-label">Golongan</label>
@@ -354,6 +358,34 @@
 	  </div>
 	</div>
 
+	<div class="modal fade" id="browseKotaModal" tabindex="-1" role="dialog" aria-labelledby="browseKotaModalLabel" aria-hidden="true">
+	 <div class="modal-dialog mw-100 w-75" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseKotaModalLabel">Cari Kota</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-kota">
+				<thead>
+					<tr>
+						<th>Kota</th>
+						<th>Ring</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
 
 @endsection
 
@@ -467,6 +499,62 @@
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		//CHOOSE Kota
+		var dTableBKota;
+		loadDataBKota = function(){
+			$.ajax(
+			{
+				type: 'GET',    
+				url: '{{url('kota/browse')}}',
+
+				success: function( response )
+				{
+			
+					resp = response;
+					if(dTableBKota){
+						dTableBKota.clear();
+					}
+					for(i=0; i<resp.length; i++){
+						
+						dTableBKota.row.add([
+							'<a href="javascript:void(0);" onclick="chooseKota(\''+resp[i].KOTA+'\',  \''+resp[i].RING+'\' )">'+resp[i].KOTA+'</a>',
+							resp[i].RING,
+						]);
+					}
+					dTableBKota.draw();
+				}
+			});
+		}
+		
+		dTableBKota = $("#table-kota").DataTable({
+			
+		});
+		
+		browseKota = function(){
+			loadDataBKota();
+			$("#browseKotaModal").modal("show");
+		}
+		
+		chooseKota = function(KOTA,RING){
+			$("#KOTA").val(KOTA);
+			$("#RING").val(RING);
+			$("#browseKotaModal").modal("hide");
+		}
+		
+		$("#KOTA").keypress(function(e){
+
+			if(e.keyCode == 46){
+				e.preventDefault();
+				browseKota();
+			}
+		}); 
+		
+		
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 	function baru() {
 		
@@ -523,7 +611,7 @@
 		
 		$("#NAMAC").attr("readonly", false);	
 		$("#ALAMAT").attr("readonly", false);			
-		$("#KOTA").attr("readonly", false);		
+		$("#KOTA").attr("readonly", true);		
 		$("#TELPON1").attr("readonly", false);			
 		$("#FAX").attr("readonly", false);	
 		$("#HP").attr("readonly", false);			

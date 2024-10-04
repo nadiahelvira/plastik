@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="kasn" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bfad45cf-72e9-4697-a6dc-fa407eb0bfe2">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -56,10 +56,10 @@
 	<field name="KD_BRG" class="java.lang.String"/>
 	<field name="NA_BRG" class="java.lang.String"/>
 	<field name="NOTES" class="java.lang.String"/>
-	<field name="KG" class="java.lang.Float"/>
+	<field name="QTY" class="java.lang.Float"/>
 	<field name="HARGA" class="java.lang.Float"/>
-	<variable name="VAR_KG" class="java.lang.Double" resetType="Group" resetGroup="Item" calculation="Sum">
-		<variableExpression><![CDATA[$F{KG}]]></variableExpression>
+	<variable name="VAR_QTY" class="java.lang.Double" resetType="Group" resetGroup="Item" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTY}]]></variableExpression>
 	</variable>
 	<variable name="VAR_TOTAL" class="java.lang.Double" resetType="Group" resetGroup="Item" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
@@ -121,7 +121,7 @@
 			<staticText>
 				<reportElement x="570" y="13" width="44" height="20" uuid="4a9b4c2d-5fc2-4e0f-be17-1a5219210011"/>
 				<textElement textAlignment="Right"/>
-				<text><![CDATA[Kg]]></text>
+				<text><![CDATA[Qty]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="366" y="12" width="76" height="20" uuid="259de4cb-6a4f-4da5-b295-cde8a86c7ad5"/>
@@ -170,7 +170,7 @@
 			<textField pattern="#,##0">
 				<reportElement x="518" y="2" width="95" height="17" uuid="78c6c50f-28cb-45d5-b014-f27909ce0693"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{KG}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{QTY}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="620" y="2" width="93" height="17" uuid="2b972f1b-c0d0-40f1-9fb2-f661e1384d3b"/>
@@ -226,7 +226,7 @@
 			<textField pattern="#,##0">
 				<reportElement x="518" y="5" width="95" height="20" uuid="35da091a-2cf7-4789-ab45-6aa7936b2ea5"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{VAR_KG}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{VAR_QTY}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="436" y="5" width="76" height="20" uuid="f0e5643c-31e5-48ee-903f-effae6d178d5"/>
@@ -239,8 +239,8 @@
 				<textFieldExpression><![CDATA[$V{VAR_TOTAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="28" y="93" width="54" height="20" uuid="eefe9765-bfc9-40ef-bb80-e794e12d1be3"/>
-				<textElement>
+				<reportElement stretchType="RelativeToBandHeight" x="28" y="93" width="72" height="20" uuid="eefe9765-bfc9-40ef-bb80-e794e12d1be3"/>
+				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="12" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Pimpinan]]></text>

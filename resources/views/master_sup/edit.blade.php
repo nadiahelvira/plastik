@@ -123,13 +123,13 @@
 								</div>
 
 								<div class="form-group row">
-									<div class="col-md-1" align="left">
+									<div class="col-md-1">
+										<label style="color:red">*</label>	
 										<label for="KOTA" class="form-label">Kota</label>
 									</div>
-
 									<div class="col-md-2">
-										<input type="text" class="form-control KOTA" id="KOTA "name="KOTA"
-										placeholder="Masukkan Kota" value="{{$header->KOTA}}">
+										<input type="text" class="form-control KOTA" id="KOTA" name="KOTA"
+										placeholder="Masukkan Kota" value="{{$header->KOTA}}" readonly >
 									</div>
 								</div>
 			
@@ -599,8 +599,8 @@
 
 
 							</div>
-						</div>		
-		
+						</div>
+
 
                     </form>
                 </div>
@@ -612,9 +612,43 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+
+	<div class="modal fade" id="browseKotaModal" tabindex="-1" role="dialog" aria-labelledby="browseKotaModalLabel" aria-hidden="true">
+	 <div class="modal-dialog mw-100 w-75" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseKotaModalLabel">Cari Kota</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-kota">
+				<thead>
+					<tr>
+						<th>Kota</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
 @endsection
 
 @section('footer-scripts')
+
+<script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
+<script src="{{asset('foxie_js_css/bootstrap.bundle.min.js')}}"></script>
+
+
 <script>
     var target;
 	var idrow = 1;
@@ -653,11 +687,64 @@
     		 ganti();
 		}    
 
-		$("#TELPON1").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999'});
-		$("#HP").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999'});
+		// $("#TELPON1").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999'});
+		// $("#HP").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999'});
 		
-	
     });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		//CHOOSE Kota
+		var dTableBKota;
+		loadDataBKota = function(){
+			$.ajax(
+			{
+				type: 'GET',    
+				url: '{{url('kota/browse')}}',
+
+				success: function( response )
+				{
+			
+					resp = response;
+					if(dTableBKota){
+						dTableBKota.clear();
+					}
+					for(i=0; i<resp.length; i++){
+						
+						dTableBKota.row.add([
+							'<a href="javascript:void(0);" onclick="chooseKota(\''+resp[i].KOTA+'\')">'+resp[i].KOTA+'</a>',
+						]);
+					}
+					dTableBKota.draw();
+				}
+			});
+		}
+		
+		dTableBKota = $("#table-kota").DataTable({
+			
+		});
+		
+		browseKota = function(){
+			loadDataBKota();
+			$("#browseKotaModal").modal("show");
+		}
+		
+		chooseKota = function(KOTA){
+			$("#KOTA").val(KOTA);
+			$("#browseKotaModal").modal("hide");
+		}
+		
+		$("#KOTA").keypress(function(e){
+
+			if(e.keyCode == 46){
+				e.preventDefault();
+				browseKota();
+			}
+		}); 
+		
+		
+		//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	function baru() {
@@ -714,7 +801,7 @@
 		   
 		$("#PLH").attr("readonly", false);	
 		$("#ALAMAT").attr("readonly", false);			
-		$("#KOTA").attr("readonly", false);		
+		$("#KOTA").attr("readonly", true);		
 		$("#TELPON1").attr("readonly", false);			
 		$("#FAX").attr("readonly", false);	
 		$("#HP").attr("readonly", false);			

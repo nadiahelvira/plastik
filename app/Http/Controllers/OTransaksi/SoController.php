@@ -313,6 +313,8 @@ class SoController extends Controller
         $HARGA3        = $request->input('HARGA3');  
         $HARGA4        = $request->input('HARGA4');  
         $HARGA5        = $request->input('HARGA5');  
+        $HARGA6        = $request->input('HARGA6');  
+        $HARGA7        = $request->input('HARGA7');  
 
         // Check jika value detail ada/tidak
         if ($REC) {
@@ -345,6 +347,8 @@ class SoController extends Controller
                 $detail->HARGA3       = (float) str_replace(',', '', $HARGA3[$key]); 
                 $detail->HARGA4       = (float) str_replace(',', '', $HARGA4[$key]); 
                 $detail->HARGA5       = (float) str_replace(',', '', $HARGA5[$key]); 
+                $detail->HARGA6       = (float) str_replace(',', '', $HARGA6[$key]); 
+                $detail->HARGA7       = (float) str_replace(',', '', $HARGA7[$key]); 
 
 				$detail->KET         = ($KET[$key] == null) ? "" :  $KET[$key];				
                 $detail->save();
@@ -639,6 +643,8 @@ class SoController extends Controller
         $HARGA3        = $request->input('HARGA3');  
         $HARGA4        = $request->input('HARGA4');  
         $HARGA5        = $request->input('HARGA5');  
+        $HARGA6        = $request->input('HARGA6');  
+        $HARGA7        = $request->input('HARGA7');  
 
         $query = DB::table('sod')->where('NO_BUKTI', $request->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
 
@@ -671,6 +677,8 @@ class SoController extends Controller
                         'HARGA3'      => (float) str_replace(',', '', $HARGA3[$i]),
                         'HARGA4'      => (float) str_replace(',', '', $HARGA4[$i]),
                         'HARGA5'      => (float) str_replace(',', '', $HARGA5[$i]),
+                        'HARGA6'      => (float) str_replace(',', '', $HARGA6[$i]),
+                        'HARGA7'      => (float) str_replace(',', '', $HARGA7[$i]),
 
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],	
 						
@@ -708,6 +716,8 @@ class SoController extends Controller
                         'HARGA3'      => (float) str_replace(',', '', $HARGA3[$i]),
                         'HARGA4'      => (float) str_replace(',', '', $HARGA4[$i]),
                         'HARGA5'      => (float) str_replace(',', '', $HARGA5[$i]),
+                        'HARGA6'      => (float) str_replace(',', '', $HARGA6[$i]),
+                        'HARGA7'      => (float) str_replace(',', '', $HARGA7[$i]),
 
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],							
                     ]

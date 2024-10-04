@@ -445,7 +445,7 @@ class HutController extends Controller
  
          
          return view('otransaksi_hut.edit', $data)
-		 ->with(['tipx' => $tipx, 'idx' => $idx, 'flagz' =>$this->FLAGZ, 'judul', $this->judul ]);
+		 ->with(['tipx' => $tipx, 'idx' => $idx, 'flagz' => $this->FLAGZ, 'judul' => $this->judul ]);
       	 
          
     }

@@ -15,7 +15,7 @@ class Truck extends Model
 
     protected $fillable = 
     [
-        "KODE", "NOPOL","MERK","SOPIR", "USRNM", "TG_SMP", "MILIK", "BERAT"
+        "KODE", "NOPOL"
     ];
 }
 

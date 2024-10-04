@@ -60,7 +60,8 @@ class BrgController extends Controller
             } 
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                brg.SATUAN_BELI AS SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                brgdx.HARGA6, brgdx.HARGA7
                                 FROM brg, brgdx
                                 $filter_kd_brg and brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.PN='0'
@@ -70,7 +71,8 @@ class BrgController extends Controller
             if	( empty($brg) ) {
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                        brg.SATUAN_BELI AS SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                brgdx.HARGA6, brgdx.HARGA7
                                 FROM brg, brgdx
                                 WHERE brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.PN='0'
@@ -86,7 +88,8 @@ class BrgController extends Controller
             } 
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                        brg.SATUAN_BELI AS SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                brgdx.HARGA6, brgdx.HARGA7
                                 FROM brg, brgdx
                                 $filter_kd_brg AND brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.PN<>'0'
@@ -96,7 +99,8 @@ class BrgController extends Controller
             if	( empty($brg) ) {
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                        brg.SATUAN_BELI AS SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                brgdx.HARGA6, brgdx.HARGA7
                                 FROM brg, brgdx
                                 WHERE brg.PN<>'0' AND brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.GOL='$golz'
@@ -111,7 +115,8 @@ class BrgController extends Controller
             } 
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                        brg.SATUAN_BELI AS SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                brgdx.HARGA6, brgdx.HARGA7
                                 FROM brg, brgdx
                                 $filter_kd_brg AND brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.GOL='$golz'
@@ -120,7 +125,8 @@ class BrgController extends Controller
             if	( empty($brg) ) {
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                        brg.SATUAN_BELI AS SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                brgdx.HARGA6, brgdx.HARGA7
                                 FROM brg, brgdx
                                 WHERE brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.GOL='$golz'
@@ -149,7 +155,8 @@ class BrgController extends Controller
             } 
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                brgdx.HARGA6, brgdx.HARGA7
                                 FROM brg, brgdx
                                 $filter_kd_brg and brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.PN='0' AND brgdx.RING = '$ringx'
@@ -159,7 +166,8 @@ class BrgController extends Controller
             if	( empty($brg) ) {
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                brgdx.HARGA6, brgdx.HARGA7
                                 FROM brg, brgdx
                                 WHERE brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.PN='0' AND brgdx.RING = '$ringx'
@@ -175,7 +183,8 @@ class BrgController extends Controller
             } 
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                brgdx.HARGA6, brgdx.HARGA7
                                 FROM brg, brgdx
                                 $filter_kd_brg AND brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.PN<>'0' AND brgdx.RING = '$ringx'
@@ -185,7 +194,8 @@ class BrgController extends Controller
             if	( empty($brg) ) {
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5
+                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                brgdx.HARGA6, brgdx.HARGA7
                                 FROM brg, brgdx
                                 WHERE brg.PN<>'0' AND brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.GOL='$golz' AND brgdx.RING = '$ringx'
@@ -277,6 +287,8 @@ class BrgController extends Controller
             [
                 'KD_BRG'            => ($request['KD_BRG'] == null) ? "" : $request['KD_BRG'],
                 'NA_BRG'            => ($request['NA_BRG'] == null) ? "" : $request['NA_BRG'],
+                'KD_GRUP'            => ($request['KD_GRUP'] == null) ? "" : $request['KD_GRUP'],
+                'NA_GRUP'            => ($request['NA_GRUP'] == null) ? "" : $request['NA_GRUP'],
                 'GOL'               => ($request['GOL'] == null) ? "" : $request['GOL'],
                 'SATUAN'            => ($request['SATUAN'] == null) ? "" : $request['SATUAN'],
                 'SATUAN_BELI'       => ($request['SATUAN_BELI'] == null) ? "" : $request['SATUAN_BELI'],
@@ -309,6 +321,8 @@ class BrgController extends Controller
 		$HARGA3	= $request->input('HARGA3');
 		$HARGA4	= $request->input('HARGA4');
 		$HARGA5	= $request->input('HARGA5');
+		$HARGA6	= $request->input('HARGA6');
+		$HARGA7	= $request->input('HARGA7');
         
         // Check jika value detail ada/tidak
         if ($REC) {
@@ -326,6 +340,8 @@ class BrgController extends Controller
                 $detail->HARGA3	    = (float) str_replace(',', '', $HARGA3[$key]);		
                 $detail->HARGA4	    = (float) str_replace(',', '', $HARGA4[$key]);		
                 $detail->HARGA5	    = (float) str_replace(',', '', $HARGA5[$key]);		
+                $detail->HARGA6	    = (float) str_replace(',', '', $HARGA6[$key]);		
+                $detail->HARGA7	    = (float) str_replace(',', '', $HARGA7[$key]);		
                 $detail->created_at	= Carbon::now();		
                 $detail->created_by	= Auth::user()->username;		
                 $detail->save();
@@ -542,6 +558,8 @@ class BrgController extends Controller
             [
 
                 'NA_BRG'            => ($request['NA_BRG'] == null) ? "" : $request['NA_BRG'],
+                'KD_GRUP'            => ($request['KD_GRUP'] == null) ? "" : $request['KD_GRUP'],
+                'NA_GRUP'            => ($request['NA_GRUP'] == null) ? "" : $request['NA_GRUP'],
                 'SATUAN'            => ($request['SATUAN'] == null) ? "" : $request['SATUAN'],			 
                 'SATUAN_BELI'       => ($request['SATUAN_BELI'] == null) ? "" : $request['SATUAN_BELI'],			 
                 'PN'                => ($request['PN'] == null) ? "" : $request['PN'],			 
@@ -585,6 +603,8 @@ class BrgController extends Controller
 		$HARGA3	= $request->input('HARGA3');
 		$HARGA4	= $request->input('HARGA4');
 		$HARGA5	= $request->input('HARGA5');		
+		$HARGA6	= $request->input('HARGA6');		
+		$HARGA7	= $request->input('HARGA7');		
 
         $query = DB::table('brgdx')->where('KD_BRG', $request->KD_BRG)->whereNotIn('NO_ID',  $NO_ID)->delete();
 
@@ -603,6 +623,8 @@ class BrgController extends Controller
 						'HARGA3'     => (float) str_replace(',', '', $HARGA3[$i]),
 						'HARGA4'     => (float) str_replace(',', '', $HARGA4[$i]),
 						'HARGA5'     => (float) str_replace(',', '', $HARGA5[$i]),
+						'HARGA6'     => (float) str_replace(',', '', $HARGA6[$i]),
+						'HARGA7'     => (float) str_replace(',', '', $HARGA7[$i]),
 						'updated_by' => Auth::user()->username,
 						'updated_at' => Carbon::now(),
 						
@@ -626,6 +648,8 @@ class BrgController extends Controller
 						'HARGA3'     => (float) str_replace(',', '', $HARGA3[$i]),
 						'HARGA4'     => (float) str_replace(',', '', $HARGA4[$i]),
 						'HARGA5'     => (float) str_replace(',', '', $HARGA5[$i]),
+						'HARGA6'     => (float) str_replace(',', '', $HARGA6[$i]),
+						'HARGA7'     => (float) str_replace(',', '', $HARGA7[$i]),
 						'updated_by' => Auth::user()->username,
 						'updated_at' => Carbon::now(),					
                     ]

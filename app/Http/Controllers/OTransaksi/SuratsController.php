@@ -65,7 +65,8 @@ class SuratsController extends Controller
         $CBG = Auth::user()->CBG;
 		
         $surats = DB::SELECT("SELECT distinct surats.NO_BUKTI, surats.NO_SO, surats.KODEC, surats.NAMAC, 
-		                  surats.ALAMAT, surats.KOTA, surats.KODEP, surats.NAMAP, surats.KOM, surats.RING
+		                  surats.ALAMAT, surats.KOTA, surats.KODEP, surats.NAMAP, surats.KOM, 
+                          surats.RING, surats.SOPIR, surats.TRUCK
                           from surats, suratsd 
                           WHERE surats.NO_BUKTI = suratsD.NO_BUKTI AND surats.GOL ='$golz' 
                           AND surats.CBG = '$CBG' AND suratsd.SISA > 0	");
@@ -87,10 +88,14 @@ class SuratsController extends Controller
 
         $CBG = Auth::user()->CBG;
 		
-		$so = DB::SELECT("SELECT sod.NO_ID, so.NO_BUKTI, so.TGL, so.NAMAC, sod.KD_BRG, sod.NA_BRG, sod.SATUAN, sod.QTY, SOD.KIRIM, sod.HARGA,
+		$so = DB::SELECT("SELECT sod.NO_ID, so.NO_BUKTI, so.TGL, so.NAMAC, so.KODEC, so.ALAMAT, so.KOTA,
+                                sod.KD_BRG, sod.NA_BRG, sod.SATUAN, sod.QTY, SOD.KIRIM, sod.HARGA,
                                 SOD.SISA, so.KODEP, so.NAMAP, so.RING, so.KOM from so, sod 
                         WHERE so.NO_BUKTI=sod.NO_BUKTI AND so.CBG = '$CBG' 
-                        and sod.SISA>0 and so.KODEC='".$request->kodec."' AND so.GOL ='$golz' ");
+                        and sod.SISA>0 
+                        -- and so.KODEC='".$request->kodec."' 
+                        AND so.GOL ='$golz' 
+                        GROUP BY NO_BUKTI");
 		return response()->json($so);
 	}
 	
@@ -113,21 +118,39 @@ class SuratsController extends Controller
 	}
 
 
-    public function browse_detail2(Request $request)
-    {
-		$filterbukti = '';
-		if($request->NO_PO)
-		{
+    // public function browse_detail2(Request $request)
+    // {
+	// 	$filterbukti = '';
+	// 	if($request->NO_PO)
+	// 	{
 	
-			$filterbukti = " WHERE NO_BUKTI='".$request->NO_PO."' AND a.KD_BRG = b.KD_BRG ";
-		}
-		$suratsd = DB::SELECT("SELECT a.REC, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
-                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, '1' AS X, a.DPP, a.PPN
-                            from suratsd a, brg b
-                            $filterbukti ORDER BY NO_BUKTI ");
+	// 		$filterbukti = " WHERE NO_BUKTI='".$request->NO_PO."' AND a.KD_BRG = b.KD_BRG ";
+	// 	}
+	// 	$suratsd = DB::SELECT("SELECT a.REC, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
+    //                             b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, '1' AS X, a.DPP, a.PPN
+    //                         from suratsd a, brg b
+    //                         $filterbukti ORDER BY NO_BUKTI ");
 	
 
-		return ressuratsnse()->json($suratsd);
+	// 	return ressuratsnse()->json($suratsd);
+	// }
+
+    public function browse_suratsd(Request $request)
+    {
+
+        // $filterbukti = '';
+        // if($request->NO_SO)
+        // {
+
+        //     $filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' ";
+        // }
+        $sod = DB::SELECT("SELECT REC, SATUAN , QTY, HARGA, KIRIM, SISA, TOTAL, KET, 
+                                KD_BRG, NA_BRG, DPP, PPN
+                            from suratsd
+                            where NO_BUKTI='".$request->nobukti."' ORDER BY NO_BUKTI ");
+	
+
+		return response()->json($sod);
 	}
     // ganti 4
 
@@ -259,32 +282,37 @@ class SuratsController extends Controller
         $bulan    = session()->get('periode')['bulan'];
         $tahun    = substr(session()->get('periode')['tahun'], -2);
 
-        $query = DB::table('surats')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', 'SJ')
+        $query = DB::table('surats')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ)
                 ->where('GOL', $this->GOLZ)->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
 		
-        if( $GOLZ=='B'){
+        if( $GOLZ == 'J') {
 
-            if ($query != '[]')
-            {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = 'SJ'. $this->GOLZ . $CBG . $tahun . $bulan . '-' . $query;
-            } else {
-                $no_bukti = 'SJ'. $this->GOLZ . $CBG . $tahun . $bulan . '-0001' ;
-            }	
+            if( $FLAGZ=='JL'){
 
-        } elseif($GOLZ=='J') {
-
-            if ($query != '[]')
-            {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = 'SJ'. $CBG . $tahun . $bulan . '-' . $query;
-            } else {
-                $no_bukti = 'SJ'. $CBG . $tahun . $bulan . '-0001' ;
-            }	
+                if ($query != '[]')
+                {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'SJ'. $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'SJ'. $CBG . $tahun . $bulan . '-0001' ;
+                }	
+    
+            } elseif($FLAGZ=='AJ') {
+    
+                if ($query != '[]')
+                {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'AJ'. $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'AJ'. $CBG . $tahun . $bulan . '-0001' ;
+                }	
+    
+            }
 
         }
+        
 
 
 			
@@ -295,7 +323,7 @@ class SuratsController extends Controller
                 'TGL'           => date('Y-m-d', strtotime($request['TGL'])),	
                 'JTEMPO'           => date('Y-m-d', strtotime($request['JTEMPO'])),	
                 'PER'           => $periode,			
-                'FLAG'          => 'SJ',							
+                'FLAG'          => $FLAGZ,							
                 'GOL'           => $GOLZ,
                 'NO_SO'         => ($request['NO_SO']==null) ? "" : $request['NO_SO'],
                 'TRUCK'         => ($request['TRUCK']==null) ? "" : $request['TRUCK'],
@@ -329,10 +357,11 @@ class SuratsController extends Controller
 		$NA_BHN	= $request->input('NA_BHN');
 		$SATUAN	= $request->input('SATUAN');
 		$QTY	= $request->input('QTY');
+		$QTY_KIRIM	= $request->input('QTY_KIRIM');
 		$HARGA	= $request->input('HARGA');
 		$TOTAL	= $request->input('TOTAL');
-		// $MERK	= $request->input('MERK');	
-		// $NO_SERI = $request->input('NO_SERI');	
+		$PPNX	= $request->input('PPNX');	
+		$DPP = $request->input('DPP');	
 		$KET	= $request->input('KET');	
 		// $ID_SOD	= $request->input('ID_SOD');		
 
@@ -347,7 +376,7 @@ class SuratsController extends Controller
 				// $detail->NO_SO	= $NO_SO[$key];
 				$detail->REC	= $REC[$key];
 				$detail->PER	= $periode;
-				$detail->FLAG	= 'SJ';
+				$detail->FLAG	= $FLAGZ;
 				$detail->GOL	= $GOLZ;
 				// $detail->TYP	= ($TYP[$key]==null) ? '' : $TYP[$key];
 				// $detail->NO_TERIMA	= ($NO_TERIMA[$key]==null) ? '' : $NO_TERIMA[$key];
@@ -357,12 +386,13 @@ class SuratsController extends Controller
 				$detail->NA_BHN	= ($GOLZ == 'J' ) ? ($NA_BHN[$key]==null) : $NA_BHN[$key];
 				$detail->SATUAN	= ($SATUAN[$key]==null) ? '' : $SATUAN[$key];
 				$detail->QTY	= (float) str_replace(',', '', $QTY[$key]);
+				$detail->QTY_KIRIM	= (float) str_replace(',', '', $QTY_KIRIM[$key]);
 				$detail->SISA	= (float) str_replace(',', '', $QTY[$key]);
 				$detail->HARGA	= (float) str_replace(',', '', $HARGA[$key]);
 				$detail->TOTAL	= (float) str_replace(',', '', $TOTAL[$key]);
-				// $detail->MERK	= ($MERK[$key]==null) ? '' : $MERK[$key];
-				// $detail->NO_SERI	= ($NO_SERI[$key]==null) ? '' : $NO_SERI[$key];
 				$detail->KET	= ($KET[$key]==null) ? '' : $KET[$key];
+				$detail->PPN	= (float) str_replace(',', '', $PPNX[$key]);
+				$detail->DPP	= (float) str_replace(',', '', $DPP[$key]);
 				$detail->ID	    = $idSurats[0]->NO_ID;
 				// $detail->ID_SOD	= ($ID_SOD[$key]==null) ? '' : $ID_SOD[$key];
 				$detail->save();
@@ -643,10 +673,11 @@ class SuratsController extends Controller
 		$NA_BHN	= $request->input('NA_BHN');
 		$SATUAN	= $request->input('SATUAN');
 		$QTY	= $request->input('QTY');
+		$QTY_KIRIM	= $request->input('QTY_KIRIM');
 		$HARGA	= $request->input('HARGA');
 		$TOTAL	= $request->input('TOTAL');
-		// $MERK	= $request->input('MERK');	
-		// $NO_SERI = $request->input('NO_SERI');	
+		$PPNX	= $request->input('PPNX');	
+		$DPP = $request->input('DPP');	
 		$KET	= $request->input('KET');	
 		$ID_SOD	= $request->input('ID_SOD');	
        
@@ -673,11 +704,12 @@ class SuratsController extends Controller
                         'NA_BHN'     => ($GOLZ == 'J' ) ? ($NA_BHN[$i]==null) : $NA_BHN[$i],	
                         'SATUAN'     => ($SATUAN[$i]==null) ? "" : $SATUAN[$i],
 						'QTY'      	 => (float) str_replace(',', '', $QTY[$i]),
+						'QTY_KIRIM'  => (float) str_replace(',', '', $QTY_KIRIM[$i]),
 						'SISA'       => (float) str_replace(',', '', $QTY[$i]),
 						'HARGA'      => (float) str_replace(',', '', $HARGA[$i]),
 						'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
-                        // 'MERK'       => ($MERK[$i]==null) ? "" : $MERK[$i],
-                        // 'NO_SERI'    => ($NO_SERI[$i]==null) ? "" : $NO_SERI[$i],
+                        'PPN'        => (float) str_replace(',', '', $PPNX[$i]),
+                        'DPP'        => (float) str_replace(',', '', $DPP[$i]),
                         'KET'        => ($KET[$i]==null) ? "" : $KET[$i],
                         'ID'         => $surats->NO_ID,
                         // 'ID_SOD'     => ($ID_SOD[$i]==null) ? "" : $ID_SOD[$i],
@@ -704,11 +736,12 @@ class SuratsController extends Controller
                         'NA_BHN'     => ($GOLZ == 'J' ) ? ($NA_BHN[$i]==null) : $NA_BHN[$i],	
                         'SATUAN'     => ($SATUAN[$i]==null) ? "" : $SATUAN[$i],
 						'QTY'      	 => (float) str_replace(',', '', $QTY[$i]),
+						'QTY_KIRIM'  => (float) str_replace(',', '', $QTY_KIRIM[$i]),
 						'SISA'       => (float) str_replace(',', '', $QTY[$i]),
 						'HARGA'      => (float) str_replace(',', '', $HARGA[$i]),
 						'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
-                        // 'MERK'       => ($MERK[$i]==null) ? "" : $MERK[$i],
-                        // 'NO_SERI'    => ($NO_SERI[$i]==null) ? "" : $NO_SERI[$i],
+                        'PPN'        => (float) str_replace(',', '', $PPNX[$i]),
+                        'DPP'        => (float) str_replace(',', '', $DPP[$i]),
                         'KET'        => ($KET[$i]==null) ? "" : $KET[$i],
                         // 'ID_SOD'     => ($ID_SOD[$i]==null) ? "" : $ID_SOD[$i],
                     ]

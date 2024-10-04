@@ -217,12 +217,14 @@
 											<input name="HARGA3[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->HARGA3}}" id="HARGA3{{$no}}" type="text" style="text-align: right"  class="form-control HARGA3 text-primary" >
 											<input name="HARGA4[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->HARGA4}}" id="HARGA4{{$no}}" type="text" style="text-align: right"  class="form-control HARGA4 text-primary" >
 											<input name="HARGA5[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->HARGA5}}" id="HARGA5{{$no}}" type="text" style="text-align: right"  class="form-control HARGA5 text-primary" >
+											<input name="HARGA6[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->HARGA6}}" id="HARGA6{{$no}}" type="text" style="text-align: right"  class="form-control HARGA6 text-primary" >
+											<input name="HARGA7[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->HARGA7}}" id="HARGA7{{$no}}" type="text" style="text-align: right"  class="form-control HARGA7 text-primary" >
                                         </td>
 										
 										<td>
 											<input name="QTY[]" onclick='select()' onblur="hitung()" value="{{$detail->QTY}}" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" >
 										</td>
-										<td><input name="HARGA[]" onclick='select()' onblur="hitung()" value="{{$detail->HARGA}}" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" ></td>
+										<td><input name="HARGA[]" onclick='select()' onblur="hitung()" value="{{$detail->HARGA}}" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" readonly></td>
  										<td><input name="TOTAL[]" onclick='select()' onblur="hitung()" value="{{$detail->TOTAL}}" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" readonly ></td>
                                         
 										<td>
@@ -500,6 +502,7 @@
 		$('body').on('click', '.btn-delete', function() {
 			var val = $(this).parents("tr").remove();
 			baris--;
+			hitung();
 			nomor();
 		});
 		
@@ -614,7 +617,7 @@
 							for(i=0; i<resp.length; i++){
 								
 								dTableBBarang.row.add([
-									'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\', \''+resp[i].NA_BRG+'\' , \''+resp[i].SATUAN+'\', \''+resp[i].HARGA1+'\', \''+resp[i].HARGA2+'\', \''+resp[i].HARGA3+'\', \''+resp[i].HARGA4+'\', \''+resp[i].HARGA5+'\' )">'+resp[i].KD_BRG+'</a>',
+									'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\', \''+resp[i].NA_BRG+'\' , \''+resp[i].SATUAN+'\', \''+resp[i].HARGA1+'\', \''+resp[i].HARGA2+'\', \''+resp[i].HARGA3+'\', \''+resp[i].HARGA4+'\', \''+resp[i].HARGA5+'\', \''+resp[i].HARGA6+'\', \''+resp[i].HARGA7+'\' )">'+resp[i].KD_BRG+'</a>',
 									resp[i].NA_BRG,
 									resp[i].SATUAN,
 								]);
@@ -632,6 +635,8 @@
 						$("#HARGA3"+rowidBarang).val(resp[0].HARGA3);
 						$("#HARGA4"+rowidBarang).val(resp[0].HARGA4);
 						$("#HARGA5"+rowidBarang).val(resp[0].HARGA5);
+						$("#HARGA6"+rowidBarang).val(resp[0].HARGA6);
+						$("#HARGA7"+rowidBarang).val(resp[0].HARGA7);
 					}
 				}
 			});
@@ -652,7 +657,7 @@
 			}	
 		}
 		
-		chooseBarang = function(KD_BRG,NA_BRG,SATUAN, HARGA1, HARGA2, HARGA3, HARGA4, HARGA5){
+		chooseBarang = function(KD_BRG,NA_BRG,SATUAN, HARGA1, HARGA2, HARGA3, HARGA4, HARGA5, HARGA6, HARGA7){
 			$("#KD_BRG"+rowidBarang).val(KD_BRG);
 			$("#NA_BRG"+rowidBarang).val(NA_BRG);	
 			$("#SATUAN"+rowidBarang).val(SATUAN);
@@ -661,6 +666,8 @@
 			$("#HARGA3"+rowidBarang).val(HARGA3);
 			$("#HARGA4"+rowidBarang).val(HARGA4);
 			$("#HARGA5"+rowidBarang).val(HARGA5);
+			$("#HARGA6"+rowidBarang).val(HARGA6);
+			$("#HARGA7"+rowidBarang).val(HARGA7);
 			$("#browseBarangModal").modal("hide");
 		}
 		
@@ -834,6 +841,16 @@
 		var PPN = 0;
 		var NETTX = 0;
 
+		$(".QTY").each(function() {
+			
+			let z = $(this).closest('tr');
+			var QTYX = parseFloat(z.find('.QTY').val().replace(/,/g, ''));
+            TTOTAL_QTY +=QTYX;		
+			
+		
+		});
+		
+		
 		
 		$(".QTY").each(function() {
 			
@@ -851,34 +868,48 @@
 			var HARGA3X = parseFloat(z.find('.HARGA3').val().replace(/,/g, ''));
 			var HARGA4X = parseFloat(z.find('.HARGA4').val().replace(/,/g, ''));
 			var HARGA5X = parseFloat(z.find('.HARGA5').val().replace(/,/g, ''));
+			var HARGA6X = parseFloat(z.find('.HARGA6').val().replace(/,/g, ''));
+			var HARGA7X = parseFloat(z.find('.HARGA7').val().replace(/,/g, ''));
 			var HARGAX = 0;
 
-            if( QTYX > 0 )
+            if( TTOTAL_QTY > 0 )
 			{
-					if (QTYX >= 100) 
+					if ( TTOTAL_QTY > 200) 
+					{
+						var HARGAX = HARGA7X;
+
+					}
+
+					if ( ( TTOTAL_QTY < 200) && (QTYX >=150) ) 
+					{
+						var HARGAX = HARGA6X;
+
+					}
+
+					if ( ( TTOTAL_QTY < 150) && (QTYX >=100)) 
 					{
 						var HARGAX = HARGA5X;
 
 					}
 					
-					if ( (QTYX < 100) && (QTYX >=50) )
+					if ( ( TTOTAL_QTY < 100) && (QTYX >=50) )
 					{
 
 					var HARGAX = HARGA4X;
 					} 
 					
-					if ( ( QTYX <  50 ) && ( QTYX >=25 )  )
+					if ( ( TTOTAL_QTY <  50 ) && ( QTYX >=25 )  )
 					{
 						var HARGAX = HARGA3X;
 					}
 					
-					if ( (QTYX <  25) && (QTYX >=6) )
+					if ( ( TTOTAL_QTY <  25) && (QTYX >=6) )
 					{
 
 						var HARGAX = HARGA2X;
 					}                             
 					
-					if ( QTYX <  6  )
+					if ( TTOTAL_QTY <  6  )
 					{
 
 						var HARGAX = HARGA1X;
@@ -915,7 +946,7 @@
 		    z.find('.DPP').autoNumeric('update');			
 		    z.find('.PPNX').autoNumeric('update');		
 
-            TTOTAL_QTY +=QTYX;		
+            // TTOTAL_QTY +=QTYX;		
             TTOTAL +=TOTALX;				
             PPN +=PPNX;				
 		
@@ -1011,7 +1042,7 @@
 			$("#NA_BRG" + i.toString()).attr("readonly", true);
 			$("#SATUAN" + i.toString()).attr("readonly", true);
 			$("#QTY" + i.toString()).attr("readonly", false);
-			$("#HARGA" + i.toString()).attr("readonly", false);
+			$("#HARGA" + i.toString()).attr("readonly", true);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#KET" + i.toString()).attr("readonly", false);
 
@@ -1163,6 +1194,8 @@
 		            <input name='HARGA3[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA3${idrow}' type='text' style='text-align: right' class='form-control HARGA3 text-primary' required >
 		            <input name='HARGA4[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA4${idrow}' type='text' style='text-align: right' class='form-control HARGA4 text-primary' required >
 		            <input name='HARGA5[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA5${idrow}' type='text' style='text-align: right' class='form-control HARGA5 text-primary' required >
+		            <input name='HARGA6[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA6${idrow}' type='text' style='text-align: right' class='form-control HARGA6 text-primary' required >
+		            <input name='HARGA7[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA7${idrow}' type='text' style='text-align: right' class='form-control HARGA7 text-primary' required >
                 </td>
 				
 				<td>
@@ -1170,7 +1203,7 @@
                 </td>
 
 				<td>
-		            <input name='HARGA[]' onclick='select()' onblur='hitung()' value='0' id='HARGA${idrow}' type='text' style='text-align: right' class='form-control HARGA text-primary' required >
+		            <input name='HARGA[]' onclick='select()' onblur='hitung()' value='0' id='HARGA${idrow}' type='text' style='text-align: right' class='form-control HARGA text-primary' readonly >
                 </td>
 				
 				<td>

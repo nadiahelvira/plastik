@@ -385,6 +385,7 @@
         $('body').on('click', '.btn-delete', function() {
 			var val = $(this).parents("tr").remove();
 			baris--;
+			hitung();
 			nomor();
 			
 		});
@@ -674,8 +675,8 @@
 
 		var tbayar = $('#TBAYAR').val();
 		var tkom = $('#TKOM').val();
-		alert(tbayar);
-		alert(tkom);	
+		// alert(tbayar);
+		// alert(tkom);	
 		
 		    	document.getElementById("entri").submit();  
 			}
@@ -877,6 +878,7 @@
 	
 
 	function hapusTrans() {
+		var flagz = "{{ $flagz }}";
 		let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
 		if (confirm(text) == true) 
 		{
