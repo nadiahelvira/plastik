@@ -17,7 +17,7 @@
         <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-            <h1 class="m-0">Data Grup </h1>
+            <h1 class="m-0">Data Group </h1>
             </div>
             <!-- /.col -->
         </div><!-- /.row -->
@@ -62,7 +62,7 @@
 
 								<div class="col-md-2">
                                     <input type="text" class="form-control KODE" id="KODE" name="KODE"
-                                    placeholder="Masukkan Kode Customer" value="{{$header->KODE}}" readonly>
+                                    placeholder="Masukkan Kode Group" value="{{$header->KODE}}" readonly>
                                 </div>   
 								
                                 <div class="col-md-1">
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text" class="form-control NAMA" id="NAMA" name="NAMA"
-                                    placeholder="Masukkan Nama Customer" value="{{$header->NAMA}}">
+                                    placeholder="Masukkan Nama Group" value="{{$header->NAMA}}">
                                 </div>   
 
                             <!-- </div> -->
@@ -177,8 +177,8 @@
 	
 	function ganti() {
 		
-		// mati();
-		hidup();
+		mati();
+		// hidup();
 	
 	}
 	

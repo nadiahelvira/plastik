@@ -111,7 +111,7 @@
               <li class="nav-item">
                 <a href="{{url('grup')}}" class="nav-link">
                   <i class="nav-icon fas fa-anchor icon-red"></i>
-                  <p>Grup</p>
+                  <p>Group</p>
                 </a>
               </li>
               @endif
