@@ -284,6 +284,7 @@ class JualController extends Controller
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
+                'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
 
                 'USRNM'            => Auth::user()->username,
@@ -596,6 +597,7 @@ class JualController extends Controller
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
+                'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
 
 				'USRNM'            => Auth::user()->username,

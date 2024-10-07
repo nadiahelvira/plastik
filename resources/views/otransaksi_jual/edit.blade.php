@@ -160,8 +160,17 @@
                                 <div class="col-md-4">
                                     <input type="text" class="form-control NOTES" id="NOTES" name="NOTES" placeholder="Masukkan NOTES" value="{{$header->NOTES}}">
                                 </div>
-        
 
+								<div class="col-md-1">
+									<label for="TYPE" class="form-label">Type</label>
+								</div>
+								<div class="col-md-1">
+									<select id="TYPE" class="form-control"  name="TYPE">
+										<option value="CASH" {{ ($header->TYPE == 'CASH') ? 'selected' : '' }}>Cash</option>
+										<option value="KREDIT" {{ ($header->TYPE == 'KREDIT') ? 'selected' : '' }}>Kredit</option>
+									</select>
+                            	</div>
+								 
                             </div>
 							
                             

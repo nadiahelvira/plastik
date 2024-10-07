@@ -22,6 +22,6 @@ class Jual extends Model
         "NO_BUKTI", "TGL", "PER", "FLAG", "NO_JUAL", "TRUCK", "SOPIR", "KODEC", "NAMAC", "ALAMAT",
         "KOTA", 
         "NOTES", "TOTAL_QTY", "TOTAL", "PPN", "NETT", "USRNM", "TG_SMP", "NO_SO", "GOL", "NO_SURATS", 
-        "CBG", "KODEP", "NAMAP", "RING", "KOM"
+        "CBG", "KODEP", "NAMAP", "RING", "KOM", "TYPE"
     ];
 }
