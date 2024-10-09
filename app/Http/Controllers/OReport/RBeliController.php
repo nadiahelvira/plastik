@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OReport;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Cbg;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -21,6 +22,10 @@ class RBeliController extends Controller
 
    public function report()
     {
+		$cbg = Cbg::query()->get();
+		session()->put('filter_cbg', '');
+
+
 		session()->put('filter_gol', '');
 		session()->put('filter_kodes1', '');
 		session()->put('filter_namas1', '');
@@ -30,7 +35,7 @@ class RBeliController extends Controller
 		session()->put('filter_nabrg1', '');
 
 
-        return view('oreport_beli.report')->with(['hasil' => []]);
+        return view('oreport_beli.report')->with(['hasil' => []])->with(['cbg' => $cbg]);
     }
 	
 	 
@@ -41,6 +46,12 @@ class RBeliController extends Controller
 		$PHPJasperXML->load_xml_file(base_path().('/app/reportc01/phpjasperxml/'.$file.'.jrxml'));
 		
 			// Check Filter
+		
+			if($request['cbg'])
+			{
+				$cbg = $request['cbg'];
+			}
+
 			if (!empty($request->gol))
 			{
 				$filtergol = " and beli.GOL='".$request->gol."' ";
@@ -72,6 +83,7 @@ class RBeliController extends Controller
 			session()->put('filter_brg1', $request->brg1);
 			session()->put('filter_nabrg1', $request->nabrg1);
 			session()->put('filter_flag', $request->flag);
+			session()->put('filter_cbg', $request->cbg);
 		
 
 		if( $filtergol == 'B'){
@@ -95,10 +107,11 @@ class RBeliController extends Controller
 							");
 		}
 			
+		session()->put('filter_cbg', $request->cbg);
 
 		if($request->has('filter'))
 		{
-			return view('oreport_beli.report')->with(['hasil' => $query]);
+			return view('oreport_beli.report')->with(['hasil' => $query])->with(['cbg' => $cbg]);
 		}
 
 		$data=[];
