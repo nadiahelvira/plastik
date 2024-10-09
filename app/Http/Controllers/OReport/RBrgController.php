@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OReport;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Cbg;
 use App\Models\Master\Brg;
 use App\Models\Master\Perid;
 
@@ -23,11 +24,14 @@ class RBrgController extends Controller
 	
    public function report()
     {
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		$kd_brg = Brg::query()->get();
 		$per = Perid::query()->get();
 		session()->put('filter_per', '');
 
-        return view('oreport_brg.report')->with(['kd_brg' => $kd_brg])->with(['per' => $per])->with(['hasil' => []]);
+        return view('oreport_brg.report')->with(['kd_brg' => $kd_brg])->with(['per' => $per])->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	
    
@@ -38,7 +42,7 @@ class RBrgController extends Controller
 		$PHPJasperXML->load_xml_file(base_path().('/app/reportc01/phpjasperxml/'.$file.'.jrxml'));
 		
 		
-        	if ($request->session()->has('periode')) 
+        if ($request->session()->has('periode')) 
 		{
 			$periode = $request->session()->get('periode')['bulan']. '/' . $request->session()->get('periode')['tahun'];
 		} else
@@ -51,6 +55,21 @@ class RBrgController extends Controller
 			$periode = $request['perio'];
 		}
 		
+		if($request['cbg'])
+		{
+			$cbg = $request['cbg'];
+		}
+
+			
+		if (!empty($request->cbg))
+		{
+			$filtercbg = " and brgd.CBG='".$request->cbg."' ";
+		}
+		
+		
+		session()->put('filter_cbg', $request->cbg);
+
+
 		$bulan = substr($periode,0,2);
 		$tahun = substr($periode,3,4);
 		
@@ -61,14 +80,20 @@ class RBrgController extends Controller
 			brgd.HRT$bulan as HRT,brgd.NIW$bulan as NIW,brgd.NIM$bulan as NIM,brgd.NIK$bulan as NIK,
 		brgd.NIL$bulan as NIL,brgd.NIR$bulan as NIR
 		FROM brg,brgd
-		WHERE brg.KD_BRG=brgd.KD_BRG and brgd.YER='$tahun' order by KD_BRG;
+		WHERE brg.KD_BRG=brgd.KD_BRG and brgd.YER='$tahun'
+		$filtercbg
+		group by KD_BRG
+		order by KD_BRG;
 		");
 
-		$per = Perid::query()->get();
 		session()->put('filter_per', $periode);
+
 		if($request->has('filter'))
 		{
-			return view('oreport_brg.report')->with(['per' => $per])->with(['hasil' => $query]);
+			$per = Perid::query()->get();
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_brg.report')->with(['per' => $per])->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
 
 		$data=[];

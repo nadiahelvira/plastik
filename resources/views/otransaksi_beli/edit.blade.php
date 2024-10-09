@@ -161,7 +161,7 @@
                                     <input type="text" class="form-control GUDANG" id="GUDANG" name="GUDANG" placeholder="Masukkan Gudang"  value="{{$header->GUDANG}}" style="width:140px" readonly >
                                 </div>
 
-								<div class="col-md-1">
+								<div class="col-md-1" align="right">
 									<label for="TYPE" class="form-label">Type</label>
 								</div>
 								<div class="col-md-1">
@@ -1233,6 +1233,7 @@
 			$("#JTEMPO").attr("readonly", false);
 			
 			$("#NOTES").attr("readonly", false);
+			$("#TYPE").attr("readonly", false);
 			
 			$("#PPN").attr("readonly", true);
 			$("#NETT").attr("readonly", true);	
@@ -1307,6 +1308,7 @@
 			$("#NO_FAKTUR").attr("readonly", true);
 			$("#TGL_FAKTUR").attr("readonly", true);
 			$("#JTEMPO").attr("readonly", true);
+			$("#TYPE").attr("readonly", true);
 			
 		$("#PPN").attr("readonly", true);
 		$("#NETT").attr("readonly", true);		

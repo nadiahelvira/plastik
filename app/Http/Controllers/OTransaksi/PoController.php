@@ -581,8 +581,7 @@ class PoController extends Controller
 		
          
          return view('otransaksi_po.edit', $data)->with(['sup' => $sup])
-		 ->with(['tipx' => $tipx, 'idx' => $idx, 'flagz' => $this->FLAGZ, 'golz' => $this->GOLZ,
-		 'judul'=> $this->judul ]);
+		 ->with(['tipx' => $tipx, 'idx' => $idx, 'flagz' => $this->FLAGZ, 'golz' => $this->GOLZ, 'judul'=> $this->judul ]);
 			 
 
     }

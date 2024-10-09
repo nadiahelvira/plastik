@@ -169,8 +169,9 @@
 										<option value="CASH" {{ ($header->TYPE == 'CASH') ? 'selected' : '' }}>Cash</option>
 										<option value="KREDIT" {{ ($header->TYPE == 'KREDIT') ? 'selected' : '' }}>Kredit</option>
 									</select>
-                            	</div>
-								 
+								</div> 
+        
+
                             </div>
 							
                             

@@ -157,7 +157,7 @@
 
         if ( $tipx != 'new' )
 		{
-			 //mati();	
+			//  mati();	
     		 ganti();
 		} 
 

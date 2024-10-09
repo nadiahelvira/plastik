@@ -1,0 +1,4 @@
+[06-Oct-2024 17:38:37 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Foundation\Http\Kernel' not found in /home/januar13/public_html/plastik/app/Http/Kernel.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Kernel.php on line 7

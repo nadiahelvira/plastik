@@ -118,9 +118,10 @@
 
 								
 								<div class="col-md-1">
-									<input type="text" class="form-control PKP" id="PKP" name="PKP" placeholder="-" 
-									value="{{$header->PKP}}" readonly>
-									<label for="PKP">PKP</label>
+									
+										<input type="checkbox" class="form-check-input" id="PKP" name="PKP" value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}>
+										<label for="PKP">Pkp</label>
+									
 								</div>
                             </div>
 
@@ -498,6 +499,9 @@
     idrow=<?=$no?>;
     baris=<?=$no?>;
 
+
+        $('input.type_checkbox[value="1"]').prop('checked', true);
+
 		$('body').on('keydown', 'input, select', function(e) {
 			if (e.key === "Enter") {
 				var self = $(this), form = self.parents('form:eq(0)'), focusable, next;
@@ -635,18 +639,14 @@
 			$("#KOTA").val(KOTA);			
 			$("#PKP").val(PKP);			
 			$("#browseSuplierModal").modal("hide");
+	
+            	
+
+                         
+		
 		}
 
-		var PKP=$("#PKP").val();	
-		
-		if (PKP == 1 ) 
-		{
-		$("#PKP").prop('checked', true)
-		} 
-		else 
-		{
-		$("#PKP").prop('checked', false)
-		}
+	
 		
 		$("#KODES").keypress(function(e){
 

@@ -275,6 +275,7 @@ class JualController extends Controller
                 'KOTA'             => ($request['KOTA'] == null) ? "" : $request['KOTA'],
 
                 'NOTES'            => ($request['NOTES'] == null) ? "" : $request['NOTES'],
+                'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
                 'PPN'            => (float) str_replace(',', '', $request['PPN']),
@@ -284,7 +285,6 @@ class JualController extends Controller
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
-                'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
 
                 'USRNM'            => Auth::user()->username,
@@ -589,6 +589,7 @@ class JualController extends Controller
 
 
                 'NOTES'            => ($request['NOTES'] == null) ? "" : $request['NOTES'],
+                'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
                 'PPN'            => (float) str_replace(',', '', $request['PPN']),
@@ -597,7 +598,6 @@ class JualController extends Controller
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
-                'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
 
 				'USRNM'            => Auth::user()->username,

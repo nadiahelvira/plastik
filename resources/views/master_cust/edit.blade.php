@@ -189,7 +189,6 @@
 										<option value="3" {{ ($header->RING == '3') ? 'selected' : '' }}>Ring 3</option>
 									</select>
 								</div> -->
-								
                                 <div class="col-md-2">
                                     <input type="text" class="form-control RING" id="RING"name="RING"
                                     placeholder="Masukkan RING" value="{{$header->RING}}" readonly>

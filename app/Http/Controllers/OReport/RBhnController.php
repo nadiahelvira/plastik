@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OReport;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Cbg;
 use App\Models\Master\Bhn;
 use App\Models\Master\Perid;
 
@@ -23,11 +24,14 @@ class RBhnController extends Controller
 	
    public function report()
     {
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		$kd_bhn = Bhn::query()->get();
 		$per = Perid::query()->get();
 		session()->put('filter_per', '');
 
-        return view('oreport_bhn.report')->with(['kd_bhn' => $kd_bhn])->with(['per' => $per])->with(['hasil' => []]);
+        return view('oreport_bhn.report')->with(['kd_bhn' => $kd_bhn])->with(['per' => $per])->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	
    
@@ -51,6 +55,17 @@ class RBhnController extends Controller
 			$periode = $request['perio'];
 		}
 		
+		if($request['cbg'])
+		{
+			$cbg = $request['cbg'];
+		}
+			
+		if (!empty($request->cbg))
+		{
+			$filtercbg = " and bhn.CBG='".$request->cbg."' ";
+		}
+		
+
 		$bulan = substr($periode,0,2);
 		$tahun = substr($periode,3,4);
 		
@@ -61,14 +76,21 @@ class RBhnController extends Controller
 			bhnd.HRT$bulan as HRT,bhnd.NIW$bulan as NIW,bhnd.NIM$bulan as NIM,bhnd.NIK$bulan as NIK,
 		bhnd.NIL$bulan as NIL,bhnd.NIR$bulan as NIR
 		FROM bhn,bhnd
-		WHERE bhn.KD_BHN=bhnd.KD_BHN and bhnd.YER='$tahun' order by KD_BHN;
+		WHERE bhn.KD_BHN=bhnd.KD_BHN and bhnd.YER='$tahun' 
+		$filtercbg
+		order by KD_BHN;
 		");
 
-		$per = Perid::query()->get();
+
 		session()->put('filter_per', $periode);
+		session()->put('filter_cbg', $request->cbg);
+
 		if($request->has('filter'))
 		{
-			return view('oreport_bhn.report')->with(['per' => $per])->with(['hasil' => $query]);
+			$per = Perid::query()->get();
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_bhn.report')->with(['per' => $per])->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
 
 		$data=[];

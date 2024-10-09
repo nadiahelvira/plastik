@@ -22,9 +22,8 @@ class RBeliController extends Controller
 
    public function report()
     {
-		$cbg = Cbg::query()->get();
+		$cbg = Cbg::groupBy('CBG')->get();
 		session()->put('filter_cbg', '');
-
 
 		session()->put('filter_gol', '');
 		session()->put('filter_kodes1', '');
@@ -35,7 +34,7 @@ class RBeliController extends Controller
 		session()->put('filter_nabrg1', '');
 
 
-        return view('oreport_beli.report')->with(['hasil' => []])->with(['cbg' => $cbg]);
+        return view('oreport_beli.report')->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	
 	 
@@ -46,7 +45,7 @@ class RBeliController extends Controller
 		$PHPJasperXML->load_xml_file(base_path().('/app/reportc01/phpjasperxml/'.$file.'.jrxml'));
 		
 			// Check Filter
-		
+
 			if($request['cbg'])
 			{
 				$cbg = $request['cbg'];
@@ -62,6 +61,11 @@ class RBeliController extends Controller
 				$filterkodes = " and beli.KODES='".$request->kodes."' ";
 			}
 			
+			if (!empty($request->cbg))
+			{
+				$filtercbg = " and beli.CBG='".$request->cbg."' ";
+			}
+			
 			if (!empty($request->tglDr) && !empty($request->tglSmp))
 			{
 				$tglDrD = date("Y-m-d", strtotime($request->tglDr));
@@ -71,7 +75,7 @@ class RBeliController extends Controller
 
 			if (!empty($request->brg1))
 			{
-				$filterbrg = " and beid.KD_BRG='".$request->brg1."' ";
+				$filterbrg = " and belid.KD_BRG='".$request->brg1."' ";
 			}
 			
 
@@ -91,8 +95,8 @@ class RBeliController extends Controller
 									beli.NAMAS, belid.KD_BHN AS KD_BRG, belid.NA_BHN AS NA_BRG,
 									belid.QTY, belid.HARGA, belid.TOTAL, beli.GOL, belid.PPN, (belid.TOTAL + belid.PPN) AS NETT 
 								from beli,belid 
-								WHERE beli.NO_BUKTI=belid.NO_BUKTI 
-								$filtertgl $filtergol $filterkodes 
+								WHERE beli.NO_BUKTI=belid.NO_BUKTI
+								$filtertgl $filtergol $filterkodes $filtercbg
 								/*order by beli.KODES,beli.NO_BUKTI*/;
 							");
 		
@@ -101,17 +105,19 @@ class RBeliController extends Controller
 									beli.NAMAS, belid.KD_BRG, belid.NA_BRG,
 									belid.QTY, belid.HARGA, belid.TOTAL, beli.GOL, belid.PPN, (belid.TOTAL + belid.PPN) AS NETT 
 								from beli,belid 
-								WHERE beli.NO_BUKTI=belid.NO_BUKTI 
-								$filtertgl $filtergol $filterkodes 
+								WHERE beli.NO_BUKTI=belid.NO_BUKTI
+								AND beli.CBG = '$cbg' 
+								$filtertgl $filtergol $filterkodes $filtercbg 
 								/*order by beli.KODES,beli.NO_BUKTI*/;
 							");
 		}
 			
-		session()->put('filter_cbg', $request->cbg);
 
 		if($request->has('filter'))
 		{
-			return view('oreport_beli.report')->with(['hasil' => $query])->with(['cbg' => $cbg]);
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_beli.report')->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
 
 		$data=[];
