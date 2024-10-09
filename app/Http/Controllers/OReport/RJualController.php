@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Master\Cust;
+use App\Models\Master\Cbg;
 use DataTables;
 use Auth;
 use DB;
@@ -21,6 +22,9 @@ class RJualController extends Controller
 
   	public function report()
     {
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		$kodec = Cust::orderBy('KODEC')->get();
 		session()->put('filter_gol', '');
 		session()->put('filter_kodec1', '');
@@ -31,7 +35,7 @@ class RJualController extends Controller
 		session()->put('filter_nabrg1', '');
 		session()->put('filter_kdgd1', '');
 	
-        return view('oreport_jual.report')->with(['kodec' => $kodec])->with(['hasil' => []]);
+        return view('oreport_jual.report')->with(['kodec' => $kodec])->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	  
 
@@ -42,6 +46,11 @@ class RJualController extends Controller
 		$PHPJasperXML->load_xml_file(base_path().('/app/reportc01/phpjasperxml/'.$file.'.jrxml'));
 		
 			// Check Filter
+
+			if($request['cbg'])
+			{
+				$cbg = $request['cbg'];
+			}
 
 			if (!empty($request->kodec))
 			{
@@ -65,6 +74,12 @@ class RJualController extends Controller
 			{
 				$filtergudang = " and GUDANG='".$request->kdgd1."' ";
 			}
+			
+			if (!empty($request->cbg))
+			{
+				$filtercbg = " and CBG='".$request->cbg."' ";
+			}
+			
 
 
 			session()->put('filter_gol', $request->gol);
@@ -76,15 +91,20 @@ class RJualController extends Controller
 			session()->put('filter_nabrg1', $request->nabrg1);
 			session()->put('filter_kdgd1', $request->kdgd1);
 			session()->put('filter_no_so1', $request->no_so1);
+			session()->put('filter_cbg', $request->cbg);
 			
 		$query = DB::SELECT("
 			SELECT NO_BUKTI,TGL,NO_SO,TRUCK, KODEC,NAMAC,KD_BRG,NA_BRG,KG, QTY, HARGA,TOTAL, 
-			DPP, PPN, GUDANG, NOTES from jual WHERE FLAG='JL' $filtertgl  $filterkodec  $filterbrg $filtergudang;
+			DPP, PPN, GUDANG, NOTES 
+			from jual 
+			WHERE FLAG='JL' $filtertgl  $filterkodec $filterbrg $filtergudang $filtercbg;
 		");
       
 		if($request->has('filter'))
 		{
-			return view('oreport_jual.report')->with(['hasil' => $query]);
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_jual.report')->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
 
 		$data=[];

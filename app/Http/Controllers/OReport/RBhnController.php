@@ -62,7 +62,7 @@ class RBhnController extends Controller
 			
 		if (!empty($request->cbg))
 		{
-			$filtercbg = " and bhn.CBG='".$request->cbg."' ";
+			$filtercbg = " and bhnd.CBG='".$request->cbg."' ";
 		}
 		
 

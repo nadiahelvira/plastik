@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OReport;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Cbg;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,6 +23,9 @@ class RHutController extends Controller
 
     public function report()
     {
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		$kodes = Sup::orderBy('KODES')->get();
 		session()->put('filter_gol', '');
 		session()->put('filter_kodes1', '');
@@ -29,7 +33,7 @@ class RHutController extends Controller
 		session()->put('filter_tglDari', date("d-m-Y"));
 		session()->put('filter_tglSampai', date("d-m-Y"));
 		
-        return view('oreport_hut.report')->with(['kodes' => $kodes])->with(['hasil' => []]);
+        return view('oreport_hut.report')->with(['kodes' => $kodes])->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	
 	 
@@ -41,6 +45,12 @@ class RHutController extends Controller
 		$PHPJasperXML->load_xml_file(base_path().('/app/reportc01/phpjasperxml/'.$file.'.jrxml'));
 	
 			// Check Filter
+			
+			if($request['cbg'])
+			{
+				$cbg = $request['cbg'];
+			}
+
 			if (!empty($request->gol))
 			{
 				$filtergol = " and hut.GOL='".$request->gol."' ";
@@ -58,11 +68,18 @@ class RHutController extends Controller
 				$filtertgl = " and hut.TGL between '".$tglDrD."' and '".$tglSmpD."' ";
 			}
 			
+			if (!empty($request->cbg))
+			{
+				$filtercbg = " and hut.CBG='".$request->cbg."' ";
+			}
+			
+			
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodes1', $request->kodes);
 			session()->put('filter_namas1', $request->NAMAS);
 			session()->put('filter_tglDari', $request->tglDr);
 			session()->put('filter_tglSampai', $request->tglSmp);
+			session()->put('filter_cbg', $request->cbg);
 			
 		$query = DB::SELECT("SELECT hut.NO_BUKTI,
 									-- hut.NO_PO,
@@ -70,13 +87,15 @@ class RHutController extends Controller
 									hutd.TOTAL,hutd.BAYAR, hutd.SISA,hut.GOL 
 							from hut,hutd 
 							WHERE hut.NO_BUKTI=hutd.NO_BUKTI 
-							$filtertgl $filtergol $filterkodes;
+							$filtertgl $filtergol $filterkodes $filtercbg;
 			/*order by hut.KODES,hut.NO_BUKTI*/;
 		");
 		
 		if($request->has('filter'))
 		{
-			return view('oreport_hut.report')->with(['hasil' => $query]);
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_hut.report')->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
 
 		$data=[];

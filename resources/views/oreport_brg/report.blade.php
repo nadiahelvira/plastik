@@ -26,13 +26,16 @@
 					    <form method="POST" action="{{url('jasper-brg-report')}}">
 					    @csrf
 						<div class="form-group nowrap">
-							<label><strong>Periode :</strong></label>
-							<select name="perio" id="perio" class="form-control perio" style="width: 200px">
-								<option value="">--Pilih Periode--</option>
-								@foreach($per as $perD)
-									<option value="{{$perD->PERIO}}" {{ session()->get('filter_per')== $perD->PERIO ? 'selected' : '' }}>{{$perD->PERIO}}</option>
-								@endforeach
-							</select>
+							
+							<div class="col-md-2">
+								<label><strong>Periode :</strong></label>
+								<select name="perio" id="perio" class="form-control perio" style="width: 200px">
+									<option value="">--Pilih Periode--</option>
+									@foreach($per as $perD)
+										<option value="{{$perD->PERIO}}" {{ session()->get('filter_per')== $perD->PERIO ? 'selected' : '' }}>{{$perD->PERIO}}</option>
+									@endforeach
+								</select>
+							</div>
 							<!--
 							<select name="acno" id="acno" class="form-control acno" style="width: 200px">
 								<option value="">--Pilih Bahan--</option>
@@ -40,6 +43,16 @@
 								<option value="1100">Bank</option>
 							</select>
 							-->
+
+							<div class="col-md-2">
+								<label><strong>Cabang :</strong></label>
+								<select name="cbg" id="cbg" class="form-control cbg" style="width: 200px">
+									<option value="">--Pilih Cabang--</option>
+									@foreach($cbg as $cbgD)
+										<option value="{{$cbgD->CBG}}"  {{ (session()->get('filter_cbg') == $cbgD->CBG) ? 'selected' : '' }}>{{$cbgD->CBG}}</option>
+									@endforeach
+								</select>
+							</div>
 						</div>
 						<button class="btn btn-primary" type="submit" id="filter" class="filter" name="filter">Filter</button>
 						<button class="btn btn-danger" type="button" id="resetfilter" class="resetfilter" onclick="window.location='{{url("rbrg")}}'">Reset</button>

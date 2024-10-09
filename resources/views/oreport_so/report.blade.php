@@ -36,6 +36,16 @@
 								<option value="B" {{ session()->get('filter_gol')=='B' ? 'selected': ''}}>B</option>
 							</select>
 						</div>
+
+						<div class="col-md-1">
+							<label><strong>Cabang :</strong></label>
+							<select name="cbg" id="cbg" class="form-control cbg" style="width: 200px">
+								<option value="">--Pilih Cabang--</option>
+								@foreach($cbg as $cbgD)
+									<option value="{{$cbgD->CBG}}"  {{ (session()->get('filter_cbg') == $cbgD->CBG) ? 'selected' : '' }}>{{$cbgD->CBG}}</option>
+								@endforeach
+							</select>
+						</div>
 					</div>
 
 					<div class="form-group row">

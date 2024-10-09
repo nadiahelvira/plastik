@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OReport;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Cbg;
 // ganti 1
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -25,12 +26,12 @@ class RSuratsController extends Controller
 
   	public function report()
     {
-// GANTI 3 //
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		$kodec = Cust::orderBy('KODEC')->get();
 	
-		//return $acno;
-// GANTI 3 //
-        return view('oreport_surats.report')->with(['kodec' => $kodec]);
+        return view('oreport_surats.report')->with(['kodec' => $kodec])->with(['cbg' => $cbg])->with(['hasil' => []]);
 		
     }
 	
@@ -86,6 +87,11 @@ class RSuratsController extends Controller
 		$PHPJasperXML->load_xml_file(base_path().('/app/reportc01/phpjasperxml/'.$file.'.jrxml'));
 		
 			// Check Filter
+			if($request['cbg'])
+			{
+				$cbg = $request['cbg'];
+			}
+
 			if (!empty($request->gol))
 			{
 				$filtergol = " and GOL='".$request->gol."' ";
@@ -103,9 +109,26 @@ class RSuratsController extends Controller
 				$filtertgl = " WHERE TGL between '".$tglDrD."' and '".$tglSmpD."' ";
 			}
 			
+			if (!empty($request->cbg))
+			{
+				$filtercbg = " and CBG='".$request->cbg."' ";
+			}
+			
+
+			session()->put('filter_cbg', $request->cbg);
+			
 		$query = DB::SELECT("
-			SELECT NO_BUKTI,TGL,NO_SO,KODEC,NAMAC,TOTAL,NOTES,GOL from surats $filtertgl $filtergol $filterkodec;
+			SELECT NO_BUKTI,TGL,NO_SO,KODEC,NAMAC,TOTAL,NOTES,GOL 
+			from surats $filtertgl $filtergol $filterkodec $filtercbg ;
 		");
+
+		
+		if($request->has('filter'))
+		{
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_surats.report')->with(['cbg' => $cbg])->with(['hasil' => $query]);
+		}
         
 		$data=[];
 		foreach ($query as $key => $value)

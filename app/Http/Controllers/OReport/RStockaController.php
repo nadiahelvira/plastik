@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OReport;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Cbg;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Master\Brg;
@@ -21,12 +22,15 @@ class RStockaController extends Controller
 
     public function report()
     {
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		$kd_brg = Brg::query()->get();
 		session()->put('filter_tglDari', date("d-m-Y"));
 		session()->put('filter_tglSampai', date("d-m-Y"));
 		session()->put('filter_type', '');
 
-        return view('oreport_stocka.report')->with(['kd_brg' => $kd_brg])->with(['hasil' => []]);
+        return view('oreport_stocka.report')->with(['kd_brg' => $kd_brg])->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	
 	public function getStockaReport(Request $request)
@@ -48,6 +52,11 @@ class RStockaController extends Controller
 			
 			// Check Filter
 			
+			if($request['cbg'])
+			{
+				$cbg = $request['cbg'];
+			}
+
 			if (!empty($request->kd_brg))
 			{
 				$query = $query->where('KD_BRG', $request->kd_brg);
@@ -58,6 +67,14 @@ class RStockaController extends Controller
 				$query = $query->whereBetween('TGL', [$tglDrD, $tglSmp]);
 			}
 			
+			if (!empty($request->cbg))
+			{
+				$filtercbg = " and stocka.CBG='".$request->cbg."' ";
+			}
+			
+			
+			session()->put('filter_cbg', $request->cbg);
+
 			return Datatables::of($query)->addIndexColumn()->make(true);
 		}
 		
@@ -78,6 +95,12 @@ class RStockaController extends Controller
             		$tglSmp = Carbon::parse($request->tglSmp)->endOfDay();
 			
 			// Check Filter
+			
+			if($request['cbg'])
+			{
+				$cbg = $request['cbg'];
+			}
+
             $filterkdbrg='';
 			if (!empty($request->kd_brg))
 			{
@@ -94,7 +117,14 @@ class RStockaController extends Controller
 			{
 				$filtertype = " and TYPE='".$request->type."' ";
 			}
-
+			
+			if (!empty($request->cbg))
+			{
+				$filtercbg = " and stocka.CBG='".$request->cbg."' ";
+			}
+			
+			
+			session()->put('filter_cbg', $request->cbg);
 			session()->put('filter_tglDari', $request->tglDr);
 			session()->put('filter_tglSampai', $request->tglSmp);
 			session()->put('filter_posted', $request->posted);
@@ -103,12 +133,14 @@ class RStockaController extends Controller
 		$query = DB::SELECT("
 		    SELECT NO_BUKTI, TGL, KD_BRG, NA_BRG, KG, NOTES 
             from stocka
-            $filtertgl $filterkdbrg $filtertype;
+            $filtertgl $filterkdbrg $filtertype $filtercbg;
 		");
 
 		if($request->has('filter'))
 		{
-			return view('oreport_stocka.report')->with(['hasil' => $query]);
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_stocka.report')->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
 
 		$data=[];

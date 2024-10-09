@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OReport;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Cbg;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -20,6 +21,9 @@ class RPoController extends Controller
 {
     public function report()
     {
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		session()->put('filter_gol', '');
 		session()->put('filter_kodes1', '');
 		session()->put('filter_namas1', '');
@@ -28,7 +32,7 @@ class RPoController extends Controller
 		session()->put('filter_tglDari', date("d-m-Y"));
 		session()->put('filter_tglSampai', date("d-m-Y"));
 
-        return view('oreport_po.report')->with(['hasil' => []]);
+        return view('oreport_po.report')->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	
 	
@@ -40,6 +44,11 @@ class RPoController extends Controller
 		$PHPJasperXML->load_xml_file(base_path().('/app/reportc01/phpjasperxml/'.$file.'.jrxml'));
 		
 			// Check Filter
+			if($request['cbg'])
+			{
+				$cbg = $request['cbg'];
+			}
+
 			if (!empty($request->gol))
 			{
 				$filtergol = " and po.GOL='".$request->gol."' ";
@@ -57,6 +66,12 @@ class RPoController extends Controller
 				$filtertgl = " WHERE po.TGL between '".$tglDrD."' and '".$tglSmpD."' ";
 			}	
 			
+			if (!empty($request->cbg))
+			{
+				$filtercbg = " and po.CBG='".$request->cbg."' ";
+			}
+			
+			
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodes1', $request->kodes);
 			session()->put('filter_namas1', $request->NAMAS);
@@ -64,6 +79,7 @@ class RPoController extends Controller
 			session()->put('filter_tglSampai', $request->tglSmp);
 			session()->put('filter_brg1', $request->brg1);
 			session()->put('filter_nabrg1', $request->nabrg1);
+			session()->put('filter_cbg', $request->cbg);
 		
 		if( $filtergol == 'J' ){
 			
@@ -72,7 +88,7 @@ class RPoController extends Controller
 				po.NOTES, pod.SATUAN,
 				po.GOL, 
 				pod.KIRIM, po.SISA from po, pod
-				$filtertgl $filtergol $filterkodes
+				$filtertgl $filtergol $filterkodes $filtercbg
 				ORDER BY NO_BUKTI;
 			");	
 		} else {
@@ -81,24 +97,16 @@ class RPoController extends Controller
 				po.NOTES, pod.SATUAN,
 				po.GOL, 
 				pod.KIRIM, po.SISA from po, pod
-				$filtertgl $filtergol $filterkodes
+				$filtertgl $filtergol $filterkodes $filtercbg
 				ORDER BY NO_BUKTI;
 			");	
 		}
 
-
-		// $query = DB::SELECT("SELECT po.NO_BUKTI, po.TGL, po.KODES, po.NAMAS, 
-		// 	pod.KD_BRG, pod.NA_BRG, pod.QTY, pod.HARGA, pod.TOTAL, 
-		// 	po.NOTES, pod.SATUAN,
-		// 	po.GOL, 
-		// 	pod.KIRIM, po.SISA from po, pod
-		// 	$filtertgl $filtergol $filterkodes
-		// 	ORDER BY NO_BUKTI;
-		// ");	
-
 		if($request->has('filter'))
 		{
-			return view('oreport_po.report')->with(['hasil' => $query]);
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_po.report')->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
 
 		$data=[];

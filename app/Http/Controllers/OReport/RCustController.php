@@ -4,6 +4,7 @@ namespace App\Http\Controllers\OReport;
 
 use App\Http\Controllers\Controller;
 use App\Models\Master\Cust;
+use App\Models\Master\Cbg;
 use App\Models\Master\Perid;
 
 use Carbon\Carbon;
@@ -22,11 +23,14 @@ class RCustController extends Controller
 {
    public function report()
     {
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		$kodec = Cust::query()->get();
 		$per = Perid::query()->get();
 		session()->put('filter_per', '');
 		
-        return view('oreport_cust.report')->with(['kodec' => $kodec])->with(['per' => $per])->with(['hasil' => []]);
+        return view('oreport_cust.report')->with(['kodec' => $kodec])->with(['per' => $per])->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	
 	
@@ -38,7 +42,13 @@ class RCustController extends Controller
 		$PHPJasperXML->load_xml_file(base_path().('/app/reportc01/phpjasperxml/'.$file.'.jrxml'));
 		
 		
-        	if ($request->session()->has('periode')) 
+		
+		if($request['cbg'])
+		{
+			$cbg = $request['cbg'];
+		}
+
+        if ($request->session()->has('periode')) 
 		{
 			$periode = $request->session()->get('periode')['bulan']. '/' . $request->session()->get('periode')['tahun'];
 		} else
@@ -50,7 +60,16 @@ class RCustController extends Controller
 		{
 			$periode = $request['perio'];
 		}
+
+			
+		if (!empty($request->cbg))
+		{
+			$filtercbg = " and custd.CBG='".$request->cbg."' ";
+		}
 		
+		
+		session()->put('filter_cbg', $request->cbg);
+
 		$bulan = substr($periode,0,2);
 		$tahun = substr($periode,3,4);
 		/*     
@@ -80,15 +99,19 @@ class RCustController extends Controller
 		    GROUP BY KODEC
 		) as xxx on custd.KODEC=xxx.KODEC
 		where cust.KODEC = custd.KODEC #and cust.KODEC >=@KODEC1 and cust.KODEC<=@KODEC2 
-		and custd.YER='$tahun' and ( custd.AW$bulan<>0 or custd.MA$bulan<>0 or custd.KE$bulan<>0 or custd.LN$bulan<>0 or custd.AK$bulan<>0 )
+		and custd.YER='$tahun' and ( custd.AW$bulan<>0 or custd.MA$bulan<>0 or custd.KE$bulan<>0 
+		or custd.LN$bulan<>0 or custd.AK$bulan<>0 ) $filtercbg
 		order by cust.KODEC;
 		");
 
-		$per = Perid::query()->get();
 		session()->put('filter_per', $periode);
+		session()->put('filter_cbg', $request->cbg);
+
 		if($request->has('filter'))
 		{
-			return view('oreport_cust.report')->with(['per' => $per])->with(['hasil' => $query]);
+			$per = Perid::query()->get();
+			$cbg = Cbg::groupBy('CBG')->get();
+			return view('oreport_cust.report')->with(['per' => $per])->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
 
 		$data=[];

@@ -50,6 +50,16 @@
 							<option value="1100">Bank</option>
 						</select>
 						-->
+
+						<div class="col-md-1">
+							<label><strong>Cabang :</strong></label>
+							<select name="cbg" id="cbg" class="form-control cbg" style="width: 200px">
+								<option value="">--Pilih Cabang--</option>
+								@foreach($cbg as $cbgD)
+									<option value="{{$cbgD->CBG}}"  {{ (session()->get('filter_cbg') == $cbgD->CBG) ? 'selected' : '' }}>{{$cbgD->CBG}}</option>
+								@endforeach
+							</select>
+						</div>
 					</div>
 					<button class="btn btn-primary" type="submit" id="filter" class="filter" name="filter">Filter</button>
 					<button class="btn btn-danger" type="button" id="resetfilter" class="resetfilter" onclick="window.location='{{url("rsup")}}'">Reset</button>

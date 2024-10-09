@@ -42,6 +42,16 @@
 							<label class="form-label">Nama</label>
 							<input type="text" class="form-control NAMAS" id="NAMAS" name="NAMAS" placeholder="Nama" value="{{ session()->get('filter_namas1') }}" readonly>
 						</div>
+
+						<div class="col-md-1">
+							<label><strong>Cabang :</strong></label>
+							<select name="cbg" id="cbg" class="form-control cbg" style="width: 200px">
+								<option value="">--Pilih Cabang--</option>
+								@foreach($cbg as $cbgD)
+									<option value="{{$cbgD->CBG}}"  {{ (session()->get('filter_cbg') == $cbgD->CBG) ? 'selected' : '' }}>{{$cbgD->CBG}}</option>
+								@endforeach
+							</select>
+						</div>
 					</div>
 
 					<!-- <div class="form-group row">

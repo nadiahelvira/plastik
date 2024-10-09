@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Master\Brg;
+use App\Models\Master\Cbg;
 use DataTables;
 use Auth;
 use DB;
@@ -21,12 +22,15 @@ class RStockbController extends Controller
 
     public function report()
     {
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		$kd_brg = Brg::query()->get();
 		session()->put('filter_tglDari', date("d-m-Y"));
 		session()->put('filter_tglSampai', date("d-m-Y"));
 		session()->put('filter_type', '');
 
-        return view('oreport_stockb.report')->with(['kd_brg' => $kd_brg])->with(['hasil' => []]);
+        return view('oreport_stockb.report')->with(['kd_brg' => $kd_brg])->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	
 	public function getStockbReport(Request $request)
@@ -78,6 +82,12 @@ class RStockbController extends Controller
             		$tglSmp = Carbon::parse($request->tglSmp)->endOfDay();
 			
 			// Check Filter
+			
+			if($request['cbg'])
+			{
+				$cbg = $request['cbg'];
+			}
+
             $filterkdbrg='';
 			if (!empty($request->kd_brg))
 			{
@@ -94,21 +104,30 @@ class RStockbController extends Controller
 			{
 				$filtertype = " and TYPE='".$request->type."' ";
 			}
+			
+			if (!empty($request->cbg))
+			{
+				$filtercbg = " and stockb.CBG='".$request->cbg."' ";
+			}
+			
 
 			session()->put('filter_tglDari', $request->tglDr);
 			session()->put('filter_tglSampai', $request->tglSmp);
 			session()->put('filter_posted', $request->posted);
 			session()->put('filter_type', $request->type);
+			session()->put('filter_cbg', $request->cbg);
 		
 		$query = DB::SELECT("
 		    SELECT NO_BUKTI, TGL, KD_BRG, NA_BRG, KG, NOTES 
             from stockb
-            $filtertgl $filterkdbrg $filtertype;
+            $filtertgl $filterkdbrg $filtertype $filtercbg ;
 		");
 
 		if($request->has('filter'))
 		{
-			return view('oreport_stockb.report')->with(['hasil' => $query]);
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_stockb.report')->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
 
 		$data=[];

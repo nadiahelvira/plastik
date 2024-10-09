@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Master\Cust;
+use App\Models\Master\Cbg;
 use DataTables;
 use Auth;
 use DB;
@@ -21,6 +22,9 @@ class RSoController extends Controller
 
 	public function report()
     {
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		$kodec = Cust::query()->get();
 		session()->put('filter_gol', '');
 		session()->put('filter_kodec1', '');
@@ -33,7 +37,7 @@ class RSoController extends Controller
 		session()->put('filter_brg1', '');
 		session()->put('filter_nabrg1', '');
 
-        return view('oreport_so.report')->with(['kodec' => $kodec])->with(['hasil' => []]);
+        return view('oreport_so.report')->with(['kodec' => $kodec])->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	
 	
@@ -44,7 +48,13 @@ class RSoController extends Controller
 		$PHPJasperXML = new PHPJasperXML();
 		$PHPJasperXML->load_xml_file(base_path().('/app/reportc01/phpjasperxml/'.$file.'.jrxml'));
 		
-			// Check Filter
+			// Check Filterk Filter
+
+			if($request['cbg'])
+			{
+				$cbg = $request['cbg'];
+			}
+
 			if (!empty($request->gol))
 			{
 				$filtergol = " and so.GOL='".$request->gol."' ";
@@ -77,6 +87,12 @@ class RSoController extends Controller
 			{
 				$filterbrg = " and sod.KD_BRG='".$request->brg1."' ";
 			}
+			
+			if (!empty($request->cbg))
+			{
+				$filtercbg = " and so.CBG='".$request->cbg."' ";
+			}
+			
 
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodec1', $request->kodec);
@@ -86,13 +102,14 @@ class RSoController extends Controller
 			session()->put('filter_sls', $request->sls);
 			session()->put('filter_brg1', $request->brg1);
 			session()->put('filter_nabrg1', $request->nabrg1);
+			session()->put('filter_cbg', $request->cbg);
 		
 		if($filtergol == 'B'){
 				$query = DB::SELECT("SELECT so.NO_BUKTI AS NO_BUKTI, so.TGL AS TGL, so.KODEC AS KODEC, so.NAMAC AS NAMAC, sod.KD_BHN AS KD_BRG, sod.NA_BHN AS NA_BRG, 
 								sod.QTY AS QTY, sod.HARGA AS HARGA, sod.TOTAL AS TOTAL, sod.KET AS KET, so.GOL AS GOL 
 						from so,sod
 						WHERE so.NO_BUKTI=sod.NO_BUKTI
-						$filtertgl $filtergol $filterkodec 
+						$filtertgl $filtergol $filterkodec $filtercbg
 						/*order by so.KODEC,so.NO_BUKTI*/;
 				"); 
 
@@ -102,7 +119,7 @@ class RSoController extends Controller
 								sod.QTY AS QTY, sod.HARGA AS HARGA, sod.TOTAL AS TOTAL, sod.KET AS KET, so.GOL AS GOL  
 						from so,sod
 						WHERE so.NO_BUKTI=sod.NO_BUKTI
-						$filtertgl $filtergol $filterkodec 
+						$filtertgl $filtergol $filterkodec $filtercbg
 						/*order by so.KODEC,so.NO_BUKTI*/;
 				");
 		}
@@ -110,7 +127,9 @@ class RSoController extends Controller
 		
 		if($request->has('filter'))
 		{
-			return view('oreport_so.report')->with(['hasil' => $query]);
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_so.report')->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
 
 		$data=[];

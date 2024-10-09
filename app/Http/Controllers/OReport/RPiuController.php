@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Master\Cust;
+use App\Models\Master\Cbg;
 use DataTables;
 use Auth;
 use DB;
@@ -20,6 +21,9 @@ class RPiuController extends Controller
 {
  	public function report()
     {
+		$cbg = Cbg::groupBy('CBG')->get();
+		session()->put('filter_cbg', '');
+
 		$kodec = Cust::orderBy('KODEC')->get();
 		session()->put('filter_gol', '');
 		session()->put('filter_kodec1', '');
@@ -29,7 +33,7 @@ class RPiuController extends Controller
 		session()->put('filter_tglDari', date("d-m-Y"));
 		session()->put('filter_tglSampai', date("d-m-Y"));
 		
-        return view('oreport_piu.report')->with(['kodec' => $kodec])->with(['hasil' => []]);
+        return view('oreport_piu.report')->with(['kodec' => $kodec])->with(['cbg' => $cbg])->with(['hasil' => []]);
     }
 	
 	public function getPiuReport(Request $request)
@@ -76,6 +80,11 @@ class RPiuController extends Controller
 		$PHPJasperXML->load_xml_file(base_path().('/app/reportc01/phpjasperxml/'.$file.'.jrxml'));
 		
 			// Check Filter
+			if($request['cbg'])
+			{
+				$cbg = $request['cbg'];
+			}
+
 			if (!empty($request->kodet))
 			{
 				$filterkodet = " WHERE KODET='".$request->kodet."' ";
@@ -98,6 +107,12 @@ class RPiuController extends Controller
 				$filtertgl = " and piu.TGL between '".$tglDrD."' and '".$tglSmpD."' ";
 			}
 			
+			if (!empty($request->cbg))
+			{
+				$filtercbg = " and piu.CBG='".$request->cbg."' ";
+			}
+			
+			
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodec1', $request->kodec);
 			session()->put('filter_namac1', $request->NAMAC);
@@ -105,6 +120,7 @@ class RPiuController extends Controller
 			session()->put('filter_namat1', $request->NAMAT);
 			session()->put('filter_tglDari', $request->tglDr);
 			session()->put('filter_tglSampai', $request->tglSmp);
+			session()->put('filter_cbg', $request->cbg);
 
 		$query = DB::SELECT("
 		SELECT * from 
@@ -112,14 +128,16 @@ class RPiuController extends Controller
 			SELECT piu.NO_BUKTI,piu.BACNO,piu.BNAMA,piu.NO_SO,piu.TGL,piu.KODEC,piu.NAMAC,piud.NO_FAKTUR,piud.TOTAL,piud.BAYAR,piud.SISA,piu.GOL, 
 			(SELECT KODET from so WHERE NO_BUKTI=(SELECT NO_SO from jual WHERE NO_BUKTI=piud.NO_FAKTUR limit 1) limit 1) as KODET,
 			(SELECT NAMAT from so WHERE NO_BUKTI=(SELECT NO_SO from jual WHERE NO_BUKTI=piud.NO_FAKTUR limit 1) limit 1) as NAMAT 
-			from piu,piud WHERE piu.NO_BUKTI=piud.NO_BUKTI  $filtertgl $filtergol $filterkodec
+			from piu,piud WHERE piu.NO_BUKTI=piud.NO_BUKTI  $filtertgl $filtergol $filterkodec $filtercbg
 		) as rpiu
 		$filterkodet
 		");
 
 		if($request->has('filter'))
 		{
-			return view('oreport_piu.report')->with(['hasil' => $query]);
+			$cbg = Cbg::groupBy('CBG')->get();
+
+			return view('oreport_piu.report')->with(['cbg' => $cbg])->with(['hasil' => $query]);
 		}
         
 		$data=[];
