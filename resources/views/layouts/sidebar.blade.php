@@ -152,25 +152,6 @@
                 </a>
               </li>
               @endif
-
-              <!-- @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
-              <li class="nav-item">
-                <a href="{{url('fo?JNSFO=FW')}}" class="nav-link">
-                  <i class="nav-icon fas fa-archive icon-blue"></i>
-                  <p>Formula Barang 1/2 Jadi</p>
-                </a>
-              </li>
-              @endif -->
-              <!-- @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
-              <li class="nav-item">
-                <a href="{{url('fourut')}}" class="nav-link">
-                  <i class="nav-icon fas fa-archive icon-blue"></i>
-                  <p>Formula Urut</p>
-                </a>
-              </li>
-              @endif -->
-
-
              
 			  
 			        @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
