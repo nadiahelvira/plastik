@@ -397,7 +397,7 @@
 		
  	
 	/////////////////////////////////////////////////////////	
-				var dTableBCust;
+		var dTableBCust;
 		loadDataBCust = function(){
 		
 			$.ajax(
