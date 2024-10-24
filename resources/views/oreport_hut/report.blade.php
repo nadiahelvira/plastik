@@ -34,14 +34,23 @@
 									<option value="Z" {{ session()->get('filter_gol')=='Z' ? 'selected': ''}}>Z</option>
 								</select>
 							</div> -->
+
+
 							<div class="col-md-2">						
 								<label class="form-label">Suplier</label>
 								<input type="text" class="form-control kodes" id="kodes" name="kodes" placeholder="Pilih Suplier" value="{{ session()->get('filter_kodes1') }}" readonly>
 							</div>  
-							<div class="col-md-3">
+							<!-- <div class="col-md-3">
 								<label class="form-label">Nama</label>
 								<input type="text" class="form-control NAMAS" id="NAMAS" name="NAMAS" placeholder="Nama" value="{{ session()->get('filter_namas1') }}" readonly>
-							</div>
+							</div> -->
+							<div class="col-md-1">
+								<label class="form-label"> s.d </label>
+							</div> 
+							<div class="col-md-2">						
+								<label class="form-label">Suplier 2</label>
+								<input type="text" class="form-control kodes2" id="kodes2" name="kodes2" placeholder="ZZZ" value="{{ session()->get('filter_kodes2') }}" readonly>
+							</div> 
 
 							<div class="col-md-2">
 								<label><strong>Cabang :</strong></label>
@@ -229,6 +238,37 @@
 			</div>
 	  	</div>
 	</div>
+
+	
+<div class="modal fade" id="browseSuplier2Modal" tabindex="-1" role="dialog" aria-labelledby="browseSuplier2ModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="browseSuplier2ModalLabel">Cari Suplier2</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-bsuplier2">
+				<thead>
+					<tr>
+						<th>Suplier</th>
+						<th>Nama</th>
+						<th>Alamat</th>
+						<th>Kota</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		</div>
+		</div>
+	</div>
+</div>
 	@endsection
 
 	@section('javascripts')
@@ -366,5 +406,62 @@
 				browseSuplier();
 			}
 		}); 
+
+		
+//////////////////////////////////////////////////////////////////////
+
+var dTableBSuplier2;
+	loadDataBSuplier2 = function(){
+	
+		$.ajax(
+		{
+			type: 'GET', 		
+			url: "{{url('sup/browse')}}",
+			data: {
+				'GOL': $('#gol').val(),
+			},
+			success: function( response )
+			{
+				resp = response;
+				if(dTableBSuplier2){
+					dTableBSuplier2.clear();
+				}
+				for(i=0; i<resp.length; i++){
+					
+					dTableBSuplier2.row.add([
+						'<a href="javascript:void(0);" onclick="chooseSuplier2(\''+resp[i].KODES+'\')">'+resp[i].KODES+'</a>',
+						resp[i].NAMAS,
+						resp[i].ALAMAT,
+						resp[i].KOTA,
+					]);
+				}
+				dTableBSuplier2.draw();
+			}
+		});
+	}
+	
+	dTableBSuplier2 = $("#table-bsuplier2").DataTable({
+		
+	});
+	
+	browseSuplier2 = function(){
+		loadDataBSuplier2();
+		$("#browseSuplier2Modal").modal("show");
+	}
+	
+	chooseSuplier2 = function(KODES){
+		$("#kodes2").val(KODES);
+		// $("#NAMAS").val(NAMAS);	
+		$("#browseSuplier2Modal").modal("hide");
+	}
+	
+	$("#kodes2").keypress(function(e){
+		if(e.keyCode == 46){
+			e.preventDefault();
+			browseSuplier2();
+		}
+	}); 
+
+//////////////////////////////////////////////////////////////////////	
 	</script>
 	@endsection

@@ -116,6 +116,16 @@
                                     <input type="text" class="form-control NA_GRUP" id="NA_GRUP" name="NA_GRUP"
                                     placeholder="" value="{{$header->NA_GRUP}}" readonly>
                                 </div>
+								
+								<div class="col-md-1">
+									<label style="color:red">*</label>	
+                                    <label for="LOKASI" class="form-label">Lokasi</label>
+                                </div>
+								
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control LOKASI" id="LOKASI" name="LOKASI"
+                                    placeholder="" value="{{$header->LOKASI}}" readonly>
+                                </div>
 							</div>
 							
                             <div class="form-group row">
@@ -518,6 +528,34 @@
 	  </div>
 	</div>
 
+	<div class="modal fade" id="browseLokasiModal" tabindex="-1" role="dialog" aria-labelledby="browseLokasiModalLabel" aria-hidden="true">
+	 <div class="modal-dialog mw-100 w-75" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseLokasiModalLabel">Cari Lokasi</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-blokasi">
+				<thead>
+					<tr>
+						<th>Kode</th>
+						<th>Lokasi</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
 @endsection
 @section('footer-scripts')
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
@@ -840,7 +878,60 @@
 		
 		
 //////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+		//CHOOSE Lokasi
+		var dTableBLokasi;
+		loadDataBLokasi = function(){
+			$.ajax(
+			{
+				type: 'GET',    
+				url: '{{url('lokasi/browse')}}',
+
+				success: function( response )
+				{
+			
+					resp = response;
+					if(dTableBLokasi){
+						dTableBLokasi.clear();
+					}
+					for(i=0; i<resp.length; i++){
+						
+						dTableBLokasi.row.add([
+							'<a href="javascript:void(0);" onclick="chooseLokasi( \''+resp[i].NAMA+'\' )">'+resp[i].KODE+'</a>',
+							resp[i].NAMA,
+						]);
+					}
+					dTableBLokasi.draw();
+				}
+			});
+		}
+		
+		dTableBLokasi = $("#table-blokasi").DataTable({
+			
+		});
+		
+		browseLokasi = function(){
+			loadDataBLokasi();
+			$("#browseLokasiModal").modal("show");
+		}
+		
+		chooseLokasi = function(NAMA){
+			$("#LOKASI").val(NAMA);
+			$("#browseLokasiModal").modal("hide");
+		}
+		
+		$("#LOKASI").keypress(function(e){
+
+			if(e.keyCode == 46){
+				e.preventDefault();
+				browseLokasi();
+			}
+		}); 
+		
+		
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 		

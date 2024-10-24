@@ -26,6 +26,7 @@ class RPoController extends Controller
 
 		session()->put('filter_gol', '');
 		session()->put('filter_kodes1', '');
+		session()->put('filter_kodes2', 'ZZZ');
 		session()->put('filter_namas1', '');
 		session()->put('filter_brg1', '');
 		session()->put('filter_nabrg1', '');
@@ -54,9 +55,14 @@ class RPoController extends Controller
 				$filtergol = " and po.GOL='".$request->gol."' ";
 			}
 			
-			if (!empty($request->kodes))
+			// if (!empty($request->kodes))
+			// {
+			// 	$filterkodes = " and po.KODES='".$request->kodes."' ";
+			// 
+		
+			if (!empty($request->kodes) && !empty($request->kodes2))
 			{
-				$filterkodes = " and po.KODES='".$request->kodes."' ";
+				$filterkodes = " WHERE po.KODES between '".$kodes."' and '".$kodes2."' ";
 			}
 			
 			if (!empty($request->tglDr) && !empty($request->tglSmp))
@@ -74,6 +80,7 @@ class RPoController extends Controller
 			
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodes1', $request->kodes);
+			session()->put('filter_kodes2', $request->kodes2);
 			session()->put('filter_namas1', $request->NAMAS);
 			session()->put('filter_tglDari', $request->tglDr);
 			session()->put('filter_tglSampai', $request->tglSmp);

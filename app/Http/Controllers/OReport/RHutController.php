@@ -29,6 +29,7 @@ class RHutController extends Controller
 		$kodes = Sup::orderBy('KODES')->get();
 		session()->put('filter_gol', '');
 		session()->put('filter_kodes1', '');
+		session()->put('filter_kodes2', '');
 		session()->put('filter_namas1', '');
 		session()->put('filter_tglDari', date("d-m-Y"));
 		session()->put('filter_tglSampai', date("d-m-Y"));
@@ -56,9 +57,14 @@ class RHutController extends Controller
 				$filtergol = " and hut.GOL='".$request->gol."' ";
 			}
 			
-			if (!empty($request->kodes))
+			// if (!empty($request->kodes))
+			// {
+			// 	$filterkodes = " and hut.KODES='".$request->kodes."' ";
+			// }
+		
+			if (!empty($request->kodes) && !empty($request->kodes2))
 			{
-				$filterkodes = " and hut.KODES='".$request->kodes."' ";
+				$filterkodes = " WHERE hut.KODES between '".$kodes."' and '".$kodes2."' ";
 			}
 			
 			if (!empty($request->tglDr) && !empty($request->tglSmp))
@@ -76,6 +82,7 @@ class RHutController extends Controller
 			
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodes1', $request->kodes);
+			session()->put('filter_kodes2', $request->kodes2);
 			session()->put('filter_namas1', $request->NAMAS);
 			session()->put('filter_tglDari', $request->tglDr);
 			session()->put('filter_tglSampai', $request->tglSmp);

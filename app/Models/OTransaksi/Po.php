@@ -21,6 +21,6 @@ class Po extends Model
     [
         "NO_BUKTI", "TGL", "JTEMPO", "PER","KODES", "NAMAS", "ALAMAT", "KOTA", "FLAG", "GOL", 
         "TOTAL", "TOTAL_QTY", "NOTES", "FLAG", "GOL", "USRNM", "TG_SMP", "TERM", "VIA", 
-        "PKP", "PPN", "NETT", "CBG", "GUDANG"
+        "PKP", "PPN", "NETT", "CBG", "GUDANG", "TDISK"
     ];
 }

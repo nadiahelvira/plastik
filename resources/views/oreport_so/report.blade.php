@@ -49,12 +49,20 @@
 					</div>
 
 					<div class="form-group row">
-						<div class="col-md-2">						
+						<div class="col-md-2">							
+							<label class="form-label">Customer 1</label>				
 							<input type="text" class="form-control kodec" id="kodec" name="kodec" placeholder="Pilih Customer" value="{{ session()->get('filter_kodec1') }}" readonly>
 						</div>  
-						<div class="col-md-3">
+						<!-- <div class="col-md-3">
 							<input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="Nama" value="{{ session()->get('filter_namac1') }}" readonly>
-						</div>
+						</div> -->
+						<div class="col-md-1">
+							<label class="form-label"> s.d </label>
+						</div> 
+						<div class="col-md-2">						
+							<label class="form-label">Customer 2</label>
+							<input type="text" class="form-control kodec2" id="kodec2" name="kodec2" placeholder="ZZZ" value="{{ session()->get('filter_kodec2') }}" readonly>
+						</div>  
 						
 					</div>
 					
@@ -258,6 +266,36 @@
 	</div>
 </div>
 
+<div class="modal fade" id="browseCust2Modal" tabindex="-1" role="dialog" aria-labelledby="browseCust2ModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="browseCust2ModalLabel">Cari Customer 2</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-cust2">
+				<thead>
+					<tr>
+						<th>Customer</th>
+						<th>Nama</th>
+						<th>Alamat</th>
+						<th>Kota</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		</div>
+		</div>
+	</div>
+</div>
+
 
 <div class="modal fade" id="browseBrgModal" tabindex="-1" role="dialog" aria-labelledby="browseBrgModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
@@ -320,7 +358,7 @@
 				for(i=0; i<resp.length; i++){
 					
 					dTableCust.row.add([
-						'<a href="javascript:void(0);" onclick="chooseCust(\''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\')">'+resp[i].KODEC+'</a>',
+						'<a href="javascript:void(0);" onclick="chooseCust(\''+resp[i].KODEC+'\')">'+resp[i].KODEC+'</a>',
 						resp[i].NAMAC,
 						resp[i].ALAMAT,
 						resp[i].KOTA,
@@ -340,9 +378,9 @@
 		$("#browseCustModal").modal("show");
 	}
 	
-	chooseCust = function(KODEC, NAMAC, ALAMAT, KOTA){
+	chooseCust = function(KODEC){
 		$("#kodec").val(KODEC);
-		$("#NAMAC").val(NAMAC);	
+		// $("#NAMAC").val(NAMAC);	
 		$("#browseCustModal").modal("hide");
 	}
 	
@@ -352,7 +390,63 @@
 			browseCust();
 		}
 	});
+
+/////////////////////////////////////////////////////////////////////
+
 	
+	var dTableCust2;
+	loadDataCust2 = function(){
+	
+		$.ajax(
+		{
+			type: 'GET', 		
+			url: "{{url('cust/browse')}}",
+			data: {
+				'GOL': $('#gol').val(),
+			},
+			success: function( response )
+			{
+				resp = response;
+				if(dTableCust2){
+					dTableCust2.clear();
+				}
+				for(i=0; i<resp.length; i++){
+					
+					dTableCust2.row.add([
+						'<a href="javascript:void(0);" onclick="chooseCust2(\''+resp[i].KODEC+'\')">'+resp[i].KODEC+'</a>',
+						resp[i].NAMAC,
+						resp[i].ALAMAT,
+						resp[i].KOTA,
+					]);
+				}
+				dTableCust2.draw();
+			}
+		});
+	}
+	
+	dTableCust2 = $("#table-cust2").DataTable({
+		
+	});
+	
+	browseCust2 = function(){
+		loadDataCust2();
+		$("#browseCust2Modal").modal("show");
+	}
+	
+	chooseCust2 = function(KODEC){
+		$("#kodec2").val(KODEC);
+		// $("#NAMAC").val(NAMAC);	
+		$("#browseCust2Modal").modal("hide");
+	}
+	
+	$("#kodec2").keypress(function(e){
+		if(e.keyCode == 46){
+			e.preventDefault();
+			browseCust2();
+		}
+	});
+
+///////////////////////////////////////////////////////////////////
 	
 	var dTableBTujuan;
 	var rowidTujuan;

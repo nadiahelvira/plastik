@@ -29,22 +29,22 @@
 				<div class="card-body">
 					<form method="POST" action="{{url('jasper-jual-report')}}">
 					@csrf
+
 					<div class="form-group row">
-
-
-						<div class="col-md-2">						
-							<label class="form-label">Kode</label>
+						<div class="col-md-2">							
+							<label class="form-label">Customer 1</label>				
 							<input type="text" class="form-control kodec" id="kodec" name="kodec" placeholder="Pilih Customer" value="{{ session()->get('filter_kodec1') }}" readonly>
 						</div>  
-						<div class="col-md-3">
-							<label class="form-label">Nama</label>
+						<!-- <div class="col-md-3">
 							<input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="Nama" value="{{ session()->get('filter_namac1') }}" readonly>
-						</div>
-
-						<!-- <div class="col-md-1" align="left"><strong style="font-size: 13px;">Gudang :</strong></div>
-                        <div class="col-md-2">
-                            <input type="text" class="form-control kdgd1" id="kdgd1" name="kdgd1" placeholder="Pilih Gudang# 1" value="{{ session()->get('filter_kdgd1') }}" readonly>
-                        </div>   -->
+						</div> -->
+						<div class="col-md-1">
+							<label class="form-label"> s.d </label>
+						</div> 
+						<div class="col-md-2">						
+							<label class="form-label">Customer 2</label>
+							<input type="text" class="form-control kodec2" id="kodec2" name="kodec2" placeholder="ZZZ" value="{{ session()->get('filter_kodec2') }}" readonly>
+						</div>  
 
 						<div class="col-md-2">
 							<label><strong>Cabang :</strong></label>
@@ -55,6 +55,16 @@
 								@endforeach
 							</select>
 						</div>
+						
+					</div>
+
+
+					<div class="form-group row">
+
+						<!-- <div class="col-md-1" align="left"><strong style="font-size: 13px;">Gudang :</strong></div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control kdgd1" id="kdgd1" name="kdgd1" placeholder="Pilih Gudang# 1" value="{{ session()->get('filter_kdgd1') }}" readonly>
+                        </div>   -->
 					</div>
 					
 					
@@ -283,6 +293,36 @@
 	</div>
 </div>
 
+<div class="modal fade" id="browseCust2Modal" tabindex="-1" role="dialog" aria-labelledby="browseCust2ModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="browseCust2ModalLabel">Cari Customer 2</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-cust2">
+				<thead>
+					<tr>
+						<th>Customer</th>
+						<th>Nama</th>
+						<th>Alamat</th>
+						<th>Kota</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		</div>
+		</div>
+	</div>
+</div>
+
 <div class="modal fade" id="browseGudangModal" tabindex="-1" role="dialog" aria-labelledby="browseGudangModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 	<div class="modal-content">
@@ -351,106 +391,7 @@
 		$('.date').datepicker({  
 			dateFormat: 'dd-mm-yy'
 		}); 
-		/*
-		function fill_datatable( kodec = '' , gol='',tglDr = '', tglSmp = '' )
-		{
-			var dataTable = $('.datatable').DataTable({
-				dom: '<"row"<"col-4"B>>fltip',
-				lengthMenu: [
-					[ 10, 25, 50, -1 ],
-					[ '10 rows', '25 rows', '50 rows', 'Show all' ]
-				],
-				processing: true,
-				serverSide: true,
-				autoWidth: true,
-				'scrollX': true,
-				'scrollY': '400px',
-				"order": [[ 0, "asc" ]],
-				ajax: 
-				{
-					url: '{{ route('get-jual-report') }}',
-					data: {
-						kodec: kodec,
-						gol: gol,
-						tglDr: tglDr,
-						tglSmp: tglSmp
-					}
-				},
-				columns: 
-				[
-					{data: 'DT_RowIndex', orderable: false, searchable: false },
-					{data: 'NO_BUKTI', name: 'NO_BUKTI'},
-					{data: 'TGL', name: 'tgl'},
-					{data: 'NO_SO', name: 'NO_SO'},
-					{data: 'KODEC', name: 'KODEC'},
-					{data: 'NAMAC', name: 'NAMAC'},
-					{data: 'KD_BRG', name: 'KD_BRG'},
-					{data: 'NA_BRG', name: 'NA_BRG'},
-					{
-						data: 'KG1',
-						name: 'KG1',
-						render: $.fn.dataTable.render.number( ',', '.', 0, '' )
-					},
-					{
-						data: 'KG',
-						name: 'KG',
-						render: $.fn.dataTable.render.number( ',', '.', 0, '' )
-					},
-					{
-						data: 'HARGA',
-						name: 'HARGA',
-						render: $.fn.dataTable.render.number( ',', '.', 0, '' )
-					},
-					{
-						data: 'TOTAL',
-						name: 'TOTAL',
-						render: $.fn.dataTable.render.number( ',', '.', 0, '' )
-					}
-				],
-				
-				columnDefs: [
-				{
-				"className": "dt-center", 
-				"targets": 0
-				},
-				{
-				targets: 2,
-				render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' )
-				},
-				{
-				"className": "dt-right", 
-				"targets": [8,9,10,11]
-				}
-				
-				],
-				
-				
-			});
-		}
-		
-		$('#filter').click(function() {
-			var kodec = $('#kodec').val();
-			var gol = $('#gol').val();
-			var tglDr = $('#tglDr').val();
-			var tglSmp = $('#tglSmp').val();
-			
-			if (kodec != '' || (tglDr != '' && tglSmp != ''))
-			{
-				$('.datatable').DataTable().destroy();
-				fill_datatable(kodec, gol,tglDr, tglSmp);
-			}
-		});
-
-		$('#resetfilter').click(function() {
-			var kodec = '';
-			var gol = '';
-			var tglDr = '';
-			var tglSmp = '';
-
-			$('.datatable').DataTable().destroy();
-			fill_datatable(kodec, gol,tglDr, tglSmp);
-		});
-		*/
+	
 	});
 	
 	var dTableCust;
@@ -505,6 +446,62 @@
 		}
 	});
 
+/////////////////////////////////////////////////////////////////////
+
+	
+var dTableCust2;
+	loadDataCust2 = function(){
+	
+		$.ajax(
+		{
+			type: 'GET', 		
+			url: "{{url('cust/browse')}}",
+			data: {
+				'GOL': $('#gol').val(),
+			},
+			success: function( response )
+			{
+				resp = response;
+				if(dTableCust2){
+					dTableCust2.clear();
+				}
+				for(i=0; i<resp.length; i++){
+					
+					dTableCust2.row.add([
+						'<a href="javascript:void(0);" onclick="chooseCust2(\''+resp[i].KODEC+'\')">'+resp[i].KODEC+'</a>',
+						resp[i].NAMAC,
+						resp[i].ALAMAT,
+						resp[i].KOTA,
+					]);
+				}
+				dTableCust2.draw();
+			}
+		});
+	}
+	
+	dTableCust2 = $("#table-cust2").DataTable({
+		
+	});
+	
+	browseCust2 = function(){
+		loadDataCust2();
+		$("#browseCust2Modal").modal("show");
+	}
+	
+	chooseCust2 = function(KODEC){
+		$("#kodec2").val(KODEC);
+		// $("#NAMAC").val(NAMAC);	
+		$("#browseCust2Modal").modal("hide");
+	}
+	
+	$("#kodec2").keypress(function(e){
+		if(e.keyCode == 46){
+			e.preventDefault();
+			browseCust2();
+		}
+	});
+
+///////////////////////////////////////////////////////////////////
 	
 	var dTableBGudang;
 	var rowidGudang;

@@ -28,6 +28,7 @@ class RJualController extends Controller
 		$kodec = Cust::orderBy('KODEC')->get();
 		session()->put('filter_gol', '');
 		session()->put('filter_kodec1', '');
+		session()->put('filter_kodec2', '');
 		session()->put('filter_namac1', '');
 		session()->put('filter_tglDari', date("d-m-Y"));
 		session()->put('filter_tglSampai', date("d-m-Y"));
@@ -51,39 +52,44 @@ class RJualController extends Controller
 			{
 				$cbg = $request['cbg'];
 			}
-
-			if (!empty($request->kodec))
-			{
-				$filterkodec = " and KODEC='".$request->kodec."' ";
-			}
 			
+			// if (!empty($request->kodec))
+			// {
+			// 	$filterkodec = " and so.KODEC='".$request->kodec."' ";
+			// } 
+		
+			if (!empty($request->kodec) && !empty($request->kodec2))
+			{
+				$filterkodec = " WHERE a.KODEC between '".$kodec."' and '".$kodec2."' ";
+			}
 			
 			if (!empty($request->tglDr) && !empty($request->tglSmp))
 			{
 				$tglDrD = date("Y-m-d", strtotime($request->tglDr));
 				$tglSmpD = date("Y-m-d", strtotime($request->tglSmp));
-				$filtertgl = " and TGL between '".$tglDrD."' and '".$tglSmpD."' ";
+				$filtertgl = " and a.TGL between '".$tglDrD."' and '".$tglSmpD."' ";
 			}
 
 			if (!empty($request->brg1))
 			{
-				$filterbrg = " and KD_BRG='".$request->brg1."' ";
+				$filterbrg = " and b.KD_BRG='".$request->brg1."' ";
 			}
 
 			if (!empty($request->kdgd1))
 			{
-				$filtergudang = " and GUDANG='".$request->kdgd1."' ";
+				$filtergudang = " and a.GUDANG='".$request->kdgd1."' ";
 			}
 			
 			if (!empty($request->cbg))
 			{
-				$filtercbg = " and CBG='".$request->cbg."' ";
+				$filtercbg = " and a.CBG='".$request->cbg."' ";
 			}
 			
 
 
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodec1', $request->kodec);
+			session()->put('filter_kodec2', $request->kodec2);
 			session()->put('filter_namac1', $request->NAMAC);
 			session()->put('filter_tglDari', $request->tglDr);
 			session()->put('filter_tglSampai', $request->tglSmp);
@@ -94,10 +100,11 @@ class RJualController extends Controller
 			session()->put('filter_cbg', $request->cbg);
 			
 		$query = DB::SELECT("
-			SELECT NO_BUKTI,TGL,NO_SO,TRUCK, KODEC,NAMAC,KD_BRG,NA_BRG,KG, QTY, HARGA,TOTAL, 
-			DPP, PPN, GUDANG, NOTES 
-			from jual 
-			WHERE FLAG='JL' $filtertgl  $filterkodec $filterbrg $filtergudang $filtercbg;
+			SELECT a.NO_BUKTI, a.TGL, a.NO_SO, a.TRUCK, a.KODEC, a.NAMAC, b.KD_BRG,b.NA_BRG,
+					b.QTY, b.HARGA, b.TOTAL, 
+					b.DPP, b.PPN, a.NOTES 
+			from jual a, juald b 
+			WHERE a.FLAG='JL' $filtertgl  $filterkodec $filterbrg $filtergudang $filtercbg;
 		");
       
 		if($request->has('filter'))

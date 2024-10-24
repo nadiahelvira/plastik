@@ -143,22 +143,11 @@
               </li>
               @endif
 
-
-              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
+              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
               <li class="nav-item">
-                <a href="{{url('fo?flagz=FO')}}" class="nav-link">
-                  <i class="nav-icon fas fa-flask icon-orange"></i>
-                  <p>Formula</p>
-                </a>
-              </li>
-              @endif
-             
-			  
-			        @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
-              <li class="nav-item">
-                <a href="{{url('prs')}}" class="nav-link">
-                  <i class="nav-icon fas fa-list icon-white"></i>
-                  <p>Proses</p>
+                <a href="{{url('lokasi')}}" class="nav-link">
+                  <i class="nav-icon fas fa-anchor icon-red"></i>
+                  <p>Lokasi</p>
                 </a>
               </li>
               @endif
@@ -482,27 +471,19 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-archive icon-yellow"></i>
               <p>
-                Laporan
+                Laporan Master
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
 
             <ul class="nav nav-treeview">
               <!-- IF check privilege & divisi -->
-              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="purchase"))
-              <li class="nav-item">
-                <a href="{{url('rbhn')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-flask icon-red"></i> -->
-                  <p>Bahan Baku</p>
-                </a>
-              </li>
-              @endif 
 
               @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
               <li class="nav-item">
                 <a href="{{url('rbrg')}}" class="nav-link">
                   <!-- <i class="nav-icon fas fa-flask icon-red"></i> -->
-                  <p>Barang Jadi</p>
+                  <p>Barang </p>
                 </a>
               </li>
               @endif 
@@ -523,17 +504,25 @@
                   <p>Customer</p>
                 </a>
               </li>
-              @endif 			  
-			  
-	<!--		  @if (Auth::user()->hasRole('superadmin|operational'))
-              <li class="nav-item">
-                <a href="{{url('rpo')}}" class="nav-link">
-                  <i class="nav-icon fas fa-flask icon-red"></i>
-                  <p>Purchase Order</p>
-                </a>
-              </li>
               @endif 
-	-->		  
+
+            </ul>
+         </li>
+
+<!---------------------------------------------------------------------------------->
+
+
+          <li class="nav-item">          
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-archive icon-yellow"></i>
+              <p>
+                Laporan Pembelian
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+              <!-- IF check privilege & divisi -->	
 			  
               @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="purchase"))
               <li class="nav-item">
@@ -554,6 +543,25 @@
               </li>
               @endif 
 
+              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
+              <li class="nav-item">
+                <a href="{{url('rthut')}}" class="nav-link">
+                  <!-- <i class="nav-icon fas fa-inbox icon-green"></i> -->
+                  <p>Transaksi Hutang</p>
+                </a>
+              </li>
+              @endif 
+
+              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
+              <li class="nav-item">
+                <a href="{{url('rum')}}" class="nav-link">
+                  <!-- <i class="nav-icon fas fa-key icon-blue"></i> -->
+                  <p>Uang Muka Pembelian</p>
+                </a>
+              </li>
+              @endif 
+
+
               @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="purchase"))
               <li class="nav-item">
                 <a href="{{url('rhut')}}" class="nav-link">
@@ -561,57 +569,34 @@
                   <p>Pembayaran Hutang</p>
                 </a>
               </li>
-              @endif 			  
+              @endif 	
 			  
-              <!-- @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="purchase"))
-              <li class="nav-item">
-                <a href="{{url('rthut')}}" class="nav-link">
-                  <p>Transaksi Hutang</p>
-                </a>
-              </li>
-              @endif 
 
-              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="purchase"))
-              <li class="nav-item">
-                <a href="{{url('rum')}}" class="nav-link">
-                  <p>Uang Muka Pembelian</p>
-                </a>
-              </li>
-              @endif  -->
-			  
+            </ul>
+         </li>
+
+<!---------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------->
+
+
+          <li class="nav-item">          
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-archive icon-yellow"></i>
+              <p>
+                Laporan Penjualan
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+              <!-- IF check privilege & divisi -->	
 			  
               @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="sales"))
               <li class="nav-item">
                 <a href="{{url('rso')}}" class="nav-link">
                   <!-- <i class="nav-icon fas fa-bug icon-pink"></i> -->
                   <p>Sales Order</p>
-                </a>
-              </li>
-              @endif 
-
-              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
-              <li class="nav-item">
-                <a href="{{url('rorderk')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-globe icon-yellow"></i> -->
-                  <p>Order Kerja</p>
-                </a>
-              </li>
-              @endif 
-			  
-              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
-              <li class="nav-item">
-                <a href="{{url('rkik')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-eye icon-aqua"></i> -->
-                  <p>Kartu Instruksi Kerja</p>
-                </a>
-              </li>
-              @endif 
- 			  
-              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
-              <li class="nav-item">
-                <a href="{{url('rpakai')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-headphones icon-orange"></i> -->
-                  <p>Pemakaian Bahan</p>
                 </a>
               </li>
               @endif 
@@ -664,27 +649,9 @@
 
               @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
               <li class="nav-item">
-                <a href="{{url('rstocka')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-leaf icon-brown"></i> -->
-                  <p>Koreksi Stock Bahan</p>
-                </a>
-              </li>
-              @endif 
-
-              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
-              <li class="nav-item">
                 <a href="{{url('rstockb')}}" class="nav-link">
                   <!-- <i class="nav-icon fas fa-lock icon-white"></i> -->
                   <p>Koreksi Stock Barang</p>
-                </a>
-              </li>
-              @endif 
-			  
-              @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="production"))
-              <li class="nav-item">
-                <a href="{{url('rterima')}}" class="nav-link">
-                  <!-- <i class="nav-icon fas fa-magnet icon-purple"></i> -->
-                  <p>Hasil Produksi</p>
                 </a>
               </li>
               @endif 
@@ -692,6 +659,7 @@
             </ul>
          </li>
 
+<!---------------------------------------------------------------------------------->
 
 <!-- ...................................................................................... -->
 

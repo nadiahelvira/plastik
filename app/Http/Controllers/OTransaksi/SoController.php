@@ -135,7 +135,7 @@ class SoController extends Controller
         $CBG = Auth::user()->CBG;
 		
 		$this->setFlag($request);	
-        $so = DB::SELECT("SELECT * from so  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
+        $so = DB::SELECT("SELECT *, POSTED AS cek from so  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
                         AND GOL ='$this->GOLZ' AND CBG = '$CBG' ORDER BY NO_BUKTI ");
 	  
 	   
@@ -285,6 +285,7 @@ class SoController extends Controller
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
                 'PPN'            => (float) str_replace(',', '', $request['PPN']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
+                'TDISK'            => (float) str_replace(',', '', $request['TDISK']),
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
@@ -307,6 +308,7 @@ class SoController extends Controller
         $KET        = $request->input('KET');  
         $PPNX        = $request->input('PPNX');  
         $DPP        = $request->input('DPP');  
+        $DISK        = $request->input('DISK');  
 
         $HARGA1        = $request->input('HARGA1');  
         $HARGA2        = $request->input('HARGA2');  
@@ -341,6 +343,7 @@ class SoController extends Controller
                 $detail->TOTAL       = (float) str_replace(',', '', $TOTAL[$key]); 
                 $detail->PPN       = (float) str_replace(',', '', $PPNX[$key]); 
                 $detail->DPP       = (float) str_replace(',', '', $DPP[$key]); 
+                $detail->DISK       = (float) str_replace(',', '', $DISK[$key]); 
 
                 $detail->HARGA1       = (float) str_replace(',', '', $HARGA1[$key]); 
                 $detail->HARGA2       = (float) str_replace(',', '', $HARGA2[$key]); 
@@ -606,6 +609,7 @@ class SoController extends Controller
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
                 'PPN'            => (float) str_replace(',', '', $request['PPN']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
+                'TDISK'            => (float) str_replace(',', '', $request['TDISK']),
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
@@ -637,6 +641,7 @@ class SoController extends Controller
         $KET = $request->input('KET');			
         $PPNX = $request->input('PPNX');			
         $DPP = $request->input('DPP');	
+        $DISK = $request->input('DISK');	
 
         $HARGA1        = $request->input('HARGA1');  
         $HARGA2        = $request->input('HARGA2');  
@@ -671,6 +676,7 @@ class SoController extends Controller
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'PPN'      => (float) str_replace(',', '', $PPNX[$i]),
                         'DPP'      => (float) str_replace(',', '', $DPP[$i]),
+                        'DISK'      => (float) str_replace(',', '', $DISK[$i]),
 
                         'HARGA1'      => (float) str_replace(',', '', $HARGA1[$i]),
                         'HARGA2'      => (float) str_replace(',', '', $HARGA2[$i]),
@@ -710,6 +716,7 @@ class SoController extends Controller
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'PPN'      => (float) str_replace(',', '', $PPNX[$i]),
                         'DPP'      => (float) str_replace(',', '', $DPP[$i]),
+                        'DISK'      => (float) str_replace(',', '', $DISK[$i]),
 
                         'HARGA1'      => (float) str_replace(',', '', $HARGA1[$i]),
                         'HARGA2'      => (float) str_replace(',', '', $HARGA2[$i]),

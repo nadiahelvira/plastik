@@ -20,6 +20,6 @@ class So extends Model
     protected $fillable = 
     [
         "NO_BUKTI", "TGL", "PER","KODEC", "NAMAC", "ALAMAT", "KOTA", "TOTAL_QTY",  "TOTAL", "NOTES", "GOL", 
-        "FLAG", "USRNM", "TG_SMP", "CBG", "KODEP", "NAMAP", "RING", "KOM", "NETT", "PPN"
+        "FLAG", "USRNM", "TG_SMP", "CBG", "KODEP", "NAMAP", "RING", "KOM", "NETT", "PPN", "TDISK"
     ];
 }

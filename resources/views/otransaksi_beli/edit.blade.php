@@ -196,18 +196,19 @@
 											</th>
 											<th {{( $golz =='J' || $golz =='N') ? '' : 'hidden' }} width="200px" style="text-align:center">Nama</th>
 
-											<th width="200px" style="text-align:center">Satuan PO</th>
-											<th width="200px" style="text-align:center">Qty PO</th>
+											<th width="120px" style="text-align:center">Satuan PO</th>
+											<th width="100px" style="text-align:center">Qty PO</th>
 
-											<th width="200px" style="text-align:center">X</th>
+											<th width="100px" style="text-align:center">X</th>
 
-											<th width="200px" style="text-align:center">Satuan</th>
-											<th width="200px" style="text-align:center">Qty</th>  
+											<th width="120px" style="text-align:center">Satuan</th>
+											<th width="100px" style="text-align:center">Qty</th>  
 
-											<th width="200px" style="text-align:center">Harga</th>
-											<th width="200px" style="text-align:center">Total</th>
-											<th width="200px" style="text-align:center">PPN</th>
-											<th width="200px" style="text-align:center">DPP</th>
+											<th width="150px" style="text-align:center">Harga</th>
+											<th width="150px" style="text-align:center">Total</th>
+											<th width="150px" style="text-align:center">PPN</th>
+											<th width="150px" style="text-align:center">DPP</th>
+											<th width="150px" style="text-align:center">Diskon</th>
 											<th width="200px" style="text-align:center">Ket</th>
 
 											<th></th>
@@ -278,6 +279,9 @@
 												<input name="DPP[]" onblur="hitung()"  value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP" readonly>
 											</td>
 											<td>
+												<input name="DISK[]" onblur="hitung()"  value="0" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK" readonly>
+											</td>
+											<td>
 												<input name="KET[]" id="KET{{$no}}" type="text" class="form-control KET" value="{{$detail->KET}}"  >
 											</td> 
 											
@@ -338,6 +342,16 @@
                                     <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control PPN" id="PPN" name="PPN" placeholder="PPN" value="{{$header->PPN}}" style="text-align: right" readonly>
                                 </div>
 							</div>
+
+							<div class="form-group row">
+								<div class="col-md-8" align="right">
+									<label for="TDISK" class="form-label">Total Diskon</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TDISK" id="TDISK" name="TDISK" placeholder="" value="{{$header->TDISK}}" style="text-align: right" readonly>
+								</div>
+							</div>
+
 							
                             <div class="form-group row">
                                 <div class="col-md-8" align="right">
@@ -571,6 +585,7 @@
 		
 		$("#TTOTAL_QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#TTOTAL").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#TDISK").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#PPN").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#NETT").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 
@@ -582,6 +597,7 @@
 			$("#HARGA" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#PPNX" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#DPP" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#DISK" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 
 			$("#TOTAL" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#KALI" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
@@ -731,6 +747,9 @@
 									<td>
 										<input name='DPP[]' onclick='select()' onblur='hitung()' id='DPP${i}' value="0" type='text' style='text-align: right' class='form-control DPP text-primary' readonly >
 									</td>
+									<td>
+										<input name='DISK[]' onclick='select()' onblur='hitung()' id='DISK${i}' value="0" type='text' style='text-align: right' class='form-control DISK text-primary' readonly >
+									</td>
 									<td><input name='KET[]' id='KET${i}' value="" type='text' class='form-control  KET'></td>
                                     
 
@@ -759,6 +778,9 @@
 					
 					$(".DPP").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 					$(".DPP").autoNumeric('update');
+
+					$(".DISK").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".DISK").autoNumeric('update');
 
 
 					idrow=resp.length;
@@ -1084,6 +1106,7 @@
    function hitung() {
 		var TTOTAL_QTY = 0;
 		var TTOTAL = 0;
+		var TDISK = 0;
 		var PPNX = 0;
 		var NETTX = 0;
 
@@ -1095,6 +1118,7 @@
 			var XX = parseFloat(z.find('.KALI').val().replace(/,/g, ''));
 			var HARGAX = parseFloat(z.find('.HARGA').val().replace(/,/g, ''));
 			var PPN = parseFloat(z.find('.PPNX').val().replace(/,/g, ''));
+			var DISKX = parseFloat(z.find('.DISK').val().replace(/,/g, ''));
 	
 			var PKP = parseFloat($('#PKP').val().replace(/,/g, ''));
 
@@ -1140,6 +1164,7 @@
             TTOTAL_QTY +=QTYX;		
             TTOTAL +=TOTALX;				
             PPNX +=PPN;						
+            TDISK +=DISKX;						
 		
 		});
 		
@@ -1150,7 +1175,7 @@
 		// }
 
 		// PPNX =  TTOTAL * 11 / 100;
-		NETTX = TTOTAL + PPNX ;
+		NETTX = TTOTAL + PPNX - TDISK;
 		
 		if(isNaN(TTOTAL_QTY)) TTOTAL_QTY = 0;
 
@@ -1161,6 +1186,9 @@
 
 		$('#TTOTAL').val(numberWithCommas(TTOTAL));		
 		$("#TTOTAL").autoNumeric('update');
+
+		$('#TDISK').val(numberWithCommas(TDISK));		
+		$("#TDISK").autoNumeric('update');
 
 		$('#PPN').val(numberWithCommas(PPNX));		
 		$("#PPN").autoNumeric('update');

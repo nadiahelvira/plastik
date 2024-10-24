@@ -66,6 +66,8 @@
 			  
               <input name="flagz"  class="form-control flagz" id="flagz" value="{{$flagz}}" hidden >
               <input name="golz"  class="form-control golz" id="golz" value="{{$golz}}" hidden >
+ 
+                <button class="btn btn-danger" type="button"  onclick="simpan()">Posting</button>
 
                 <table class="table table-fixed table-striped table-border table-hover nowrap datatable" id="datatable">
                     <thead class="table-dark">
@@ -80,6 +82,7 @@
                      
                             <th scope="col" style="text-align: center">Notes</th>
                             <th scope="col" style="text-align: center">User</th>
+                            <th scope="col" style="text-align: center">Posted</th>
                         </tr>
                     </thead>
     
@@ -102,8 +105,8 @@
             processing: true,
             serverSide: true,
             autoWidth: false,
-            'scrollX': true,
-            'scrollY': '400px',
+            // 'scrollX': true,
+            // 'scrollY': '400px',
             "order": [[ 0, "asc" ]],
             ajax: 
             {
@@ -126,6 +129,7 @@
                 {data: 'TOTAL', name: 'TOTAL', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},
                 {data: 'NOTES', name: 'NOTES'},
                 {data: 'USRNM', name: 'USRNM'},
+                {data: 'cek', name: 'cek'},
             ],
             columnDefs: [
                 {

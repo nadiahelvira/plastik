@@ -109,7 +109,7 @@ class SuratsController extends Controller
         //     $filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' ";
         // }
         $sod = DB::SELECT("SELECT REC, KD_BHN, NA_BHN, SATUAN , QTY, HARGA, KIRIM, SISA, TOTAL, KET, 
-                                KD_BRG, NA_BRG, PPN, DPP
+                                KD_BRG, NA_BRG, PPN, DPP, DISK
                             from sod
                             where NO_BUKTI='".$request->nobukti."' ORDER BY NO_BUKTI ");
 	
@@ -145,7 +145,7 @@ class SuratsController extends Controller
         //     $filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' ";
         // }
         $sod = DB::SELECT("SELECT REC, SATUAN , QTY, HARGA, KIRIM, SISA, TOTAL, KET, 
-                                KD_BRG, NA_BRG, DPP, PPN
+                                KD_BRG, NA_BRG, DPP, PPN, QTY_KIRIM, DISK
                             from suratsd
                             where NO_BUKTI='".$request->nobukti."' ORDER BY NO_BUKTI ");
 	
@@ -340,6 +340,7 @@ class SuratsController extends Controller
                 'KOM'           => (float) str_replace(',', '', $request['KOM']),
                 'TOTAL_QTY'     => (float) str_replace(',', '', $request['TQTY']),
                 'TOTAL'      	=> (float) str_replace(',', '', $request['TTOTAL']),
+                'TDISK'      	=> (float) str_replace(',', '', $request['TDISK']),
 				'USRNM'         => Auth::user()->username,
 				'TG_SMP'        => Carbon::now(),
 				'CBG'           => $CBG,
@@ -362,6 +363,7 @@ class SuratsController extends Controller
 		$TOTAL	= $request->input('TOTAL');
 		$PPNX	= $request->input('PPNX');	
 		$DPP = $request->input('DPP');	
+		$DISK = $request->input('DISK');	
 		$KET	= $request->input('KET');	
 		// $ID_SOD	= $request->input('ID_SOD');		
 
@@ -393,6 +395,7 @@ class SuratsController extends Controller
 				$detail->KET	= ($KET[$key]==null) ? '' : $KET[$key];
 				$detail->PPN	= (float) str_replace(',', '', $PPNX[$key]);
 				$detail->DPP	= (float) str_replace(',', '', $DPP[$key]);
+				$detail->DISK	= (float) str_replace(',', '', $DISK[$key]);
 				$detail->ID	    = $idSurats[0]->NO_ID;
 				// $detail->ID_SOD	= ($ID_SOD[$key]==null) ? '' : $ID_SOD[$key];
 				$detail->save();
@@ -645,6 +648,7 @@ class SuratsController extends Controller
 				'NOTES'			=>($request['NOTES']==null) ? "" : $request['NOTES'],
                 'TOTAL_QTY'     => (float) str_replace(',', '', $request['TQTY']),
                 'TOTAL'      	=> (float) str_replace(',', '', $request['TTOTAL']),
+                'TDISK'      	=> (float) str_replace(',', '', $request['TDISK']),
 				'KODEP'			=>($request['KODEP']==null) ? "" : $request['KODEP'],
 				'NAMAP'			=>($request['NAMAP']==null) ? "" : $request['NAMAP'],
 				'RING'			=>($request['RING']==null) ? "" : $request['RING'],
@@ -678,6 +682,7 @@ class SuratsController extends Controller
 		$TOTAL	= $request->input('TOTAL');
 		$PPNX	= $request->input('PPNX');	
 		$DPP = $request->input('DPP');	
+		$DISK = $request->input('DISK');	
 		$KET	= $request->input('KET');	
 		$ID_SOD	= $request->input('ID_SOD');	
        
@@ -710,6 +715,7 @@ class SuratsController extends Controller
 						'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'PPN'        => (float) str_replace(',', '', $PPNX[$i]),
                         'DPP'        => (float) str_replace(',', '', $DPP[$i]),
+                        'DISK'        => (float) str_replace(',', '', $DISK[$i]),
                         'KET'        => ($KET[$i]==null) ? "" : $KET[$i],
                         'ID'         => $surats->NO_ID,
                         // 'ID_SOD'     => ($ID_SOD[$i]==null) ? "" : $ID_SOD[$i],
@@ -742,6 +748,7 @@ class SuratsController extends Controller
 						'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'PPN'        => (float) str_replace(',', '', $PPNX[$i]),
                         'DPP'        => (float) str_replace(',', '', $DPP[$i]),
+                        'DISK'        => (float) str_replace(',', '', $DISK[$i]),
                         'KET'        => ($KET[$i]==null) ? "" : $KET[$i],
                         // 'ID_SOD'     => ($ID_SOD[$i]==null) ? "" : $ID_SOD[$i],
                     ]

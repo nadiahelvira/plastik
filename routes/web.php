@@ -32,6 +32,13 @@ Route::get('/chart', 'App\Http\Controllers\DashboardController@chart')->middlewa
 // Periode
 Route::post('/periode', 'App\Http\Controllers\PeriodeController@index')->middleware(['auth'])->name('periode');
 
+//User Edit
+
+Route::get('/profile', 'App\Http\Controllers\ProfileController@index')->middleware(['auth']);
+Route::post('/profile/update', 'App\Http\Controllers\ProfileController@update')->middleware(['auth']);
+Route::post('/profile/setting/update', 'App\Http\Controllers\ProfileController@updateSetting')->middleware(['auth']);
+
+////////
 // Master Account
 Route::get('/account', 'App\Http\Controllers\FMaster\AccountController@index')->middleware(['auth'])->name('account');
 
@@ -223,6 +230,19 @@ Route::post('/gdg/store', 'App\Http\Controllers\Master\GdgController@store')->mi
 Route::get('/gdg/edit', 'App\Http\Controllers\Master\GdgController@edit')->middleware(['auth'])->name('gdg.edit');
 Route::post('/gdg/update/{gdg}', 'App\Http\Controllers\Master\GdgController@update')->middleware(['auth'])->name('gdg.update');
 Route::get('/gdg/delete/{gdg}', 'App\Http\Controllers\Master\GdgController@destroy')->middleware(['auth'])->name('gdg.delete');
+
+
+// Master Lokasi
+Route::get('/lokasi', 'App\Http\Controllers\Master\LokasiController@index')->middleware(['auth'])->name('lokasi');
+Route::post('/lokasi/store', 'App\Http\Controllers\Master\LokasiController@store')->middleware(['auth'])->name('lokasi/store');
+    // GET Lokasi
+    Route::get('/get-lokasi', 'App\Http\Controllers\Master\LokasiController@getLokasi')->middleware(['auth'])->name('get-lokasi');
+    Route::get('/lokasi/browse', 'App\Http\Controllers\Master\LokasiController@browse')->middleware(['auth'])->name('lokasi/browse');
+    Route::get('lokasi/cekgdg', 'App\Http\Controllers\Master\LokasiController@ceklokasi')->middleware(['auth']);
+// Dynamic Lokasi
+Route::get('/lokasi/edit', 'App\Http\Controllers\Master\LokasiController@edit')->middleware(['auth'])->name('lokasi.edit');
+Route::post('/lokasi/update/{lokasi}', 'App\Http\Controllers\Master\LokasiController@update')->middleware(['auth'])->name('lokasi.update');
+Route::get('/lokasi/delete/{lokasi}', 'App\Http\Controllers\Master\LokasiController@destroy')->middleware(['auth'])->name('gdg.delete');
 
 
 

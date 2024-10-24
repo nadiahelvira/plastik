@@ -27,6 +27,7 @@ class RPiuController extends Controller
 		$kodec = Cust::orderBy('KODEC')->get();
 		session()->put('filter_gol', '');
 		session()->put('filter_kodec1', '');
+		session()->put('filter_kodec2', '');
 		session()->put('filter_namac1', '');
 		session()->put('filter_kodet1', '');
 		session()->put('filter_namat1', '');
@@ -95,9 +96,14 @@ class RPiuController extends Controller
 				$filtergol = " and piu.GOL='".$request->gol."' ";
 			}
 			
-			if (!empty($request->kodec))
+			// if (!empty($request->kodec))
+			// {
+			// 	$filterkodec = " and piu.KODEC='".$request->kodec."' ";
+			// } 
+		
+			if (!empty($request->kodec) && !empty($request->kodec2))
 			{
-				$filterkodec = " and piu.KODEC='".$request->kodec."' ";
+				$filterkodec = " WHERE piu.KODEC between '".$kodec."' and '".$kodec2."' ";
 			}
 			
 			if (!empty($request->tglDr) && !empty($request->tglSmp))
@@ -115,6 +121,7 @@ class RPiuController extends Controller
 			
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodec1', $request->kodec);
+			session()->put('filter_kodec2', $request->kodec2);
 			session()->put('filter_namac1', $request->NAMAC);
 			session()->put('filter_kodet1', $request->kodet);
 			session()->put('filter_namat1', $request->NAMAT);
@@ -125,7 +132,7 @@ class RPiuController extends Controller
 		$query = DB::SELECT("
 		SELECT * from 
 		(
-			SELECT piu.NO_BUKTI,piu.BACNO,piu.BNAMA,piu.NO_SO,piu.TGL,piu.KODEC,piu.NAMAC,piud.NO_FAKTUR,piud.TOTAL,piud.BAYAR,piud.SISA,piu.GOL, 
+			SELECT piu.NO_BUKTI,piu.BACNO,piu.BNAMA,piu.TGL,piu.KODEC,piu.NAMAC,piud.NO_FAKTUR,piud.TOTAL,piud.BAYAR,piud.SISA,piu.GOL, 
 			(SELECT KODET from so WHERE NO_BUKTI=(SELECT NO_SO from jual WHERE NO_BUKTI=piud.NO_FAKTUR limit 1) limit 1) as KODET,
 			(SELECT NAMAT from so WHERE NO_BUKTI=(SELECT NO_SO from jual WHERE NO_BUKTI=piud.NO_FAKTUR limit 1) limit 1) as NAMAT 
 			from piu,piud WHERE piu.NO_BUKTI=piud.NO_BUKTI  $filtertgl $filtergol $filterkodec $filtercbg

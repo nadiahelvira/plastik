@@ -5,17 +5,20 @@ namespace App\Models\Master;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Truck extends Model
+
+//ganti 1
+class Lokasi extends Model
 {
     use HasFactory;
 
-    protected $table = 'truck';
+// ganti 2
+    protected $table = 'lokasi';
     protected $primaryKey = 'NO_ID';
     public $timestamps = false;
 
+//ganti 3
     protected $fillable = 
     [
-        "KODE", "NOPOL", "MAXK", "MAXB"
+        "KODE", "NAMA",  "USRNM", "TG_SMP"
     ];
 }
-

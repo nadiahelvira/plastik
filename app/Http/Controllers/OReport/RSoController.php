@@ -28,6 +28,7 @@ class RSoController extends Controller
 		$kodec = Cust::query()->get();
 		session()->put('filter_gol', '');
 		session()->put('filter_kodec1', '');
+		session()->put('filter_kodec2', 'ZZZ');
 		session()->put('filter_namac1', '');
 		session()->put('filter_kodet1', '');
 		session()->put('filter_namat1', '');
@@ -60,9 +61,14 @@ class RSoController extends Controller
 				$filtergol = " and so.GOL='".$request->gol."' ";
 			}
 			
-			if (!empty($request->kodec))
+			// if (!empty($request->kodec))
+			// {
+			// 	$filterkodec = " and so.KODEC='".$request->kodec."' ";
+			// } 
+		
+			if (!empty($request->kodec) && !empty($request->kodec2))
 			{
-				$filterkodec = " and so.KODEC='".$request->kodec."' ";
+				$filterkodec = " WHERE so.KODEC between '".$kodec."' and '".$kodec2."' ";
 			}
 			
 			if (!empty($request->kodet))
@@ -96,6 +102,7 @@ class RSoController extends Controller
 
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodec1', $request->kodec);
+			session()->put('filter_kodec2', $request->kodec2);
 			session()->put('filter_namac1', $request->NAMAC);
 			session()->put('filter_tglDari', $request->tglDr);
 			session()->put('filter_tglSampai', $request->tglSmp);

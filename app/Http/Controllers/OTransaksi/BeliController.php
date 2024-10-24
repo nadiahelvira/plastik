@@ -36,9 +36,9 @@ class BeliController extends Controller
         } else if ( $request->flagz == 'RB' && $request->golz == 'B' ) {
             $this->judul = "Retur Pembelian Bahan Baku";
         } else if ( $request->flagz == 'BL' && $request->golz == 'J' ) {
-            $this->judul = "Pembelian Bahan Jadi";
+            $this->judul = "Pembelian Barang";
         } else if ( $request->flagz == 'RB' && $request->golz == 'J' ) {
-            $this->judul = "Retur Pembelian Bahan Jadi";
+            $this->judul = "Retur Pembelian Barang";
         } else if ( $request->flagz == 'BL' && $request->golz == 'N' ) {
             $this->judul = "Pembelian Non";
         } else if ( $request->flagz == 'RB' && $request->golz == 'N' ) {
@@ -309,6 +309,7 @@ class BeliController extends Controller
 				'PPN'               => (float) str_replace(',', '', $request['PPN']),
 				'PKP'               => (float) str_replace(',', '', $request['PKP']),
 				'DPP'               => (float) str_replace(',', '', $request['DPP']),
+				'TDISK'               => (float) str_replace(',', '', $request['TDISK']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
                 'SISA'            => (float) str_replace(',', '', $request['NETT']),
                 'USRNM'            => Auth::user()->username,
@@ -332,6 +333,7 @@ class BeliController extends Controller
         $HARGA      = $request->input('HARGA');		
         $PPNX      = $request->input('PPNX');		
         $DPP      = $request->input('DPP');		
+        $DISK      = $request->input('DISK');		
         $TOTAL      = $request->input('TOTAL');
 	
         $KET        = $request->input('KET');  
@@ -361,6 +363,7 @@ class BeliController extends Controller
                 $detail->HARGA       = (float) str_replace(',', '', $HARGA[$key]);
                 $detail->PPN       = (float) str_replace(',', '', $PPNX[$key]);
                 $detail->DPP       = (float) str_replace(',', '', $DPP[$key]);
+                $detail->DISK       = (float) str_replace(',', '', $DISK[$key]);
                 $detail->TOTAL       = (float) str_replace(',', '', $TOTAL[$key]); 
 				$detail->KET         = ($KET[$key] == null) ? "" :  $KET[$key];				
                 $detail->save();
@@ -627,6 +630,7 @@ class BeliController extends Controller
 				'PPN'              => (float) str_replace(',', '', $request['PPN']),
 				'PKP'              => (float) str_replace(',', '', $request['PKP']),
                 'NETT'             => (float) str_replace(',', '', $request['NETT']),
+                'TDISK'             => (float) str_replace(',', '', $request['TDISK']),
 		   	    'SISA'             => (float) str_replace(',', '', $request['NETT']), 
                 'FLAG'             => $FLAGZ,					
                 'GOL'              => $GOLZ,					
@@ -657,6 +661,7 @@ class BeliController extends Controller
         $HARGA      = $request->input('HARGA');
         $PPNX      = $request->input('PPNX');
         $DPP      = $request->input('DPP');
+        $DISK      = $request->input('DISK');
         $TOTAL      = $request->input('TOTAL');
         $KET = $request->input('KET');			
 
@@ -685,6 +690,7 @@ class BeliController extends Controller
                         'HARGA'      => (float) str_replace(',', '', $HARGA[$i]),
                         'PPN'      => (float) str_replace(',', '', $PPNX[$i]),
                         'DPP'      => (float) str_replace(',', '', $DPP[$i]),
+                        'DISK'      => (float) str_replace(',', '', $DISK[$i]),
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],	
 						
@@ -715,6 +721,7 @@ class BeliController extends Controller
                         'PPN'      => (float) str_replace(',', '', $PPNX[$i]),
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],
                         'DPP'      => (float) str_replace(',', '', $DPP[$i]),	
+                        'DISK'      => (float) str_replace(',', '', $DISK[$i]),	
                         'FLAG'       => $this->FLAGZ,
                         'GOL'        => $this->GOLZ,						
                     ]

@@ -49,7 +49,7 @@
 
 							<!-- <div id="truckInfo" class="tab-pane active"> -->
         
-                             <div class="form-group row">
+                            <div class="form-group row">
                                 <div class="col-md-1">
                                     <label for="KODE" class="form-label">Kode</label>
                                 </div>
@@ -73,7 +73,25 @@
                                     placeholder="Masukkan NOPOL Customer" value="{{$header->NOPOL}}">
                                 </div>   
 
-                            <!-- </div> -->
+                            </div>
+
+							<div class="form-group row">
+								<div class="col-md-1">
+                                    <label for="MAXK" class="form-label">Max Kubikasi</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" onclick="select()" class="form-control MAXK" id="MAXK" name="MAXK" placeholder="Masukkan MAXK" 
+									value="{{ number_format( $header->MAXK, 0, '.', ',') }}" style="text-align: right" >
+                                </div>
+
+								<div class="col-md-1">
+									<label for="MAXB" class="form-label">Max Berat</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text" onclick="select()" class="form-control MAXB" id="MAXB" name="MAXB" placeholder="Masukkan MAXB" 
+									value="{{ number_format( $header->MAXB, 0, '.', ',') }}" style="text-align: right" >
+								</div>
+							</div>
                                 
                         </div>
         
@@ -164,6 +182,8 @@
 		$("#UMAKAN").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#KOM").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#GAJI").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#MAXK").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#MAXB").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		
     });
 
@@ -230,8 +250,8 @@
 		$("#AKT").attr("readonly", false);		
 		$('#TELPON').attr("readonly", false);
 
-		 $('#UMAKAN').attr("readonly", false);	
-		 $('#KOM').attr("readonly", false);	
+		 $('#MAXK').attr("readonly", false);	
+		 $('#MAXB').attr("readonly", false);	
 		 $('#GAJI').attr("readonly", false);
 
 
@@ -274,8 +294,8 @@
 		$("#AKT").attr("readonly", true);		
 		$('#TELPON').attr("readonly", true);
 
-		$('#UMAKAN').attr("readonly", true);	
-		$('#KOM').attr("readonly", true);	
+		$('#MAXK').attr("readonly", true);	
+		$('#MAXB').attr("readonly", true);	
 		$('#GAJI').attr("readonly", true);
 
 
@@ -314,8 +334,8 @@
 		 $('#BANK_NAMA').val("");		
 		 $('#BANK_REK').val("");
 		 $('#UMAKAN').val("0");
-		 $('#KOM').val("0");	
-		 $('#GAJI').val("0");	
+		 $('#MAXK').val("0");	
+		 $('#MAXB').val("0");	
 
 		 
 	}

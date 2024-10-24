@@ -34,7 +34,7 @@ class PoController extends Controller
         if ( $request->flagz == 'PO' && $request->golz == 'B' ) {
             $this->judul = "PO Bahan Baku";
         } else if ( $request->flagz == 'PO' && $request->golz == 'J' ) {
-            $this->judul = "PO Barang Jadi";
+            $this->judul = "PO Barang";
         } else if ( $request->flagz == 'PO' && $request->golz == 'N' ) {
             $this->judul = "PO Non";
         }
@@ -165,7 +165,7 @@ class PoController extends Controller
 
         $CBG = Auth::user()->CBG;
 		
-        $po = DB::SELECT("SELECT * from po  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
+        $po = DB::SELECT("SELECT *, POSTED as cek from po  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
                         AND GOL ='$this->GOLZ' AND CBG = '$CBG' ORDER BY NO_BUKTI ");
 	  
 	   
@@ -327,6 +327,7 @@ class PoController extends Controller
 				'PKP'              => (float) str_replace(',', '', $request['PKP']),
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
+                'TDISK'            => (float) str_replace(',', '', $request['TDISK']),
 				'PPN'               => (float) str_replace(',', '', $request['PPN']),
 				'DPP'               => (float) str_replace(',', '', $request['DPP']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
@@ -349,6 +350,7 @@ class PoController extends Controller
         $KET        = $request->input('KET');  	
         $PPNX      = $request->input('PPNX');		
         $DPP      = $request->input('DPP');		
+        $DISK      = $request->input('DISK');		
 
         // Check jika value detail ada/tidak
         if ($REC) {
@@ -373,6 +375,7 @@ class PoController extends Controller
                 $detail->SISA       = (float) str_replace(',', '', $QTY[$key]); 
                 $detail->PPN       = (float) str_replace(',', '', $PPNX[$key]);
                 $detail->DPP       = (float) str_replace(',', '', $DPP[$key]);
+                $detail->DISK       = (float) str_replace(',', '', $DISK[$key]);
 
 				$detail->KET         = ($KET[$key] == null) ? "" :  $KET[$key];				
                 $detail->save();
@@ -631,6 +634,7 @@ class PoController extends Controller
                 'GUDANG'            => ($request['GUDANG'] == null) ? "" : $request['GUDANG'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
+                'TDSIK'            => (float) str_replace(',', '', $request['TDSIK']),
 				'PKP'              => (float) str_replace(',', '', $request['PKP']),
 				'PPN'              => (float) str_replace(',', '', $request['PPN']),
                 'NETT'             => (float) str_replace(',', '', $request['NETT']),
@@ -660,6 +664,7 @@ class PoController extends Controller
         $HARGA    = $request->input('HARGA');
         $PPNX      = $request->input('PPNX');
         $DPP      = $request->input('DPP');
+        $DISK      = $request->input('DISK');
         $TOTAL    = $request->input('TOTAL');
         $KET = $request->input('KET');			
 
@@ -687,6 +692,7 @@ class PoController extends Controller
                         'SISA'      => (float) str_replace(',', '', $QTY[$i]),
                         'PPN'      => (float) str_replace(',', '', $PPNX[$i]),
                         'DPP'      => (float) str_replace(',', '', $DPP[$i]),
+                        'DISK'      => (float) str_replace(',', '', $DISK[$i]),
 
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],	
 						
@@ -714,6 +720,7 @@ class PoController extends Controller
                         'SISA'        => (float) str_replace(',', '', $QTY[$i]),
                         'PPN'      => (float) str_replace(',', '', $PPNX[$i]),
                         'DPP'      => (float) str_replace(',', '', $DPP[$i]),
+                        'DISK'      => (float) str_replace(',', '', $DISK[$i]),
                         'FLAG'       => $this->FLAGZ,
                         'GOL'        => $this->GOLZ,
                         'PER'        => $periode,

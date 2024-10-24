@@ -280,6 +280,7 @@ class JualController extends Controller
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
                 'PPN'            => (float) str_replace(',', '', $request['PPN']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
+                'TDISK'            => (float) str_replace(',', '', $request['TDISK']),
                 'SISA'            => (float) str_replace(',', '', $request['NETT']),
 	   
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
@@ -303,9 +304,11 @@ class JualController extends Controller
         $SATUAN     = $request->input('SATUAN');
         $KET     = $request->input('KET');
         $QTY        = $request->input('QTY');
+        $QTY_KIRIM        = $request->input('QTY_KIRIM');
         $HARGA        = $request->input('HARGA');
         $PPNX        = $request->input('PPNX');
         $DPP        = $request->input('DPP');
+        $DISK        = $request->input('DISK');
 	    $TOTAL        = $request->input('TOTAL');		 
 
         // Check jika value detail ada/tidak
@@ -327,9 +330,11 @@ class JualController extends Controller
                 $detail->SATUAN      = ($SATUAN[$key] == null) ? "" :  $SATUAN[$key];				
                 $detail->KET      = ($KET[$key] == null) ? "" :  $KET[$key];				
                 $detail->QTY         = (float) str_replace(',', '', $QTY[$key]);
+                $detail->QTY_KIRIM         = (float) str_replace(',', '', $QTY_KIRIM[$key]);
                 $detail->HARGA         = (float) str_replace(',', '', $HARGA[$key]);
                 $detail->PPN         = (float) str_replace(',', '', $PPNX[$key]);
                 $detail->DPP         = (float) str_replace(',', '', $DPP[$key]);
+                $detail->DISK         = (float) str_replace(',', '', $DISK[$key]);
                 $detail->TOTAL         = (float) str_replace(',', '', $TOTAL[$key]);				
  		
                 $detail->save();
@@ -594,6 +599,7 @@ class JualController extends Controller
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
                 'PPN'            => (float) str_replace(',', '', $request['PPN']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
+                'TDISK'            => (float) str_replace(',', '', $request['TDISK']),
 	   
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
@@ -624,9 +630,11 @@ class JualController extends Controller
         $SATUAN = $request->input('SATUAN');		
         $KET = $request->input('KET');		
         $QTY    = $request->input('QTY');
+        $QTY_KIRIM    = $request->input('QTY_KIRIM');
         $HARGA    = $request->input('HARGA');
         $PPNX    = $request->input('PPNX');
         $DPP    = $request->input('DPP');
+        $DISK    = $request->input('DISK');
         $TOTAL    = $request->input('TOTAL');	
 
         $query = DB::table('juald')->where('NO_BUKTI', $request->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
@@ -649,9 +657,11 @@ class JualController extends Controller
                         'SATUAN'     => ($SATUAN[$i] == null) ? "" :  $SATUAN[$i],						
                         'KET'     => ($KET[$i] == null) ? "" :  $KET[$i],						
                         'QTY'        => (float) str_replace(',', '', $QTY[$i]),
+                        'QTY_KIRIM'        => (float) str_replace(',', '', $QTY_KIRIM[$i]),
                         'HARGA'        => (float) str_replace(',', '', $HARGA[$i]),
                         'PPN'        => (float) str_replace(',', '', $PPNX[$i]),
                         'DPP'        => (float) str_replace(',', '', $DPP[$i]),
+                        'DISK'        => (float) str_replace(',', '', $DISK[$i]),
                         'TOTAL'        => (float) str_replace(',', '', $TOTAL[$i]),
 						
                     ]
@@ -674,10 +684,12 @@ class JualController extends Controller
                         'SATUAN'     => ($SATUAN[$i] == null) ? "" :  $SATUAN[$i],						
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],						
                         'QTY'        => (float) str_replace(',', '', $QTY[$i]),
+                        'QTY_KIRIM'        => (float) str_replace(',', '', $QTY_KIRIM[$i]),
                         'HARGA'      => (float) str_replace(',', '', $HARGA[$i]),
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'PPN'        => (float) str_replace(',', '', $PPNX[$i]),
                         'DPP'        => (float) str_replace(',', '', $DPP[$i]),
+                        'DISK'        => (float) str_replace(',', '', $DISK[$i]),
                         'FLAG'       => $this->FLAGZ,
                         'GOL'        => $this->GOLZ,
                         'PER'        => $periode,

@@ -44,7 +44,7 @@ class TruckController extends Controller
     {
         // ganti 5
 
-        $truck = Truck::query();
+        $truck = DB::SELECT("SELECT * from truck  ORDER BY KODE ");
 
         // ganti 6
 
@@ -127,6 +127,8 @@ class TruckController extends Controller
             [
                 'KODE'         => ($request['KODE'] == null) ? "" : $request['KODE'],
                 'NOPOL'         => ($request['NOPOL'] == null) ? "" : $request['NOPOL'],
+                'MAXK'             => (float) str_replace(',', '', $request['MAXK']),
+                'MAXB'             => (float) str_replace(',', '', $request['MAXB']),
                 'USRNM'          => Auth::user()->username,
                 'TG_SMP'         => Carbon::now()
             ]
@@ -339,6 +341,8 @@ class TruckController extends Controller
         $truck->update(
             [
                 'NOPOL'         => $request['NOPOL'],
+                'MAXK'             => (float) str_replace(',', '', $request['MAXK']),
+                'MAXB'             => (float) str_replace(',', '', $request['MAXB']),
                 'USRNM'          => Auth::user()->username,
                 'TG_SMP'         => Carbon::now()
             ]

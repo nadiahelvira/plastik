@@ -199,10 +199,12 @@
 											
 											<th style="text-align: center;">Satuan</th>
 											<th style="text-align: center;">Qty</th>
+											<th style="text-align: center;">Qty Kirim</th>
 											<th style="text-align: center;">Harga</th>
 											<th style="text-align: center;">Total</th>								
 											<th style="text-align: center;">PPN</th>								
 											<th style="text-align: center;">DPP</th>								
+											<th style="text-align: center;">Diskon</th>								
 											<th style="text-align: center;">Ket</th>
 											<th></th>										
 										</tr>
@@ -242,6 +244,7 @@
 											</td>
 											
 											<td><input name="QTY[]"  onblur="hitung()" value="{{$detail->QTY}}" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" ></td>
+											<td><input name="QTY_KIRIM[]"  onblur="hitung()" value="{{$detail->QTY_KIRIM}}" id="QTY_KIRIM{{$no}}" type="text" style="text-align: right"  class="form-control QTY_KIRIM text-primary" ></td>
 											<td><input name="HARGA[]"  onblur="hitung()" value="{{$detail->HARGA}}" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" ></td>
 											<td>
 												<input name="TOTAL[]"  onblur="hitung()" value="{{$detail->TOTAL}}" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" readonly >
@@ -251,6 +254,9 @@
 											</td>
 											<td>
 												<input name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
+											</td>
+											<td>
+												<input name="DISK[]"  onblur="hitung()" value="{{$detail->DISK}}" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK text-primary" readonly >
 											</td>
 											<td>
 												<input name="KET[]" id="KET{{$no}}" type="text" value="{{$detail->KET}}" class="form-control KET" >
@@ -295,7 +301,7 @@
                                     <label for="TTOTAL" class="form-label">Total</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="TTOTAL" value="{{$header->TOTAL}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="" value="{{$header->TOTAL}}" style="text-align: right" readonly>
                                 </div>
 							</div>
 
@@ -304,8 +310,17 @@
                                     <label for="PPN" class="form-label">Ppn</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control PPN" id="PPN" name="PPN" placeholder="PPN" value="{{$header->PPN}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control PPN" id="PPN" name="PPN" placeholder="" value="{{$header->PPN}}" style="text-align: right" readonly>
                                 </div>
+							</div>
+
+							<div class="form-group row">
+								<div class="col-md-8" align="right">
+									<label for="TDISK" class="form-label">Total Diskon</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TDISK" id="TDISK" name="TDISK" placeholder="" value="{{$header->TDISK}}" style="text-align: right" readonly>
+								</div>
 							</div>
 							
                             <div class="form-group row">
@@ -313,7 +328,7 @@
                                     <label for="NETT" class="form-label">Nett</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control NETT" id="NETT" name="NETT" placeholder="NETT" value="{{$header->NETT}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control NETT" id="NETT" name="NETT" placeholder="" value="{{$header->NETT}}" style="text-align: right" readonly>
                                 </div>
 							</div>
 							
@@ -545,6 +560,7 @@
 		
 		$("#TTOTAL_QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#TTOTAL").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#TDISK").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#PPN").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#NETT").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 
@@ -552,10 +568,12 @@
 		jumlahdata = 100;
 		for (i = 0; i <= jumlahdata; i++) {
 			$("#QTY" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#QTY_KIRIM" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#HARGA" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#TOTAL" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#PPNX" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#DPP" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#DISK" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 
 		}
 		
@@ -671,6 +689,9 @@ function getSuratsd(bukti)
 										<input name='QTY[]' onclick='select()' onkeyup='hitung()' id='QTY${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY text-primary' readonly >
 									</td>
 									<td>
+										<input name='QTY_KIRIM[]' onclick='select()' onkeyup='hitung()' id='QTY_KIRIM${i}' value="${resp[i].QTY_KIRIM}" type='text' style='text-align: right' class='form-control QTY_KIRIM text-primary' readonly >
+									</td>
+									<td>
 										<input name='HARGA[]' onclick='select()' onkeyup='hitung()' id='HARGA${i}' value="${resp[i].HARGA}" type='text' style='text-align: right' class='form-control HARGA text-primary' readonly> 
 									</td>
 									<td>
@@ -681,6 +702,9 @@ function getSuratsd(bukti)
 									</td>
 									<td>
 										<input name='DPP[]' onclick='select()' onkeyup='hitung()' id='DPP${i}' value="${resp[i].DPP}" type='text' style='text-align: right' class='form-control DPP text-primary' readonly> 
+									</td>
+									<td>
+										<input name='DISK[]' onclick='select()' onkeyup='hitung()' id='DISK${i}' value="${resp[i].DISK}" type='text' style='text-align: right' class='form-control DISK text-primary' readonly> 
 									</td>
                                     <td><input name='KET[]' id='KET${i}' value="${resp[i].KET}" type='text' class='form-control  KET' required></td>
                                     <td><button type='button' class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button></td>
@@ -702,6 +726,9 @@ function getSuratsd(bukti)
 
 					$(".DPP").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 					$(".DPP").autoNumeric('update');
+
+					$(".DISK").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".DISK").autoNumeric('update');
 					/*
 					$(".KD_BHN").each(function() {
 						var getid = $(this).attr('id');
@@ -719,6 +746,7 @@ function getSuratsd(bukti)
 					baris=resp.length;
 
 					nomor();
+					hitung();
 				}
 			});
 	}
@@ -1295,6 +1323,10 @@ function getSuratsd(bukti)
                 </td>
 
 				<td>
+		            <input name='QTY_KIRIM[]'  onblur='hitung()' value='0' id='QTY_KIRIM${idrow}' type='text' style='text-align: right' class='form-control QTY_KIRIM text-primary' required >
+                </td>
+
+				<td>
 		            <input name='HARGA[]'  onblur='hitung()' value='0' id='HARGA${idrow}' type='text' style='text-align: right' class='form-control HARGA text-primary' required >
                 </td>
 				
@@ -1308,6 +1340,10 @@ function getSuratsd(bukti)
 				
 				<td>
 		            <input name='PPNX[]'  onblur='hitung()' value='0' id='PPNX${idrow}' type='text' style='text-align: right' class='form-control PPNX text-primary' readonly >
+                </td>
+				
+				<td>
+		            <input name='DISK[]'  onblur='hitung()' value='0' id='DISK${idrow}' type='text' style='text-align: right' class='form-control DISK text-primary' readonly >
                 </td>
 				
                 <td>
@@ -1332,6 +1368,7 @@ function getSuratsd(bukti)
 			$("#TOTAL" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#PPNX" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#DPP" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#DISK" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 	
 		}
 		
