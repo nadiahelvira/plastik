@@ -94,7 +94,7 @@ class SuratsController extends Controller
                         WHERE so.NO_BUKTI=sod.NO_BUKTI AND so.CBG = '$CBG' 
                         and sod.SISA>0 
                         -- and so.KODEC='".$request->kodec."' 
-                        AND so.GOL ='$golz' 
+                        AND so.GOL ='$golz' AND POSTED = 1
                         GROUP BY NO_BUKTI");
 		return response()->json($so);
 	}

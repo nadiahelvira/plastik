@@ -235,7 +235,7 @@
 											<input name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
 										</td>
 										<td>
-											<input name="DISK[]" onblur="hitung()"  value="0" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK" readonly>
+											<input name="DISK[]" onblur="hitung()"  value="0" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK">
 										</td>
 										<td>
                                             <input name="KET[]" id="KET{{$no}}" type="text" value="{{$detail->KET}}" class="form-control KET" >
@@ -1067,6 +1067,7 @@
 			$("#SATUAN" + i.toString()).attr("readonly", true);
 			$("#QTY" + i.toString()).attr("readonly", false);
 			$("#HARGA" + i.toString()).attr("readonly", true);
+			$("#DISK" + i.toString()).attr("readonly", false);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#KET" + i.toString()).attr("readonly", false);
 
@@ -1244,7 +1245,7 @@
 				</td>	
 
 				<td>
-					<input name='DISK[]'  onblur='hitung()' value='0' id='DISK${idrow}' type='text' style='text-align: right' class='form-control DISK text-primary' readonly required >
+					<input name='DISK[]'  onblur='hitung()' value='0' id='DISK${idrow}' type='text' style='text-align: right' class='form-control DISK text-primary' >
 				</td>				
 					
 				

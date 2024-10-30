@@ -64,7 +64,7 @@ class PoController extends Controller
         $po = DB::SELECT("SELECT distinct PO.NO_BUKTI , PO.KODES, PO.NAMAS, 
 		                  PO.ALAMAT, PO.KOTA, PO.PKP, po.GUDANG from po, pod 
                           WHERE PO.NO_BUKTI = POD.NO_BUKTI AND PO.GOL ='$golz'
-                          AND PO.CBG = '$CBG' AND POD.SISA > 0	");
+                          AND PO.CBG = '$CBG' AND POD.SISA > 0 AND POSTED = 1 ");
         return response()->json($po);
     }
 
@@ -823,7 +823,9 @@ class PoController extends Controller
         $PHPJasperXML->setData($data);
         ob_end_clean();
         $PHPJasperXML->outpage("I");
-       
+
+        DB::SELECT("UPDATE PO SET POSTED = 1 WHERE PO.NO_BUKTI='$no_po';");
+
     }
 	
 	

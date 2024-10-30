@@ -102,7 +102,7 @@ class RJualController extends Controller
 		$query = DB::SELECT("
 			SELECT a.NO_BUKTI, a.TGL, a.NO_SO, a.TRUCK, a.KODEC, a.NAMAC, b.KD_BRG,b.NA_BRG,
 					b.QTY, b.HARGA, b.TOTAL, 
-					b.DPP, b.PPN, a.NOTES 
+					b.DPP, b.PPN, a.NOTES, a.TOTAL_QTY
 			from jual a, juald b 
 			WHERE a.FLAG='JL' $filtertgl  $filterkodec $filterbrg $filtergudang $filtercbg;
 		");

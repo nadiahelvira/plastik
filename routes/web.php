@@ -360,6 +360,7 @@ Route::get('/rso', 'App\Http\Controllers\OReport\RSoController@report')->middlew
     Route::get('/get-so-report', 'App\Http\Controllers\OReport\RSoController@getSoReport')->middleware(['auth'])->name('get-so-report');
     Route::get('/jssoc/{so:NO_ID}', 'App\Http\Controllers\OTransaksi\SoController@jssoc')->middleware(['auth']);
     Route::post('jasper-so-report', 'App\Http\Controllers\OReport\RSoController@jasperSoReport')->middleware(['auth']);
+    Route::get('/so/cetak/{so:NO_ID}','App\Http\Controllers\OTransaksi\SoController@cetak')->middleware(['auth']);
 
     Route::get('/so/browse_sod', 'App\Http\Controllers\OTransaksi\SoController@browse_sod')->middleware(['auth'])->name('so/browse_sod');
 	
@@ -368,7 +369,7 @@ Route::get('/so/edit', 'App\Http\Controllers\OTransaksi\SoController@edit')->mid
 Route::post('/so/update/{so}', 'App\Http\Controllers\OTransaksi\SoController@update')->middleware(['auth'])->name('so.update');
 Route::get('/so/delete/{so}', 'App\Http\Controllers\OTransaksi\SoController@destroy')->middleware(['auth'])->name('so.delete');
 Route::get('/so/repost/{so}', 'App\Http\Controllers\OTransaksi\SoController@repost')->middleware(['auth'])->name('so.repost');
-
+    
 Route::post('so/posting', 'App\Http\Controllers\OTransaksi\SoController@posting')->middleware(['auth']);
 Route::get('so/index-posting', 'App\Http\Controllers\OTransaksi\SoController@index_posting')->middleware(['auth']);
 
@@ -533,6 +534,11 @@ Route::get('/surats/browse_suratsd', 'App\Http\Controllers\OTransaksi\SuratsCont
 
 Route::post('/jasper-surats-report', 'App\Http\Controllers\OReport\RSuratsController@jasperSuratsReport')->middleware(['auth']);
 Route::get('/jssuratsc/{surats:NO_ID}', 'App\Http\Controllers\OTransaksi\SuratsController@jssuratsc')->middleware(['auth']);
+
+Route::get('/get-surats-report', 'App\Http\Controllers\OReport\RSuratsController@getSuratsReport')->middleware(['auth'])->name('get-surats-report');
+Route::get('/jssuratsc/{surats:NO_ID}', 'App\Http\Controllers\OTransaksi\SuratsController@jssuratsc')->middleware(['auth']);
+Route::post('jasper-surats-report', 'App\Http\Controllers\OReport\RSuratsController@jasperSuratsReport')->middleware(['auth']);
+Route::get('/surats/cetak/{surats:NO_ID}','App\Http\Controllers\OTransaksi\SuratsController@cetak')->middleware(['auth']);
 
 
 // Operational Penjualan
@@ -772,6 +778,7 @@ Route::get('/kas/create', 'App\Http\Controllers\FTransaksi\KasController@create'
 Route::get('/get-kas', 'App\Http\Controllers\FTransaksi\KasController@getKas')->middleware(['auth'])->name('get-kas');
 Route::get('/rkas', 'App\Http\Controllers\FReport\RKasController@report')->middleware(['auth'])->name('rkas');
 Route::get('/get-kas-report', 'App\Http\Controllers\FReport\RKasController@getKasReport')->middleware(['auth'])->name('get-kas-report');
+Route::get('/kas/cetak/{kas:NO_ID}','App\Http\Controllers\FTransaksi\KasController@cetak')->middleware(['auth']);
 
 
 
@@ -789,6 +796,7 @@ Route::get('/bank/create', 'App\Http\Controllers\FTransaksi\BankController@creat
 Route::get('/get-bank', 'App\Http\Controllers\FTransaksi\BankController@getBank')->middleware(['auth'])->name('get-bank');
 Route::get('/rbank', 'App\Http\Controllers\FReport\RBankController@report')->middleware(['auth'])->name('rbank');
 Route::get('/get-bank-report', 'App\Http\Controllers\FReport\RBankController@getBankReport')->middleware(['auth'])->name('get-bank-report');
+Route::get('/bank/cetak/{bank:NO_ID}','App\Http\Controllers\FTransaksi\BankController@cetak')->middleware(['auth']);
 
 
 // Operational Bank Keluar
@@ -1046,6 +1054,11 @@ Route::get('/tpiu/edit/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@
 Route::post('/tpiu/update/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@update')->middleware(['auth', 'role:superadmin|operational'])->name('tpiu.update');
 Route::get('/tpiu/delete/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@destroy')->middleware(['auth', 'role:superadmin'])->name('tpiu.delete');
 
+Route::get('/get-tpiu-report', 'App\Http\Controllers\OReport\RTpiuController@getTpiuReport')->middleware(['auth'])->name('get-tpiu-report');
+Route::get('/jssuratsc/{tpiu:NO_ID}', 'App\Http\Controllers\OTransaksi\TpiuController@jssuratsc')->middleware(['auth']);
+Route::post('jasper-tpiu-report', 'App\Http\Controllers\OReport\RTpiuController@jasperTpiuReport')->middleware(['auth']);
+Route::get('/tpiu/cetak/{tpiu:NO_ID}','App\Http\Controllers\OTransaksi\TpiuController@cetak')->middleware(['auth']);
+
 // Tpiu Non
 Route::get('/tpiun/show/[tpiun}', 'App\Http\Controllers\OTransaksi\TpiunController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('tpiunid');
 Route::get('/tpiun/edit/{tpiun}', 'App\Http\Controllers\OTransaksi\TpiunController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('tpiun.edit');
@@ -1161,6 +1174,7 @@ Route::get('/rmemo', 'App\Http\Controllers\FReport\RMemoController@report')->mid
 Route::get('/memo/edit', 'App\Http\Controllers\FTransaksi\MemoController@edit')->middleware(['auth'])->name('memo.edit');
 Route::post('/memo/update/{memo}', 'App\Http\Controllers\FTransaksi\MemoController@update')->middleware(['auth'])->name('memo.update');
 Route::get('/memo/delete/{memo}', 'App\Http\Controllers\FTransaksi\MemoController@destroy')->middleware(['auth'])->name('memo.delete');
+Route::get('/memo/cetak/{memo:NO_ID}','App\Http\Controllers\FTransaksi\MemoController@cetak')->middleware(['auth']);
     
 //Report
 Route::post('/rmemo/cetak', 'App\Http\Controllers\FReport\RMemoController@cetak')->middleware(['auth'])->name('rmemo.cetak');

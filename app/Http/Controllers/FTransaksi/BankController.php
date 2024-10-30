@@ -92,7 +92,7 @@ class BankController extends Controller
                                 <i class="fas fa-edit"></i>
                                     Edit
                                 </a>
-                                <a class="dropdown-item btn btn-danger" href="bank/jasper-bank-trans/' . $row->NO_ID . '">
+                                <a class="dropdown-item btn btn-danger" href="bank/cetak/' . $row->NO_ID . '">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Print
                                 </a> 	
@@ -570,7 +570,7 @@ class BankController extends Controller
 
     }
 
-    public function jasperBankTrans(Bank $bank)
+    public function cetak (Bank $bank)
     {
         $no_bukti = $bank->NO_BUKTI;
 

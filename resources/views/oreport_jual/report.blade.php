@@ -35,12 +35,11 @@
 							<label class="form-label">Customer 1</label>				
 							<input type="text" class="form-control kodec" id="kodec" name="kodec" placeholder="Pilih Customer" value="{{ session()->get('filter_kodec1') }}" readonly>
 						</div>  
-						<!-- <div class="col-md-3">
-							<input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="Nama" value="{{ session()->get('filter_namac1') }}" readonly>
-						</div> -->
+
 						<div class="col-md-1">
 							<label class="form-label"> s.d </label>
 						</div> 
+						
 						<div class="col-md-2">						
 							<label class="form-label">Customer 2</label>
 							<input type="text" class="form-control kodec2" id="kodec2" name="kodec2" placeholder="ZZZ" value="{{ session()->get('filter_kodec2') }}" readonly>

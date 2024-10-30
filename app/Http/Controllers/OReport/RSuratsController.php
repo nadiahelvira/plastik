@@ -94,32 +94,35 @@ class RSuratsController extends Controller
 
 			if (!empty($request->gol))
 			{
-				$filtergol = " and GOL='".$request->gol."' ";
+				$filtergol = " and a.GOL='".$request->gol."' ";
 			}
 			
 			if (!empty($request->kodec))
 			{
-				$filterkodec = " and KODEC='".$request->kodec."' ";
+				$filterkodec = " and a.KODEC='".$request->kodec."' ";
 			}
 			
 			if (!empty($request->tglDr) && !empty($request->tglSmp))
 			{
 				$tglDrD = date("Y-m-d", strtotime($request->tglDr));
 				$tglSmpD = date("Y-m-d", strtotime($request->tglSmp));
-				$filtertgl = " WHERE TGL between '".$tglDrD."' and '".$tglSmpD."' ";
+				$filtertgl = " WHERE a.TGL between '".$tglDrD."' and '".$tglSmpD."' ";
 			}
 			
 			if (!empty($request->cbg))
 			{
-				$filtercbg = " and CBG='".$request->cbg."' ";
+				$filtercbg = " and a.CBG='".$request->cbg."' ";
 			}
 			
 
 			session()->put('filter_cbg', $request->cbg);
 			
 		$query = DB::SELECT("
-			SELECT NO_BUKTI,TGL,NO_SO,KODEC,NAMAC,TOTAL,NOTES,GOL 
-			from surats $filtertgl $filtergol $filterkodec $filtercbg ;
+			SELECT a.NO_BUKTI, a.TGL, a.NO_SO, a.KODEC, a.NAMAC, a.TOTAL, a.NOTES, a.GOL, a.TRUCK,
+			b.NA_BRG, b.QTY 
+			from surats a, suratsd b 
+			$filtertgl $filtergol $filterkodec $filtercbg
+			ORDER BY NO_BUKTI;
 		");
 
 		
@@ -142,6 +145,9 @@ class RSuratsController extends Controller
 				'TOTAL' => $query[$key]->TOTAL,
 				'NOTES' => $query[$key]->NOTES,
 				'GOL' => $query[$key]->GOL,
+				'NA_BRG' => $query[$key]->NA_BRG,
+				'TRUCK' => $query[$key]->TRUCK,
+				'QTY' => $query[$key]->QTY,
 			));
 		}
 		$PHPJasperXML->setData($data);

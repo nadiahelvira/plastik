@@ -64,7 +64,7 @@ class SoController extends Controller
 		                  SO.ALAMAT, SO.KOTA from so, sod 
                           WHERE SO.NO_BUKTI = SOD.NO_BUKTI AND SO.GOL ='$golz' 
                           AND SOD.SISA > 0
-                          AND CBG = '$CBG' ");
+                          AND CBG = '$CBG' AND POSTED = 1");
         return response()->json($so);
     }
 
@@ -828,6 +828,7 @@ class SoController extends Controller
         ob_end_clean();
         $PHPJasperXML->outpage("I");
        
+        DB::SELECT("UPDATE SO SET POSTED = 1 WHERE SO.NO_BUKTI='$no_so';");
     }
 	
 	

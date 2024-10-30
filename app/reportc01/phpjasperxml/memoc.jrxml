@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="kasc" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5662dcdd-2947-4030-a126-8345a6e9bd94">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -70,29 +71,29 @@
 				<reportElement x="34" y="132" width="1" height="274" uuid="024704b0-f2f8-4179-9399-63b1675ec99a"/>
 			</line>
 			<staticText>
-				<reportElement x="565" y="455" width="82" height="18" uuid="7bf0441b-6f0e-42b4-93c6-78e23e4c6b54"/>
-				<textElement>
+				<reportElement x="557" y="452" width="82" height="18" uuid="7bf0441b-6f0e-42b4-93c6-78e23e4c6b54"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Notes:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="269" y="455" width="82" height="18" uuid="5c9f9603-1056-4bc9-84f4-7fd935f2921c"/>
-				<textElement>
+				<reportElement x="262" y="452" width="82" height="18" uuid="5c9f9603-1056-4bc9-84f4-7fd935f2921c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Dibuat Oleh]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="97" y="455" width="82" height="18" uuid="c3380dd7-1695-47b7-bbc7-883efa2ce0ca"/>
-				<textElement>
+				<reportElement x="80" y="452" width="103" height="18" uuid="c3380dd7-1695-47b7-bbc7-883efa2ce0ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Disetujui Oleh]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="446" y="455" width="82" height="18" uuid="6544b95b-6b81-4362-bac1-f18f17641ba2"/>
-				<textElement>
+				<reportElement x="429" y="452" width="82" height="18" uuid="6544b95b-6b81-4362-bac1-f18f17641ba2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Gudang]]></text>
@@ -180,43 +181,43 @@
 		<band height="36" splitType="Stretch">
 			<staticText>
 				<reportElement x="37" y="11" width="87" height="18" uuid="60235610-dfe8-4b51-a963-9b1f8ccbaf54"/>
-				<textElement>
-					<font fontName="Tahoma" size="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Acno]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="128" y="11" width="177" height="18" uuid="450dd377-a212-4b68-ab56-dbcc8d0a7a0a"/>
-				<textElement>
-					<font fontName="Tahoma" size="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Akun]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="653" y="10" width="143" height="18" uuid="30c99b72-b65d-4c20-8814-2774baece9db"/>
-				<textElement textAlignment="Right">
-					<font fontName="Tahoma" size="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Kredit]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="10" y="11" width="24" height="18" uuid="06119166-fa62-4082-8fe3-0d84d5677279"/>
-				<textElement>
-					<font fontName="Tahoma" size="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="500" y="11" width="147" height="18" uuid="bbb0f49d-cdcb-4099-af88-bc7044c3cc77"/>
-				<textElement textAlignment="Right">
-					<font fontName="Tahoma" size="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Debit]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="309" y="11" width="189" height="18" uuid="b57c7909-988d-41e6-a717-36f24ad17b3f"/>
-				<textElement>
-					<font fontName="Tahoma" size="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Uraian]]></text>
 			</staticText>

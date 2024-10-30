@@ -88,26 +88,35 @@ class RPoController extends Controller
 			session()->put('filter_nabrg1', $request->nabrg1);
 			session()->put('filter_cbg', $request->cbg);
 		
-		if( $filtergol == 'J' ){
+		// if( $filtergol == 'J' ){
 			
-			$query = DB::SELECT("SELECT po.NO_BUKTI, po.TGL, po.KODES, po.NAMAS, 
-				pod.KD_BRG, pod.NA_BRG, pod.QTY, pod.HARGA, pod.TOTAL, 
-				po.NOTES, pod.SATUAN,
-				po.GOL, 
-				pod.KIRIM, po.SISA from po, pod
-				$filtertgl $filtergol $filterkodes $filtercbg
-				ORDER BY NO_BUKTI;
-			");	
-		} else {
-			$query = DB::SELECT("SELECT po.NO_BUKTI, po.TGL, po.KODES, po.NAMAS, 
-				pod.KD_BHN AS KD_BRG, pod.NA_BHN AS NA_BRG, pod.QTY, pod.HARGA, pod.TOTAL, 
-				po.NOTES, pod.SATUAN,
-				po.GOL, 
-				pod.KIRIM, po.SISA from po, pod
-				$filtertgl $filtergol $filterkodes $filtercbg
-				ORDER BY NO_BUKTI;
-			");	
-		}
+		// 	$query = DB::SELECT("SELECT po.NO_BUKTI, po.TGL, po.KODES, po.NAMAS, 
+		// 		pod.KD_BRG, pod.NA_BRG, pod.QTY, pod.HARGA, pod.TOTAL, 
+		// 		po.NOTES, pod.SATUAN,
+		// 		po.GOL, 
+		// 		pod.KIRIM, po.SISA from po, pod
+		// 		$filtertgl $filtergol $filterkodes $filtercbg
+		// 		ORDER BY NO_BUKTI;
+		// 	");	
+		// } else {
+		// 	$query = DB::SELECT("SELECT po.NO_BUKTI, po.TGL, po.KODES, po.NAMAS, 
+		// 		pod.KD_BHN AS KD_BRG, pod.NA_BHN AS NA_BRG, pod.QTY, pod.HARGA, pod.TOTAL, 
+		// 		po.NOTES, pod.SATUAN,
+		// 		po.GOL, 
+		// 		pod.KIRIM, po.SISA from po, pod
+		// 		$filtertgl $filtergol $filterkodes $filtercbg
+		// 		ORDER BY NO_BUKTI;
+		// 	");	
+		// }
+
+		$query = DB::SELECT("SELECT po.NO_BUKTI, po.TGL, po.KODES, po.NAMAS, 
+							pod.KD_BRG, pod.NA_BRG, pod.QTY, pod.HARGA, pod.TOTAL, 
+							po.NOTES, pod.SATUAN,
+							po.GOL, 
+							pod.KIRIM, po.SISA from po, pod
+							$filtertgl $filtergol $filterkodes $filtercbg
+							ORDER BY NO_BUKTI;
+		");	
 
 		if($request->has('filter'))
 		{

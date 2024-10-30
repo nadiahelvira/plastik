@@ -88,7 +88,7 @@ class MemoController extends Controller
                                 <i class="fas fa-edit"></i>
                                     Edit
                                 </a>
-                                <a class="dropdown-item btn btn-danger" href="memo/jasper-memo-trans/' . $row->NO_ID . '">
+                                <a class="dropdown-item btn btn-danger" href="memo/cetak/' . $row->NO_ID . '">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Print
                                 </a> 									
@@ -566,7 +566,7 @@ class MemoController extends Controller
 
     }
 
-    public function jasperMemoTrans(Memo $memo)
+    public function cetak (Memo $memo)
     {
         $no_bukti = $memo->NO_BUKTI;
 
@@ -575,7 +575,7 @@ class MemoController extends Controller
         $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
 
         $query = DB::SELECT("
-			SELECT memo.NO_BUKTI,memo.TGL,memo.KET,memo.BNAMA,
+			SELECT memo.NO_BUKTI,memo.TGL,memo.KET,
             memod.REC,memod.ACNO,memod.NACNO,memod.URAIAN,if(memod.DEBET>=0,memod.DEBET,memod.KREDIT) as JUMLAH 
 			FROM memo, memod 
 			WHERE memo.NO_BUKTI=memod.NO_BUKTI and memo.NO_BUKTI='$no_bukti' 

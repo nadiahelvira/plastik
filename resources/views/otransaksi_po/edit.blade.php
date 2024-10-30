@@ -271,7 +271,7 @@
 											<input name="DPP[]" onblur="hitung()"  value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP" readonly>
 										</td>
 										<td>
-											<input name="DISK[]" onblur="hitung()"  value="0" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK" readonly>
+											<input name="DISK[]" onblur="hitung()"  value="0" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK" >
 										</td>
 	
 										 
@@ -308,13 +308,13 @@
 							
 						<!-- batas -->
 
-                            <div class="col-md-2 row">
-                               <a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
+							<div class="col-md-2 row">
+								<a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
 					
 							</div>		
 						
-					</div>
-                        </div> 
+						</div>
+					</div> 
 
                         <hr style="margin-top: 30px; margin-buttom: 30px">
 
@@ -358,7 +358,7 @@
 							
 						</div>
 						
-						<!-- sampai sini shelvi-->
+						
 						   
 						<div class="mt-3 col-md-12 form-group row">
 							<div class="col-md-4">
@@ -1163,7 +1163,7 @@
 			$("#QTY" + i.toString()).attr("readonly", false);
 			$("#HARGA" + i.toString()).attr("readonly", false);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
-			$("#DISK" + i.toString()).attr("readonly", true);
+			$("#DISK" + i.toString()).attr("readonly", false);
 			$("#KET" + i.toString()).attr("readonly", false);
 			$("#DELETEX" + i.toString()).attr("hidden", false);
 
@@ -1334,7 +1334,7 @@
 				</td>
 
 				<td>
-					<input name='DISK[]'  onblur='hitung()' value='0' id='DISK${idrow}' type='text' style='text-align: right' class='form-control DISK text-primary' readonly required >
+					<input name='DISK[]'  onblur='hitung()' value='0' id='DISK${idrow}' type='text' style='text-align: right' class='form-control DISK text-primary' required >
 				</td>				
 					
                 <td>

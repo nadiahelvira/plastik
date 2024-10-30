@@ -116,7 +116,7 @@ class KasController extends Controller
                                 <i class="fas fa-edit"></i>
                                     Edit
                                 </a>
-                                <a class="dropdown-item btn btn-danger" href="kas/jasper-kas-trans/' . $row->NO_ID . '">
+                                <a class="dropdown-item btn btn-danger" href="kas/cetak/' . $row->NO_ID . '">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Print
                                 </a> 										
@@ -638,7 +638,7 @@ class KasController extends Controller
     }
 
 
-    public function jasperKasTrans(Kas $kas)
+    public function cetak (Kas $kas)
     {
         $no_bukti = $kas->NO_BUKTI;
 
