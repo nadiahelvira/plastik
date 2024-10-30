@@ -62,7 +62,8 @@
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-
+			  
+              <form method="POST" id="entri" action="{{url('po/posting')}}">
 
               <input name="flagz"  class="form-control flagz" id="flagz" value="{{$flagz}}" hidden >
               <input name="golz"  class="form-control golz" id="golz" value="{{$golz}}" hidden >
@@ -163,6 +164,19 @@
 		
         $("div.test_btn").html('<a class="btn btn-lg btn-md btn-success" href="{{url('po/edit?flagz='.$flagz.'&golz='.$golz.'&idx=0&tipx=new')}}"> <i class="fas fa-plus fa-sm md-3" ></i></a');
     });
+	
+	
+	function simpan() {
+    var check = '0';
+    var min = '0';
+		
+	
+	document.getElementById("entri").submit();
+
+	}
+	
+	
+	
 	
 </script>
 @endsection

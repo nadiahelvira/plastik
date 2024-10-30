@@ -831,6 +831,49 @@ class PoController extends Controller
 	 public function posting(Request $request)
     {
       
+        $CEK = $request->input('cek');
+        $NO_BUKTI = $request->input('NO_BUKTI');
+		
+        $usrnmx = Auth::user()->username;   
+		 
+        $hasil = "";
+
+        if ($CEK) {
+            foreach ($CEK as $key => $value) 
+			{
+				
+                    //$STA = $request->input('STA');
+					
+					$periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
+					$bulan    = session()->get('periode')['bulan'];
+					$tahun    = substr(session()->get('periode')['tahun'], -2);
+
+			   $NO_BUKTIXZ  = $NO_BUKTI[$key];
+			  
+
+                    DB::SELECT("UPDATE PO SET POSTED = 1 WHERE PO.NO_BUKTI='$NO_BUKTIXZ'");
+                  
+			}
+		}
+		else
+		{
+			$hasil = $hasil ."Tidak ada PO yang dipilih! ; ";
+		}
+
+					if($hasil!='')
+					{
+						return redirect('/po/index-posting')->with('status', 'Proses Posting PO ..')->with('gagal', $hasil);
+					}
+					else
+					{
+						return redirect('/po/index-posting')->with('status', 'Posting Posting PO selesai..');
+					}
+
+   
+
+
+
+
 
     }
 	
