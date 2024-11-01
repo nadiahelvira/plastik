@@ -136,7 +136,12 @@
 			    },
 				
 				{data: 'NO_BUKTI', name: 'NO_BUKTI'},
-                {data: 'TGL', name: 'TGL'},
+                {data: 'TGL', name: 'TGL',
+                  render : function ( data, type, row, meta )
+                  {
+                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                  }
+                },
                 {
 					data: 'JUMLAH', 
 					name: 'JUMLAH',

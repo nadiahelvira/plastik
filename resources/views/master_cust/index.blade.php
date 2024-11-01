@@ -105,7 +105,12 @@
 				
 				{data: 'KODEC', name: 'KODEC'},
         // {data: 'NAMAC', name: 'NAMAC' , visible: false  },
-        {data: 'NAMAC', name: 'NAMAC' },
+        {data: 'NAMAC', name: 'NAMAC',
+            render : function ( data, type, row, meta )
+                  {
+                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                  }
+        },
         {data: 'ALAMAT', name: 'ALAMAT' },				
         {data: 'KOTA', name: 'KOTA'},
 				{data: 'TELPON1', name: 'TELPON1'},

@@ -91,7 +91,12 @@
                    name: 'action'
                 },
 				
-                {data: 'KOTA', name: 'KOTA'},
+                {data: 'KOTA', name: 'KOTA',
+                  render : function ( data, type, row, meta )
+                  {
+                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                  }
+                },
                 {data: 'RING', name: 'RING' },
             ],
 

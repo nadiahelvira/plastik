@@ -110,7 +110,12 @@
 			    },
 				
 				{data: 'KODE', name: 'KODE'},
-              	{data: 'NAMA', name: 'NAMA'},
+              	{data: 'NAMA', name: 'NAMA',
+                  render : function ( data, type, row, meta )
+                  {
+                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                  }
+                },
 
 				
             ],

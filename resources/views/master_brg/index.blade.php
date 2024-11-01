@@ -89,7 +89,12 @@
                   name: 'action'
                 },
 				        {data: 'KD_BRG', name: 'KD_BRG'},
-                {data: 'NA_BRG', name: 'NA_BRG'},
+                {data: 'NA_BRG', name: 'NA_BRG',
+                  render : function ( data, type, row, meta )
+                  {
+                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                  }
+                },
 				        {data: 'GOL', name: 'GOL'},
                 {data: 'SATUAN', name: 'SATUAN'},
             ],

@@ -128,7 +128,12 @@
                 { data: 'TGL', name: 'TGL'},
                 { data: 'TOTAL_QTY', name: 'TOTAL_QTY', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},			
                 { data: 'KODES', name: 'KODES'},
-                { data: 'NAMAS', name: 'NAMAS'},
+                { data: 'NAMAS', name: 'NAMAS',
+                  render : function ( data, type, row, meta )
+                  {
+                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                  }
+                },
                 { data: 'TOTAL_QTY', name: 'TOTAL_QTY', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},			
                 { data: 'TOTAL', name: 'TOTAL', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},				
                 { data: 'NOTES', name: 'NOTES'},

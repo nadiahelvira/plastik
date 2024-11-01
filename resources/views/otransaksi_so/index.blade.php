@@ -123,18 +123,32 @@
                 {data: 'DT_RowIndex', orderable: false, searchable: false },
 				        {data: 'action', name: 'action'},
                 {data: 'NO_BUKTI', name: 'NO_BUKTI'},
-                {data: 'NAMAC', name: 'NAMAC'},
+                {data: 'NAMAC', name: 'NAMAC',
+                  render : function ( data, type, row, meta )
+                  {
+                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                  }
+                },
                 {data: 'TGL', name: 'TGL'},
                 {data: 'TOTAL_QTY', name: 'TOTAL_QTY', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},
                 {data: 'TOTAL', name: 'TOTAL', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},
                 {data: 'NOTES', name: 'NOTES'},
                 {data: 'USRNM', name: 'USRNM'},
-                {data: 'cek', name: 'cek'},
+                // {data: 'cek', name: 'cek'},
+                { data: 'POSTED', name: 'POSTED',
+                  render : function(data, type, row, meta) {
+                    if(row['POSTED']=="0"){
+                        return '';
+                    }else{
+                        return '<input type="checkbox" checked style="pointer-events: none;">';
+                    }
+                  }
+                },
             ],
             columnDefs: [
                 {
                     "className": "dt-center", 
-                    "targets": 0,
+                    "targets": 10,
                 },		
                 {
                     "className": "dt-right", 

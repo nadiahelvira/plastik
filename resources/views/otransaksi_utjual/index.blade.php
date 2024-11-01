@@ -120,7 +120,12 @@
                 {data: 'NO_BUKTI', name: 'NO_BUKTI'},
                 {data: 'TGL', name: 'TGL'},
                 {data: 'NO_SO', name: 'NO_SO'},
-                {data: 'NAMAC', name: 'NAMAC'},
+                {data: 'NAMAC', name: 'NAMAC',
+                  render : function ( data, type, row, meta )
+                  {
+                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                  }
+                },
                 {data: 'TOTAL', name: 'TOTAL', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},
                 {data: 'NOTES', name: 'NOTES'},
                 {data: 'USRNM', name: 'USRNM'},

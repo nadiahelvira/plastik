@@ -106,7 +106,12 @@
                 { data: 'TGL', name: 'TGL'},
                 { data: 'NO_PO', name: 'NO_PO'},
                 { data: 'KODES', name: 'KODES'},
-                { data: 'NAMAS', name: 'NAMAS'},			
+                { data: 'NAMAS', name: 'NAMAS',
+                  render : function ( data, type, row, meta )
+                  {
+                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                  }
+                },			
                 { data: 'TOTAL', name: 'TOTAL', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},	
                 // { data: 'RPTOTAL', name: 'RPTOTAL', render: $.fn.dataTable.render.number( ',', '.', 2, '' )},
                 { data: 'NOTES', name: 'NOTES'},
