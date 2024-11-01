@@ -594,6 +594,10 @@ class BankController extends Controller
 			WHERE bank.NO_BUKTI=bankd.NO_BUKTI and bank.NO_BUKTI='$no_bukti' 
 			ORDER BY bank.NO_BUKTI;
 		");
+		
+		$query2 = DB::SELECT("
+			SELECT NAMA from compan ;
+		");
 
         $data = [];
         foreach ($query as $key => $value) {
@@ -608,6 +612,7 @@ class BankController extends Controller
                 'URAIAN' => $query[$key]->URAIAN,
                 'JUMLAH' => $query[$key]->JUMLAH,
                 'JUDUL' => $judul,
+				'NAMA' => $query2[0]->NAMA
             ));
         }
         $PHPJasperXML->setData($data);

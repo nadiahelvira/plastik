@@ -17,6 +17,7 @@
 	<field name="KET" class="java.lang.String"/>
 	<field name="NOTES" class="java.lang.String"/>
 	<field name="REC" class="java.lang.String"/>
+	<field name="NAMA" class="java.lang.String"/>
 	<background>
 		<band height="555" splitType="Stretch">
 			<rectangle>
@@ -175,6 +176,13 @@
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="440" y="6" width="355" height="30" uuid="8ce7db3b-cace-44aa-b9c8-64dbf57cf8ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMA}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

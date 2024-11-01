@@ -581,6 +581,10 @@ class MemoController extends Controller
 			WHERE memo.NO_BUKTI=memod.NO_BUKTI and memo.NO_BUKTI='$no_bukti' 
 			ORDER BY memo.NO_BUKTI;
 		");
+		
+		$query2 = DB::SELECT("
+			SELECT NAMA from compan ;
+		");
 
         $data = [];
         foreach ($query as $key => $value) {
@@ -594,6 +598,7 @@ class MemoController extends Controller
                 'NACNO' => $query[$key]->NACNO,
                 'URAIAN' => $query[$key]->URAIAN,
                 'JUMLAH' => $query[$key]->JUMLAH,
+				'NAMA' => $query2[0]->NAMA
             ));
         }
         $PHPJasperXML->setData($data);

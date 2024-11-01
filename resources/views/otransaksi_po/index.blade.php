@@ -10,10 +10,6 @@
         padding: 5px 10px !important;
     }
 
-    .table thead {
-        background-color: #8a2be2;
-        color: #ffff;
-    }
 
     .datatable tbody td {
         padding: 5px !important;
@@ -24,10 +20,7 @@
         border-left: solid 2px #000;
     }
 	
-    .table tbody:nth-child(2) {
-        background-color: #d3ffce;
-    }
-
+ 
     .btn-secondary {
         background-color: #42047e !important;
     }

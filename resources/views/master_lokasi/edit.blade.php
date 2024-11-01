@@ -75,20 +75,20 @@
         
          				<div class="mt-3 col-md-12 form-group row">
 							<div class="col-md-4">
-								<button type="button" hidden id='TOPX'  onclick="location.href='{{url('/lokasi/edit/?idx=' .$idx. '&tipx=top')}}'" class="btn btn-outline-primary">Top</button>
-								<button type="button" hidden id='PREVX' onclick="location.href='{{url('/lokasi/edit/?idx='.$header->NO_ID.'&tipx=prev&kodex='.$header->ACNO )}}'" class="btn btn-outline-primary">Prev</button>
-								<button type="button" hidden id='NEXTX' onclick="location.href='{{url('/lokasi/edit/?idx='.$header->NO_ID.'&tipx=next&kodex='.$header->ACNO )}}'" class="btn btn-outline-primary">Next</button>
-								<button type="button" hidden id='BOTTOMX' onclick="location.href='{{url('/lokasi/edit/?idx=' .$idx. '&tipx=bottom')}}'" class="btn btn-outline-primary">Bottom</button>
+								<button type="button" id='TOPX'  onclick="location.href='{{url('/lokasi/edit/?idx=' .$idx. '&tipx=top')}}'" class="btn btn-outline-primary">Top</button>
+								<button type="button" id='PREVX' onclick="location.href='{{url('/lokasi/edit/?idx='.$header->NO_ID.'&tipx=prev&kodex='.$header->ACNO )}}'" class="btn btn-outline-primary">Prev</button>
+								<button type="button" id='NEXTX' onclick="location.href='{{url('/lokasi/edit/?idx='.$header->NO_ID.'&tipx=next&kodex='.$header->ACNO )}}'" class="btn btn-outline-primary">Next</button>
+								<button type="button" id='BOTTOMX' onclick="location.href='{{url('/lokasi/edit/?idx=' .$idx. '&tipx=bottom')}}'" class="btn btn-outline-primary">Bottom</button>
 							</div>
 							<div class="col-md-5">
-								<button type="button" hidden id='NEWX' onclick="location.href='{{url('/lokasi/edit/?idx=0&tipx=new')}}'" class="btn btn-warning">New</button>
-								<button type="button" hidden id='EDITX' onclick='hidup()' class="btn btn-secondary">Edit</button>                    
-								<button type="button" hidden id='UNDOX' onclick="location.href='{{url('/lokasi/edit/?idx=' .$idx. '&tipx=undo' )}}'" class="btn btn-info">Undo</button> 
+								<button type="button" id='NEWX' onclick="location.href='{{url('/lokasi/edit/?idx=0&tipx=new')}}'" class="btn btn-warning">New</button>
+								<button type="button" id='EDITX' onclick='hidup()' class="btn btn-secondary">Edit</button>                    
+								<button type="button" id='UNDOX' onclick="location.href='{{url('/lokasi/edit/?idx=' .$idx. '&tipx=undo' )}}'" class="btn btn-info">Undo</button> 
 								<button type="button" id='SAVEX' onclick='simpan()'   class="btn btn-success" class="fa fa-save"></i>Save</button>
 
 							</div>
 							<div class="col-md-3">
-								<button type="button" hidden id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
+								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
 								<button type="button" id='CLOSEX'  onclick="location.href='{{url('/lokasi' )}}'" class="btn btn-outline-secondary">Close</button>
 
 

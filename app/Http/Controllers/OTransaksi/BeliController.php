@@ -47,6 +47,7 @@ class BeliController extends Controller
 		
         $this->FLAGZ = $request->flagz;
         $this->GOLZ = $request->golz;
+        
 
 
     }
