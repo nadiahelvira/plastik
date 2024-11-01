@@ -59,7 +59,16 @@
                                 </div>
                                 <div class="col-md-2">
 								
-								  <input class="form-control date" id="TGL" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
+								  <input class="form-control date" id="TGL" onblur="jtempo()" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
+								
+                                </div>
+        
+                                <div class="col-md-1">
+                                    <label for="JTEMPO" class="form-label">Jatuh tempo</label>
+                                </div>
+                                <div class="col-md-2">
+								
+								  <input class="form-control date" id="JTEMPO" name="JTEMPO" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->JTEMPO))}}">
 								
                                 </div>
                             </div>
@@ -86,7 +95,11 @@
                                 </div>
 								<div class="col-md-3">
                                     <input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="-" value="{{$header->NAMAC}}" readonly>
-                                </div>
+									
+									<input hidden type="text" onclick="select()" onblur="jtempo()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
+									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
+								    
+								</div>
 								
 								<div class="col-md-1">
 									<!-- <input type="checkbox" class="form-check-input" id="PKP" name="PKP" value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}> -->
@@ -206,6 +219,8 @@
 										<td {{( $golz =='J') ? '' : 'hidden' }}>
                                             <input name="KD_BRG[]" id="KD_BRG{{$no}}" type="text" class="form-control KD_BRG " 
 											value="{{$detail->KD_BRG}}" onblur="browseBarang({{$no}})">
+											<input hidden name="KD_GRUP[]" id="KD_GRUP{{$no}}" type="text" class="form-control KD_GRUP " 
+											value="{{$detail->KD_GRUP}}" >
                                         </td>
 
 										<td {{( $golz =='J') ? '' : 'hidden' }}>
@@ -284,15 +299,6 @@
                                     <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="TTOTAL" value="{{$header->TOTAL}}" style="text-align: right" readonly>
                                 </div>
 							</div>
-							
-                            <div class="form-group row">
-                                <div class="col-md-8" align="right">
-                                    <label for="PPN" class="form-label">Ppn</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control PPN" id="PPN" name="PPN" placeholder="PPN" value="{{$header->PPN}}" style="text-align: right" readonly>
-                                </div>
-							</div>
 
 							<div class="form-group row">
 								<div class="col-md-8" align="right">
@@ -301,6 +307,15 @@
 								<div class="col-md-2">
 									<input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TDISK" id="TDISK" name="TDISK" placeholder="" value="{{$header->TDISK}}" style="text-align: right" readonly>
 								</div>
+							</div>
+							
+                            <div class="form-group row">
+                                <div class="col-md-8" align="right">
+                                    <label for="PPN" class="form-label">Ppn</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control PPN" id="PPN" name="PPN" placeholder="PPN" value="{{$header->PPN}}" style="text-align: right" readonly>
+                                </div>
 							</div>
 							
                             <div class="form-group row">
@@ -547,7 +562,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBCust.row.add([
-							'<a href="javascript:void(0);" onclick="chooseCustomer(\''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].PKP+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\')">'+resp[i].KODEC+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseCustomer(\''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\',  \''+resp[i].HARI+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].PKP+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\')">'+resp[i].KODEC+'</a>',
 							resp[i].NAMAC,
 							resp[i].ALAMAT,
 							resp[i].KOTA,
@@ -568,9 +583,10 @@
 			$("#browseCustModal").modal("show");
 		}
 		
-		chooseCustomer = function(KODEC,NAMAC, ALAMAT, KOTA, PKP, KODEP, NAMAP, RING, KOM){
+		chooseCustomer = function(KODEC,NAMAC, HARI, ALAMAT, KOTA, PKP, KODEP, NAMAP, RING, KOM){
 			$("#KODEC").val(KODEC);
 			$("#NAMAC").val(NAMAC);
+			$("#HARI").val(HARI);
 			$("#ALAMAT").val(ALAMAT);
 			$("#KOTA").val(KOTA);			
 			$("#PKP").val(PKP);			
@@ -632,7 +648,7 @@
 							for(i=0; i<resp.length; i++){
 								
 								dTableBBarang.row.add([
-									'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\', \''+resp[i].NA_BRG+'\' , \''+resp[i].SATUAN+'\', \''+resp[i].HARGA1+'\', \''+resp[i].HARGA2+'\', \''+resp[i].HARGA3+'\', \''+resp[i].HARGA4+'\', \''+resp[i].HARGA5+'\', \''+resp[i].HARGA6+'\', \''+resp[i].HARGA7+'\' )">'+resp[i].KD_BRG+'</a>',
+									'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\', \''+resp[i].KD_GRUP+'\' , \''+resp[i].NA_BRG+'\' , \''+resp[i].SATUAN+'\', \''+resp[i].HARGA1+'\', \''+resp[i].HARGA2+'\', \''+resp[i].HARGA3+'\', \''+resp[i].HARGA4+'\', \''+resp[i].HARGA5+'\', \''+resp[i].HARGA6+'\', \''+resp[i].HARGA7+'\' )">'+resp[i].KD_BRG+'</a>',
 									resp[i].NA_BRG,
 									resp[i].SATUAN,
 								]);
@@ -643,6 +659,7 @@
 					else
 					{
 						$("#KD_BRG"+rowidBarang).val(resp[0].KD_BRG);
+						$("#KD_GRUP"+rowidBarang).val(resp[0].KD_GRUP);
 						$("#NA_BRG"+rowidBarang).val(resp[0].NA_BRG);
 						$("#SATUAN"+rowidBarang).val(resp[0].SATUAN);
 						$("#HARGA1"+rowidBarang).val(resp[0].HARGA1);
@@ -672,8 +689,9 @@
 			}	
 		}
 		
-		chooseBarang = function(KD_BRG,NA_BRG,SATUAN, HARGA1, HARGA2, HARGA3, HARGA4, HARGA5, HARGA6, HARGA7){
+		chooseBarang = function(KD_BRG,KD_GRUP,NA_BRG,SATUAN, HARGA1, HARGA2, HARGA3, HARGA4, HARGA5, HARGA6, HARGA7){
 			$("#KD_BRG"+rowidBarang).val(KD_BRG);
+			$("#KD_GRUP"+rowidBarang).val(KD_GRUP);
 			$("#NA_BRG"+rowidBarang).val(NA_BRG);	
 			$("#SATUAN"+rowidBarang).val(SATUAN);
 			$("#HARGA1"+rowidBarang).val(HARGA1);
@@ -877,9 +895,15 @@
 			var DISKX = parseFloat(z.find('.DISK').val().replace(/,/g, ''));
 
 			var PKP = parseFloat($('#PKP').val().replace(/,/g, ''));
+			var KD_GRUPX = z.find('.KD_GRUP').val();
 
 /////////////////////////////////////////////////////////////////////////////////////////			 
-
+                   var TTOTAL_QTY1 = 0;
+				   
+                   TTOTAL_QTY1 = hitung2(KD_GRUPX);
+					
+					//alert(TTOTAL_QTY1);
+					
 			var HARGA1X = parseFloat(z.find('.HARGA1').val().replace(/,/g, ''));
 			var HARGA2X = parseFloat(z.find('.HARGA2').val().replace(/,/g, ''));
 			var HARGA3X = parseFloat(z.find('.HARGA3').val().replace(/,/g, ''));
@@ -888,45 +912,45 @@
 			var HARGA6X = parseFloat(z.find('.HARGA6').val().replace(/,/g, ''));
 			var HARGA7X = parseFloat(z.find('.HARGA7').val().replace(/,/g, ''));
 			var HARGAX = 0;
-
-            if( TTOTAL_QTY > 0 )
+			 
+            if( TTOTAL_QTY1 > 0 )
 			{
-					if ( TTOTAL_QTY > 200) 
+					if ( TTOTAL_QTY1 > 200) 
 					{
 						var HARGAX = HARGA7X;
 
 					}
 
-					if ( ( TTOTAL_QTY < 200) && (TTOTAL_QTY >=150) ) 
+					if ( ( TTOTAL_QTY1 < 200) && (TTOTAL_QTY1 >=150) ) 
 					{
 						var HARGAX = HARGA6X;
 
 					}
 
-					if ( ( TTOTAL_QTY < 150) && (TTOTAL_QTY >=100)) 
+					if ( ( TTOTAL_QTY1 < 150) && (TTOTAL_QTY1 >=100)) 
 					{
 						var HARGAX = HARGA5X;
 
 					}
 					
-					if ( ( TTOTAL_QTY < 100) && (TTOTAL_QTY >=50) )
+					if ( ( TTOTAL_QTY1 < 100) && (TTOTAL_QTY1 >=50) )
 					{
 
 					var HARGAX = HARGA4X;
 					} 
 					
-					if ( ( TTOTAL_QTY <  50 ) && ( TTOTAL_QTY >=25 )  )
+					if ( ( TTOTAL_QTY1 <  50 ) && ( TTOTAL_QTY1 >=25 )  )
 					{
 						var HARGAX = HARGA3X;
 					}
 					
-					if ( ( TTOTAL_QTY <  25) && (TTOTAL_QTY >=6) )
+					if ( ( TTOTAL_QTY1 <  25) && (TTOTAL_QTY1 >=6) )
 					{
 
 						var HARGAX = HARGA2X;
 					}                             
 					
-					if ( TTOTAL_QTY <  6  )
+					if ( TTOTAL_QTY1 <  6  )
 					{
 
 						var HARGAX = HARGA1X;
@@ -998,7 +1022,31 @@
 				
 	}
 
- 
+	function hitung2( KD_GRUP ) {
+
+		var JUMLAHX = 0;
+		
+		
+		$(".QTY").each(function() {
+			
+			let z = $(this).closest('tr');
+			var QTYX = parseFloat(z.find('.QTY').val().replace(/,/g, ''));
+			var KD_GRUPX = z.find('.KD_GRUP').val();
+			
+			if (KD_GRUP == KD_GRUPX){
+				
+				JUMLAHX +=QTYX;	
+				
+			}	
+			
+		
+		});
+	
+	
+		return JUMLAHX ;
+		
+
+	}
  
 	function baru() {
 		
@@ -1187,6 +1235,27 @@
 		
 	}
 
+	function jtempo() {
+		
+			$.ajax(
+			{
+				type: 'GET',    
+				url: "{{url('so/jtempo')}}",
+				async : false,
+				data: {
+						'TGL' : $("#TGL").val(),
+						'HARI' : $("#HARI").val(),
+				},
+				success: function( response )
+
+				{
+					resp = response;
+					$("#JTEMPO").val(resp[0].JTEMPO)
+					
+				}
+			});
+		
+	}
 
     function tambah() {
 
@@ -1208,6 +1277,7 @@
 
 				<td {{( $golz =='J') ? '' : 'hidden' }} >
 				    <input name='KD_BRG[]' data-rowid=${idrow} onblur='browseBarang(${idrow})' id='KD_BRG${idrow}' type='text' class='form-control  KD_BRG' >
+				    <input hidden name='KD_GRUP[]' id='KD_GRUP${idrow}' type='text' class='form-control  KD_GRUP' >
                 </td>
                 <td {{( $golz =='J') ? '' : 'hidden' }} >
 				    <input name='NA_BRG[]'   id='NA_BRG${idrow}' type='text' class='form-control  NA_BRG' required readonly>

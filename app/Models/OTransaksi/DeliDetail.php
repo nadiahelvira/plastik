@@ -5,11 +5,11 @@ namespace App\Models\OTransaksi;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SuratsDetail extends Model
+class DeliDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'suratsd';
+    protected $table = 'delid';
     protected $primaryKey = 'NO_ID';
     public $timestamps = false;
 

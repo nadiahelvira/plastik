@@ -74,6 +74,15 @@
 								  <input class="form-control date" id="TGL" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
 								
                                 </div>
+								
+								<div class="col-md-1">
+									<label for="JTEMPO" class="form-label">Jatuh tempo</label>
+								</div>
+								<div class="col-md-2">
+								
+								<input class="form-control date" id="JTEMPO" name="JTEMPO" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->JTEMPO))}}">
+								
+								</div>
                             </div>
 
 							
@@ -129,6 +138,9 @@
 									<input hidden type="text" class="form-control RING" id="RING" name="RING" placeholder="-" value="{{$header->RING}}" readonly>
 									<input hidden type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="KOM" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
                                 
+									<input hidden type="text" onclick="select()" onblur="hitung()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
+									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
+								   
 								</div>
                             </div>
 							
@@ -305,15 +317,6 @@
                                 </div>
 							</div>
 
-                            <div class="form-group row">
-                                <div class="col-md-8" align="right">
-                                    <label for="PPN" class="form-label">Ppn</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control PPN" id="PPN" name="PPN" placeholder="" value="{{$header->PPN}}" style="text-align: right" readonly>
-                                </div>
-							</div>
-
 							<div class="form-group row">
 								<div class="col-md-8" align="right">
 									<label for="TDISK" class="form-label">Total Diskon</label>
@@ -321,6 +324,15 @@
 								<div class="col-md-2">
 									<input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TDISK" id="TDISK" name="TDISK" placeholder="" value="{{$header->TDISK}}" style="text-align: right" readonly>
 								</div>
+							</div>
+
+                            <div class="form-group row">
+                                <div class="col-md-8" align="right">
+                                    <label for="PPN" class="form-label">Ppn</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control PPN" id="PPN" name="PPN" placeholder="" value="{{$header->PPN}}" style="text-align: right" readonly>
+                                </div>
 							</div>
 							
                             <div class="form-group row">
@@ -1040,6 +1052,7 @@ function getSuratsd(bukti)
 			var QTYX = parseFloat(z.find('.QTY').val().replace(/,/g, ''));
 			var HARGAX = parseFloat(z.find('.HARGA').val().replace(/,/g, ''));
 			var PPNX1 = parseFloat(z.find('.PPNX').val().replace(/,/g, ''));
+			var DISK = parseFloat(z.find('.DISK').val().replace(/,/g, ''));
 
 			var FLAGZ = $('#flagz').val();
 	
@@ -1072,6 +1085,7 @@ function getSuratsd(bukti)
             TTOTAL_QTY +=QTYX;				
             TTOTAL +=TOTALX;
 			PPNX += PPNX1;	
+			TDISK += DISK;	
 			
 		});
 		

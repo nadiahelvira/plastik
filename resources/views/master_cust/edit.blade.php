@@ -565,8 +565,8 @@
 	
 	function ganti() {
 		
-		// mati();
-		hidup();
+		mati();
+		// hidup();
 	
 	}
 	

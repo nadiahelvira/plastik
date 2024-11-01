@@ -142,7 +142,6 @@
                 { data: 'TOTAL', name: 'TOTAL', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},				
                 { data: 'NOTES', name: 'NOTES'},
 				        { data: 'USRNM', name: 'USRNM'},
-                // {data: 'cek', name: 'cek'},
                 { data: 'POSTED', name: 'POSTED',
                   render : function(data, type, row, meta) {
                     if(row['POSTED']=="0"){
@@ -157,7 +156,7 @@
             [
                 {
                     "className": "dt-center", 
-                    "targets": 10
+                    "targets": 9
                 },			
                 {
                   targets: 3,

@@ -34,7 +34,7 @@
             <div class="card">
                 <div class="card-body">
 
-                    <form action="{{($tipx=='new')? url('/surats/store?flagz='.$flagz.'&golz='.$golz.'') : url('/surats/update/'.$header->NO_ID.'&flagz='.$flagz.'&golz='.$golz.'' ) }}" method="POST" name ="entri" id="entri" >
+                    <form action="{{($tipx=='new')? url('/deli/store?flagz='.$flagz.'&golz='.$golz.'') : url('/deli/update/'.$header->NO_ID.'&flagz='.$flagz.'&golz='.$golz.'' ) }}" method="POST" name ="entri" id="entri" >
   
                         @csrf
                         <div class="tab-content mt-3">
@@ -65,56 +65,17 @@
 								  <input class="form-control date" id="TGL" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
                                 </div>
 
-								<div class="col-md-2" align="right">
-									<label for="JTEMPO" class="form-label">Jatuh Tempo</label>
-								</div>
-								<div class="col-md-2">
-									<input class="form-control date" id="JTEMPO" name="JTEMPO" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->JTEMPO))}}">
-								</div> 
-								
 								
                             </div>
 
-                            <div class="form-group row">
-								<div {{( $flagz =='AJ') ? '' : 'hidden' }} class="col-md-1" align="left">
-									<label style="color:red">*</label>									
-                                    <label for="NO_SURAT" class="form-label">SJ#</label>
-                                </div>
-                               	<div {{( $flagz =='AJ') ? '' : 'hidden' }} class="col-md-2 input-group" >
-                                  <input type="text" class="form-control NO_SURAT" id="NO_SURAT" name="NO_SURAT" placeholder="Pilih SJ"value="{{$header->NO_SURAT}}" style="text-align: left" readonly >
-        						  <button type="button" class="btn btn-primary" onclick="browseSurats()"><i class="fa fa-search"></i></button>
-                                </div>
-                            </div>
-
-							<!-- <div class="form-group row">
-								<div class="col-md-1" align="left">
-									<label style="color:red">*</label>									
-									<label for="NO_SO" class="form-label">SO#</label>
-								</div>
-								<div class="col-md-2 input-group" >
-								<input type="text" class="form-control NO_SO" id="NO_SO" name="NO_SO" placeholder="Pilih SO"value="{{$header->NO_SO}}" style="text-align: left" readonly >
-								<button type="button" class="btn btn-primary" onclick="browseSo()"><i class="fa fa-search"></i></button>
-								</div>
-							</div> -->
-
 							<div class="form-group row">
 								<div class="col-md-1" align="left">
-									<label style="color:red">*</label>									
-									<label for="NO_DO" class="form-label">DO#</label>
-								</div>
-								<div class="col-md-2 input-group" >
-								<input type="text" class="form-control NO_DO" id="NO_DO" name="NO_DO" placeholder="Pilih DO"value="{{$header->NO_DO}}" style="text-align: left" readonly >
-								<button type="button" class="btn btn-primary" onclick="browseDo()"><i class="fa fa-search"></i></button>
-								</div>
-							</div>
-
-							<div class="form-group row">
-								<div class="col-md-1" align="left">
-									<!-- <label style="color:red;font-size:20px">* </label>	 -->
+									<label style="color:red;font-size:20px">* </label>	
                                     <label for="KODEC" class="form-label">Cust</label>
                                 </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KODEC" id="KODEC" name="KODEC" placeholder="Kode Customer" value="{{$header->KODEC}}" readonly>
+                                <div class="col-md-2 " >
+                                  <input type="text" class="form-control KODEC" id="KODEC" name="KODEC" onclick="browseCust()" placeholder="Pilih Customer"value="{{$header->KODEC}}" style="text-align: left" readonly >
+        						  <!-- <button type="button" class="btn btn-primary" onclick="browseCust()"><i class="fa fa-search"></i></button> -->
                                 </div>
 
 								<div class="col-md-4">
@@ -144,25 +105,6 @@
 								<div class="col-md-2">
 									<input type="text" class="form-control KOTA" id="KOTA" name="KOTA" value="{{$header->KOTA}}"placeholder="Kota" readonly>
 								</div>
-                            </div>
-
-							<div class="form-group row">
-                                <div class="col-md-1" align="left">
-									<label style="color:red;font-size:20px">* </label>	
-                                    <label for="TRUCK" class="form-label">Truck</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control TRUCK" id="TRUCK" name="TRUCK" placeholder="Masukkan Truck" value="{{$header->TRUCK}}">
-                                </div>
-
-                                <div class="col-md-1" align="right">
-									<label style="color:red;font-size:20px">* </label>	
-                                    <label for="SOPIR" class="form-label">Sopir</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control SOPIR" id="SOPIR" name="SOPIR" placeholder="Sopir" value="{{$header->SOPIR}}">
-                                </div>
-
                             </div>
 
 							<div class="form-group row">
@@ -211,7 +153,8 @@
 										</td>
 										
                                         <td {{($golz == 'B') ? 'hidden' : '' }}>
-                                            <input name="NO_SO[]"  id="NO_SO{{$no}}" type="text" class="form-control NO_SO" placeholder="Barang#" value="{{$detail->NO_SO}}">
+                                            <input name="NO_SO[]"  id="NO_SO{{$no}}" type="text" class="form-control NO_SO" 
+											placeholder="SO#" value="{{$detail->NO_SO}}" onblur="browseSo({{$no}})">
                                         </td>
                                         <td {{($golz == 'B') ? 'hidden' : '' }}>
                                             <input name="KD_BRG[]"  id="KD_BRG{{$no}}" type="text" class="form-control KD_BRG" placeholder="Barang#" value="{{$detail->KD_BRG}}">
@@ -220,20 +163,11 @@
                                             <input name="NA_BRG[]" id="NA_BRG{{$no}}" type="text" class="form-control NA_BRG" placeholder="Nama" value="{{$detail->NA_BRG}}">
                                         </td>
 
-										<td {{($golz == 'J') ? 'hidden' : '' }}>
-                                            <input name="KD_BHN[]"  id="KD_BHN{{$no}}" type="text" class="form-control KD_BHN" placeholder="Barang#" value="{{$detail->KD_BHN}}">
-                                        </td>
-                                        <td {{($golz == 'J') ? 'hidden' : '' }}>
-                                            <input name="NA_BHN[]" id="NA_BHN{{$no}}" type="text" class="form-control NA_BHN" placeholder="Nama" value="{{$detail->NA_BHN}}">
-                                        </td>
-
-
                                         <td>
                                             <input name="SATUAN[]" id="SATUAN{{$no}}" type="text" class="form-control SATUAN" placeholder="Satuan" value="{{$detail->SATUAN}}">
                                         </td>
 										<td>
 											<input name="QTY[]" onkeyup="hitung()" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" value="{{$detail->QTY}}">
-											<input hidden name="QTY_KIRIM[]" onkeyup="hitung()" id="QTY_KIRIM{{$no}}" type="text" style="text-align: right"  class="form-control QTY_KIRIM text-primary" value="{{$detail->QTY_KIRIM}}">
 											<input hidden name="HARGA[]" onkeyup="hitung()" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" value="{{$detail->HARGA}}">
 											<input hidden name="TOTAL[]" onkeyup="hitung()" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" value="{{$detail->TOTAL}}" readonly>
 											<input hidden name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
@@ -263,10 +197,10 @@
                                 </tfoot>
                             </table>
 
-							<!-- <div class="col-md-2 row">
+							<div class="col-md-2 row">
 								<a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
 
-							</div>	 -->
+							</div>	
 						
 					</div>
                         </div> 
@@ -278,21 +212,21 @@
 						   
 						<div class="mt-3 col-md-12 form-group row">
 							<div class="col-md-4">
-								<button type="button" id='TOPX'  onclick="location.href='{{url('/surats/edit/?idx=' .$idx. '&tipx=top&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-primary">Top</button>
-								<button type="button" id='PREVX' onclick="location.href='{{url('/surats/edit/?idx='.$header->NO_ID.'&tipx=prev&flagz='.$flagz.'&golz='.$golz.'&buktix='.$header->NO_BUKTI )}}'" class="btn btn-outline-primary">Prev</button>
-								<button type="button" id='NEXTX' onclick="location.href='{{url('/surats/edit/?idx='.$header->NO_ID.'&tipx=next&flagz='.$flagz.'&golz='.$golz.'&buktix='.$header->NO_BUKTI )}}'" class="btn btn-outline-primary">Next</button>
-								<button type="button" id='BOTTOMX' onclick="location.href='{{url('/surats/edit/?idx=' .$idx. '&tipx=bottom&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-primary">Bottom</button>
+								<button type="button" id='TOPX'  onclick="location.href='{{url('/deli/edit/?idx=' .$idx. '&tipx=top&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-primary">Top</button>
+								<button type="button" id='PREVX' onclick="location.href='{{url('/deli/edit/?idx='.$header->NO_ID.'&tipx=prev&flagz='.$flagz.'&golz='.$golz.'&buktix='.$header->NO_BUKTI )}}'" class="btn btn-outline-primary">Prev</button>
+								<button type="button" id='NEXTX' onclick="location.href='{{url('/deli/edit/?idx='.$header->NO_ID.'&tipx=next&flagz='.$flagz.'&golz='.$golz.'&buktix='.$header->NO_BUKTI )}}'" class="btn btn-outline-primary">Next</button>
+								<button type="button" id='BOTTOMX' onclick="location.href='{{url('/deli/edit/?idx=' .$idx. '&tipx=bottom&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-primary">Bottom</button>
 							</div>
 							<div class="col-md-5">
-								<button type="button" id='NEWX' onclick="location.href='{{url('/surats/edit/?idx=0&tipx=new&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-warning">New</button>
+								<button type="button" id='NEWX' onclick="location.href='{{url('/deli/edit/?idx=0&tipx=new&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-warning">New</button>
 								<button type="button" id='EDITX' onclick='hidup()' class="btn btn-secondary">Edit</button>                    
-								<button type="button" id='UNDOX' onclick="location.href='{{url('/surats/edit/?idx=' .$idx. '&tipx=undo&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-info">Undo</button>  
+								<button type="button" id='UNDOX' onclick="location.href='{{url('/deli/edit/?idx=' .$idx. '&tipx=undo&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-info">Undo</button>  
 								<button type="button" id='SAVEX' onclick='simpan()'   class="btn btn-success" class="fa fa-save"></i>Save</button>
 
 							</div>
 							<div class="col-md-3">
 								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
-								<button type="button" id='CLOSEX'  onclick="location.href='{{url('/surats?flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-secondary">Close</button>
+								<button type="button" id='CLOSEX'  onclick="location.href='{{url('/deli?flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-secondary">Close</button>
 							</div>
 						</div>
 						
@@ -316,13 +250,14 @@
 			</button>
 		  </div>
 		  <div class="modal-body">
-			<table class="table table-stripped table-bordered" id="table-customer">
+			<table class="table table-stripped table-bordered" id="table-bcust">
 				<thead>
 					<tr>
 						<th>Kode</th>
 						<th>Nama</th>
 						<th>Alamat</th>
 						<th>Kota</th>
+
 					</tr>
 				</thead>
 				<tbody>
@@ -352,50 +287,15 @@
 						<th>No Bukti</th>
 						<th>Tanggal</th>
 						<!-- <th>No Terima</th> -->
-						<th>Customer</th>
+						<!-- <th>Customer</th>
 						<th>Kode</th>
 						<th>Barang</th>
-						<th>Satuan</th>
+						<th>Satuan</th> -->
 						<!-- <th>Seri#</th> -->
 						<!-- <th>Ket</th> -->
-						<th>Qty</th>
+						<!-- <th>Qty</th>
 						<th>Kirim</th>
-						<th>Sisa</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		  </div>
-		</div>
-	  </div>
-	</div>
-
-	<div class="modal fade" id="browseDoModal" tabindex="-1" role="dialog" aria-labelledby="browseDoModalLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-xl" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="browseDoModalLabel">Cari DO</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-			<table class="table table-stripped table-bordered" id="table-bdo">
-				<thead>
-					<tr>
-						<th>No Bukti</th>
-						<th>No SO</th>
-						<th>Tgl</th>
-						<th>Customer</th>
-						<th>Barang</th>
-						<th>Satuan</th>
-						<th>Qty</th>
-						<th>Kirim</th>
-						<th>Sisa</th>
+						<th>Sisa</th> -->
 					</tr>
 				</thead>
 				<tbody>
@@ -549,7 +449,7 @@
         if ( $tipx == 'new' )
 		{
 			 baru();
-            //  tambah();				 
+             tambah();				 
 		}
 
         if ( $tipx != 'new' )
@@ -602,481 +502,161 @@
             dateFormat: 'dd-mm-yy'
 		});
 		
-		
- 	
-		
-///////////////////////////////////////////////////////////////////////
-		// var dTableCustomer;
-		// loadDataCustomer = function(){
-		// 	$.ajax(
-		// 	{
-		// 		type: 'GET',    
-		// 		url: "{{url('surats/browseCust')}}",
-		// 		// data: {
-		// 		// 	'GOL': "{{$golz}}",
-		// 		// },
-		// 		success: function( resp )
-		// 		{
-		// 			if(dTableCustomer){
-		// 				dTableCustomer.clear();
-		// 			}
-		// 			for(i=0; i<resp.length; i++){
-						
-		// 				dTableCustomer.row.add([
-		// 					'<a href="javascript:void(0);" onclick="chooseCustomer(\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\')">'+resp[i].KODEC+'</a>',
-		// 					resp[i].NAMAC,
-		// 					resp[i].ALAMAT,
-		// 					resp[i].KOTA,
-		// 				]);
-		// 			}
-		// 			dTableCustomer.draw();
-		// 		}
-		// 	});
-		// }
-		
-		// dTableCustomer = $("#table-customer").DataTable({
-			
-		// });
-		
-		// browseCust = function(){
-		// 	loadDataCustomer();
-		// 	$("#browseCustModal").modal("show");
-		// }
-		
-		// chooseCustomer = function(kodec,namac,alamat,kota){
-		// 	$("#KODEC").val(kodec);
-		// 	$("#NAMAC").val(namac);
-		// 	$("#ALAMAT").val(alamat);
-		// 	$("#KOTA").val(kota);
-		// 	$("#browseCustModal").modal("hide");
-		// }
-		
-		// $("#KODEC").keypress(function(e){
-		// 	if(e.keyCode == 46){
-		// 		e.preventDefault();
-		// 		browseCust();
-		// 	}
-		// }); 
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-		//CHOOSE Sopir
-		var dTableBSopir;
-		loadDataBSopir = function(){
-			$.ajax(
-			{
-				type: 'GET',    
-				url: '{{url('pegawai/browse_sopir')}}',
-
-				success: function( response )
-				{
-			
-					resp = response;
-					if(dTableBSopir){
-						dTableBSopir.clear();
-					}
-					for(i=0; i<resp.length; i++){
-						
-						dTableBSopir.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSopir( \''+resp[i].NAMAP+'\' )">'+resp[i].KODEP+'</a>',
-							resp[i].NAMAP,
-						]);
-					}
-					dTableBSopir.draw();
-				}
-			});
-		}
-		
-		dTableBSopir = $("#table-sopir").DataTable({
-			
-		});
-		
-		browseSopir = function(){
-			loadDataBSopir();
-			$("#browseSopirModal").modal("show");
-		}
-		
-		chooseSopir = function(NAMAP){
-			$("#SOPIR").val(NAMAP);
-			$("#browseSopirModal").modal("hide");
-		}
-		
-		$("#SOPIR").keypress(function(e){
-
-			if(e.keyCode == 46){
-				e.preventDefault();
-				browseSopir();
-			}
-		}); 
-		
-		
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-		//CHOOSE Truck
-		var dTableBTruck;
-		loadDataBTruck = function(){
-			$.ajax(
-			{
-				type: 'GET',    
-				url: '{{url('truck/browse')}}',
-
-				success: function( response )
-				{
-			
-					resp = response;
-					if(dTableBTruck){
-						dTableBTruck.clear();
-					}
-					for(i=0; i<resp.length; i++){
-						
-						dTableBTruck.row.add([
-							'<a href="javascript:void(0);" onclick="chooseTruck( \''+resp[i].NOPOL+'\' )">'+resp[i].KODE+'</a>',
-							resp[i].NOPOL,
-						]);
-					}
-					dTableBTruck.draw();
-				}
-			});
-		}
-		
-		dTableBTruck = $("#table-truck").DataTable({
-			
-		});
-		
-		browseTruck = function(){
-			loadDataBTruck();
-			$("#browseTruckModal").modal("show");
-		}
-		
-		chooseTruck = function(NOPOL){
-			$("#TRUCK").val(NOPOL);
-			$("#browseTruckModal").modal("hide");
-		}
-		
-		$("#TRUCK").keypress(function(e){
-
-			if(e.keyCode == 46){
-				e.preventDefault();
-				browseTruck();
-			}
-		}); 
-		
-		
-//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-//////////////////////////////////////////////////////////////////
 
-	var dTableDo;
-	var rowidDo;
-	loadDataDo = function(){
-		
-		$.ajax(
-		{
-			type: 'GET',    
-			url: "{{url('surats/browseDo')}}",
-			data: {
-				// kdbrg: kode,
-				// 'GOL': "{{$golz}}",
-				// kodec: $("#KODEC").val(),
-			},
-			success: function( response )
-			{
-				resp = response;
-				if(dTableDo){
-					dTableDo.clear();
-				}
-				for(i=0; i<resp.length; i++){
-					
-					dTableDo.row.add([
-						'<a href="javascript:void(0);" onclick="chooseDo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].NO_SO+'\', \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\', \''+resp[i].SATUAN+'\',  \''+resp[i].SISA+'\', \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\')">'+resp[i].NO_BUKTI+'</a>',
-						resp[i].NO_SO,
-						resp[i].TGL,
-						resp[i].NAMAC,
-						resp[i].KD_BRG,
-						resp[i].NA_BRG,
-						resp[i].SATUAN,
-						resp[i].QTY,
-						resp[i].KIRIM,
-						resp[i].SISA,
-					]);
-				}
-				dTableDo.draw();
-			}
-		});
-	}
-	
-	dTableDo = $("#table-bdo").DataTable({
+//////////////////////////////////////////////
 
-		// columnDefs: 
-		// [
-		// 	{
-		// 		className: "dt-right", 
-		// 		targets: [6,7,8],
-		// 	},		
-		// 	{
-		// 		targets: 1,
-		// 		render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ),
-		// 	}
-		// ],
-
-	});
-	
-		browseDo = function(rid){
-			rowidDo = rid;
-			loadDataDo();
-			$("#browseDoModal").modal("show");
-		}
-	
-	chooseDo = function(NO_BUKTI, NO_SO, KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA, HARI){
-		$("#NO_DO").val(NO_BUKTI);
-		$("#KODEP").val(KODEP);
-		$("#NAMAP").val(NAMAP);
-		$("#RING").val(RING);
-		$("#KOM").val(KOM);
-		$("#KODEC").val(KODEC);
-		$("#NAMAC").val(NAMAC);
-		$("#ALAMAT").val(ALAMAT);
-		$("#KOTA").val(KOTA);
-		$("#HARI").val(HARI);
-		$("NO_SO"+rowidDo).val(NO_SO);
-		$("#KD_BRG"+rowidDo).val(KD_BRG);
-		$("#NA_BRG"+rowidDo).val(NA_BRG);
-		$("#SATUAN"+rowidDo).val(SATUAN);
-		$("#QTY"+rowidDo).val(QTY!=0 ? QTY : 0);
-		$("#ID_SOD"+rowidDo).val(NO_ID);
-		$("#HARGA"+rowidDo).val(HARGA);	
-		$("#browseDoModal").modal("hide");
-
-		getDod(NO_BUKTI);
-	}
-	
-	$("#NO_DO").keypress(function(e){
-		if(e.keyCode == 46){
-			e.preventDefault();
-			browseDo();
-		}
-	}); 
-
-//////////////////////////////////////////////////////////////////
-
-
-//////////////////////////////////////////////////
-
-		var dTableBSurats;
-		loadDataBSurats = function(){
+		var dTableBCust;
+		loadDataBCust = function(){
 		
 			$.ajax(
 			{
 				type: 'GET', 		
-				url: '{{url('surats/browse')}}',
-				data: {
-					'GOL': "{{$golz}}",
-				},
+				url: '{{url('cust/browse')}}',
+				// data: {
+				// 	'GOL': 'Y',
+				// },
 				success: function( response )
 				{
 					resp = response;
-					if(dTableBSurats){
-						dTableBSurats.clear();
+					if(dTableBCust){
+						dTableBCust.clear();
 					}
 					for(i=0; i<resp.length; i++){
 						
-						dTableBSurats.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSurats(\''+resp[i].NO_BUKTI+'\' , \''+resp[i].NO_SO+'\', \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].SOPIR+'\',  \''+resp[i].TRUCK+'\')">'+resp[i].NO_BUKTI+'</a>',
-							resp[i].NO_SO,
-							resp[i].KODEC,
+						dTableBCust.row.add([
+							'<a href="javascript:void(0);" onclick="chooseCustomer(\''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\',  \''+resp[i].HARI+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\', \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\')">'+resp[i].KODEC+'</a>',
 							resp[i].NAMAC,
 							resp[i].ALAMAT,
 							resp[i].KOTA,
 						]);
 					}
-					dTableBSurats.draw();
+					dTableBCust.draw();
 				}
 			});
 		}
 		
-		dTableBSurats = $("#table-bsurats").DataTable({
+		dTableBCust = $("#table-bcust").DataTable({
 			
 		});
 		
-		browseSurats = function(){
-			loadDataBSurats();
-			$("#browseSuratsModal").modal("show");
+		browseCust = function(){
+			loadDataBCust();
+			$("#browseCustModal").modal("show");
 		}
 		
-		chooseSurats = function(NO_BUKTI, NO_SO, KODEC,NAMAC, ALAMAT, KOTA, SOPIR, TRUCK){
-			$("#NO_SURAT").val(NO_BUKTI);
-			$("#NO_SO").val(NO_SO);
+		chooseCustomer = function(KODEC,NAMAC, HARI, ALAMAT, KOTA, KODEP, NAMAP, RING, KOM){
 			$("#KODEC").val(KODEC);
 			$("#NAMAC").val(NAMAC);
+			$("#HARI").val(HARI);
 			$("#ALAMAT").val(ALAMAT);
-			$("#KOTA").val(KOTA);			
-			$("#SOPIR").val(SOPIR);			
-			$("#TRUCK").val(TRUCK);			
-			$("#browseSuratsModal").modal("hide");
-
-			getSuratsd(NO_BUKTI);
+			$("#KOTA").val(KOTA);		
+			$("#KODEP").val(KODEP);			
+			$("#NAMAP").val(NAMAP);			
+			$("#RING").val(RING);			
+			$("#KOM").val(KOM);			
+			$("#browseCustModal").modal("hide");
 		}
 		
-		$("#NO_SURAT").keypress(function(e){
+		var PKP=$("#PKP").val();	
+		
+		if (PKP == 1 ) 
+		{
+		$("#PKP").prop('checked', true)
+		} 
+		else 
+		{
+		$("#PKP").prop('checked', false)
+		}
+
+		$("#KODEC").keypress(function(e){
 
 			if(e.keyCode == 46){
 				 e.preventDefault();
-				 browseSurats();
+				 browseCust();
 			}
 		}); 
-
-////////////////////////////////////////////////////////////////////
-
-
-	function getDod(bukti)
-	{
 		
-		var mulai = (idrow==baris) ? idrow-1 : idrow;
+//////////////////////////////////////////////////////
 
-		$.ajax(
-			{
-				type: 'GET',    
-				url: "{{url('surats/do_detail')}}",
-				data: {
-					nobukti: bukti,
-				},
-				success: function( resp )
-				{
-					var html = '';
-					for(i=0; i<resp.length; i++){
-						html+=`<tr>
-                                    <td><input name='REC[]' id='REC${i}' value=${resp[i].REC+1} type='text' class='REC form-control' onkeypress='return tabE(this,event)' readonly></td>
-                                    <td {{($golz == 'B') ? 'hidden' : '' }} ><input name='NO_SO[]' data-rowid=${i} id='NO_SO${i}' value="${resp[i].NO_SO}" type='text' class='form-control NO_SO' readonly></td>
-                                    <td {{($golz == 'B') ? 'hidden' : '' }} ><input name='KD_BRG[]' data-rowid=${i} id='KD_BRG${i}' value="${resp[i].KD_BRG}" type='text' class='form-control KD_BRG' readonly></td>
-                                    <td {{($golz == 'B') ? 'hidden' : '' }}><input name='NA_BRG[]' data-rowid=${i} id='NA_BRG${i}' value="${resp[i].NA_BRG}" type='text' class='form-control  NA_BRG' readonly></td>
-                                    <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='KD_BHN[]' data-rowid=${i} id='KD_BHN${i}' value="${resp[i].KD_BHN}" type='text' class='form-control KD_BHN' readonly></td>
-                                    <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='NA_BHN[]' data-rowid=${i} id='NA_BHN${i}' value="${resp[i].NA_BHN}" type='text' class='form-control  NA_BHN' readonly></td>
-                                    <td><input name='SATUAN[]' data-rowid=${i} id='SATUAN${i}' value="${resp[i].SATUAN}" type='text' class='form-control  SATUAN' placeholder="Satuan"  readonly></td>
-                                    <td>
-										<input name='QTY[]' onclick='select()' onkeyup='hitung()' id='QTY${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY text-primary' readonly >
-										<input hidden name='QTY_KIRIM[]' onclick='select()' onkeyup='hitung()' id='QTY_KIRIM${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY_KIRIM text-primary' readonly >
-										<input hidden name='HARGA[]' onclick='select()' onkeyup='hitung()' id='HARGA${i}' value="${resp[i].HARGA}" type='text' style='text-align: right' class='form-control HARGA text-primary' readonly> 
-										<input hidden name='TOTAL[]' onclick='select()' onkeyup='hitung()' id='TOTAL${i}' value="${resp[i].TOTAL}" type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly> 
-										<input hidden name='PPNX[]' onclick='select()' onkeyup='hitung()' id='PPNX${i}' value="${resp[i].PPNX}" type='text' style='text-align: right' class='form-control PPNX text-primary' readonly> 
-										<input hidden name='DPP[]' onclick='select()' onkeyup='hitung()' id='DPP${i}' value="${resp[i].DPP}" type='text' style='text-align: right' class='form-control DPP text-primary' readonly> 
-										<input hidden name='DISK[]' onclick='select()' onkeyup='hitung()' id='DISK${i}' value="${resp[i].DISK}" type='text' style='text-align: right' class='form-control DISK text-primary' readonly> 
-									</td>
-                                    <td><input name='KET[]' id='KET${i}' value="${resp[i].KET}" type='text' class='form-control  KET' required></td>
-                                    <td><button type='button' class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button></td>
-                                </tr>`;
-					}
-					$('#detailDod').html(html);
-
-					$(".QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".QTY").autoNumeric('update');
-
-					$(".HARGA").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".HARGA").autoNumeric('update');
-
-					$(".TOTAL").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".TOTAL").autoNumeric('update');
-
-					$(".PPNX").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".PPNX").autoNumeric('update');
-
-					$(".DPP").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".DPP").autoNumeric('update');
-
-					$(".DISK").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".DISK").autoNumeric('update');
-
-					idrow=resp.length;
-					baris=resp.length;
-
-					nomor();
-				}
-			});
-	}
 
 //////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////
-
-
-	function getSuratsd(bukti)
-	{
-		
-		var mulai = (idrow==baris) ? idrow-1 : idrow;
-
-		$.ajax(
+		var dTableSo;
+		var rowidSo;
+		loadDataSo = function(){
+			
+			$.ajax(
 			{
 				type: 'GET',    
-				url: "{{url('surats/browse_suratsd')}}",
+				url: "{{url('so/browse')}}",
 				data: {
-					nobukti: bukti,
+					// kdbrg: kode,
+					'GOL': "{{$golz}}",
+					'KODEC': $("#KODEC").val(),
 				},
-				success: function( resp )
+				success: function( response )
 				{
-					var html = '';
-					for(i=0; i<resp.length; i++){
-						html+=`<tr>
-                                    <td><input name='REC[]' id='REC${i}' value=${resp[i].REC+1} type='text' class='REC form-control' onkeypress='return tabE(this,event)' readonly></td>
-                                    <td {{($golz == 'B') ? 'hidden' : '' }} ><input name='KD_BRG[]' data-rowid=${i} id='KD_BRG${i}' value="${resp[i].KD_BRG}" type='text' class='form-control KD_BRG' readonly></td>
-                                    <td {{($golz == 'B') ? 'hidden' : '' }}><input name='NA_BRG[]' data-rowid=${i} id='NA_BRG${i}' value="${resp[i].NA_BRG}" type='text' class='form-control  NA_BRG' readonly></td>
-                                    <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='KD_BHN[]' data-rowid=${i} id='KD_BHN${i}' value="${resp[i].KD_BHN}" type='text' class='form-control KD_BHN' readonly></td>
-                                    <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='NA_BHN[]' data-rowid=${i} id='NA_BHN${i}' value="${resp[i].NA_BHN}" type='text' class='form-control  NA_BHN' readonly></td>
-                                    <td><input name='SATUAN[]' data-rowid=${i} id='SATUAN${i}' value="${resp[i].SATUAN}" type='text' class='form-control  SATUAN' placeholder="Satuan"  readonly></td>
-                                    <td>
-										<input name='QTY[]' onclick='select()' onkeyup='hitung()' id='QTY${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY text-primary' readonly >
-										<input hidden name='HARGA[]' onclick='select()' onkeyup='hitung()' id='HARGA${i}' value="${resp[i].HARGA}" type='text' style='text-align: right' class='form-control HARGA text-primary' readonly> 
-										<input hidden name='TOTAL[]' onclick='select()' onkeyup='hitung()' id='TOTAL${i}' value="${resp[i].TOTAL}" type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly> 
-										<input hidden name='PPNX[]' onclick='select()' onkeyup='hitung()' id='PPNX${i}' value="${resp[i].PPNX}" type='text' style='text-align: right' class='form-control PPNX text-primary' readonly> 
-										<input hidden name='DPP[]' onclick='select()' onkeyup='hitung()' id='DPP${i}' value="${resp[i].DPP}" type='text' style='text-align: right' class='form-control DPP text-primary' readonly> 
-										<input hidden name='DISK[]' onclick='select()' onkeyup='hitung()' id='DISK${i}' value="${resp[i].DISK}" type='text' style='text-align: right' class='form-control DISK text-primary' readonly> 
-									</td>
-                                    <td><input name='KET[]' id='KET${i}' value="${resp[i].KET}" type='text' class='form-control  KET' required></td>
-                                    <td><button type='button' class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button></td>
-                                </tr>`;
+					resp = response;
+					if(dTableSo){
+						dTableSo.clear();
 					}
-					$('#detailSuratsd').html(html);
-
-					$(".QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".QTY").autoNumeric('update');
-
-					$(".HARGA").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".HARGA").autoNumeric('update');
-
-					$(".TOTAL").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".TOTAL").autoNumeric('update');
-
-					$(".PPNX").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".PPNX").autoNumeric('update');
-
-					$(".DPP").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".DPP").autoNumeric('update');
-
-					$(".DISK").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-					$(".DISK").autoNumeric('update');
-					/*
-					$(".KD_BHN").each(function() {
-						var getid = $(this).attr('id');
-						var noid = getid.substring(6,11);
-
-						$("#KD_BHN"+noid).keypress(function(e){
-							if(e.keyCode == 46){
-								e.preventDefault();
-								browseBhn(noid);
-							}
-						}); 
-					});*/
-
-					idrow=resp.length;
-					baris=resp.length;
-
-					nomor();
+					for(i=0; i<resp.length; i++){
+						
+						dTableSo.row.add([
+							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\')">'+resp[i].NO_BUKTI+'</a>',
+							resp[i].TGL,
+						]);
+					}
+					dTableSo.draw();
 				}
 			});
-	}
+		}
+		
+		dTableSo = $("#table-so").DataTable({
+
+			// columnDefs: 
+			// [
+			// 	{
+			// 		className: "dt-right", 
+			// 		targets: [6,7,8],
+			// 	},		
+			// 	{
+			// 		targets: 1,
+			// 		render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ),
+			// 	}
+			// ],
+
+		});
+		
+		browseSo = function(rid){
+			rowidSo = rid;
+			loadDataSo();
+			$("#browseSoModal").modal("show");
+		}
+		
+		chooseSo = function(NO_BUKTI,KD_BRG,NA_BRG, SATUAN,QTY, HARGA, TOTAL, PPNX, DPP, DISK){
+			$("#NO_SO"+rowidSo).val(NO_BUKTI);
+			$("#KD_BRG"+rowidSo).val(KD_BRG);
+			$("#NA_BRG"+rowidSo).val(NA_BRG);
+			$("#SATUAN"+rowidSo).val(SATUAN);
+			$("#QTY"+rowidSo).val(QTY!=0 ? QTY : 0);
+			$("#HARGA"+rowidSo).val(HARGA);	
+			$("#TOTAL"+rowidSo).val(TOTAL);	
+			$("#PPNX"+rowidSo).val(PPNX);	
+			$("#DPP"+rowidSo).val(DPP);	
+			$("#DISK"+rowidSo).val(DISK);	
+			$("#browseSoModal").modal("hide");
+		}
+		
+		$("#NO_SO").keypress(function(e){
+			if(e.keyCode == 46){
+				e.preventDefault();
+				browseSo();
+			}
+		}); 
 
 //////////////////////////////////////////////////////////////////
 
@@ -1137,16 +717,7 @@
 			check = '1';
 			alert("No Customer Harus diisi.");
 		}
-		if ( $('#TRUCK').val()=='' ) 
-		{			
-			check = '1';
-			alert("Truk Harus diisi.");
-		}
-		if ( $('#SOPIR').val()=='' ) 
-		{			
-			check = '1';
-			alert("Sopir Harus diisi.");
-		}
+		
 		if ( tgl.substring(3,5) != bulanPer ) 
 		{
 			check = '1';
@@ -1281,14 +852,15 @@
 		for (i = 0; i <= jumlahdata; i++) {
 			$("#REC" + i.toString()).attr("readonly", true);
 			$("#KD_BRG" + i.toString()).attr("readonly", true);
+			$("#NO_SO" + i.toString()).attr("readonly", true);
 			$("#NA_BRG" + i.toString()).attr("readonly", true);
 			$("#KD_BHN" + i.toString()).attr("readonly", true);
 			$("#NA_BHN" + i.toString()).attr("readonly", true);
 			$("#SATUAN" + i.toString()).attr("readonly", true);
-			$("#QTY" + i.toString()).attr("readonly", false);
-			$("#HARGA" + i.toString()).attr("readonly", false);
+			$("#QTY" + i.toString()).attr("readonly", true);
+			$("#HARGA" + i.toString()).attr("readonly", true);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
-			$("#KET" + i.toString()).attr("readonly", false);
+			$("#KET" + i.toString()).attr("readonly", true);
 			$("#DELETEX" + i.toString()).attr("hidden", false);
 
 			$tipx = $('#tipx').val();
@@ -1405,87 +977,93 @@
 	}
 
 
-    // function tambah() {
+    function tambah() {
 
-    //     var x = document.getElementById('datatable').insertRow(baris + 1);
+        var x = document.getElementById('datatable').insertRow(baris + 1);
  
-	// 	html=`<tr>
+		html=`<tr>
 
-    //             <td>
- 	// 				<input name='NO_ID[]' id='NO_ID${idrow}' type='hidden' class='form-control NO_ID' value='new' readonly> 
-	// 				<input name='REC[]' id='REC${idrow}' type='text' class='REC form-control' onkeypress='return tabE(this,event)' readonly>
-	//             </td>
+                <td>
+ 					<input name='NO_ID[]' id='NO_ID${idrow}' type='hidden' class='form-control NO_ID' value='new' readonly> 
+					<input name='REC[]' id='REC${idrow}' type='text' class='REC form-control' onkeypress='return tabE(this,event)' readonly>
+	            </td>
+				<td {{( $golz =='J') ? '' : 'hidden' }} >
+				    <input name='NO_SO[]' data-rowid=${idrow} onclick='browseSo(${idrow})' id='NO_SO${idrow}' type='text' class='form-control  NO_SO' readonly>
+                </td>
+				<td {{( $golz =='J') ? '' : 'hidden' }} >
+				    <input name='KD_BRG[]' data-rowid=${idrow} id='KD_BRG${idrow}' type='text' class='form-control  KD_BRG' readonly>
+                </td>
+                <td {{( $golz =='J') ? '' : 'hidden' }} >
+				    <input name='NA_BRG[]'   id='NA_BRG${idrow}' type='text' class='form-control  NA_BRG' required readonly>
+                </td>
 
-	// 			<td>
-	// 				<input name='KD_BHN[]' data-rowid=${idrow} id='KD_BHN${idrow}' type='text' class='form-control KD_BHN' >
-	// 			</td>
-	// 			<td>
-	// 				<input name='NA_BHN[]' id='NA_BHN${idrow}' type='text' class='form-control  NA_BHN'  readonly>
-	// 			</td>
-
-
-    //             <td>
-	// 			    <input name='SATUAN[]' id='SATUAN${idrow}' type='text' class='form-control SATUAN'>
-    //             </td>
-
-	// 			<td>
-	// 	            <input name='QTY[]' onclick='select()' onblur='hitung()' value='0' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
-    //             </td>
-
-	// 			<td>
-	// 	            <input name='HARGA[]' onclick='select()' onblur='hitung()' value='0' id='HARGA${idrow}' type='text' style='text-align: right' class='form-control HARGA text-primary' required >
-    //             </td>
-
+                <td>
+				    <input name='SATUAN[]'  id='SATUAN${idrow}' type='text' class='form-control  SATUAN' readonly required>
+		            <input name='HARGA1[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA1${idrow}' type='text' style='text-align: right' class='form-control HARGA1 text-primary' required >
+		            <input name='HARGA2[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA2${idrow}' type='text' style='text-align: right' class='form-control HARGA2 text-primary' required >
+		            <input name='HARGA3[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA3${idrow}' type='text' style='text-align: right' class='form-control HARGA3 text-primary' required >
+		            <input name='HARGA4[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA4${idrow}' type='text' style='text-align: right' class='form-control HARGA4 text-primary' required >
+		            <input name='HARGA5[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA5${idrow}' type='text' style='text-align: right' class='form-control HARGA5 text-primary' required >
+		            <input name='HARGA6[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA6${idrow}' type='text' style='text-align: right' class='form-control HARGA6 text-primary' required >
+		            <input name='HARGA7[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA7${idrow}' type='text' style='text-align: right' class='form-control HARGA7 text-primary' required >
+                </td>
 				
-	// 			<td>
-	// 	            <input name='TOTAL[]' onclick='select()' onblur='hitung()' value='0' id='TOTAL${idrow}' type='text' style='text-align: right' class='form-control TOTAL text-primary' >
-    //             </td>				
+				<td>
+		            <input name='QTY[]' onclick='select()' onblur='hitung()' value='0' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
+					<input hidden name='HARGA[]' onclick='select()' onblur='hitung()' value='0' id='HARGA${idrow}' type='text' style='text-align: right' class='form-control HARGA text-primary' readonly >
+					<input hidden name='TOTAL[]' onclick='select()' onblur='hitung()' value='0' id='TOTAL${idrow}' type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly required >
+					<input hidden name='PPNX[]'  onblur='hitung()' value='0' id='PPNX${idrow}' type='text' style='text-align: right' class='form-control PPNX text-primary' readonly required >
+					<input hidden name='DPP[]'  onblur='hitung()' value='0' id='DPP${idrow}' type='text' style='text-align: right' class='form-control DPP text-primary' readonly required >
+					<input hidden name='DISK[]'  onblur='hitung()' value='0' id='DISK${idrow}' type='text' style='text-align: right' class='form-control DISK text-primary' >
+				
+				
+				</td>
+				
+                <td>
+				    <input name='KET[]'   id='KET${idrow}' type='text' class='form-control  KET' required>
+                </td>
+				
+                <td>
+					<button type='button' id='DELETEX${idrow}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
+                </td>				
+         </tr>`;
+				
+        x.innerHTML = html;
+        var html='';
+		
+		
+		
+		jumlahdata = 100;
+		for (i = 0; i <= jumlahdata; i++) {
+			$("#QTY" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+
+
+			$("#HARGA" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>',
+				vMin: '-999999999.99'
+			});
+
+			$("#TOTAL" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>',
+				vMin: '-999999999.99'
+			});			 
+
 					
-    //             <td>
-	// 			    <input name='KET[]'   id='KET${idrow}' type='text' class='form-control  KET' required>
-    //             </td>
-				
-    //             <td>
-	// 				<button type='button' id='DELETEX${idrow}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
-    //             </td>				
-    //      </tr>`;
-				
-    //     x.innerHTML = html;
-    //     var html='';
-		
-		
-		
-	// 	jumlahdata = 100;
-	// 	for (i = 0; i <= jumlahdata; i++) {
-	// 		$("#QTY" + i.toString()).autoNumeric('init', {
-	// 			aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
-
-
-	// 		$("#HARGA" + i.toString()).autoNumeric('init', {
-	// 			aSign: '<?php echo ''; ?>',
-	// 			vMin: '-999999999.99'
-	// 		});
-
-	// 		$("#TOTAL" + i.toString()).autoNumeric('init', {
-	// 			aSign: '<?php echo ''; ?>',
-	// 			vMin: '-999999999.99'
-	// 		});			 
-
-					
-	// 	}
+		}
 
 		
 
 
-    //     idrow++;
-    //     baris++;
-    //     nomor();
+        idrow++;
+        baris++;
+        nomor();
 		
-	// 	$(".ronly").on('keydown paste', function(e) {
-    //          e.preventDefault();
-    //          e.currentTarget.blur();
-    //      });
-    // }
+		$(".ronly").on('keydown paste', function(e) {
+             e.preventDefault();
+             e.currentTarget.blur();
+         });
+    }
 </script>
 <!-- 
 <script src="autonumeric.min.js" type="text/javascript"></script>

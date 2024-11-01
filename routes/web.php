@@ -361,7 +361,8 @@ Route::get('/rso', 'App\Http\Controllers\OReport\RSoController@report')->middlew
     Route::get('/jssoc/{so:NO_ID}', 'App\Http\Controllers\OTransaksi\SoController@jssoc')->middleware(['auth']);
     Route::post('jasper-so-report', 'App\Http\Controllers\OReport\RSoController@jasperSoReport')->middleware(['auth']);
     Route::get('/so/cetak/{so:NO_ID}','App\Http\Controllers\OTransaksi\SoController@cetak')->middleware(['auth']);
-
+	Route::get('/so/jtempo', 'App\Http\Controllers\OTransaksi\SoController@jtempo')->middleware(['auth'])->name('so/jtempo');
+    
     Route::get('/so/browse_sod', 'App\Http\Controllers\OTransaksi\SoController@browse_sod')->middleware(['auth'])->name('so/browse_sod');
 	
 
@@ -529,7 +530,9 @@ Route::get('/surats/delete/{surats}', 'App\Http\Controllers\OTransaksi\SuratsCon
 
 Route::get('/surats/browseCust', 'App\Http\Controllers\OTransaksi\SuratsController@browseCust')->middleware(['auth']);
 Route::get('/surats/browseSo', 'App\Http\Controllers\OTransaksi\SuratsController@browseSo')->middleware(['auth']);
+Route::get('/surats/browseDo', 'App\Http\Controllers\OTransaksi\SuratsController@browseDo')->middleware(['auth']);
 Route::get('/surats/browse_detail', 'App\Http\Controllers\OTransaksi\SuratsController@browse_detail')->middleware(['auth']);
+Route::get('/surats/do_detail', 'App\Http\Controllers\OTransaksi\SuratsController@do_detail')->middleware(['auth']);
 Route::get('/surats/browse_suratsd', 'App\Http\Controllers\OTransaksi\SuratsController@browse_suratsd')->middleware(['auth']);
 
 Route::post('/jasper-surats-report', 'App\Http\Controllers\OReport\RSuratsController@jasperSuratsReport')->middleware(['auth']);
@@ -539,6 +542,36 @@ Route::get('/get-surats-report', 'App\Http\Controllers\OReport\RSuratsController
 Route::get('/jssuratsc/{surats:NO_ID}', 'App\Http\Controllers\OTransaksi\SuratsController@jssuratsc')->middleware(['auth']);
 Route::post('jasper-surats-report', 'App\Http\Controllers\OReport\RSuratsController@jasperSuratsReport')->middleware(['auth']);
 Route::get('/surats/cetak/{surats:NO_ID}','App\Http\Controllers\OTransaksi\SuratsController@cetak')->middleware(['auth']);
+
+
+
+// Operational Do
+Route::get('/deli', 'App\Http\Controllers\OTransaksi\DeliController@index')->middleware(['auth'])->name('deli');
+Route::post('/deli/store', 'App\Http\Controllers\OTransaksi\DeliController@store')->middleware(['auth'])->name('deli/store');
+Route::get('/deli/create', 'App\Http\Controllers\OTransaksi\DeliController@create')->middleware(['auth'])->name('deli/create');
+Route::get('/get-deli', 'App\Http\Controllers\OTransaksi\DeliController@getDeli')->middleware(['auth'])->name('get-deli');
+Route::get('/rdeli', 'App\Http\Controllers\OReport\RDeliController@report')->middleware(['auth'])->name('rdeli');
+Route::get('/deli/browse', 'App\Http\Controllers\OTransaksi\DeliController@browse')->middleware(['auth'])->name('deli/browse');
+
+Route::get('/deli/show/{deli}', 'App\Http\Controllers\OTransaksi\DeliController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('deliid');
+Route::get('/deli/edit', 'App\Http\Controllers\OTransaksi\DeliController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('deli.edit');
+Route::post('/deli/update/{deli}', 'App\Http\Controllers\OTransaksi\DeliController@update')->middleware(['auth', 'role:superadmin|operational'])->name('deli.update');
+Route::get('/deli/delete/{deli}', 'App\Http\Controllers\OTransaksi\DeliController@destroy')->middleware(['auth', 'role:superadmin'])->name('deli.delete');
+
+Route::get('/deli/browseCust', 'App\Http\Controllers\OTransaksi\DeliController@browseCust')->middleware(['auth']);
+Route::get('/deli/browseSo', 'App\Http\Controllers\OTransaksi\DeliController@browseSo')->middleware(['auth']);
+Route::get('/deli/browseDo', 'App\Http\Controllers\OTransaksi\DeliController@browseDo')->middleware(['auth']);
+Route::get('/deli/browse_detail', 'App\Http\Controllers\OTransaksi\DeliController@browse_detail')->middleware(['auth']);
+Route::get('/deli/do_detail', 'App\Http\Controllers\OTransaksi\DeliController@do_detail')->middleware(['auth']);
+Route::get('/deli/browse_delid', 'App\Http\Controllers\OTransaksi\DeliController@browse_delid')->middleware(['auth']);
+
+Route::post('/jasper-deli-report', 'App\Http\Controllers\OReport\RDeliController@jasperDeliReport')->middleware(['auth']);
+Route::get('/jsdelic/{deli:NO_ID}', 'App\Http\Controllers\OTransaksi\DeliController@jsdelic')->middleware(['auth']);
+
+Route::get('/get-deli-report', 'App\Http\Controllers\OReport\RDeliController@getDeliReport')->middleware(['auth'])->name('get-deli-report');
+Route::get('/jsdelic/{deli:NO_ID}', 'App\Http\Controllers\OTransaksi\DeliController@jsdelic')->middleware(['auth']);
+Route::post('jasper-deli-report', 'App\Http\Controllers\OReport\RDeliController@jasperDeliReport')->middleware(['auth']);
+Route::get('/deli/cetak/{deli:NO_ID}','App\Http\Controllers\OTransaksi\DeliController@cetak')->middleware(['auth']);
 
 
 // Operational Penjualan

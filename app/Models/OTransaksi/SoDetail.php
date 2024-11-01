@@ -17,6 +17,6 @@ class SoDetail extends Model
     [
         "REC", "NO_BUKTI", "ID",  "KD_BRG", "FLAG", "NA_BRG", "SATUAN", "QTY", "SISA", "HARGA", 
         "TOTAL", "KET", "TOTAL_QTY", "KD_BHN", "NA_BHN", "PER", "GOL", "HARGA1", "HARGA2", "HARGA3",
-        "HARGA4", "HARGA5", "DPP", "PPNX", "HARGA6", "HARGA7", "DISK"
+        "HARGA4", "HARGA5", "DPP", "PPNX", "HARGA6", "HARGA7", "DISK", "KD_GRUP"
     ];
 }

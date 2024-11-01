@@ -127,6 +127,10 @@
 								<div class="col-md-4">
                                     <input type="text" class="form-control NAMAS" id="NAMAS" name="NAMAS" placeholder="-" 
 									value="{{$header->NAMAS}}" readonly>
+									
+									<input hidden type="text" onclick="select()" onblur="hitung()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
+									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
+								   
                                 </div>
 
 								
@@ -244,7 +248,7 @@
 										<td {{( $golz =='J' || $golz =='N') ? '' : 'hidden' }}>
                                             <input name="KD_BRG[]" id="KD_BRG{{$no}}" type="text" class="form-control KD_BRG " 
 											value="{{$detail->KD_BRG}}" onblur="browseBarang({{$no}})">
-                                        </td>
+										</td>
 
 										<td {{( $golz =='J' || $golz =='N') ? '' : 'hidden' }}>
                                             <input name="NA_BRG[]" id="NA_BRG{{$no}}" type="text" class="form-control NA_BRG " value="{{$detail->NA_BRG}}">
@@ -648,7 +652,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBSuplier.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSuplier(\''+resp[i].KODES+'\',  \''+resp[i].NAMAS+'\', \''+resp[i].ALAMAT+'\', \''+resp[i].KOTA+'\', \''+resp[i].PKP+'\')">'+resp[i].KODES+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseSuplier(\''+resp[i].KODES+'\',  \''+resp[i].NAMAS+'\', \''+resp[i].HARI+'\',  \''+resp[i].ALAMAT+'\', \''+resp[i].KOTA+'\', \''+resp[i].PKP+'\')">'+resp[i].KODES+'</a>',
 							resp[i].NAMAS,
 							resp[i].ALAMAT,
 							resp[i].KOTA,
@@ -669,9 +673,10 @@
 			$("#browseSuplierModal").modal("show");
 		}
 		
-		chooseSuplier = function(KODES,NAMAS, ALAMAT, KOTA, PKP){
+		chooseSuplier = function(KODES,NAMAS, HARI, ALAMAT, KOTA, PKP){
 			$("#KODES").val(KODES);
 			$("#NAMAS").val(NAMAS);
+			$("#HARI").val(HARI);
 			$("#ALAMAT").val(ALAMAT);
 			$("#KOTA").val(KOTA);			
 			$("#PKP").val(PKP);			
@@ -1302,7 +1307,7 @@
 
 				<td {{( $golz =='J' || $golz =='N') ? '' : 'hidden' }} >
 				    <input name='KD_BRG[]' data-rowid=${idrow} onblur='browseBarang(${idrow})' id='KD_BRG${idrow}' type='text' class='form-control  KD_BRG' >
-                </td>
+				</td>
                 <td {{( $golz =='J' || $golz =='N') ? '' : 'hidden' }} >
 				    <input name='NA_BRG[]'   id='NA_BRG${idrow}' type='text' class='form-control  NA_BRG' required readonly>
                 </td>

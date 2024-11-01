@@ -70,6 +70,13 @@
                                 <div class="col-md-2">
 								  <input class="form-control date" id="TGL" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
                                 </div>
+
+								<div class="col-md-1" align="right">
+                                    <label for="JTEMPO" class="form-label">Jatuh Tempo</label>
+                                </div>
+                                <div class="col-md-2">
+								  <input class="form-control date" id="JTEMPO" name="JTEMPO" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->JTEMPO))}}">
+                                </div>
 								
                             </div>
 
@@ -114,7 +121,10 @@
                                 </div>
 								<div class="col-md-4">
                                     <input type="text" class="form-control NAMAS" id="NAMAS" name="NAMAS" placeholder="-" value="{{$header->NAMAS}}" readonly>
-                                </div>
+                                
+									<input hidden type="text" onclick="select()" onblur="hitung()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
+									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
+								   </div>
 
 								<div class="col-md-1">
 									<!-- <input type="checkbox" class="form-check-input" id="PKP" name="PKP" value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}> -->

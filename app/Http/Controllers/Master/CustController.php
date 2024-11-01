@@ -39,7 +39,7 @@ class CustController extends Controller
         // $cust = DB::table('cust')->select('KODEC', 'NAMAC', 'ALAMAT', 'KOTA')->orderBy('KODEC', 'ASC')->get();
         $cust = DB::SELECT("SELECT a.NO_ID, a.KODEC, a.NAMAC, a.ALAMAT, a.KOTA,  a.AKTIF, 
                                     CASE WHEN a.PKP = '1' THEN '(PKP)' ELSE '(NON PKP)' END AS PKP2, 
-                                    a.PKP, a.KODEP, a.NAMAP, a.RING, b.KOM
+                                    a.PKP, a.KODEP, a.NAMAP, a.RING, b.KOM, a.HARI
                             FROM cust a, pegawai b
                             WHERE a.KODEP = b.KODEP
                             ORDER BY a.KODEC");

@@ -57,14 +57,17 @@ class SoController extends Controller
 	public function browse(Request $request)
     {
         $golz = $request->GOL;
+        $kodec = $request->KODEC;
 
         $CBG = Auth::user()->CBG;
 		
-        $so = DB::SELECT("SELECT distinct SO.NO_BUKTI , SO.KODEC, SO.NAMAC, 
-		                  SO.ALAMAT, SO.KOTA from so, sod 
+        $so = DB::SELECT("SELECT distinct SO.NO_BUKTI , SO.TGL, SO.KODEC, SO.NAMAC, 
+                                SO.ALAMAT, SO.KOTA, SOD.KD_BRG, SOD.NA_BRG, SOD.QTY, SOD.HARGA, 
+                                SOD.TOTAL, SOD.PPN, SOD.DPP, SOD.DISK, SOD.SATUAN  from so, sod 
                           WHERE SO.NO_BUKTI = SOD.NO_BUKTI AND SO.GOL ='$golz' 
                           AND SOD.SISA > 0
-                          AND CBG = '$CBG' AND POSTED = 1");
+                        --   AND CBG = '$CBG' 
+                          AND POSTED = 1");
         return response()->json($so);
     }
 
@@ -135,7 +138,8 @@ class SoController extends Controller
         $CBG = Auth::user()->CBG;
 		
 		$this->setFlag($request);	
-        $so = DB::SELECT("SELECT *, POSTED AS cek from so  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
+        $so = DB::SELECT("SELECT NO_ID, NO_BUKTI, TGL, NAMAC, TOTAL, TOTAL_QTY, NOTES, USRNM, POSTED, FLAG, GOL 
+                        from so  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
                         AND GOL ='$this->GOLZ' AND CBG = '$CBG' ORDER BY NO_BUKTI ");
 	  
 	   
@@ -271,6 +275,7 @@ class SoController extends Controller
             [
                 'NO_BUKTI'         => $no_bukti,
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
+                'JTEMPO'              => date('Y-m-d', strtotime($request['JTEMPO'])),
                 'PER'              => $periode,
 				'KODEC'            => ($request['KODEC'] == null) ? "" : $request['KODEC'],
                 'NAMAC'            => ($request['NAMAC'] == null) ? "" : $request['NAMAC'],
@@ -286,6 +291,7 @@ class SoController extends Controller
                 'PPN'            => (float) str_replace(',', '', $request['PPN']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
                 'TDISK'            => (float) str_replace(',', '', $request['TDISK']),
+                'HARI'            => (float) str_replace(',', '', $request['HARI']),
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
@@ -298,6 +304,7 @@ class SoController extends Controller
 
 		$REC        = $request->input('REC');
 		$KD_BRG     = $request->input('KD_BRG');
+		$KD_GRUP     = $request->input('KD_GRUP');
         $NA_BRG     = $request->input('NA_BRG');
 		$KD_BHN     = $request->input('KD_BHN');
         $NA_BHN     = $request->input('NA_BHN');
@@ -332,6 +339,7 @@ class SoController extends Controller
                 $detail->GOL 	     = $GOLZ;    	
                
                 $detail->KD_BRG      = ($KD_BRG[$key] == null) ? "" :  $KD_BRG[$key];
+                $detail->KD_GRUP     = ($KD_GRUP[$key] == null) ? "" :  $KD_GRUP[$key];
                 $detail->NA_BRG      = ($NA_BRG[$key] == null) ? "" :  $NA_BRG[$key];
                 $detail->KD_BHN      = ($KD_BHN[$key] == null) ? "" :  $KD_BHN[$key];
                 $detail->NA_BHN      = ($NA_BHN[$key] == null) ? "" :  $NA_BHN[$key];
@@ -541,6 +549,7 @@ class SoController extends Controller
 		 {
 				$so = new So;
                 $so->TGL = Carbon::now();
+                $so->JTEMPO = Carbon::now();
 				
 				
 		 }
@@ -599,6 +608,7 @@ class SoController extends Controller
         $so->update(
             [
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
+                'JTEMPO'              => date('Y-m-d', strtotime($request['JTEMPO'])),
                 'KODEC'            => ($request['KODEC'] == null) ? "" : $request['KODEC'],
                 'NAMAC'            => ($request['NAMAC'] == null) ? "" : $request['NAMAC'],
                 'ALAMAT'            => ($request['ALAMAT'] == null) ? "" : $request['ALAMAT'],
@@ -610,6 +620,7 @@ class SoController extends Controller
                 'PPN'            => (float) str_replace(',', '', $request['PPN']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
                 'TDISK'            => (float) str_replace(',', '', $request['TDISK']),
+                'HARI'            => (float) str_replace(',', '', $request['HARI']),
                 'KODEP'            => ($request['KODEP'] == null) ? "" : $request['KODEP'],
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
@@ -631,6 +642,7 @@ class SoController extends Controller
         $REC    = $request->input('REC');
 
         $KD_BRG = $request->input('KD_BRG');
+        $KD_GRUP = $request->input('KD_GRUP');
         $NA_BRG = $request->input('NA_BRG');
         $KD_BHN = $request->input('KD_BHN');
         $NA_BHN = $request->input('NA_BHN');
@@ -667,6 +679,7 @@ class SoController extends Controller
                         'KD_BHN'     => ($KD_BHN[$i] == null) ? "" :  $KD_BHN[$i],
                         'NA_BHN'     => ($NA_BHN[$i] == null) ? "" :  $NA_BHN[$i],
                         'KD_BRG'     => ($KD_BRG[$i] == null) ? "" :  $KD_BRG[$i],
+                        'KD_GRUP'     => ($KD_GRUP[$i] == null) ? "" :  $KD_GRUP[$i],
                         'NA_BRG'     => ($NA_BRG[$i] == null) ? "" :  $NA_BRG[$i],
                         'SATUAN'     => ($SATUAN[$i] == null) ? "" :  $SATUAN[$i],						
                         'QTY'        => (float) str_replace(',', '', $QTY[$i]),
@@ -704,6 +717,7 @@ class SoController extends Controller
                         'KD_BHN'     => ($KD_BHN[$i] == null) ? "" :  $KD_BHN[$i],
                         'NA_BHN'     => ($NA_BHN[$i] == null) ? "" :  $NA_BHN[$i],
                         'KD_BRG'     => ($KD_BRG[$i] == null) ? "" :  $KD_BRG[$i],
+                        'KD_GRUP'     => ($KD_GRUP[$i] == null) ? "" :  $KD_GRUP[$i],
                         'NA_BRG'     => ($NA_BRG[$i] == null) ? "" :  $NA_BRG[$i],
                         'SATUAN'     => ($SATUAN[$i] == null) ? "" :  $SATUAN[$i],						
                         'QTY'        => (float) str_replace(',', '', $QTY[$i]),
@@ -838,6 +852,19 @@ class SoController extends Controller
       
 
     }
+	
+	public function jtempo ( Request $request)
+    {
+		//$tgl = $request->TGL;
+		//$hari_ini = Carbon::createFromFormat('Y.m.d', $tgl);
+		//dd($hari_ini);
+		//$harix = $request->HARI;
+		//$jtempo = $hari_ini->addDays($harix);
+		//dd($jtempo);
+		
+		//Return Carbon::createFromFormat('d/m/Y',$jtempo);
+		
+	}
 	
 	
 	

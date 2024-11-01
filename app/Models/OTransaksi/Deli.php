@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 
 //ganti 1
-class Surats extends Model
+class Deli extends Model
 {
     use HasFactory;
 
 // ganti 2
-    protected $table = 'surats';
+    protected $table = 'deli';
     protected $primaryKey = 'NO_ID';
     public $timestamps = false;
 

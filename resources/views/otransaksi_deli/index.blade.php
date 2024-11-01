@@ -45,7 +45,6 @@
           <div class="col-sm-6">
             <h1 class="m-0">Transaksi {{$judul}} </h1>
           </div>
-
         </div>
       </div>
     </div>
@@ -63,26 +62,22 @@
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-			  
+
               <input name="flagz"  class="form-control flagz" id="flagz" value="{{$flagz}}" hidden >
               <input name="golz"  class="form-control golz" id="golz" value="{{$golz}}" hidden >
- 
-                <!-- <button class="btn btn-danger" type="button"  onclick="simpan()">Posting</button> -->
 
                 <table class="table table-fixed table-striped table-border table-hover nowrap datatable" id="datatable">
                     <thead class="table-dark">
                         <tr>
-                            <th width="35px" style="text-align:center">#</th>
-				     		            <th width="75px" style="text-align:center">-</th>							
-                            <th width="150px" style="text-align:center">Bukti#</th>
-                            <th width="150px" style="text-align:center">Customer</th>
-                            <th width="100px" style="text-align:center">Tgl</th>
-                            <th width="100px" style="text-align:center">Total_Qty</th>
-                            <th width="100px" style="text-align:center">Total</th>
-                     
-                            <th width="150px" style="text-align:center">Notes</th>
-                            <th width="100px" style="text-align:center">User</th>
-                            <th width="100px" style="text-align:center">Posted</th>
+                            <th scope="col" style="text-align: center">#</th>
+				     		            <th scope="col" style="text-align: center">-</th>							
+                            <th scope="col" style="text-align: center">No Bukti</th>
+                            <th scope="col" style="text-align: center">Tgl</th>
+                            <th scope="col" style="text-align: center">Kode</th>
+                            <th scope="col" style="text-align: center">Customer</th>
+                            <th scope="col" style="text-align: center">Truck</th>
+                            <th scope="col" style="text-align: center">Sopir</th>
+                            <th scope="col" style="text-align: center">Total Qty</th>
                         </tr>
                     </thead>
     
@@ -96,11 +91,15 @@
       </div>
     </div>
   </div>
+  
 @endsection
 
 @section('javascripts')
 <script>
   $(document).ready(function() {
+	  
+
+			  
         var dataTable = $('.datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -110,66 +109,60 @@
             "order": [[ 0, "asc" ]],
             ajax: 
             {
-                url: "{{ route('get-so') }}",
+                url: "{{ route('get-deli') }}",
 				        data: 
                 {
                     flagz : $('#flagz').val(),
                     golz : $('#golz').val(),
 				   
-                }				
+                }
             },
+
             columns: 
             [
                 {data: 'DT_RowIndex', orderable: false, searchable: false },
-				        {data: 'action', name: 'action'},
+			          {data: 'action', name: 'action'},
                 {data: 'NO_BUKTI', name: 'NO_BUKTI'},
+                {data: 'TGL', name: 'TGL'},
+                {data: 'KODEC', name: 'KODEC'},
                 {data: 'NAMAC', name: 'NAMAC',
                   render : function ( data, type, row, meta )
                   {
                     return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
                   }
                 },
-                {data: 'TGL', name: 'TGL'},
-                {data: 'TOTAL_QTY', name: 'TOTAL_QTY', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},
-                {data: 'TOTAL', name: 'TOTAL', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},
-                {data: 'NOTES', name: 'NOTES'},
-                {data: 'USRNM', name: 'USRNM'},
-                { data: 'POSTED', name: 'POSTED',
-                  render : function(data, type, row, meta) {
-                    if(row['POSTED']=="0"){
-                        return '';
-                    }else{
-                        return '<input type="checkbox" checked style="pointer-events: none;">';
-                    }
-                  }
-                },
+                {data: 'TRUCK', name: 'TRUCK'},
+                {data: 'SOPIR', name: 'SOPIR'},
+                {data: 'TOTAL_QTY', name: 'TOTAL_QTY'},
             ],
-            columnDefs: [
+            columnDefs: 
+            [
                 {
                     "className": "dt-center", 
-                    "targets": 9,
-                },		
+                    "targets": 0,
+                },	
                 {
                     "className": "dt-right", 
-                    "targets": [5, 6],
+                    "targets": 8,
+                    render: $.fn.dataTable.render.number( ',', '.', 0, '' ),
                 },			
                 {
-                  targets: 4,
-                  render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' )
+                  targets: 3,
+                  render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ),
                 }
             ],
-            lengthMenu: [
+            lengthMenu: 
+            [
                 [8, 10, 20, 50, 100, -1],
                 [8, 10, 20, 50, 100, "All"]
             ],
             dom: "<'row'<'col-md-6'><'col-md-6'>>" +
                 "<'row'<'col-md-2'l><'col-md-6 test_btn m-auto'><'col-md-4'f>>" +
                 "<'row'<'col-md-12't>><'row'<'col-md-12'ip>>",
-				stateSave:true,
 
         });
 		
-        $("div.test_btn").html('<a class="btn btn-lg btn-md btn-success" href="{{url('so/edit?flagz='.$flagz.'&golz='.$golz.'&idx=0&tipx=new')}}"> <i class="fas fa-plus fa-sm md-3" ></i></a');
+        $("div.test_btn").html('<a class="btn btn-lg btn-md btn-success" href="{{url('deli/edit?flagz='.$flagz.'&golz='.$golz.'&idx=0&tipx=new')}}"> <i class="fas fa-plus fa-sm md-3" ></i></a');
     });
 	
 </script>

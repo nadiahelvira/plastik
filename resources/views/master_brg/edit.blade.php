@@ -998,8 +998,8 @@
 	
 	function ganti() {
 		
-		// mati();
-		hidup();
+		mati();
+		// hidup();
 	
 	}
 	
@@ -1038,15 +1038,43 @@
 		{
 	     	$("#KD_BRG").attr("readonly", true);	
 
-		   }
+		}
 		   
 		
 		$("#NA_BRG").attr("readonly", false);		
-		$("#GRUP").attr("readonly", false);		
-		$("#DR").attr("readonly", false);	
-		$("#SUB").attr("readonly", false);			
 		$("#KD_GRUP").attr("readonly", true);			
-		$("#NA_GRUP").attr("readonly", true);			
+		$("#NA_GRUP").attr("readonly", true);
+
+		$("#LOKASI").attr("readonly", true);
+		$("#SATUAN_BELI").attr("readonly", false);
+		$("#KALI").attr("readonly", false);
+		$("#SATUAN").attr("readonly", false);
+		$("#MERK").attr("readonly", false);
+		$("#JENIS").attr("readonly", false);
+		$("#PANJANG").attr("readonly", false);
+		$("#LEBAR").attr("readonly", false);
+		$("#DIMENSI").attr("readonly", false);
+		$("#VOLUME").attr("readonly", false);
+		$("#ROP").attr("readonly", false);
+		$("#SMIN").attr("readonly", false);
+		$("#SMAX").attr("readonly", false);
+		$("#GOL").attr("readonly", false);
+		$("#PN").attr("readonly", false);
+
+		jumlahdata = 100;
+		for (i = 0; i <= jumlahdata; i++) {
+			$("#REC" + i.toString()).attr("readonly", true);
+			$("#RING" + i.toString()).attr("readonly", true);
+			$("#HARGA" + i.toString()).attr("readonly", false);
+			$("#HARGA1" + i.toString()).attr("readonly", false);
+			$("#HARGA2" + i.toString()).attr("readonly", false);
+			$("#HARGA3" + i.toString()).attr("readonly", false);
+			$("#HARGA4" + i.toString()).attr("readonly", false);
+			$("#HARGA5" + i.toString()).attr("readonly", false);
+			$("#HARGA6" + i.toString()).attr("readonly", false);
+			$("#HARGA7" + i.toString()).attr("readonly", false);
+
+		}		
 	
 	}
 
@@ -1069,6 +1097,37 @@
 		$("#NA_BRG").attr("readonly", true);		
 		$("#KD_GRUP").attr("readonly", true);			
 		$("#NA_GRUP").attr("readonly", true);
+
+		$("#LOKASI").attr("readonly", true);
+		$("#SATUAN_BELI").attr("readonly", true);
+		$("#KALI").attr("readonly", true);
+		$("#SATUAN").attr("readonly", true);
+		$("#MERK").attr("readonly", true);
+		$("#JENIS").attr("readonly", true);
+		$("#PANJANG").attr("readonly", true);
+		$("#LEBAR").attr("readonly", true);
+		$("#DIMENSI").attr("readonly", true);
+		$("#VOLUME").attr("readonly", true);
+		$("#ROP").attr("readonly", true);
+		$("#SMIN").attr("readonly", true);
+		$("#SMAX").attr("readonly", true);
+		$("#GOL").attr("readonly", true);
+		$("#PN").attr("readonly", true);
+
+		jumlahdata = 100;
+		for (i = 0; i <= jumlahdata; i++) {
+			$("#REC" + i.toString()).attr("readonly", true);
+			$("#RING" + i.toString()).attr("readonly", true);
+			$("#HARGA" + i.toString()).attr("readonly", true);
+			$("#HARGA1" + i.toString()).attr("readonly", true);
+			$("#HARGA2" + i.toString()).attr("readonly", true);
+			$("#HARGA3" + i.toString()).attr("readonly", true);
+			$("#HARGA4" + i.toString()).attr("readonly", true);
+			$("#HARGA5" + i.toString()).attr("readonly", true);
+			$("#HARGA6" + i.toString()).attr("readonly", true);
+			$("#HARGA7" + i.toString()).attr("readonly", true);
+
+		}
 		
 	}
 

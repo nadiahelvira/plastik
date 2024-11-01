@@ -469,32 +469,35 @@
               </a>
             </div>
         </div>
-        <!-- div class="col-md-3">
+        
+		    <div class="col-md-3">
             <div class="menu-card" style="">
-                <a href="{{url('spm?flagz=SM&golz=J')}}">
-                   <i class="nav-icon fas fa-store icon-white"></i>
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-store icon-white"></i>
-                  <h6>Surat Muat</h6>
+                <a href="{{url('deli?flagz=DO&golz=J')}}">
+                  <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-file icon-orange"></i>
+                  <h6>DO</h6>
                 </a>
 			      </div>
-        </div -->
+        </div>
+        
 		    <div class="col-md-3">
             <div class="menu-card" style="">
                 <a href="{{url('surats?flagz=JL&golz=J')}}">
                   <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
                   <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-file icon-orange"></i>
                   <h6>Surat Jalan</h6>
-                  <h6>Barang</h6>
+                  <!-- <h6>Barang</h6> -->
                 </a>
 			      </div>
         </div>
+
 		    <div class="col-md-3">
             <div class="menu-card" style="">
               <a href="{{url('jual?flagz=JL&golz=J')}}">
                  <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
                   <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-copy icon-blue"></i>
                 <h6>Penjualan</h6>
-                <h6>Barang</h6>
+                <!-- <h6>Barang</h6> -->
               </a>
 			      </div>
         </div >
@@ -505,7 +508,7 @@
                   <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-retweet icon-green"></i>
                 <h6>Retur</h6>
                 <h6>Penjualan</h6>
-                <h6>Barang</h6>
+                <!-- <h6>Barang</h6> -->
               </a>
 			      </div>
         </div>
@@ -518,7 +521,7 @@
                   <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-crop icon-aqua"></i>
                 <h6>Retur</h6>
                 <h6>Surat Jalan</h6>
-                <h6>Barang</h6>
+                <!-- <h6>Barang</h6> -->
               </a>
 			      </div>
         </div>
@@ -901,8 +904,8 @@
                     <a href="{{url('kas?flagz=BKM')}}">
                       <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
                         <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-stamp icon-red"></i>
-                      <h6>Sumber Dana</h6>
-                      <h6>Masuk</h6>
+                      <h6>Kas Masuk</h6>
+                      <!-- <h6>Masuk</h6> -->
                     </a>
                   </div>
               </div>
@@ -911,8 +914,8 @@
                       <a href="{{url('kas?flagz=BKK')}}">
                         <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
                         <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-credit-card icon-blue"></i>
-                        <h6>Sumber Dana</h6>
-                        <h6>Keluar</h6>
+                        <h6>Kas Keluar</h6>
+                        <!-- <h6>Keluar</h6> -->
                       </a>
                   </div>
               </div>

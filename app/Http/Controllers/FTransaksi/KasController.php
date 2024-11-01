@@ -37,9 +37,11 @@ class KasController extends Controller
     function setFlag(Request $request)
     {
         if ( $request->flagz == 'BKK' ) {
-            $this->judul = "Sumber Dana Keluar";
+            // $this->judul = "Sumber Dana Keluar";
+            $this->judul = "Kas Keluar";
         } else if ( $request->flagz == 'BKM' ) {
-            $this->judul = "Sumber Dana Masuk";
+            // $this->judul = "Sumber Dana Masuk";
+            $this->judul = "Kas Masuk";
         }
 		
         $this->FLAGZ = $request->flagz;
@@ -660,6 +662,11 @@ class KasController extends Controller
 			WHERE kas.NO_BUKTI=kasd.NO_BUKTI and kas.NO_BUKTI='$no_bukti' 
 			ORDER BY kas.NO_BUKTI;
 		");
+		
+		$query2 = DB::SELECT("
+			SELECT NAMA from compan ;
+		");
+		
 
         $data = [];
         foreach ($query as $key => $value) {
@@ -674,6 +681,7 @@ class KasController extends Controller
                 'URAIAN' => $query[$key]->URAIAN,
                 'JUMLAH' => $query[$key]->JUMLAH,
                 'JUDUL' => $judul,
+				'NAMA' => $query2[0]->NAMA
             ));
         }
         $PHPJasperXML->setData($data);

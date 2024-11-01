@@ -287,6 +287,7 @@ class JualController extends Controller
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
+                'HARI'            => (float) str_replace(',', '', $request['HARI']),
 
                 'USRNM'            => Auth::user()->username,
                 'TG_SMP'           => Carbon::now(),
@@ -605,6 +606,7 @@ class JualController extends Controller
                 'NAMAP'            => ($request['NAMAP'] == null) ? "" : $request['NAMAP'],
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
+                'HARI'            => (float) str_replace(',', '', $request['HARI']),
 
 				'USRNM'            => Auth::user()->username,
                 'TG_SMP'           => Carbon::now(),

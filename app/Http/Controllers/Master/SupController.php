@@ -29,7 +29,8 @@ class SupController extends Controller
 
 		
         // $sup = DB::table('sup')->select('KODES', 'NAMAS', 'ALAMAT', 'KOTA', 'PKP')->orderBy('KODES', 'ASC')->get();
-        $sup = DB::SELECT("SELECT NO_ID, KODES, NAMAS, ALAMAT, KOTA, NOTBAY, KONTAK, AKTIF, CASE WHEN PKP = '1' THEN '(PKP)' ELSE '(NON PKP)' END AS PKP2, PKP
+        $sup = DB::SELECT("SELECT NO_ID, KODES, NAMAS, ALAMAT, KOTA, NOTBAY, KONTAK, AKTIF, CASE WHEN PKP = '1' THEN '(PKP)' ELSE '(NON PKP)' END AS PKP2,
+                                PKP, HARI
                             FROM sup
                             ORDER BY KODES");
         

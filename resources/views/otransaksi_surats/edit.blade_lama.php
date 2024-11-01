@@ -75,6 +75,23 @@
 								
                             </div>
 
+                            <!-- <div class="form-group row">
+
+								<div class="col-md-1" align="right">
+									<label for="supxz">No Paspor</label>
+								</div>
+								<div class="col-md-4">
+									<select name="supxz" class="form-control" id="supxz" required>
+											<option value="">Select Suplier</option>
+										@foreach ($sup as $sup)
+											<option value="{{ $sup->KODES }}">{{ $sup->NAMAS }}</option>
+										@endforeach
+									</select>
+								</div>
+							
+                            </div> -->
+							
+
                             <div class="form-group row">
 								<div {{( $flagz =='AJ') ? '' : 'hidden' }} class="col-md-1" align="left">
 									<label style="color:red">*</label>									
@@ -86,7 +103,7 @@
                                 </div>
                             </div>
 
-							<!-- <div class="form-group row">
+							<div class="form-group row">
 								<div class="col-md-1" align="left">
 									<label style="color:red">*</label>									
 									<label for="NO_SO" class="form-label">SO#</label>
@@ -94,17 +111,6 @@
 								<div class="col-md-2 input-group" >
 								<input type="text" class="form-control NO_SO" id="NO_SO" name="NO_SO" placeholder="Pilih SO"value="{{$header->NO_SO}}" style="text-align: left" readonly >
 								<button type="button" class="btn btn-primary" onclick="browseSo()"><i class="fa fa-search"></i></button>
-								</div>
-							</div> -->
-
-							<div class="form-group row">
-								<div class="col-md-1" align="left">
-									<label style="color:red">*</label>									
-									<label for="NO_DO" class="form-label">DO#</label>
-								</div>
-								<div class="col-md-2 input-group" >
-								<input type="text" class="form-control NO_DO" id="NO_DO" name="NO_DO" placeholder="Pilih DO"value="{{$header->NO_DO}}" style="text-align: left" readonly >
-								<button type="button" class="btn btn-primary" onclick="browseDo()"><i class="fa fa-search"></i></button>
 								</div>
 							</div>
 
@@ -123,11 +129,7 @@
                                     <input hidden type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="-" value="{{$header->NAMAP}}" readonly>
                                     <input hidden type="text" class="form-control RING" id="RING" name="RING" placeholder="-" value="{{$header->RING}}" readonly>
 									<input hidden type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="KOM" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
-                                
-									<input hidden type="text" onclick="select()" onblur="hitung()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
-									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
-								   
-								</div>
+                                </div>
                             </div>
 							
 							
@@ -162,7 +164,13 @@
                                 <div class="col-md-2">
                                     <input type="text" class="form-control SOPIR" id="SOPIR" name="SOPIR" placeholder="Sopir" value="{{$header->SOPIR}}">
                                 </div>
-
+								
+								<!-- <div class="col-md-1" align="left">
+                                    <label class="form-label">Via</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control VIA" id="VIA" name="VIA" placeholder="Via" value="{{$header->VIA}}">
+                                </div> -->
                             </div>
 
 							<div class="form-group row">
@@ -184,7 +192,9 @@
                                 <thead>
                                     <tr>
 										<th width="50px" style="text-align: center;">No.</th>
-                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">No SO</th>
+                                        <!-- <th style="text-align: center;">
+									       <label style="color:red;font-size:20px">* </label>									
+                                           <label for="KD_BRG" class="form-label">SO#</label></th> -->
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Kode Barang</th>
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Uraian</th>
                                         <th {{($golz == 'J') ? 'hidden' : '' }} style="text-align: center;">Kode Bahan</th>
@@ -198,7 +208,7 @@
                                     </tr>
                                 </thead>
         
-                                <tbody id="detailDod">
+                                <tbody id="detailSuratsd">
 								<?php $no=0 ?>
 								@foreach ($detail as $detail)		
                                     <tr>
@@ -208,11 +218,18 @@
 											
                                             <input name="REC[]" id="REC{{$no}}" type="text" value="{{$detail->REC}}" class="form-control REC" onkeypress="return tabE(this,event)" readonly style="text-align:center">
 
+											<!-- <input name="NO_TERIMA[]" id="NO_TERIMA{{$no}}" type="text" class="form-control NO_TERIMA" value="{{$detail->NO_TERIMA}}" readonly hidden>
+											<input name="MERK[]" id="MERK{{$no}}" type="text" class="form-control MERK" value="{{$detail->MERK}}" readonly hidden>
+											<input name="NO_SERI[]" id="NO_SERI{{$no}}" type="text" class="form-control NO_SERI" value="{{$detail->NO_SERI}}" readonly hidden>
+											<input name="TYP[]" id="TYP{{$no}}" type="text" class="form-control TYP" readonly hidden>
+											<input name="ID_SOD[]" id="ID_SOD{{$no}}" type="text" class="form-control ID_SOD" value="{{$detail->ID_SOD}}" readonly hidden> -->
+                                        
 										</td>
-										
-                                        <td {{($golz == 'B') ? 'hidden' : '' }}>
-                                            <input name="NO_SO[]"  id="NO_SO{{$no}}" type="text" class="form-control NO_SO" placeholder="Barang#" value="{{$detail->NO_SO}}">
-                                        </td>
+									
+
+										<!-- <td>
+                                            <input name="NO_SO[]" data-rowid={{$no}}  id="NO_SO{{$no}}" type="text" class="form-control NO_SO" placeholder="No SO" value="{{$detail->NO_SO}}">
+                                        </td> -->
                                         <td {{($golz == 'B') ? 'hidden' : '' }}>
                                             <input name="KD_BRG[]"  id="KD_BRG{{$no}}" type="text" class="form-control KD_BRG" placeholder="Barang#" value="{{$detail->KD_BRG}}">
                                         </td>
@@ -253,7 +270,6 @@
 								<tfoot>
 								<td></td>
                                     <td></td>
-                                    <td {{($golz == 'B') ? 'hidden' : '' }}></td>
                                     <td {{($golz == 'B') ? 'hidden' : '' }}></td>
                                     <td {{($golz == 'B') ? 'hidden' : '' }}></td>
                                     <td {{($golz == 'J') ? 'hidden' : '' }}></td>
@@ -340,7 +356,7 @@
 	  <div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h5 class="modal-title" id="browseSoModalLabel">Cari Sales Order</h5>
+			<h5 class="modal-title" id="browseCustModalLabel">Cari Sales Order</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">&times;</span>
 			</button>
@@ -358,41 +374,6 @@
 						<th>Satuan</th>
 						<!-- <th>Seri#</th> -->
 						<!-- <th>Ket</th> -->
-						<th>Qty</th>
-						<th>Kirim</th>
-						<th>Sisa</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		  </div>
-		</div>
-	  </div>
-	</div>
-
-	<div class="modal fade" id="browseDoModal" tabindex="-1" role="dialog" aria-labelledby="browseDoModalLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-xl" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="browseDoModalLabel">Cari DO</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-			<table class="table table-stripped table-bordered" id="table-bdo">
-				<thead>
-					<tr>
-						<th>No Bukti</th>
-						<th>No SO</th>
-						<th>Tgl</th>
-						<th>Customer</th>
-						<th>Barang</th>
-						<th>Satuan</th>
 						<th>Qty</th>
 						<th>Kirim</th>
 						<th>Sisa</th>
@@ -771,30 +752,29 @@
 
 //////////////////////////////////////////////////////////////////
 
-	var dTableDo;
-	var rowidDo;
-	loadDataDo = function(){
+	var dTableSo;
+	var rowidSo;
+	loadDataSo = function(){
 		
 		$.ajax(
 		{
 			type: 'GET',    
-			url: "{{url('surats/browseDo')}}",
+			url: "{{url('surats/browseSo')}}",
 			data: {
 				// kdbrg: kode,
-				// 'GOL': "{{$golz}}",
+				'GOL': "{{$golz}}",
 				// kodec: $("#KODEC").val(),
 			},
 			success: function( response )
 			{
 				resp = response;
-				if(dTableDo){
-					dTableDo.clear();
+				if(dTableSo){
+					dTableSo.clear();
 				}
 				for(i=0; i<resp.length; i++){
 					
-					dTableDo.row.add([
-						'<a href="javascript:void(0);" onclick="chooseDo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].NO_SO+'\', \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\', \''+resp[i].SATUAN+'\',  \''+resp[i].SISA+'\', \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\')">'+resp[i].NO_BUKTI+'</a>',
-						resp[i].NO_SO,
+					dTableSo.row.add([
+						'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].SISA+'\', \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\')">'+resp[i].NO_BUKTI+'</a>',
 						resp[i].TGL,
 						resp[i].NAMAC,
 						resp[i].KD_BRG,
@@ -805,35 +785,35 @@
 						resp[i].SISA,
 					]);
 				}
-				dTableDo.draw();
+				dTableSo.draw();
 			}
 		});
 	}
 	
-	dTableDo = $("#table-bdo").DataTable({
+	dTableSo = $("#table-so").DataTable({
 
-		// columnDefs: 
-		// [
-		// 	{
-		// 		className: "dt-right", 
-		// 		targets: [6,7,8],
-		// 	},		
-		// 	{
-		// 		targets: 1,
-		// 		render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ),
-		// 	}
-		// ],
+		columnDefs: 
+		[
+			{
+				className: "dt-right", 
+				targets: [6,7,8],
+			},		
+			{
+				targets: 1,
+				render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ),
+			}
+		],
 
 	});
 	
-		browseDo = function(rid){
-			rowidDo = rid;
-			loadDataDo();
-			$("#browseDoModal").modal("show");
+		browseSo = function(rid){
+			rowidSo = rid;
+			loadDataSo();
+			$("#browseSoModal").modal("show");
 		}
 	
-	chooseDo = function(NO_BUKTI, NO_SO, KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA, HARI){
-		$("#NO_DO").val(NO_BUKTI);
+	chooseSo = function(NO_BUKTI,KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA){
+		$("#NO_SO").val(NO_BUKTI);
 		$("#KODEP").val(KODEP);
 		$("#NAMAP").val(NAMAP);
 		$("#RING").val(RING);
@@ -842,28 +822,25 @@
 		$("#NAMAC").val(NAMAC);
 		$("#ALAMAT").val(ALAMAT);
 		$("#KOTA").val(KOTA);
-		$("#HARI").val(HARI);
-		$("NO_SO"+rowidDo).val(NO_SO);
-		$("#KD_BRG"+rowidDo).val(KD_BRG);
-		$("#NA_BRG"+rowidDo).val(NA_BRG);
-		$("#SATUAN"+rowidDo).val(SATUAN);
-		$("#QTY"+rowidDo).val(QTY!=0 ? QTY : 0);
-		$("#ID_SOD"+rowidDo).val(NO_ID);
-		$("#HARGA"+rowidDo).val(HARGA);	
-		$("#browseDoModal").modal("hide");
+		$("#KD_BRG"+rowidSo).val(KD_BRG);
+		$("#NA_BRG"+rowidSo).val(NA_BRG);
+		$("#SATUAN"+rowidSo).val(SATUAN);
+		$("#QTY"+rowidSo).val(QTY!=0 ? QTY : 0);
+		$("#ID_SOD"+rowidSo).val(NO_ID);
+		$("#HARGA"+rowidSo).val(HARGA);	
+		$("#browseSoModal").modal("hide");
 
-		getDod(NO_BUKTI);
+		getSod(NO_BUKTI);
 	}
 	
-	$("#NO_DO").keypress(function(e){
+	$("#NO_SO").keypress(function(e){
 		if(e.keyCode == 46){
 			e.preventDefault();
-			browseDo();
+			browseSo();
 		}
 	}); 
 
 //////////////////////////////////////////////////////////////////
-
 
 //////////////////////////////////////////////////
 
@@ -933,7 +910,7 @@
 ////////////////////////////////////////////////////////////////////
 
 
-	function getDod(bukti)
+	function getSod(bukti)
 	{
 		
 		var mulai = (idrow==baris) ? idrow-1 : idrow;
@@ -941,7 +918,7 @@
 		$.ajax(
 			{
 				type: 'GET',    
-				url: "{{url('surats/do_detail')}}",
+				url: "{{url('surats/browse_detail')}}",
 				data: {
 					nobukti: bukti,
 				},
@@ -951,7 +928,6 @@
 					for(i=0; i<resp.length; i++){
 						html+=`<tr>
                                     <td><input name='REC[]' id='REC${i}' value=${resp[i].REC+1} type='text' class='REC form-control' onkeypress='return tabE(this,event)' readonly></td>
-                                    <td {{($golz == 'B') ? 'hidden' : '' }} ><input name='NO_SO[]' data-rowid=${i} id='NO_SO${i}' value="${resp[i].NO_SO}" type='text' class='form-control NO_SO' readonly></td>
                                     <td {{($golz == 'B') ? 'hidden' : '' }} ><input name='KD_BRG[]' data-rowid=${i} id='KD_BRG${i}' value="${resp[i].KD_BRG}" type='text' class='form-control KD_BRG' readonly></td>
                                     <td {{($golz == 'B') ? 'hidden' : '' }}><input name='NA_BRG[]' data-rowid=${i} id='NA_BRG${i}' value="${resp[i].NA_BRG}" type='text' class='form-control  NA_BRG' readonly></td>
                                     <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='KD_BHN[]' data-rowid=${i} id='KD_BHN${i}' value="${resp[i].KD_BHN}" type='text' class='form-control KD_BHN' readonly></td>
@@ -970,7 +946,7 @@
                                     <td><button type='button' class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button></td>
                                 </tr>`;
 					}
-					$('#detailDod').html(html);
+					$('#detailSuratsd').html(html);
 
 					$(".QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 					$(".QTY").autoNumeric('update');
@@ -989,6 +965,18 @@
 
 					$(".DISK").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 					$(".DISK").autoNumeric('update');
+					/*
+					$(".KD_BHN").each(function() {
+						var getid = $(this).attr('id');
+						var noid = getid.substring(6,11);
+
+						$("#KD_BHN"+noid).keypress(function(e){
+							if(e.keyCode == 46){
+								e.preventDefault();
+								browseBhn(noid);
+							}
+						}); 
+					});*/
 
 					idrow=resp.length;
 					baris=resp.length;
