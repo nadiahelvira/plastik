@@ -242,6 +242,10 @@ class BankController extends Controller
 		
 		$bank = Bank::where('NO_BUKTI', $no_buktix )->first();
 
+        DB::SELECT("UPDATE BANK, ACCOUNT
+                            SET BANK.BNAMA = ACCOUNT.NAMA  WHERE BANK.BACNO = ACCOUNT.ACNO 
+							AND BANK.NO_BUKTI='$no_buktix';");
+							
         DB::SELECT("UPDATE BANK, BANKD
                             SET BANKD.ID = BANK.NO_ID  WHERE BANK.NO_BUKTI = BANKD.NO_BUKTI 
 							AND BANK.NO_BUKTI='$no_buktix';");
@@ -521,6 +525,10 @@ class BankController extends Controller
 		
 		$bank = Bank::where('NO_BUKTI', $no_buktix )->first();
 
+        DB::SELECT("UPDATE BANK, ACCOUNT
+                            SET BANK.BNAMA = ACCOUNT.NAMA  WHERE BANK.BACNO = ACCOUNT.ACNO 
+							AND BANK.NO_BUKTI='$no_buktix';");
+							
         DB::SELECT("UPDATE BANK, BANKD
                             SET BANKD.ID = BANK.NO_ID  WHERE BANK.NO_BUKTI = BANKD.NO_BUKTI 
 							AND BANK.NO_BUKTI='$no_buktix';");

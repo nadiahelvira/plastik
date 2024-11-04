@@ -104,15 +104,6 @@
                                 </div>
                             </div>
 							
-                            <div class="form-group row">
-								<div class="col-md-1" align="right">
-                                    <label for="KODES" class="form-label">Suplier#</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KODES" id="KODES" name="KODES" placeholder="Masukkan Suplier#" value="{{$header->KODES}}"readonly>
-                                </div>
-                            </div>
-							
 
 							<div class="form-group row">
 
@@ -120,7 +111,10 @@
                                     <label for="NAMAS" class="form-label"></label>
                                 </div>
 								<div class="col-md-4">
+								    <input type="text" hidden class="form-control KODES" id="KODES" name="KODES" placeholder="Masukkan Suplier#" value="{{$header->KODES}}"readonly>
                                     <input type="text" class="form-control NAMAS" id="NAMAS" name="NAMAS" placeholder="-" value="{{$header->NAMAS}}" readonly>
+                                    <input type="text" hidden class="form-control ALAMAT" id="ALAMAT" name="ALAMAT" value="{{$header->ALAMAT}}"placeholder="Alamat" readonly >
+                                    <input type="text" hidden class="form-control KOTA" id="KOTA" name="KOTA" value="{{$header->KOTA}}"placeholder="Kota" readonly>
                                 
 									<input hidden type="text" onclick="select()" onblur="hitung()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
 									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
@@ -134,26 +128,7 @@
 								</div>
                             </div>
 
-							
-                            <div class="form-group row">
-
-								<div class="col-md-1" align="right">
-                                    <label for="ALAMAT" class="form-label"></label>
-                                </div>
-								<div class="col-md-4">
-                                    <input type="text" class="form-control ALAMAT" id="ALAMAT" name="ALAMAT" value="{{$header->ALAMAT}}"placeholder="Alamat" readonly >
-                                </div>
-                            </div>
-   
-							<div class="form-group row">
-
-								<div class="col-md-1" align="right">
-                                    <label for="KOTA" class="form-label"></label>
-                                </div>
-								<div class="col-md-2">
-                                    <input type="text" class="form-control KOTA" id="KOTA" name="KOTA" value="{{$header->KOTA}}"placeholder="Kota" readonly>
-                                </div>
-                            </div>
+						
 
 							<div class="form-group row">
                                 <div class="col-md-1" align="right">
@@ -168,7 +143,7 @@
                                     <label for="GUDANG" class="form-label">Gudang</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control GUDANG" id="GUDANG" name="GUDANG" placeholder="Masukkan Gudang"  value="{{$header->GUDANG}}" style="width:140px" readonly >
+                                    <input type="text" class="form-control GUDANG" id="GUDANG" name="GUDANG" placeholder="Masukkan Gudang"  value="{{$header->GUDANG}}" style="width:200px" readonly >
                                 </div>
 
 								<div class="col-md-1" align="right">
@@ -315,9 +290,8 @@
 										<td></td>
 										<td></td>
 										<td></td>
-										<td><input class="form-control TTOTAL_QTY  text-primary" style="text-align: right"  id="TTOTAL_QTY" name="TTOTAL_QTY" value="{{$header->TOTAL_QTY}}" readonly></td>
 										<td></td>
-										
+										<td></td>
 										<!-- <td><input class="form-control TTOTAL  text-primary" style="text-align: right"  id="TTOTAL" name="TTOTAL" value="{{$header->TOTAL}}" readonly></td> -->
 										<td></td>
 									</tfoot>
@@ -336,7 +310,14 @@
 						<div class="tab-content mt-6">
 						
 							<div class="form-group row">
-                                <div class="col-md-8" align="right">
+                                <div class="col-md-4" align="right">
+                                    <label for="TTOTAL" class="form-label">Total Qty</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL_QTY" id="TTOTAL_QTY" name="TTOTAL_QTY" placeholder="TTOTAL_QTY" value="{{$header->TOTAL_QTY}}" style="text-align: right" readonly>
+                                </div>
+
+								<div class="col-md-2" align="right">
                                     <label for="TTOTAL" class="form-label">Total</label>
                                 </div>
                                 <div class="col-md-2">
@@ -652,7 +633,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBPo.row.add([
-							'<a href="javascript:void(0);" onclick="choosePo(\''+resp[i].NO_BUKTI+'\' ,\''+resp[i].KODES+'\',  \''+resp[i].NAMAS+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].PKP+'\',  \''+resp[i].GUDANG+'\')">'+resp[i].NO_BUKTI+'</a>',
+							'<a href="javascript:void(0);" onclick="choosePo(\''+resp[i].NO_BUKTI+'\' ,\''+resp[i].KODES+'\',  \''+resp[i].NAMAS+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].PKP+'\',  \''+resp[i].GUDANG+'\',  \''+resp[i].JTEMPO+'\',  \''+resp[i].NOTES+'\')">'+resp[i].NO_BUKTI+'</a>',
 							resp[i].KODES,
 							resp[i].NAMAS,
 							resp[i].ALAMAT,
@@ -674,7 +655,7 @@
 
 		}
 		
-		choosePo = function( NO_BUKTI,KODES,NAMAS, ALAMAT, KOTA, PKP, GUDANG){
+		choosePo = function( NO_BUKTI,KODES,NAMAS, ALAMAT, KOTA, PKP, GUDANG, JTEMPO, NOTES){
 
 			$("#NO_PO").val(NO_BUKTI);
 			$("#KODES").val(KODES);
@@ -683,6 +664,8 @@
 			$("#KOTA").val(KOTA);			
 			$("#PKP").val(PKP);			
 			$("#GUDANG").val(GUDANG);			
+			$("#JTEMPO").val(JTEMPO);			
+			$("#NOTES").val(NOTES);			
 			$("#browsePoModal").modal("hide");
 			
 			getPod(NO_BUKTI);
@@ -752,13 +735,13 @@
 										<input name='TOTAL[]' onclick='select()' onblur='hitung()' id='TOTAL${i}' value="${resp[i].TOTAL}" type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly >
 									</td>
 									<td>
-										<input name='PPNX[]' onclick='select()' onblur='hitung()' id='PPNX${i}' value="0" type='text' style='text-align: right' class='form-control PPNX text-primary' readonly >
+										<input name='PPNX[]' onclick='select()' onblur='hitung()' id='PPNX${i}' value="${resp[i].PPN}" type='text' style='text-align: right' class='form-control PPNX text-primary' readonly >
 									</td>
 									<td>
-										<input name='DPP[]' onclick='select()' onblur='hitung()' id='DPP${i}' value="0" type='text' style='text-align: right' class='form-control DPP text-primary' readonly >
+										<input name='DPP[]' onclick='select()' onblur='hitung()' id='DPP${i}' value="${resp[i].DPP}" type='text' style='text-align: right' class='form-control DPP text-primary' readonly >
 									</td>
 									<td>
-										<input name='DISK[]' onclick='select()' onblur='hitung()' id='DISK${i}' value="0" type='text' style='text-align: right' class='form-control DISK text-primary' readonly >
+										<input name='DISK[]' onclick='select()' onblur='hitung()' id='DISK${i}' value="${resp[i].DISK}" type='text' style='text-align: right' class='form-control DISK text-primary' readonly >
 									</td>
 									<td><input name='KET[]' id='KET${i}' value="" type='text' class='form-control  KET'></td>
                                     
@@ -1167,9 +1150,9 @@
 
 		    // z.find('.HARGA').autoNumeric('update');			
 		    // z.find('.QTY_PO').autoNumeric('update');	
-		    // z.find('.TOTAL').autoNumeric('update');			
-		    // z.find('.DPP').autoNumeric('update');			
-		    // z.find('.PPNX').autoNumeric('update');			
+		     z.find('.TOTAL').autoNumeric('update');			
+		     z.find('.DPP').autoNumeric('update');			
+		     z.find('.PPNX').autoNumeric('update');			
 
             TTOTAL_QTY +=QTYX;		
             TTOTAL +=TOTALX;				
@@ -1268,7 +1251,7 @@
 			
 			$("#NO_FAKTUR").attr("readonly", false);
 			$("#TGL_FAKTUR").attr("readonly", false);
-			$("#JTEMPO").attr("readonly", false);
+			$("#JTEMPO").attr("readonly", true);
 			
 			$("#NOTES").attr("readonly", false);
 			$("#TYPE").attr("readonly", false);

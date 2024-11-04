@@ -25,9 +25,7 @@
         border-left: solid 2px #000;
     }
 
-    .table tbody:nth-child(2) {
-        background-color: #ffe4e1;
-    }
+
 
     .btn-secondary {
         background-color: #42047e !important;

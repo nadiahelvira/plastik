@@ -11,9 +11,10 @@
     }
 
     .table thead {
-        background-color: #8a2be2;
-        color: #ffff;
+        background-color: #FFFFFF;
+        color: #000000;
     }
+
 
     .datatable tbody td {
         padding: 5px !important;
@@ -24,9 +25,6 @@
         border-left: solid 2px #000;
     }
 	
-    .table tbody:nth-child(2) {
-        background-color: #d3ffce;
-    }
 
     .btn-secondary {
         background-color: #42047e !important;
@@ -43,7 +41,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Transaksi {{$judul}}  </h1>
+            <h4 class="m-0">Transaksi {{$judul}}  </h4>
           </div>
         </div>
       </div>
@@ -131,7 +129,7 @@
                 { data: 'NAMAS', name: 'NAMAS',
                   render : function ( data, type, row, meta )
                   {
-                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                    return ' <h3><span class="badge badge-pill badge-warning">' + data + '</span></h3>';
                   }
                 },
                 { data: 'TOTAL_QTY', name: 'TOTAL_QTY', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},			

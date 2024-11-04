@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 <style>
     .card {
 
@@ -75,11 +77,11 @@
                                     <label for="TGL" class="form-label">Tgl</label>
                                 </div>
                                 <div class="col-md-2">
-								  <input class="form-control date" id="TGL" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
+								  <input class="form-control date" id="TGL" onchange="jtempo()" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
                                 </div>
 
 								<div class="col-md-1" align="right">
-									<label for="JTEMPO" class="form-label">Jatuh Tempo</label>
+									<label for="JTEMPO" class="form-label">Tgl Kirim</label>
 								</div>
 								<div class="col-md-2">
 									<input class="form-control date" id="JTEMPO" name="JTEMPO" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->JTEMPO))}}">
@@ -104,69 +106,30 @@
 							
                             </div> -->
 							
-
                             <div class="form-group row">
-
-								<div class="col-md-1" align="right">
-									<label style="color:red">*</label>									
-                                    <label for="KODES" class="form-label">Suplier</label>
+                                <div class="col-md-1">	
+                                    <label for="KODES" class="form-label">Suplier#</label>
                                 </div>
-                               	<div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control KODES" id="KODES" name="KODES" placeholder="Pilih Suplier"value="{{$header->KODES}}" style="text-align: left" readonly >
-        						  <button type="button" class="btn btn-primary" onclick="browseSuplier()"><i class="fa fa-search"></i></button>
-                                </div>
-                            </div>
-							
-
-							<div class="form-group row">
-
-
-								<div class="col-md-1" align="left">
-                                    <label for="NAMAS" class="form-label"></label>
-                                </div>
-								<div class="col-md-4">
-                                    <input type="text" class="form-control NAMAS" id="NAMAS" name="NAMAS" placeholder="-" 
+								
+                                <div class="col-md-3" >
+                                   <select id="KODES"  name="KODES" style="width: 100 %" ></select>        			
+                                   
+                                    <input type="text" hidden class="form-control NAMAS" id="NAMAS" name="NAMAS" placeholder="-" 
 									value="{{$header->NAMAS}}" readonly>
 									
-									<input hidden type="text" onclick="select()" onblur="hitung()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
+									<input hidden type="text" onclick="select()" onblur="jtempo()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
 									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
-								   
-                                </div>
 
-								
-								<div class="col-md-1">
-									
-										<input type="checkbox" class="form-check-input" id="PKP" name="PKP" value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}>
-										<label for="PKP">Pkp</label>
-									
-								</div>
-                            </div>
+									<input type="checkbox" hidden class="form-check-input" id="PKP" name="PKP" value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}>
+				
+										
+                                </div>
+		
+							</div>
 
-							
-                            <div class="form-group row">
-
-								<div class="col-md-1" align="right">
-                                    <label for="ALAMAT" class="form-label"></label>
-                                </div>
-								<div class="col-md-4">
-                                    <input type="text" class="form-control ALAMAT" id="ALAMAT" name="ALAMAT" value="{{$header->ALAMAT}}"placeholder="Alamat" readonly >
-                                </div>
-								
-                            </div>
-   
-							<div class="form-group row">
-
-								<div class="col-md-1" align="right">
-                                    <label for="KOTA" class="form-label"></label>
-                                </div>
-								<div class="col-md-2">
-                                    <input type="text" class="form-control KOTA" id="KOTA" name="KOTA" value="{{$header->KOTA}}"placeholder="Kota" readonly>
-                                </div>
-                            </div>
 
 							<div class="form-group row">
                                 <div class="col-md-1" align="right">
-									<label style="color:red">*</label>									
                                     <label for="NOTES" class="form-label">Notes</label>
                                 </div>
                                 <div class="col-md-4">
@@ -174,11 +137,10 @@
                                 </div>
 
 								<div class="col-md-1" align="right">
-									<label style="color:red">*</label>	
                                     <label for="GUDANG" class="form-label">Gudang</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control GUDANG" id="GUDANG" name="GUDANG" placeholder="Masukkan Gudang"  value="{{$header->GUDANG}}" style="width:140px" readonly >
+                                    <input type="text" class="form-control GUDANG" id="GUDANG" name="GUDANG" placeholder="Masukkan Gudang"  value="{{$header->GUDANG}}" style="width:200px" readonly >
                                 </div>
         
                             </div>
@@ -275,7 +237,7 @@
 											<input name="DPP[]" onblur="hitung()"  value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP" readonly>
 										</td>
 										<td>
-											<input name="DISK[]" onblur="hitung()"  value="0" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK" >
+											<input name="DISK[]" onblur="hitung()"  value="{{$detail->DISK}}" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK" >
 										</td>
 	
 										 
@@ -300,42 +262,47 @@
 									<td {{( $golz =='J' || $golz =='N') ? '' : 'hidden' }}></td>
 									<td {{( $golz =='J' || $golz =='N') ? '' : 'hidden' }}></td>
 									<td></td>									
-                                    <td><input class="form-control TTOTAL_QTY  text-primary" style="text-align: right"  id="TTOTAL_QTY" name="TTOTAL_QTY" value="{{$header->TOTAL_QTY}}" readonly></td>
-                                    <td></td>
+									<td></td>	
+									<td></td>
 									<!-- <td><input class="form-control TTOTAL  text-primary" style="text-align: right"  id="TTOTAL" name="TTOTAL" value="{{$header->TOTAL}}" readonly></td> -->
                                     <td></td>
                                 </tfoot>
                             </table>   
 						<!-- scroll -->
+						</div>
 
 						</div>
-							
-						<!-- batas -->
-
-							<div class="col-md-2 row">
-								<a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
-					
-							</div>		
 						
-						</div>
+                        <hr style="margin-top: 30px; margin-buttom: 30px">
+                        
+							          <div class="col-md-2 row">
+                                        <button type="button" onclick="tambah()" class="btn btn-sm btn-success"><i class="fas fa-plus fa-sm md-3"></i> </button>
+                                    </div>
+                                    
 					</div> 
 
-                        <hr style="margin-top: 30px; margin-buttom: 30px">
 
 						<div class="tab-content mt-6">
 						
 							<div class="form-group row">
-                                <div class="col-md-8" align="right">
-                                    <label for="TTOTAL" class="form-label">TOTAL</label>
+                                <div class="col-md-4" align="right">
+                                    <label for="TTOTAL" class="form-label">Total Qty</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="" value="{{$header->TOTAL}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL_QTY" id="TTOTAL_QTY" name="TTOTAL_QTY" placeholder="TTOTAL_QTY" value="{{$header->TOTAL_QTY}}" style="text-align: right" readonly>
+                                </div>
+
+								<div class="col-md-2" align="right">
+                                    <label for="TTOTAL" class="form-label">Total</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="TTOTAL" value="{{$header->TOTAL}}" style="text-align: right" readonly>
                                 </div>
 							</div>
 
                             <div class="form-group row">
                                 <div class="col-md-8" align="right">
-                                    <label for="PPN" class="form-label">PPN</label>
+                                    <label for="PPN" class="form-label">Ppn</label>
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control PPN" id="PPN" name="PPN" placeholder="" value="{{$header->PPN}}" style="text-align: right" readonly>
@@ -344,7 +311,7 @@
 
                             <div class="form-group row">
                                 <div class="col-md-8" align="right">
-                                    <label for="TDISK" class="form-label">TOTAL DISKON</label>
+                                    <label for="TDISK" class="form-label">Disc</label>
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TDISK" id="TDISK" name="TDISK" placeholder="" value="{{$header->TDISK}}" style="text-align: right" readonly>
@@ -353,7 +320,7 @@
 							
                             <div class="form-group row">
                                 <div class="col-md-8" align="right">
-                                    <label for="NETT" class="form-label">NETT</label>
+                                    <label for="NETT" class="form-label">Nett</label>
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control NETT" id="NETT" name="NETT" placeholder="" value="{{$header->NETT}}" style="text-align: right" readonly>
@@ -519,6 +486,9 @@
 @endsection
 
 @section('footer-scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
 <script src="{{asset('foxie_js_css/bootstrap.bundle.min.js')}}"></script>
@@ -539,6 +509,38 @@
     baris=<?=$no?>;
 
 
+     $('#KODES').select2({
+		
+		placeholder:'Pilih Suplier',
+		allowClear: true,
+        ajax: {
+			url: '{{url('sup/browse')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.KODES, // The ID of the user
+                        text: item.NAMAS // The text to display
+                        // text: item.HARI // The text to display
+                        // text: item.ALAMAT // The text to display
+                        // text: item.KOTA // The text to display
+                        // text: item.PKP // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+		
+		
+		
+	});
+	
         $('input.type_checkbox[value="1"]').prop('checked', true);
 
 		$('body').on('keydown', 'input, select', function(e) {
@@ -573,7 +575,12 @@
 
         if ( $tipx != 'new' )
 		{
-			 ganti();			
+			 ganti();
+			 
+			    var initcombo1 ="{{ $header->NAMAS }}";
+				var defaultOption1 = { id: 1, text: initcombo1 }; // Set your default option ID and text
+                var newOption1 = new Option(defaultOption1.text, defaultOption1.id, true, true);
+                $('#KODES').append(newOption1).trigger('change');
 		}    
 		
 		$("#TTOTAL_QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
@@ -1121,7 +1128,28 @@
 	}
 	
  
+	function jtempo() {
 
+		    
+		$.ajax(
+		{
+			type: 'GET',    
+			url: "{{url('po/jtempo')}}",
+			async : false,
+			data: {
+					'TGL' : $("#TGL").val(),
+					'HARI' : $("#HARI").val(),
+			},
+			success: function( response )
+
+			{
+				resp = response;
+				$("#JTEMPO").val( resp );
+				
+			}
+		});
+
+	}
 	
 	
 	function hidup() {
@@ -1259,6 +1287,8 @@
 		 $('#TDISK').val("0.00");
 		 $('#PPN').val("0.00")
 		 $('#NETT').val("0.00")
+		 $('#HARI').val("30")
+		 $('#PKP').val("0")
 		 
 		var html = '';
 		$('#detailx').html(html);	

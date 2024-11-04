@@ -293,6 +293,7 @@ class BeliController extends Controller
             [
                 'NO_BUKTI'         => $no_bukti,
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
+                'JTEMPO'              => date('Y-m-d', strtotime($request['JTEMPO'])),
                 'PER'              => $periode,
 				'NO_PO'            => ($request['NO_PO'] == null) ? "" : $request['NO_PO'],
 				'NO_BELI'            => ($request['NO_BELI'] == null) ? "" : $request['NO_BELI'],
@@ -304,7 +305,7 @@ class BeliController extends Controller
                 'GOL'              => $GOLZ,					
                 'NOTES'            => ($request['NOTES'] == null) ? "" : $request['NOTES'],
                 'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
-                // 'GUDANG'            => ($request['GUDANG'] == null) ? "" : $request['GUDANG'],
+                'GUDANG'            => ($request['GUDANG'] == null) ? "" : $request['GUDANG'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
 				'PPN'               => (float) str_replace(',', '', $request['PPN']),
@@ -554,6 +555,7 @@ class BeliController extends Controller
 		 {
 				$beli = new Beli;
                 $beli->TGL = Carbon::now();
+                $beli->JTEMPO = Carbon::now();
 				
 				
 		 }
@@ -619,6 +621,7 @@ class BeliController extends Controller
         $beli->update(
             [
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
+                'JTEMPO'              => date('Y-m-d', strtotime($request['JTEMPO'])),
                 'NO_PO'            => ($request['NO_PO'] == null) ? "" : $request['NO_PO'],
                 'NO_BELI'            => ($request['NO_BELI'] == null) ? "" : $request['NO_BELI'],
                 'KODES'            => ($request['KODES'] == null) ? "" : $request['KODES'],
@@ -626,6 +629,7 @@ class BeliController extends Controller
                 'ALAMAT'           => ($request['ALAMAT'] == null) ? "" : $request['ALAMAT'],
                 'KOTA'             => ($request['KOTA'] == null) ? "" : $request['KOTA'],
                 'NOTES'            => ($request['NOTES'] == null) ? "" : $request['NOTES'],
+                'GUDANG'            => ($request['GUDANG'] == null) ? "" : $request['GUDANG'],
                 'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
@@ -805,7 +809,7 @@ class BeliController extends Controller
 
         $query = DB::SELECT("SELECT beli.NO_BUKTI, beli.TGL, beli.KODES, beli.NAMAS, beli.TOTAL_QTY, beli.NOTES, beli.ALAMAT, 
                                     beli.KOTA, belid.KD_BRG, belid.NA_BRG, belid.SATUAN, belid.QTY, 
-                                    belid.HARGA, belid.TOTAL, belid.KET, beli.PPN, beli.NETT, beli.NO_PO
+                                    belid.HARGA, belid.TOTAL, belid.KET, beli.PPN, beli.NETT, beli.NO_PO, beli.USRNM
                             FROM beli, belid 
                             WHERE beli.NO_BUKTI='$no_beli' AND beli.NO_BUKTI = belid.NO_BUKTI 
                             ;
@@ -834,7 +838,8 @@ class BeliController extends Controller
                 'PPN'    => $query[$key]->PPN,
                 'NETT'    => $query[$key]->NETT,
                 'KET'    => $query[$key]->KET,
-                'NO_PO'    => $query[$key]->NO_PO
+                'NO_PO'    => $query[$key]->NO_PO,
+                'USRNM'    => $query[$key]->USRNM
             ));
         }
 		

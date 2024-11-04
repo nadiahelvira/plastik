@@ -1,0 +1,20 @@
+[06-Oct-2024 23:31:16 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PpController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PpController.php on line 16
+[08-Oct-2024 14:18:11 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/OrderkController.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/OrderkController.php on line 17
+[08-Oct-2024 14:26:15 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PakaiController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PakaiController.php on line 16
+[08-Oct-2024 14:32:57 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/KikController.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/KikController.php on line 17
+[08-Oct-2024 14:40:12 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/UtjualController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/UtjualController.php on line 16

@@ -62,9 +62,10 @@ class PoController extends Controller
         $CBG = Auth::user()->CBG;
 		
         $po = DB::SELECT("SELECT distinct PO.NO_BUKTI , PO.KODES, PO.NAMAS, 
-		                  PO.ALAMAT, PO.KOTA, PO.PKP, po.GUDANG from po, pod 
+		                  PO.ALAMAT, PO.KOTA, PO.PKP, po.GUDANG, PO.JTEMPO, PO.NOTES from po, pod 
                           WHERE PO.NO_BUKTI = POD.NO_BUKTI AND PO.GOL ='$golz'
-                          AND PO.CBG = '$CBG' AND POD.SISA > 0 AND POSTED = 1 ");
+                          AND PO.CBG = '$CBG' AND POD.SISA > 0 AND POSTED = 1
+                          GROUP BY NO_BUKTI ");
         return response()->json($po);
     }
 
@@ -93,14 +94,14 @@ class PoController extends Controller
         if( $golx == 'B'){
 
             $pod = DB::SELECT("SELECT a.REC, a.KD_BHN, a.NA_BHN, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
-                                    b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, b.KALI AS KALI
+                                    b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, b.KALI AS KALI, a.PPN, a.DPP, a.DISK
                                 from pod a, bhn b 
                                 where a.NO_BUKTI='".$request->nobukti."' AND a.KD_BHN = b.KD_BHN");
 
         } else {
 
             $pod = DB::SELECT("SELECT a.REC, a.KD_BRG, a.NA_BRG, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
-                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, b.KALI AS KALI
+                                b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, b.KALI AS KALI, a.PPN, a.DPP, a.DISK
                             from pod a, brg b 
                             where a.NO_BUKTI='".$request->nobukti."' AND a.KD_BRG = b.KD_BRG");
 
@@ -387,6 +388,17 @@ class PoController extends Controller
 		
 		$po = Po::where('NO_BUKTI', $no_buktix )->first();
 
+        DB::SELECT("UPDATE PO, SUP
+                        SET PO.NAMAS = SUP.NAMAS  WHERE PO.KODES = SUP.KODES 
+                        AND PO.NO_BUKTI='$no_buktix';");
+
+        DB::SELECT("UPDATE PO, SUP
+                    SET PO.ALAMAT = SUP.ALAMAT  WHERE PO.KODES = SUP.KODES 
+                    AND PO.NO_BUKTI='$no_buktix';");
+
+        DB::SELECT("UPDATE PO, SUP
+                    SET PO.KOTA = SUP.KOTA  WHERE PO.KODES = SUP.KODES 
+                    AND PO.NO_BUKTI='$no_buktix';");
 
         DB::SELECT("UPDATE po,  pod
                             SET  pod.ID =  po.NO_ID  WHERE  po.NO_BUKTI =  pod.NO_BUKTI 
@@ -567,6 +579,7 @@ class PoController extends Controller
 		 {
 				$po = new Po;
                 $po->TGL = Carbon::now();
+                $po->JTEMPO = Carbon::now();
 				
 				
 		 }
@@ -734,6 +747,18 @@ class PoController extends Controller
  		$po = Po::where('NO_BUKTI', $no_buktix )->first();
 
         $no_bukti = $po->NO_BUKTI;
+        
+        DB::SELECT("UPDATE PO, SUP
+                        SET PO.NAMAS = SUP.NAMAS  WHERE PO.KODES = SUP.KODES 
+                        AND PO.NO_BUKTI='$no_bukti';");
+
+        DB::SELECT("UPDATE PO, SUP
+                    SET PO.ALAMAT = SUP.ALAMAT  WHERE PO.KODES = SUP.KODES 
+                    AND PO.NO_BUKTI='$no_bukti';");
+
+        DB::SELECT("UPDATE PO, SUP
+                    SET PO.KOTA = SUP.KOTA  WHERE PO.KODES = SUP.KODES 
+                    AND PO.NO_BUKTI='$no_bukti';");
 
         DB::SELECT("UPDATE po,  pod
                     SET  pod.ID =  po.NO_ID  WHERE  po.NO_BUKTI =  pod.NO_BUKTI 
@@ -789,7 +814,7 @@ class PoController extends Controller
 
         $query = DB::SELECT("SELECT po.NO_BUKTI, po.TGL, po.KODES, po.NAMAS, po.TOTAL_QTY, po.NOTES, po.ALAMAT, 
                                     po.KOTA, pod.KD_BRG, pod.NA_BRG, pod.SATUAN, pod.QTY, 
-                                    pod.HARGA, pod.TOTAL, pod.KET, po.PPN, po.NETT
+                                    pod.HARGA, pod.TOTAL, pod.KET, po.PPN, po.NETT, po.GUDANG, po.JTEMPO
                             FROM po, pod 
                             WHERE po.NO_BUKTI='$no_po' AND po.NO_BUKTI = pod.NO_BUKTI 
                             ;
@@ -802,6 +827,7 @@ class PoController extends Controller
             array_push($data, array(
                 'NO_BUKTI' => $query[$key]->NO_BUKTI,
                 'TGL'      => $query[$key]->TGL,
+                'JTEMPO'      => $query[$key]->JTEMPO,
                 'KODES'    => $query[$key]->KODES,
                 'NAMAS'    => $query[$key]->NAMAS,
                 'ALAMAT'    => $query[$key]->ALAMAT,
@@ -817,7 +843,8 @@ class PoController extends Controller
                 'QTY'    => $query[$key]->QTY,
                 'PPN'    => $query[$key]->PPN,
                 'NETT'    => $query[$key]->NETT,
-                'KET'    => $query[$key]->KET
+                'KET'    => $query[$key]->KET,
+                'GUDANG'    => $query[$key]->GUDANG
             ));
         }
 		
@@ -881,7 +908,23 @@ class PoController extends Controller
     }
 	
 	
-	
+	public function jtempo ( Request $request)
+    {
+		$tgl = $request->input('TGL');
+		$hari = substr($tgl,0,2);
+		$bulan = substr($tgl,3,2);
+		$tahun = substr($tgl,6,4);
+		$harix = $request->HARI;
+		
+		$datex = Carbon::createFromDate($tahun, $bulan, $hari );
+
+        $datex ->addDays($harix);
+       
+        $datey = $datex->format('d-m-Y');
+		return  $datey;
+
+		
+	}
 	
 	
 	

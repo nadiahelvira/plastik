@@ -135,6 +135,9 @@
 									
 									<input hidden type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder="-" value="{{$header->KODEP}}" readonly>
 									<input hidden type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="-" value="{{$header->NAMAP}}" readonly>
+                                    <input type="text" hidden class="form-control ALAMAT" id="ALAMAT" name="ALAMAT" value="{{$header->ALAMAT}}"placeholder="Alamat" readonly >
+                                    <input type="text" hidden  class="form-control KOTA" id="KOTA" name="KOTA" value="{{$header->KOTA}}"placeholder="Kota" readonly>
+                                    
 									<input hidden type="text" class="form-control RING" id="RING" name="RING" placeholder="-" value="{{$header->RING}}" readonly>
 									<input hidden type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="KOM" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
                                 
@@ -144,27 +147,7 @@
 								</div>
                             </div>
 							
-							
-                            <div class="form-group row">
 
-								<div class="col-md-1" align="right">
-                                    <label for="ALAMAT" class="form-label"></label>
-                                </div>
-								<div class="col-md-4">
-                                    <input type="text" class="form-control ALAMAT" id="ALAMAT" name="ALAMAT" value="{{$header->ALAMAT}}"placeholder="Alamat" readonly >
-                                </div>
-
-								
-								<div class="col-md-1" align="right">
-                                    <label for="KOTA" class="form-label"></label>
-                                </div>
-								<div class="col-md-2">
-                                    <input type="text" class="form-control KOTA" id="KOTA" name="KOTA" value="{{$header->KOTA}}"placeholder="Kota" readonly>
-                                </div>
-                            </div>
-							
-							
-							
 							<div class="form-group row">
                                 <div class="col-md-1">
                                     <label for="NOTES" class="form-label">Notes</label>

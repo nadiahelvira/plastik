@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 <style>
     .card {
 
@@ -62,23 +64,30 @@
                             </div>
         
 
-							<div class="form-group row">
-							
-								<div class="col-md-1" align="right">
-									<label style="color:red">*</label>									
+                            <div class="form-group row">
+                                <div class="col-md-1">	
                                     <label for="KODEC" class="form-label">Customer#</label>
                                 </div>
-                               	<div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control KODEC" id="KODEC" name="KODEC" placeholder="Pilih Customer"value="{{$header->KODEC}}" style="text-align: left" readonly >
-        						  <button type="button" class="btn btn-primary" onclick="browseCust()"><i class="fa fa-search"></i></button>
+								
+                                <div class="col-md-3" >
+                                   <select id="KODEC"  name="KODEC" style="width: 100%" ></select>        							      
                                 </div>
-
-								<div class="col-md-4">
-                                    <input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="-" value="{{$header->NAMAC}}" readonly>
-                                </div>
-                            </div>
-	
+		
+							</div>
+							
  
+ 
+                            <div class="form-group row">
+                                <div class="col-md-1">	
+                                    <label for="BACNO" class="form-label">Account#</label>
+                                </div>
+								
+                                <div class="col-md-3" >
+                                   <select id="BACNO"  name="BACNO" style="width: 100%" ></select>        							      
+                                </div>
+		
+							</div>	
+							
 							<div class="form-group row">
                                 <div class="col-md-1" align="right">
 									<label style="color:red">*</label>									
@@ -301,6 +310,9 @@
 @endsection
 
 @section('footer-scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
 <script src="{{asset('foxie_js_css/bootstrap.bundle.min.js')}}"></script>
@@ -321,6 +333,63 @@
 		idrow=<?=$no?>;
 		baris=<?=$no?>;
 
+    $('#BACNO').select2({
+		
+		placeholder:'Pilih Cash',
+		allowClear: true,
+        ajax: {
+			url: '{{url('account/browsecash')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.ACNO, // The ID of the user
+                        text: item.NAMA // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+		
+		
+		
+	});
+	
+
+  $('#KODEC').select2({
+		
+		placeholder:'Pilih Customer',
+		allowClear: true,
+        ajax: {
+			url: '{{url('cust/browse')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.KODEC, // The ID of the user
+                        text: item.NAMAC // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+		
+		
+		
+	});
+	
 		
 		$('body').on('keydown', 'input, select', function(e) {
 			if (e.key === "Enter") {
@@ -353,7 +422,21 @@
 
         if ( $tipx != 'new' )
 		{
-			 ganti();			
+			 ganti();	
+
+			 
+			    var initcombo ="{{ $header->BNAMA }}";
+				var defaultOption = { id: 1, text: initcombo }; // Set your default option ID and text
+                var newOption = new Option(defaultOption.text, defaultOption.id, true, true);
+                $('#BACNO').append(newOption).trigger('change');
+			 
+			 			 
+			    var initcombo1 ="{{ $header->NAMAC }}";
+				var defaultOption1 = { id: 1, text: initcombo1 }; // Set your default option ID and text
+                var newOption1 = new Option(defaultOption1.text, defaultOption1.id, true, true);
+                $('#KODEC').append(newOption1).trigger('change');
+			 
+			 
 		}    
 		
 

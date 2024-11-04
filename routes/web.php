@@ -328,6 +328,7 @@ Route::get('/rpo', 'App\Http\Controllers\OReport\RPoController@report')->middlew
     Route::post('jasper-po-report', 'App\Http\Controllers\OReport\RPoController@jasperPoReport')->middleware(['auth']);
 
     Route::get('/po/browse_pod', 'App\Http\Controllers\OTransaksi\PoController@browse_pod')->middleware(['auth'])->name('po/browse_pod');
+	Route::get('/po/jtempo', 'App\Http\Controllers\OTransaksi\PoController@jtempo')->middleware(['auth'])->name('po/jtempo');
 	
 // Dynamic Po
 Route::get('/po/edit', 'App\Http\Controllers\OTransaksi\PoController@edit')->middleware(['auth'])->name('po.edit');
@@ -601,6 +602,7 @@ Route::get('/jsjualc/{jual:NO_ID}', 'App\Http\Controllers\OTransaksi\JualControl
 Route::get('/beli', 'App\Http\Controllers\OTransaksi\BeliController@index')->middleware(['auth'])->name('beli');
 Route::post('/beli/store', 'App\Http\Controllers\OTransaksi\BeliController@store')->middleware(['auth'])->name('beli/store');
 Route::get('/rbeli', 'App\Http\Controllers\OReport\RBeliController@report')->middleware(['auth'])->name('rbeli');
+Route::get('/rbeli_gdg', 'App\Http\Controllers\OReport\RBeli_gdgController@report')->middleware(['auth'])->name('rbeli_gdg');
     // GET BELI
     Route::get('/beli/browse', 'App\Http\Controllers\OTransaksi\BeliController@browse')->middleware(['auth'])->name('beli/browse');
     Route::get('/beli/browse_detail', 'App\Http\Controllers\OTransaksi\BeliController@browse_detail')->middleware(['auth'])->name('beli/browse_detail');
@@ -612,8 +614,10 @@ Route::get('/rbeli', 'App\Http\Controllers\OReport\RBeliController@report')->mid
     Route::get('/get-beli-post', 'App\Http\Controllers\OTransaksi\BeliController@getBeli_posting')->middleware(['auth'])->name('get-beli-post');
 	
     Route::get('/get-beli-report', 'App\Http\Controllers\OReport\RBeliController@getBeliReport')->middleware(['auth'])->name('get-beli-report');
+    Route::get('/get-beli_gdg-report', 'App\Http\Controllers\OReport\RBeli_gdgController@getBeli_gdgReport')->middleware(['auth'])->name('get-beli_gdg-report');
 	Route::get('/beli/cetak/{beli:NO_ID}','App\Http\Controllers\OTransaksi\BeliController@cetak')->middleware(['auth']);
     Route::post('jasper-beli-report', 'App\Http\Controllers\OReport\RBeliController@jasperBeliReport')->middleware(['auth']);
+    Route::post('jasper-beli_gdg-report', 'App\Http\Controllers\OReport\RBeli_gdgController@jasperBeli_gdgReport')->middleware(['auth']);
 
     Route::get('/beli/browse_belid', 'App\Http\Controllers\OTransaksi\BeliController@browse_belid')->middleware(['auth'])->name('beli/browse_belid');
 	
@@ -756,6 +760,7 @@ Route::get('/hut/delete/{hut}', 'App\Http\Controllers\OTransaksi\HutController@d
 Route::post('hut/posting', 'App\Http\Controllers\OTransaksi\HutController@posting')->middleware(['auth']);
 Route::get('hut/index-posting', 'App\Http\Controllers\OTransaksi\HutController@index_posting')->middleware(['auth']);
 Route::get('/hut/browse_hutd', 'App\Http\Controllers\OTransaksi\HutController@browse_hutd')->middleware(['auth'])->name('hut/browse_hutd');
+Route::get('/hut/cetak/{hut:NO_ID}','App\Http\Controllers\OTransaksi\HutController@cetak')->middleware(['auth']);
 
 
 

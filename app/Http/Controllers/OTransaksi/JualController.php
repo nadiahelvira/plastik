@@ -528,6 +528,7 @@ class JualController extends Controller
 		 {
 				$jual = new Jual;
                 $jual->TGL = Carbon::now();
+                $jual->JTEMPO = Carbon::now();
       
 				
 		 }
@@ -769,8 +770,10 @@ class JualController extends Controller
         $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
 
         $query = DB::SELECT("
-            SELECT jual.NO_BUKTI, jual.TGL, juald.KD_BRG, juald.NA_BRG,  jual.TGL, jual.USRNM, jual.PPN, jual.NETT,
-			juald.SATUAN, juald.QTY,  
+            SELECT jual.NO_BUKTI, jual.TGL, juald.KD_BRG, juald.NA_BRG,  jual.TGL, jual.USRNM, 
+            jual.PPN, jual.NETT,
+			juald.SATUAN, juald.QTY, juald.HARGA, juald.DISK, juald.TOTAL, jual.KODEC, jual.NAMAC,
+            jual.ALAMAT, jual.KOTA, jual.JTEMPO
 			from jual, juald 
 			WHERE jual.NO_BUKTI=juald.NO_BUKTI and jual.NO_BUKTI='$no_jual'
 			ORDER BY jual.NO_BUKTI;
@@ -787,12 +790,22 @@ class JualController extends Controller
                 'NO_BUKTI' => $no_jual,
                 // 'TGL'      => date("d/m/Y", strtotime($jual->TGL)),
                 'TGL'      => $query[$key]->TGL,               
+                'JTEMPO'      => $query[$key]->JTEMPO,               
                 'REC'      => $rec,
                 'KD_BRG'   => $query[$key]->KD_BRG,
                 'NA_BRG'   => $query[$key]->NA_BRG,
                 'QTY'      => $query[$key]->QTY,				
 				'SATUAN'    => $query[$key]->SATUAN,
 		    	'USRNM'    => $query[$key]->USRNM,
+		    	'HARGA'    => $query[$key]->HARGA,
+		    	'DISK'    => $query[$key]->DISK,
+		    	'TOTAL'    => $query[$key]->TOTAL,
+		    	'PPN'    => $query[$key]->PPN,
+		    	'NETT'    => $query[$key]->NETT,
+		    	'KODEC'    => $query[$key]->KODEC,
+		    	'NAMAC'    => $query[$key]->NAMAC,
+		    	'ALAMAT'    => $query[$key]->ALAMAT,
+		    	'KOTA'    => $query[$key]->KOTA,
 
 
 

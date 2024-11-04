@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 
 <style>
     .card {
@@ -92,19 +94,14 @@
         
 		
                             <div class="form-group row">
-                                <div class="col-md-1">
-									<label style="color:red;font-size:20px">* </label>	
-                                    <label for="BACNO" class="form-label">Kas</label>
+                                <div class="col-md-1">	
+                                    <label for="BACNO" class="form-label">Cash#</label>
                                 </div>
-                                 <div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control BACNO" onclick="browseAccount1()" id="BACNO" name="BACNO" placeholder="Masukkan Bank" value="{{$header->BACNO ?? ''}}"  style="text-align: left" readonly >
-                                 </div>
 								
-								 <div class="col-md-4">
-                                    <input type="text" class="form-control BNAMA" id="BNAMA" name="BNAMA"
-                                    placeholder="Masukkan -" value="{{$header->BNAMA ?? ''}}" readonly >
-                                 </div>
-								
+                                <div class="col-md-3" >
+                                   <select id="BACNO"  name="BACNO" style="width: 100%" ></select>        							      
+                                </div>
+		
 							</div>	
         
         
@@ -297,6 +294,8 @@
 @section('footer-scripts')
 <!-- TAMBAH 1 -->
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
 <script src="{{asset('foxie_js_css/bootstrap.bundle.min.js')}}"></script>
@@ -314,6 +313,37 @@
 	<?php $searchx = '' ?>
     idrow=<?=$no?>;
     baris=<?=$no?>;
+
+
+
+    $('#BACNO').select2({
+		
+		placeholder:'Pilih Cash Account',
+		allowClear: true,
+        ajax: {
+			url: '{{url('account/browsecash')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.ACNO, // The ID of the user
+                        text: item.NAMA // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+		
+		
+		
+	});
+	
 
 		$('body').on('keydown', 'input, select', function(e) {
 			if (e.key === "Enter") {
@@ -369,6 +399,13 @@
         if ( $tipx != 'new' )
 		{
 			 ganti();			
+			 
+			 			    var initcombo ="{{ $header->BNAMA }}";
+				var defaultOption = { id: 1, text: initcombo }; // Set your default option ID and text
+                var newOption = new Option(defaultOption.text, defaultOption.id, true, true);
+                $('#BACNO').append(newOption).trigger('change');
+			 
+			 
 		}    
 		
 	

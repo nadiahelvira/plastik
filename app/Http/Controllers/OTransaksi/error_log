@@ -18,3 +18,7 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/UtjualController.php on line 16
+[03-Nov-2024 18:03:24 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/UtbeliController.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/UtbeliController.php on line 14

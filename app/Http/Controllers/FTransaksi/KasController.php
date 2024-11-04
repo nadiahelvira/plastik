@@ -269,7 +269,11 @@ class KasController extends Controller
 	    $no_buktix = $no_bukti;
 		
 		$kas = Kas::where('NO_BUKTI', $no_buktix )->first();
-	
+
+        DB::SELECT("UPDATE KAS, ACCOUNT
+                            SET KAS.BNAMA = ACCOUNT.NAMA  WHERE KAS.BACNO = ACCOUNT.ACNO 
+							AND KAS.NO_BUKTI='$no_buktix';");
+							
         DB::SELECT("UPDATE KAS, KASD
                             SET KASD.ID = KAS.NO_ID  WHERE KAS.NO_BUKTI = KASD.NO_BUKTI 
 							AND KAS.NO_BUKTI='$no_buktix';");
@@ -585,6 +589,10 @@ class KasController extends Controller
 		
 		$kas = Kas::where('NO_BUKTI', $no_buktix )->first();
 
+        DB::SELECT("UPDATE KAS, ACCOUNT
+                            SET KAS.BNAMA = ACCOUNT.NAMA  WHERE KAS.BACNO = ACCOUNT.ACNO 
+							AND KAS.NO_BUKTI='$no_buktix';");
+							
         DB::SELECT("UPDATE KAS, KASD
                             SET KASD.ID = KAS.NO_ID  WHERE KAS.NO_BUKTI = KASD.NO_BUKTI 
 							AND KAS.NO_BUKTI='$no_buktix';");

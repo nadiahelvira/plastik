@@ -1,0 +1,40 @@
+[06-Oct-2024 00:51:06 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/PakaiDetail.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/PakaiDetail.php on line 8
+[06-Oct-2024 04:49:19 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/SuratsDetail.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/SuratsDetail.php on line 8
+[06-Oct-2024 06:03:32 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/PpDetail.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/PpDetail.php on line 8
+[06-Oct-2024 08:19:00 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/Pp.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/Pp.php on line 10
+[07-Oct-2024 12:22:50 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/Surats.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/Surats.php on line 10
+[07-Oct-2024 13:44:11 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/Stockb.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/Stockb.php on line 10
+[07-Oct-2024 14:16:56 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/Pakai.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/Pakai.php on line 10
+[07-Oct-2024 14:19:58 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/Orderk.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/Orderk.php on line 10
+[07-Oct-2024 14:24:00 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/PoDetail.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/PoDetail.php on line 8
+[07-Oct-2024 14:46:42 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/Stocka.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/Stocka.php on line 10

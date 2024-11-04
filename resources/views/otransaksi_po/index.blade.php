@@ -6,13 +6,21 @@
 @endsection
 
 <style>
+
     .card {
         padding: 5px 10px !important;
     }
 
 
+    .table thead {
+        background-color: #FFFFFF;
+        color: #000000;
+    }
+
+
     .datatable tbody td {
         padding: 5px !important;
+        background-color: #FFFFFF;
     }
 
     .datatable {
@@ -25,8 +33,11 @@
         background-color: #42047e !important;
     }
     
-    th { font-size: 13px; }
-    td { font-size: 13px; }
+    
+
+      
+    th { font-size: 12px; }
+    td { font-size: 12px; }
 </style>
 
 
@@ -36,7 +47,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Transaksi {{$judul}} </h1>
+            <h5 class="m-0">Transaksi {{$judul}} </h5>
           </div>
         </div>
       </div>
@@ -69,16 +80,16 @@
                     <thead class="table-dark">
                         <tr>
                             <th scope="col" style="text-align: center">#</th>
-				     	              <th scope="col" style="text-align: center">-</th>							
-                            <th scope="col" style="text-align: center">Bukti#</th>
+				     	    <th scope="col" style="text-align: center">-</th>							
+                            <th scope="col" style="text-align: left">Bukti#</th>
                             <th scope="col" style="text-align: center">Tgl</th>
-                            <th scope="col" style="text-align: center">Suplier#</th>
-                            <th scope="col" style="text-align: center">Nama</th>
-                            <th scope="col" style="text-align: center">Total-Qty</th>
-						                <th scope="col" style="text-align: center">Total</th>
-                            <th scope="col" style="text-align: center">Notes</th>
-                            <th scope="col" style="text-align: center">User</th>
-                            <th scope="col" style="text-align: center">Posted</th>
+                            <th scope="col" style="text-align: left">Suplier#</th>
+                            <th scope="col" style="text-align: left">Nama</th>
+                            <th scope="col" style="text-align: right">Total-Qty</th>
+						    <th scope="col" style="text-align: right">Total</th>
+                            <th scope="col" style="text-align: left">Notes</th>
+                            <th scope="col" style="text-align: left">User</th>
+                            <th scope="col" style="text-align: right">Posted</th>
                         </tr>
                     </thead>
     
@@ -122,14 +133,14 @@
             columns: 
             [
                 { data: 'DT_RowIndex', orderable: false, searchable: false },
-			          { data: 'action', name: 'action'},
+			    { data: 'action', name: 'action'},
                 { data: 'NO_BUKTI', name: 'NO_BUKTI'},
                 { data: 'TGL', name: 'TGL'},
                 { data: 'KODES', name: 'KODES'},
                 { data: 'NAMAS', name: 'NAMAS',
                   render : function ( data, type, row, meta )
                   {
-                    return ' <span class="badge badge-pill badge-warning">' + data + '</span>';
+                           return ' <p style="font-family: Tahoma; font-size: 2px; color: brown; "><span class="badge badge-pill badge-danger"> ' + data + ' </span></p> ';
                   }},
                 { data: 'TOTAL_QTY', name: 'TOTAL_QTY', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},			
                 { data: 'TOTAL', name: 'TOTAL', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},				
@@ -154,7 +165,15 @@
                 {
                   targets: 3,
                   render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' )
-                }
+                },
+                
+		        {
+                    "className": "dt-right", 
+                    "targets": 6
+                },
+			
+                
+                
             ],
             lengthMenu: 
             [

@@ -24,10 +24,7 @@
         border-left: solid 2px #000;
     }
 	
-    .table tbody:nth-child(2) {
-        background-color: #d3ffce;
-    }
-
+	
     .btn-secondary {
         background-color: #42047e !important;
     }
@@ -43,7 +40,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Transaksi Pembayaran Hutang</h1>
+            <h4 class="m-0">Transaksi Pembayaran Hutang</h4>
           </div>
 
         </div>

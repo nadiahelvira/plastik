@@ -91,7 +91,7 @@ class HutController extends Controller
                                 <i class="fas fa-edit"></i>
                                     Edit
                                 </a>	
-                                <a class="dropdown-item btn btn-danger" href="hut/print/' . $row->NO_ID . '">
+                                <a class="dropdown-item btn btn-danger" href="hut/cetak/' . $row->NO_ID . '">
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                     Print
                                 </a> 									
@@ -252,7 +252,14 @@ class HutController extends Controller
 		
 		$hut = Hut::where('NO_BUKTI', $no_buktix )->first();
 
+        DB::SELECT("UPDATE HUT, SUP
+                            SET HUT.NAMAS = SUP.NAMAS  WHERE HUT.KODES = SUP.KODES 
+							AND HUT.NO_BUKTI='$no_buktix';");
 
+        DB::SELECT("UPDATE HUT, ACCOUNT
+                            SET HUT.BNAMA = ACCOUNT.NAMA  WHERE HUT.BACNO = ACCOUNT.ACNO 
+							AND HUT.NO_BUKTI='$no_buktix';");
+							
         DB::SELECT("UPDATE hut, hutd
                             SET hutd.ID = hut.NO_ID  WHERE hut.NO_BUKTI = hutd.NO_BUKTI 
 							AND hut.NO_BUKTI='$no_buktix';");
@@ -559,7 +566,19 @@ class HutController extends Controller
 //  ganti 21
 		// $variablell = DB::select('call hutins(?)',array($hut['NO_BUKTI']));
 		
+		
+        DB::SELECT("UPDATE HUT, SUP
+                            SET HUT.NAMAS = SUP.NAMAS  WHERE HUT.KODES = SUP.KODES 
+							AND HUT.NO_BUKTI='$no_buktix';");
 
+        DB::SELECT("UPDATE HUT, ACCOUNT
+                            SET HUT.BNAMA = ACCOUNT.NAMA  WHERE HUT.BACNO = ACCOUNT.ACNO 
+							AND HUT.NO_BUKTI='$no_buktix';");
+							
+        DB::SELECT("UPDATE hut, hutd
+                            SET hutd.ID = hut.NO_ID  WHERE hut.NO_BUKTI = hutd.NO_BUKTI 
+							AND hut.NO_BUKTI='$no_buktix';");
+							
  		$hut = Hut::where('NO_BUKTI', $no_buktix )->first();
 					 
         return redirect('/hut/edit/?idx=' . $hut->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '');	
@@ -609,7 +628,45 @@ class HutController extends Controller
    
     public function cetak(Hut $hut)
     {
-       
+        $no_hut = $hut->NO_BUKTI;
+
+        $file     = 'hutc';
+        $PHPJasperXML = new PHPJasperXML();
+        $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
+
+        $query = DB::SELECT("SELECT HUT.NO_BUKTI, HUT.TGL, HUT.KODES, HUT.NAMAS, HUT.ALAMAT, HUT.KOTA, 
+                                    HUT.BACNO, HUT.NOTES,
+                                    HUTD.NO_FAKTUR, HUTD.TOTAL, HUTD.BAYAR, HUTD.SISA, HUT.USRNM
+                            FROM hut, hutd 
+                            WHERE hut.NO_BUKTI='$no_hut' AND hut.NO_BUKTI = hutd.NO_BUKTI 
+                            ;
+		");
+
+        
+        $data = [];
+
+        foreach ($query as $key => $value) {
+            array_push($data, array(
+                'NO_BUKTI' => $query[$key]->NO_BUKTI,
+                'TGL'      => $query[$key]->TGL,
+                'KODES'    => $query[$key]->KODES,
+                'NAMAS'    => $query[$key]->NAMAS,
+                'ALAMAT'    => $query[$key]->ALAMAT,
+                'KOTA'    => $query[$key]->KOTA,
+                'BACNO'    => $query[$key]->BACNO,
+                'NACNO'    => $query[$key]->NACNO,
+                'NOTES'    => $query[$key]->NOTES,
+                'NO_FAKTUR'    => $query[$key]->NO_FAKTUR,
+                'TOTAL'    => $query[$key]->TOTAL,
+                'BAYAR'    => $query[$key]->BAYAR,
+                'SISA'    => $query[$key]->SISA,
+                'USRNM'    => $query[$key]->USRNM
+            ));
+        }
+		
+        $PHPJasperXML->setData($data);
+        ob_end_clean();
+        $PHPJasperXML->outpage("I");
     }
  
     

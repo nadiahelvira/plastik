@@ -26,3 +26,19 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RSuratsController.php on line 14
+[03-Nov-2024 13:41:17 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OReport\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RPoController.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RPoController.php on line 14
+[03-Nov-2024 16:54:16 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OReport\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RRekapBeliJualController.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RRekapBeliJualController.php on line 13
+[03-Nov-2024 17:36:14 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OReport\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RPiuController.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RPiuController.php on line 14
+[03-Nov-2024 18:48:06 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OReport\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RBeliController.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RBeliController.php on line 14

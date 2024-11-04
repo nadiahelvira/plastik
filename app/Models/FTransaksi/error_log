@@ -6,3 +6,19 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/app/Models/FTransaksi/MemoDetail.php on line 8
+[03-Nov-2024 13:58:43 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/FTransaksi/Bank.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/FTransaksi/Bank.php on line 10
+[03-Nov-2024 13:58:44 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/FTransaksi/Bank.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/FTransaksi/Bank.php on line 10
+[03-Nov-2024 13:58:46 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/FTransaksi/Bank.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/FTransaksi/Bank.php on line 10
+[03-Nov-2024 13:58:47 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/FTransaksi/Bank.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/FTransaksi/Bank.php on line 10

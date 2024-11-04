@@ -1,5 +1,8 @@
 @extends('layouts.main')
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
 <style>
     .card {
 
@@ -48,10 +51,7 @@
                                     <input type="text" class="form-control NO_BUKTI" id="NO_BUKTI" name="NO_BUKTI"
                                     placeholder="Masukkan Bukti#" value="{{$header->NO_BUKTI}}" readonly>
                                 </div>
-
-                            </div>
-
-                            <div class="form-group row">
+                                
                                 <div class="col-md-1" align="right">
                                     <label for="TGL" class="form-label">Tgl</label>
                                 </div>
@@ -59,79 +59,66 @@
 								  <input class="form-control date" id="TGL" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
                                 </div>
 
-                            </div>
-        
 
-							<div class="form-group row">
-							
-								<div class="col-md-1" align="right">
-									<label style="color:red">*</label>									
-                                    <label for="KODES" class="form-label">Supplier#</label>
-                                </div>
-                               	<div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control KODES" id="KODES" name="KODES" placeholder="Pilih Supplier"value="{{$header->KODES}}" style="text-align: left" readonly >
-        						  <button type="button" class="btn btn-primary" onclick="browseSuplier()"><i class="fa fa-search"></i></button>
+								<div class="col-md-1" align="center">
+									<label for="TYPE" class="form-label">Type</label>
+								</div>
+								<div class="col-md-2">
+									<select id="TYPE" class="form-control"  name="TYPE">
+										<option value="BANK" {{ ($header->TYPE == 'BANK') ? 'selected' : '' }}>Bank</option>
+										<option value="KAS" {{ ($header->TYPE == 'KAS') ? 'selected' : '' }}>Cash</option>
+									</select>
+								</div>
+								
+								
+                            </div>
+
+        
+                            <div class="form-group row">
+                                <div class="col-md-1">	
+                                    <label for="KODES" class="form-label">Suplier#</label>
                                 </div>
 								
-								<!-- <div class="col-md-1" align="right">
-                                    <label for="NAMAS" class="form-label"></label>
-                                </div> -->
-								<div class="col-md-4">
-                                    <input type="text" class="form-control NAMAS" id="NAMAS" name="NAMAS" placeholder="-" value="{{$header->NAMAS}}" readonly>
+                                <div class="col-md-3" >
+                                   <select id="KODES"  name="KODES" style="width: 100%" ></select>        							      
                                 </div>
-                            </div>
-	
-                            
- 
+		
+							</div>
+							
+
+                            <div class="form-group row">
+                                <div class="col-md-1">	
+                                    <label for="BACNO" class="form-label">Account#</label>
+                                </div>
+								
+                                <div class="col-md-3" >
+                                   <select id="BACNO"  name="BACNO" style="width: 100%" ></select>        							      
+                                </div>
+		
+							</div>	
+							
 							<div class="form-group row">
                                 <div class="col-md-1" align="right">
-									<label style="color:red">*</label>									
+									<!-- <label style="color:red">*</label>									 -->
                                     <label for="NOTES" class="form-label">Notes</label>
                                 </div>
                                 <div class="col-md-4">
                                     <input type="text" class="form-control NOTES" id="NOTES" name="NOTES" value="{{$header->NOTES}}" placeholder="Masukkan Notes" >
                                 </div>
 
-								<div class="col-md-1" align="center">
-									<label for="TYPE" class="form-label">Type</label>
-								</div>
-								<div class="col-md-1">
-									<select id="TYPE" class="form-control"  name="TYPE">
-										<option value="BANK" {{ ($header->TYPE == 'BANK') ? 'selected' : '' }}>BANK</option>
-										<option value="KAS" {{ ($header->TYPE == 'KAS') ? 'selected' : '' }}>KAS</option>
-									</select>
-								</div>
                             </div>
 
-							<div class="form-group row">
-                                <div class="col-md-1" align="right">
-									<label style="color:red">*</label>	
-                                    <label for="BACNO" class="form-label">Bank#</label>
-                                </div>
-                                <div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control BACNO" id="BACNO" name="BACNO" placeholder="Bank#" value="{{$header->BACNO}}" style="text-align: left" readonly >
-        						
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control BNAMA" id="BNAMA" name="BNAMA" placeholder="-" value="{{ $header->BNAMA }}" readonly>
-                                </div>
 
-                               <div class="col-md-2">
-                                    <input type="text" class="form-control NO_BANK" id="NO_BANK" name="NO_BANK" placeholder="-" value="{{ $header->NO_BANK }}" readonly>
-                                </div>
-                                                                
-							</div>
-							
+
                             <table id="datatable" class="table table-striped table-border">
                                 <thead>
                                     <tr>
 										<th width="100px" style="text-align:center">No.</th>  
                                         <th width="200px" style="text-align:center">
-								        	<label style="color:red;font-size:20px">* </label>									
                                             <label for="BACNO" class="form-label">Faktur#</label></th>
                                         <th width="200px" style="text-align:right">Total</th>
                                         <th width="200px" style="text-align:right">Bayar</th>
-                                        <!-- <th width="200px" style="text-align:right">Sisa</th> -->
+                                        <th width="200px" style="text-align:right">Sisa</th>
                                         <th></th>										
                                     </tr>
                                 </thead>
@@ -155,7 +142,9 @@
 										<td>
 										    <input name="BAYAR[]" onclick="select()" onblur="hitung()" value="{{$detail->BAYAR}}" id="BAYAR{{$no}}" type="text" style="text-align: right"  class="form-control BAYAR">
 										</td>
-										
+										<td>
+										    <input name="SISA[]" onclick="select()" onblur="hitung()" value="{{$detail->SISA}}" id="SISA{{$no}}" type="text" style="text-align: right"  class="form-control SISA" readonly >
+										</td>
 										<td>
                                             <button type="button" id="DELETEX{{$no}}" class="btn btn-sm btn-circle btn-outline-danger btn-delete" onclick="">
                                                 <i class="fa fa-fw fa-trash"></i>
@@ -175,8 +164,13 @@
                                     <td></td>
                                     <td></td>
                                 </tfoot>
+							
+							
                             </table>
 							
+							          <div class="col-md-2 row">
+                                        <button type="button" onclick="tambah()" class="btn btn-sm btn-success"><i class="fas fa-plus fa-sm md-3"></i> </button>
+                                    </div>
     
 							
 				 
@@ -186,10 +180,7 @@
 				</div>                               
             </div>
 			
-							<div class="col-md-2 row">
-                               <a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
-					
-							</div>			
+		
                                  
 						<div class="mt-3 col-md-12 form-group row">
 							<div class="col-md-4">
@@ -316,6 +307,9 @@
 @endsection
 
 @section('footer-scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
 <script src="{{asset('foxie_js_css/bootstrap.bundle.min.js')}}"></script>
@@ -333,6 +327,64 @@
 		idrow=<?=$no?>;
 		baris=<?=$no?>;
 
+
+     $('#KODES').select2({
+		
+		placeholder:'Pilih Suplier',
+		allowClear: true,
+        ajax: {
+			url: '{{url('sup/browse')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.KODES, // The ID of the user
+                        text: item.NAMAS // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+		
+		
+		
+	});
+	
+	
+     $('#BACNO').select2({
+		
+		placeholder:'Pilih Cash',
+		allowClear: true,
+        ajax: {
+			url: '{{url('account/browsecash')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.ACNO, // The ID of the user
+                        text: item.NAMA // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+		
+		
+		
+	});
+	
 		
 		$('body').on('keydown', 'input, select', function(e) {
 			if (e.key === "Enter") {
@@ -366,7 +418,20 @@
 
         if ( $tipx != 'new' )
 		{
-			 ganti();			
+			 ganti();		
+			 
+			    var initcombo ="{{ $header->BNAMA }}";
+				var defaultOption = { id: 1, text: initcombo }; // Set your default option ID and text
+                var newOption = new Option(defaultOption.text, defaultOption.id, true, true);
+                $('#BACNO').append(newOption).trigger('change');
+			 
+			 
+			    var initcombo1 ="{{ $header->NAMAS }}";
+				var defaultOption1 = { id: 1, text: initcombo1 }; // Set your default option ID and text
+                var newOption1 = new Option(defaultOption1.text, defaultOption1.id, true, true);
+                $('#KODES').append(newOption1).trigger('change');
+			 
+			 
 		}    
 		
 
@@ -609,7 +674,7 @@
 
 	//////////////////////////////////////
 
-	var dTableBAccount;
+		var dTableBAccount;
 		var tipex ;
 		
 		loadDataBAccount = function(){
@@ -1003,7 +1068,11 @@
 				<td>
 		            <input name='BAYAR[]'  onblur='hitung()' value='0' id='BAYAR${idrow}' type='text' style='text-align: right' class='form-control BAYAR text-primary' required >
                 </td>
-				
+
+				<td>
+		            <input name='SISA[]'  onblur='hitung()' value='0' id='SISA${idrow}' type='text' style='text-align: right' class='form-control SISA text-primary' readonly required >
+                </td>
+                
                 <td>
 					<button type='button' id='DELETEX${idrow}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
                 </td>				

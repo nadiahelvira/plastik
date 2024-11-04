@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="col-md-2">
 								
-								  <input class="form-control date" id="TGL" onblur="jtempo()" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
+								  <input class="form-control date" id="TGL" onchange="jtempo()" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
 								
                                 </div>
         
@@ -77,7 +77,6 @@
                             <div class="form-group row">
 
 								<div class="col-md-1">
-									<label style="color:red">*</label>									
                                     <label for="KODEC" class="form-label">Customer</label>
                                 </div>
                                	<div class="col-md-2 input-group" >
@@ -184,7 +183,7 @@
 										<th {{( $golz =='J') ? '' : 'hidden' }} width="200px" style="text-align:center">Nama</th>
 
 										<th width="150px" style="text-align:center">Satuan</th>
-										<th width="100px" style="text-align:center">Qty</th> 
+										<th width="150px" style="text-align:center">Qty</th> 
 										<th width="150px" style="text-align:center">Harga</th>
 
 										<th width="150px" style="text-align:center">Total</th>							
@@ -271,7 +270,7 @@
 									<td {{( $golz =='J') ? '' : 'hidden' }}></td>
 									<td {{( $golz =='J') ? '' : 'hidden' }}></td>
 									<td></td>	
-                                    <td><input class="form-control TTOTAL_QTY  text-primary font-weight-bold" style="text-align: right"  id="TTOTAL_QTY" name="TTOTAL_QTY" value="{{$header->TOTAL_QTY}}" readonly></td>
+                                    <td></td>
                                     <td></td>
                                     <!-- <td><input class="form-control TTOTAL  text-primary font-weight-bold" style="text-align: right"  id="TTOTAL" name="TTOTAL" value="{{$header->TOTAL}}" readonly></td> -->
                                     <td></td>
@@ -292,7 +291,14 @@
 						<div class="tab-content mt-6">
 
 							<div class="form-group row">
-                                <div class="col-md-8" align="right">
+                                <div class="col-md-4" align="right">
+                                    <label for="TTOTAL" class="form-label">Total Qty</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL_QTY" id="TTOTAL_QTY" name="TTOTAL_QTY" placeholder="TTOTAL_QTY" value="{{$header->TOTAL_QTY}}" style="text-align: right" readonly>
+                                </div>
+
+								<div class="col-md-2" align="right">
                                     <label for="TTOTAL" class="form-label">Total</label>
                                 </div>
                                 <div class="col-md-2">
@@ -1164,6 +1170,7 @@
 	    $(".NO_BUKTI").attr("readonly", true);	
 		
 		$("#TGL").attr("readonly", true);
+		$("#JTEMPO").attr("readonly", true);
 		$("#KODEC").attr("readonly", true);
 		$("#NAMAC").attr("readonly", true);
 		$("#ALAMAT").attr("readonly", true);
@@ -1182,6 +1189,7 @@
 			$("#QTY" + i.toString()).attr("readonly", true);
 			$("#HARGA" + i.toString()).attr("readonly", true);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
+			$("#DISK" + i.toString()).attr("readonly", true);
 			$("#KET" + i.toString()).attr("readonly", true);
 			
 			$("#DELETEX" + i.toString()).attr("hidden", true);
@@ -1200,6 +1208,8 @@
 		 $('#NAMAC').val("");	
 		 $('#ALAMAT').val("");	
 		 $('#KOTA').val("");	
+		 $('#HARI').val("0");
+		 
 		 $('#NOTES').val("");	
 		 $('#TTOTAL_QTY').val("0.00");
 		 $('#TTOTAL').val("0.00")
@@ -1236,7 +1246,8 @@
 	}
 
 	function jtempo() {
-		
+
+		    
 			$.ajax(
 			{
 				type: 'GET',    
@@ -1250,7 +1261,7 @@
 
 				{
 					resp = response;
-					$("#JTEMPO").val(resp[0].JTEMPO)
+					$("#JTEMPO").val( resp );
 					
 				}
 			});

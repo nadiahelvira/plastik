@@ -2,6 +2,8 @@
 @section('styles')
 <!-- <link rel="stylesheet" href="{{url('http://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css') }}"> -->
 <link rel="stylesheet" href="{{asset('foxie_js_css/jquery.dataTables.min.css')}}" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 
 @endsection
 
@@ -24,9 +26,6 @@
         border-left: solid 2px #000;
     }
 
-    .table tbody:nth-child(2) {
-        background-color: #ffe4e1;
-    }
 
     .btn-secondary {
         background-color: #42047e !important;
