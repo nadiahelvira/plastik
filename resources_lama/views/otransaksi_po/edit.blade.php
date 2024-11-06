@@ -79,7 +79,7 @@
                                 </div>
 
 								<div class="col-md-1" align="right">
-									<label for="JTEMPO" class="form-label">Jatuh Tempo</label>
+									<label for="JTEMPO" class="form-label">Tgl Kirim</label>
 								</div>
 								<div class="col-md-2">
 									<input class="form-control date" id="JTEMPO" name="JTEMPO" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->JTEMPO))}}">
@@ -325,11 +325,18 @@
 						<div class="tab-content mt-6">
 						
 							<div class="form-group row">
-                                <div class="col-md-8" align="right">
-                                    <label for="TTOTAL" class="form-label">TOTAL</label>
+                                <div class="col-md-4" align="right">
+                                    <label for="TTOTAL" class="form-label">Total Qty</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="" value="{{$header->TOTAL}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL_QTY" id="TTOTAL_QTY" name="TTOTAL_QTY" placeholder="TTOTAL_QTY" value="{{$header->TOTAL_QTY}}" style="text-align: right" readonly>
+                                </div>
+
+								<div class="col-md-2" align="right">
+                                    <label for="TTOTAL" class="form-label">Total</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="TTOTAL" value="{{$header->TOTAL}}" style="text-align: right" readonly>
                                 </div>
 							</div>
 
@@ -344,7 +351,7 @@
 
                             <div class="form-group row">
                                 <div class="col-md-8" align="right">
-                                    <label for="TDISK" class="form-label">TOTAL DISKON</label>
+                                    <label for="TDISK" class="form-label">Total Diskon</label>
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TDISK" id="TDISK" name="TDISK" placeholder="" value="{{$header->TDISK}}" style="text-align: right" readonly>

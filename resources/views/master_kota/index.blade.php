@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.plain')
 @section('styles')
 <link rel="stylesheet" href="{{url('AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.css') }}">
 <link rel="stylesheet" href="{{url('http://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css') }}">

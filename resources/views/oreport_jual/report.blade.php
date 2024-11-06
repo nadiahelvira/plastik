@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.plain')
 <style>
     .bigdrop {
         width: 410px !important;
