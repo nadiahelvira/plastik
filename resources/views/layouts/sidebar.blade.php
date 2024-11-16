@@ -831,7 +831,7 @@
       @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="accounting"))
         <li class="nav-header">Financial</li>
           <li class="nav-item">
-            <a href="#" class="nav-link" data-bs-toggle="tooltip" title="MASTER">
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" title="ACCOUNT">
               <i class="nav-icon fas fa-location-arrow icon-blue"></i>
               <p>
               </p>
@@ -863,7 +863,7 @@
 
 	  
           <li class="nav-item">
-            <a href="#" class="nav-link" data-bs-toggle="tooltip" title="TRANSAKSI">
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" title="KAS, BANK, MEMO">
               <i class="nav-icon fas fa-university icon-green"></i>
               <p>
               </p>
