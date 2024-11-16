@@ -96,13 +96,12 @@ class BeliController extends Controller
 		{
 	
 			// $filterkodes = " WHERE SISA <> 0 AND KODES='".$request->KODES."' ";
-			$filterkodes = " WHERE KODES='".$request->KODES."' ";
+			$filterkodes = " AND  KODES='".$request->KODES."' ";
 		}
 		
 		$beli = DB::SELECT("SELECT NO_BUKTI, TGL, KODES, 
-		            NAMAS, TOTAL, BAYAR, SISA from beli
+		            NAMAS, TOTAL, BAYAR, SISA from beli  WHERE beli.CBG = '$CBG' and SISA <> 0
 		            $filterkodes 
-                    AND beli.CBG = '$CBG'
                     ORDER BY NO_BUKTI ");
  
         return response()->json($beli);
@@ -308,9 +307,9 @@ class BeliController extends Controller
                 'GUDANG'            => ($request['GUDANG'] == null) ? "" : $request['GUDANG'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
-				'PPN'               => (float) str_replace(',', '', $request['PPN']),
-				'PKP'               => (float) str_replace(',', '', $request['PKP']),
-				'DPP'               => (float) str_replace(',', '', $request['DPP']),
+                'TDPP'            => (float) str_replace(',', '', $request['TDPP']),
+                'TPPN'            => (float) str_replace(',', '', $request['TPPN']),
+				// 'PKP'               => $request['PKP'],
 				'TDISK'               => (float) str_replace(',', '', $request['TDISK']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
                 'SISA'            => (float) str_replace(',', '', $request['NETT']),
@@ -377,18 +376,26 @@ class BeliController extends Controller
 
 
         //  ganti 11
-       $variablell = DB::select('call beliins(?)', array($no_bukti));
+
 		$no_buktix = $no_bukti;
 		
 		$beli = Beli::where('NO_BUKTI', $no_buktix )->first();
 
+
+
+        DB::SELECT("UPDATE BELI, SUP
+                    SET BELI.NAMAS = SUP.NAMAS, BELI.ALAMAT = SUP.ALAMAT, BELI.KOTA = SUP.KOTA, BELI.PKP=SUP.PKP  WHERE BELI.KODES = SUP.KODES 
+                    AND BELI.NO_BUKTI='$no_buktix';");
+                    
 
         DB::SELECT("UPDATE beli,  belid
                             SET  belid.ID = beli.NO_ID  WHERE  beli.NO_BUKTI =  belid.NO_BUKTI 
 							AND  beli.NO_BUKTI='$no_buktix';");
 
 		
-					 
+
+        $variablell = DB::select('call beliins(?)', array($no_buktix));
+       
         return redirect('/beli/edit/?idx=' . $beli->NO_ID . '&tipx=edit&flagz=' . $FLAGZ . '&judul=' . $this->judul . '&golz=' . $this->GOLZ . '');
 
 					
@@ -633,8 +640,9 @@ class BeliController extends Controller
                 'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
-				'PPN'              => (float) str_replace(',', '', $request['PPN']),
-				'PKP'              => (float) str_replace(',', '', $request['PKP']),
+                'TDPP'            => (float) str_replace(',', '', $request['TDPP']),
+                'TPPN'            => (float) str_replace(',', '', $request['TPPN']),
+				// 'PKP'              => $request['PKP'],
                 'NETT'             => (float) str_replace(',', '', $request['NETT']),
                 'TDISK'             => (float) str_replace(',', '', $request['TDISK']),
 		   	    'SISA'             => (float) str_replace(',', '', $request['NETT']), 
@@ -738,16 +746,23 @@ class BeliController extends Controller
 
 
         //  ganti 21
-        $variablell = DB::select('call beliins(?)', array($beli['NO_BUKTI']));
 
  		$beli = Beli::where('NO_BUKTI', $no_buktix )->first();
 
         $no_bukti = $beli->NO_BUKTI;
 
+
+        DB::SELECT("UPDATE BELI, SUP
+                    SET BELI.NAMAS = SUP.NAMAS, BELI.ALAMAT = SUP.ALAMAT, BELI.KOTA = SUP.KOTA, BELI.PKP=SUP.PKP  WHERE BELI.KODES = SUP.KODES 
+                    AND BELI.NO_BUKTI='$no_buktix';");
+                    
+
         DB::SELECT("UPDATE beli,  belid
                     SET  belid.ID =  beli.NO_ID  WHERE  beli.NO_BUKTI =  belid.NO_BUKTI 
                     AND  beli.NO_BUKTI='$no_bukti';");
-					 
+
+        $variablell = DB::select('call beliins(?)', array($beli['NO_BUKTI']));
+        
         return redirect('/beli/edit/?idx=' . $beli->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul .  '&golz=' . $this->GOLZ . '');	
 		
 	   
@@ -804,18 +819,34 @@ class BeliController extends Controller
         $no_beli = $beli->NO_BUKTI;
 
         $file     = 'belic';
+
+        $flagz1 = $beli->FLAG;
+        $judul ='';
+        
+        if ( $flagz1 =='BL')
+        {
+                $judul ='Order Pembelian';
+        
+        }
+        
+        if ( $flagz1 =='RB')
+        {
+                $judul ='Retur Pembelian';    
+        }
+        
         $PHPJasperXML = new PHPJasperXML();
         $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
 
         $query = DB::SELECT("SELECT beli.NO_BUKTI, beli.TGL, beli.KODES, beli.NAMAS, beli.TOTAL_QTY, beli.NOTES, beli.ALAMAT, 
-                                    beli.KOTA, belid.KD_BRG, belid.NA_BRG, belid.SATUAN, belid.QTY, 
-                                    belid.HARGA, belid.TOTAL, belid.KET, beli.PPN, beli.NETT, beli.NO_PO, beli.USRNM
+                                    beli.KOTA, belid.KD_BRG, belid.NA_BRG, belid.SATUAN, belid.QTY, belid.DISK,
+                                    belid.HARGA, belid.TOTAL, belid.KET, beli.TPPN, beli.NETT, beli.NO_PO, beli.USRNM
                             FROM beli, belid 
                             WHERE beli.NO_BUKTI='$no_beli' AND beli.NO_BUKTI = belid.NO_BUKTI 
                             ;
 		");
 
-        
+                DB::SELECT("UPDATE BELI SET POSTED = 1 WHERE NO_BUKTI='$no_beli';");
+                
         $data = [];
 
         foreach ($query as $key => $value) {
@@ -835,10 +866,12 @@ class BeliController extends Controller
                 'NA_BRG'    => $query[$key]->NA_BRG,
                 'SATUAN'    => $query[$key]->SATUAN,
                 'QTY'    => $query[$key]->QTY,
-                'PPN'    => $query[$key]->PPN,
+                'DISK'    => $query[$key]->DISK,
+                'PPN'    => $query[$key]->TPPN,
                 'NETT'    => $query[$key]->NETT,
                 'KET'    => $query[$key]->KET,
                 'NO_PO'    => $query[$key]->NO_PO,
+                'JUDUL'    => $judul,
                 'USRNM'    => $query[$key]->USRNM
             ));
         }
@@ -856,7 +889,13 @@ class BeliController extends Controller
     }
 	
 	
-	
+	public function getDetailBeli(){
+
+        $no_bukti = $_GET['no_bukti'];
+        $result = DB::table('belid')->where('NO_BUKTI', $no_bukti)->get();
+        
+        return response()->json($result);;
+    }
 	
 	
 	

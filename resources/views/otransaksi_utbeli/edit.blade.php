@@ -1,4 +1,6 @@
-@extends('layouts.main')
+@extends('layouts.plain')
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <style>
     .card {
@@ -8,6 +10,52 @@
     .form-control:focus {
         background-color: #E0FFFF !important;
     }
+
+	/* query LOADX */
+
+	.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </style>
 
 
@@ -84,33 +132,65 @@
                                 </div>
                             </div>
 
-							<div class="form-group row">
-                                <div class="col-md-1" align="right">
+                            <div class="form-group row">
+                                <div class="col-md-1">	
                                     <label for="KODES" class="form-label">Suplier#</label>
                                 </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KODES" id="KODES" name="KODES" placeholder="Masukkan Suplier#" value="{{$header->KODES}}" readonly>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control NAMAS" id="NAMAS" name="NAMAS" placeholder="Nama" value="{{$header->NAMAS}}" readonly>
-                                </div>
-                            </div>
-							
-							 <div class="form-group row">
-                                <div class="col-md-1" align="right">
-                                    <label for="ALAMAT" class="form-label">Alamat</label>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control ALAMAT" id="ALAMAT" name="ALAMAT" placeholder="Masukkan Alamat" value="{{$header->ALAMAT}}" readonly>
-                                </div>
 								
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KOTA" id="KOTA" name="KOTA" placeholder="Kota" value="{{$header->KOTA}}" readonly>
+                                <div class="col-md-3" >
+                                   <select id="KODES"  name="KODES" style="width: 100%" ></select>        							      
                                 </div>
-                            </div>
+		
+		
+		                        <div class="col-md-1" align="center">
+									<label for="TYPE" class="form-label">Type</label>
+								</div>
+								<div class="col-md-2">
+									<select id="TYPE" class="form-control"  name="TYPE">
+										<option value="BANK" {{ ($header->TYPE == 'BANK') ? 'selected' : '' }}>Bank</option>
+										<option value="KAS" {{ ($header->TYPE == 'KAS') ? 'selected' : '' }}>Kas</option>
+									</select>
+								</div>
+								
+							</div>
 
-							<div class="form-group row">
+
+                            <div {{($flagz == 'TH') ? '' : 'hidden' }} class="form-group row">
+                                
+                                
+                                        <div class="col-md-1">	
+                                            <label for="ACNOA" class="form-label">Account#</label>
+                                        </div>
+        								
+                                        <div class="col-md-4" >
+                                           <select id="ACNOA"  name="ACNOA" style="width: 100%" ></select>        							      
+                                        </div>
+                                
+							</div>
+							
+                            <div {{($flagz == 'UM') ? '' : 'hidden' }} class="form-group row">
+
+
+                                        <div class="col-md-1">	
+                                            <label for="BACNO" class="form-label">Account#</label>
+                                        </div>
+        								
+                                        <div class="col-md-3" >
+                                           <select id="BACNO"  onchange="ambil_nacno()" name="BACNO" style="width: 100%" ></select>       
+                                           <input type="text" hidden class="form-control BNAMA" id="BNAMA" name="BNAMA" value="{{$header->BNAMA}}" placeholder="Masukkan Nama" >                                           
+                                        </div>
+        
+        
+                                       <div class="col-md-2">
+                                            <input type="text" class="form-control NO_BANK" id="NO_BANK" name="NO_BANK" placeholder="-" value="{{ $header->NO_BANK }}" readonly>
+                                        </div>
+                                
+                                                                
+							</div>
+							
+
+
+                        	<div class="form-group row">
 								
                                 <div class="col-md-1" align="right">
                                     <label for="TOTAL" class="form-label">Total</label>
@@ -121,6 +201,8 @@
 
                             </div>
 
+							<!-- loader tampil di modal  -->
+							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
 							
 							<div class="form-group row">
 								
@@ -131,52 +213,9 @@
                                     <input type="text" class="form-control NOTES" id="NOTES" name="NOTES" placeholder="Masukkan Notes" value="{{$header->NOTES}}">
                                 </div>
 
-								<div class="col-md-1" align="center">
-									<label for="TYPE" class="form-label">Type</label>
-								</div>
-								<div class="col-md-1">
-									<select id="TYPE" class="form-control"  name="TYPE">
-										<option value="BANK" {{ ($header->TYPE == 'BANK') ? 'selected' : '' }}>BANK</option>
-										<option value="KAS" {{ ($header->TYPE == 'KAS') ? 'selected' : '' }}>KAS</option>
-									</select>
-								</div>
+								
 								
                             </div>
-							
-
-                            <div {{($flagz == 'TH') ? '' : 'hidden' }} class="form-group row">
-                                <div class="col-md-1" align="right">
-									<label style="color:red">*</label>	
-                                    <label for="ACNOA" class="form-label">Acc#</label>
-                                </div>
-                                <div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control ACNOA" id="ACNOA" name="ACNOA" placeholder="Acc#" value="{{$header->ACNOA}}" style="text-align: left" readonly >
-        						
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control NACNOA" id="NACNOA" name="NACNOA" placeholder="-" value="{{ $header->NACNOA }}" readonly>
-                                </div>
-							</div>
-							
-                            <div {{($flagz == 'UM') ? '' : 'hidden' }} class="form-group row">
-                                <div class="col-md-1" align="right">
-									<label style="color:red">*</label>	
-                                    <label for="BACNO" class="form-label">Bank#</label>
-                                </div>
-                                <div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control BACNO" id="BACNO" name="BACNO" placeholder="Bank#" value="{{$header->BACNO}}" style="text-align: left" readonly >
-        						
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control BNAMA" id="BNAMA" name="BNAMA" placeholder="-" value="{{ $header->BNAMA }}" readonly>
-                                </div>
-
-                               <div class="col-md-2">
-                                    <input type="text" class="form-control NO_BANK" id="NO_BANK" name="NO_BANK" placeholder="-" value="{{ $header->NO_BANK }}" readonly>
-                                </div>
-                                
-                                                                
-							</div>
 							
 							
 	
@@ -345,6 +384,9 @@
 @endsection
 
 @section('footer-scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
 <script src="{{asset('foxie_js_css/bootstrap.bundle.min.js')}}"></script>
@@ -355,12 +397,110 @@
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 
+
+
 	$(document).ready(function() {
+
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
 
 		$tipx = $('#tipx').val();
 		$searchx = $('#CARI').val();
 
+
+        $('#KODES').select2({
 		
+		placeholder:'Pilih Suplier',
+		allowClear: true,
+        ajax: {
+			url: '{{url('sup/browse')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.KODES, // The ID of the user
+                        text: item.NAMAS // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+		
+	});
+	
+	
+	
+	
+	
+        $('#BACNO').select2({
+    		
+    		placeholder:'Pilih Cash',
+    		allowClear: true,
+            ajax: {
+    			url: '{{url('account/browsecashbank')}}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term // Search term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.map(item => ({
+                            id: item.ACNO, // The ID of the user
+                            text: item.NAMAX // The text to display
+                        }))
+                    };
+                },
+                cache: true
+            },
+    		
+    		
+    		
+    	});
+	
+	
+	
+	    $('#ACNOA').select2({
+    		
+    		placeholder:'Pilih Account',
+    		allowClear: true,
+            ajax: {
+    			url: '{{url('account/browse')}}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term // Search term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.map(item => ({
+                            id: item.ACNO, // The ID of the user
+                            text: item.NAMAX // The text to display
+                        }))
+                    };
+                },
+                cache: true
+            },
+    		
+    		
+    		
+    	});
+    	
+    	
+    	
 		$('body').on('keydown', 'input, select', function(e) {
 			if (e.key === "Enter") {
 				var self = $(this), form = self.parents('form:eq(0)'), focusable, next;
@@ -388,7 +528,31 @@
 
         if ( $tipx != 'new' )
 		{
-			 ganti();			
+			 ganti();	
+			 
+			    var initkode ="{{ $header->BACNO }}";	
+			    var initcombo ="{{ $header->NAMA }}";
+				var defaultOption = { id: initkode, text: initcombo }; // Set your default option ID and text
+                var newOption = new Option(defaultOption.text, defaultOption.id, true, true);
+                $('#BACNO').append(newOption).trigger('change');
+			 
+
+                var initkode1 ="{{ $header->KODES }}";				 
+			    var initcombo1 ="{{ $header->NAMAS }}";
+				var defaultOption1 = { id: initkode1, text: initcombo1 }; // Set your default option ID and text
+                var newOption1 = new Option(defaultOption1.text, defaultOption1.id, true, true);
+                $('#KODES').append(newOption1).trigger('change');
+			 
+
+                var initkode2 ="{{ $header->ACNOA }}";				 
+			 	var initcombo2 ="{{ $header->NAMA }}";
+				var defaultOption2 = { id: initkode2, text: initcombo2 }; // Set your default option ID and text
+                var newOption2 = new Option(defaultOption2.text, defaultOption2.id, true, true);
+                $('#ACNOA').append(newOption1).trigger('change');
+                
+                
+            
+			 
 		}    
 		
 	
@@ -782,18 +946,7 @@
         var check = '0';
 		
 		
-			// if ( $('#NO_PO').val()=='' ) 
-            // {			
-			//     check = '1';
-			// 	alert("PO# Harus diisi.");
-			// }
 
-			// if ( $('#ACNOA').val()=='' ) 
-            // {			
-			//     check = '1';
-			// 	alert("Account Harus diisi.");
-			// }
-			
 			
 			if ( tgl.substring(3,5) != bulanPer ) 
 			{
@@ -807,26 +960,42 @@
 				alert("Tahun tidak sama dengan Periode");
 		    }	 
 
-	    
+
+			if ( $('#KODES').val()=='' ) 
+            {			
+			    check = '1';
+				alert("Suplier# Harus diisi.");
+			}
+			
+			
+	    	var flagz = $('#flagz').val();
+		    
 			if ( flagz =='TH'  ){
-			    var RPTOTALXX = $("#TOTAL").val();
-		
-			    $('#RPTOTAL').val(numberWithCommas(RPTOTALXX));	
-		        $("#RPTOTAL").autoNumeric('update');				
+
+        			if ( $('#ACNOA').val()=='' ) 
+                    {			
+        			    check = '1';
+        				alert("Account# Harus diisi.");
+        			}
+							
 				
 			}
 
 			if ( flagz =='UM'  ){
-			    var RPTOTALXX = $("#TOTAL").val() * -1;
-		
-			    $('#RPTOTAL').val(numberWithCommas(RPTOTALXX));	
-		        $("#RPTOTAL").autoNumeric('update');				
-				
-			}
+
+        			if ( $('#BACNO').val()=='' ) 
+                    {			
+        			    check = '1';
+        				alert("Cash/Bank Harus diisi.");
+        			}
+
+			}			
+			
+			
 			
 		(check==0) ? document.getElementById("entri").submit() : alert('Masih ada kesalahan');
 
-			
+		$("#LOADX").hide();	
 	}
 
 
@@ -882,27 +1051,17 @@
 		   
 			$("#NO_BUKTI").attr("readonly", true);		   
 			$("#TGL").attr("readonly", false);
-			$("#NO_PO").attr("readonly", true);
 			$("#KODES").attr("readonly", true);
 			$("#NAMAS").attr("readonly", true);
 			$("#ALAMAT").attr("readonly", true);
 			$("#KOTA").attr("readonly", true);
-			$("#KD_BRG").attr("readonly", true);
-			$("#NA_BRG").attr("readonly", true);
-			$("#KG").attr("readonly", false);
-			$("#HARGA").attr("readonly", true);
-			$("#LAIN").attr("readonly", false);
-			$("#TOTAL").attr("readonly", true);
-			$("#RPRATE").attr("readonly", false);
-			$("#RPHARGA").attr("readonly", true);
-			$("#RPLAIN").attr("readonly", false);
-			$("#RPTOTAL").attr("readonly", true);
 
-			$("#AJU").attr("readonly", false );
-			$("#BL").attr("readonly", false );
-			$("#EMKL").attr("readonly", true );
-			$("#JCONT").attr("readonly", false );
-			$("#TGL_BL").attr("readonly", false );						
+    		$("#KODES").attr("disabled", false);
+    		$("#BACNO").attr("disabled", false);
+    		$("#BACNOA").attr("disabled", false);
+		
+			$("#TOTAL").attr("readonly", true);
+					
 			$("#NOTES").attr("readonly", false);
 			
 		
@@ -914,9 +1073,6 @@
 			    $("#TOTAL").attr("readonly", false);
 			}
 			
-			if ( flagz =='BL' && golz =='Z' ){
-			    $("#HARGA").attr("readonly", false);
-			}
 			
 
 		
@@ -947,27 +1103,18 @@
 	    $(".NO_BUKTI").attr("readonly", true);	
 		
 		$("#TGL").attr("readonly", true);
-		$("#NO_PO").attr("readonly", true);
+
 		$("#KODES").attr("readonly", true);
 		$("#NAMAS").attr("readonly", true);
 		$("#ALAMAT").attr("readonly", true);
 		$("#KOTA").attr("readonly", true);
-		$("#KD_BRG").attr("readonly", true);
-		$("#NA_BRG").attr("readonly", true);
-		$("#KG").attr("readonly", true);
-		$("#HARGA").attr("readonly", true);
-		$("#LAIN").attr("readonly", true);
-		$("#TOTAL").attr("readonly", true)
-		$("#RPRATE").attr("readonly", true);
-		$("#RPHARGA").attr("readonly", true);
-		$("#RPLAIN").attr("readonly", true);
-		$("#RPTOTAL").attr("readonly", true);
 
-		$("#AJU").attr("readonly", true);
-		$("#BL").attr("readonly", true);
-		$("#EMKL").attr("readonly", true);
-		$("#JCONT").attr("readonly", true);
-		$("#TGL_BL").attr("readonly", true);
+    		$("#KODES").attr("disabled", true);
+    		$("#BACNO").attr("disabled", true);
+    		$("#BACNOA").attr("disabled", true);
+    		
+		$("#TOTAL").attr("readonly", true)
+
 		$("#NOTES").attr("readonly", true);
 		
 
@@ -984,21 +1131,8 @@
 		 $('#ALAMAT').val("");	
 		 $('#KOTA').val("");
 		 
-		 $('#KD_BRG').val("");	
-		 $('#NA_BRG').val("");	
-		 $('#KG').val("0.00");
-		 $('#HARGA').val("0.00");		 
-		 $('#LAIN').val("0.00");
 		 $('#TOTAL').val("0.00");		 
-		 $('#RPRATE').val("1.00");		 
-		 $('#RPHARGA').val("0.00");
-		 $('#RPLAIN').val("0.00");
-		 $('#RPTOTAL').val("0.00");		 
-
-		 $('#AJU').val("");	
-		 $('#BL').val("");	
-		 $('#EMKL').val("");	
-		 $('#JCONT').val("0");			 	 
+	 
 		 $('#NOTES').val("");	
 		 $('#ACNOA').val("");
 		 $('#NACNOA').val("");	
@@ -1057,6 +1191,29 @@
 	}
 	
 
+    function ambil_nacno() {
+
+		    
+		$.ajax(
+		{
+			type: 'GET',    
+			url: "{{url('account/browse_acno')}}",
+			data: {
+					'BACNO' : $("#BACNO").val(),
+			},
+			
+			success: function( response )
+
+			{
+				resp = response;
+				$("#BNAMA").val( resp[0].NAMA );
+        				
+			}
+		});
+		
+		  
+	}
+	
 	function CariBukti() {
 		
 		var flagz = "{{ $flagz }}";

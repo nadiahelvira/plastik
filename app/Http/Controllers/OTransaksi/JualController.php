@@ -76,6 +76,24 @@ class JualController extends Controller
         return response()->json($jual);
     }
 
+    public function browse_juald(Request $request)
+    {
+
+        // $filterbukti = '';
+        // if($request->NO_SO)
+        // {
+
+        //     $filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' ";
+        // }
+        $sod = DB::SELECT("SELECT REC, SATUAN , QTY, HARGA, TOTAL, KET, 
+                                KD_BRG, NA_BRG, DPP, PPN, QTY_KIRIM, DISK
+                            from juald
+                            where NO_BUKTI='".$request->nobukti."' ORDER BY NO_BUKTI ");
+	
+
+		return response()->json($sod);
+	}
+
     public function browseuang(Request $request)
     {
 
@@ -86,13 +104,12 @@ class JualController extends Controller
 		if($request->KODEC)
 		{
 	
-			// $filterkodec = " WHERE SISA <> 0 AND KODEC='".$request->KODEC."' ";
-			$filterkodec = " WHERE KODEC='".$request->KODEC."' ";
+			$filterkodec = " AND KODEC='".$request->KODEC."' ";
 		}
 		
 		$jual = DB::SELECT("SELECT NO_BUKTI, TGL, KODEC, 
-                        NAMAC, NETT AS TOTAL, BAYAR, SISA from jual
-                        $filterkodec AND CBG = '$CBG' 
+                        NAMAC, NETT AS TOTAL, BAYAR, SISA from jual WHERE CBG = '$CBG'  AND SISA <> 0
+                        $filterkodec
                         ORDER BY NO_BUKTI ");
  
         return response()->json($jual);
@@ -278,7 +295,8 @@ class JualController extends Controller
                 'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
-                'PPN'            => (float) str_replace(',', '', $request['PPN']),
+                'TDPP'            => (float) str_replace(',', '', $request['TDPP']),
+                'TPPN'            => (float) str_replace(',', '', $request['TPPN']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
                 'TDISK'            => (float) str_replace(',', '', $request['TDISK']),
                 'SISA'            => (float) str_replace(',', '', $request['NETT']),
@@ -576,7 +594,7 @@ class JualController extends Controller
         $CBG = Auth::user()->CBG;
 		
         // ganti 20
-      $variablell = DB::select('call jualdel(?)', array($jual['NO_BUKTI']));
+        $variablell = DB::select('call jualdel(?)', array($jual['NO_BUKTI']));
 
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
@@ -599,7 +617,8 @@ class JualController extends Controller
                 'TYPE'            => ($request['TYPE'] == null) ? "" : $request['TYPE'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
-                'PPN'            => (float) str_replace(',', '', $request['PPN']),
+                'TDPP'            => (float) str_replace(',', '', $request['TDPP']),
+                'TPPN'            => (float) str_replace(',', '', $request['TPPN']),
                 'NETT'            => (float) str_replace(',', '', $request['NETT']),
                 'TDISK'            => (float) str_replace(',', '', $request['TDISK']),
 	   
@@ -771,7 +790,7 @@ class JualController extends Controller
 
         $query = DB::SELECT("
             SELECT jual.NO_BUKTI, jual.TGL, juald.KD_BRG, juald.NA_BRG,  jual.TGL, jual.USRNM, 
-            jual.PPN, jual.NETT,
+            jual.TPPN, jual.NETT,
 			juald.SATUAN, juald.QTY, juald.HARGA, juald.DISK, juald.TOTAL, jual.KODEC, jual.NAMAC,
             jual.ALAMAT, jual.KOTA, jual.JTEMPO
 			from jual, juald 
@@ -800,7 +819,7 @@ class JualController extends Controller
 		    	'HARGA'    => $query[$key]->HARGA,
 		    	'DISK'    => $query[$key]->DISK,
 		    	'TOTAL'    => $query[$key]->TOTAL,
-		    	'PPN'    => $query[$key]->PPN,
+		    	'PPN'    => $query[$key]->TPPN,
 		    	'NETT'    => $query[$key]->NETT,
 		    	'KODEC'    => $query[$key]->KODEC,
 		    	'NAMAC'    => $query[$key]->NAMAC,
@@ -820,7 +839,14 @@ class JualController extends Controller
 	
 	
 	
-	 
+    public function getDetailJual(){
+
+        $no_bukti = $_GET['no_bukti'];
+        $result = DB::table('juald')->where('NO_BUKTI', $no_bukti)->get();
+        
+        return response()->json($result);;
+    }
+	
 	
 	
 	

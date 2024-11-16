@@ -1,7 +1,6 @@
-@extends('layouts.main')
+@extends('layouts.plain')
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
 
 <style>
     .card {
@@ -12,10 +11,68 @@
         background-color: #E0FFFF !important;
     }
 	
+	
+	.select2-container .option {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.select2-container .col1 {
+		font-weight: bold;
+	}
+
+	.select2-container .col2 {
+		color: grey;
+	}
+	
+	.select2-drop-active {
+		margin-top: -25px;
+	}
+	
+		
+	.select2-results { 
+	   background-color: #E0FFFF; 
+	}
+	
+	
 	.NACNO_KET {
         background-color: #FFFACD !important;
 		
     }
+
+	/* query LOADX */
+
+	.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
 	
 </style>
 
@@ -64,6 +121,17 @@
                                     placeholder="Masukkan Bukti#" value="{{$header->NO_BUKTI ?? ''}}" >
  	
 								</div>
+
+                                <div class="col-md-1">
+                                    <label for="TGL" class="form-label">Tgl</label>
+                                </div>
+                                
+								<div class="col-md-2">
+ 
+								  <input class="form-control date" id="TGL" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}" >
+								
+								</div>		
+								
 								
 								<div class="col-md-6"></div>
 					
@@ -78,20 +146,6 @@
 	
 							</div>
 							
-        
-							<div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="TGL" class="form-label">Tgl</label>
-                                </div>
-                                
-								<div class="col-md-2">
- 
-								  <input class="form-control date" id="TGL" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}" >
-								
-								</div>		
-								
-                            </div>
-        
 		
                             <div class="form-group row">
                                 <div class="col-md-1">	
@@ -114,6 +168,8 @@
                                 </div>
                             </div>
                      
+							<!-- loader tampil di modal  -->
+							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
                             
                             <table id="datatable" class="table table-striped table-border">
                                 <thead>
@@ -211,8 +267,11 @@
 							</div>
 							<div class="col-md-3">
 								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
-								<button type="button" id='CLOSEX'  onclick="location.href='{{url('/kas?flagz='.$flagz.'' )}}'" class="btn btn-outline-secondary">Close</button>
-							</div>
+								
+								<!-- <button type="button" id='CLOSEX'  onclick="location.href='{{url('/kas?flagz='.$flagz.'' )}}'" class="btn btn-outline-secondary">Close</button> -->
+								
+								<!-- tombol close sweet alert -->
+								<button type="button" id='CLOSEX' onclick="closeTrans()" class="btn btn-outline-secondary">Close</button></div>
 						</div>
 						
 						
@@ -297,8 +356,11 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
 <script src="{{asset('foxie_js_css/bootstrap.bundle.min.js')}}"></script>
+
+<!-- tambahan untuk sweetalert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- tutupannya -->
 
 <script>
 
@@ -310,6 +372,13 @@
 
 // TAMBAH HITUNG
 	$(document).ready(function() {
+
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
+
 	<?php $searchx = '' ?>
     idrow=<?=$no?>;
     baris=<?=$no?>;
@@ -400,8 +469,9 @@
 		{
 			 ganti();			
 			 
-			 			    var initcombo ="{{ $header->BNAMA }}";
-				var defaultOption = { id: 1, text: initcombo }; // Set your default option ID and text
+			    var initkode ="{{ $header->BACNO }}";	
+			    var initcombo ="{{ $header->BNAMA }}";
+				var defaultOption = { id: initkode, text: initcombo }; // Set your default option ID and text
                 var newOption = new Option(defaultOption.text, defaultOption.id, true, true);
                 $('#BACNO').append(newOption).trigger('change');
 			 
@@ -572,7 +642,7 @@
 			}
 			
 
-  function simpan() {
+  			function simpan() {
 
                 hitung();
 
@@ -582,33 +652,78 @@
 
                 var check = '0';
 
-				if (cekDetail())
-				{	
-					check = '1';
-					alert("Ada Akun# Kosong Didetail.");
-				}
-			
-                if ($('#BACNO').val() == '') {
+				// sweet alert saat save 
+
+				if (cekDetail()) {
                     check = '1';
-                    alert("Kas# Harus diisi.");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: 'Ada Akun# Kosong Didetail.'
+                    });
+                    return; // Stop function execution
+                }
+
+                if ($('#BACNO').val() == null ) {
+                    check = '1';
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: 'Kas# Harus diisi.'
+                    });
+                    return; // Stop function execution
                 }
 
                 if (tgl.substring(3, 5) != bulanPer) {
-
                     check = '1';
-                    alert("Bulan tidak sama dengan Periode");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: 'Bulan tidak sama dengan Periode'
+                    });
+                    return; // Stop function execution
                 }
 
                 if (tgl.substring(tgl.length - 4) != tahunPer) {
                     check = '1';
-                    alert("Tahun tidak sama dengan Periode");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: 'Tahun tidak sama dengan Periode'
+                    });
+                    return; // Stop function execution
+                }
 
-				}
+                if (check == '0') {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Are you sure you want to save?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, save it!',
+                        cancelButtonText: 'No, cancel',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById("entri").submit();
+                        } else {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Cancelled',
+                                text: 'Your data was not saved'
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Masih ada kesalahan'
+                    });
+                }
 
+			// tutupannya
 
-		(check==0) ? document.getElementById("entri").submit() : alert('Masih ada kesalahan');
-
-
+		$("#LOADX").hide();
     }
 	
 
@@ -698,6 +813,7 @@
 			$("#NO_BUKTI").attr("readonly", true);		   
 			$("#TGL").attr("readonly", false);
 			$("#BACNO").attr("readonly", true);
+    		$("#BACNO").attr("disabled", false);
 			$("#BNAMA").attr("readonly", true);
 			$("#KET").attr("readonly", false);
 		
@@ -743,6 +859,7 @@
 		
 		$("#TGL").attr("readonly", true);
 		$("#BACNO").attr("readonly", true);
+		$("#BACNO").attr("disabled", true);
 		$("#BNAMA").attr("readonly", true);
 		$("#KET").attr("readonly", true);
 
@@ -776,17 +893,62 @@
 		$('#detailx').html(html);	
 		
 	}
+
+	// sweetalert untuk tombol hapus dan close
 	
 	function hapusTrans() {
 		let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
-		if (confirm(text) == true) 
-		{
-			window.location ="{{url('/kas/delete/'.$header->NO_ID .'/?flagz='.$flagz.'' )}}";
-			//return true;
-		} 
-		return false;
+
+		Swal.fire({
+			title: 'Are you sure?',
+			text: text,
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!',
+			cancelButtonText: 'Cancel'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Show a success message before redirecting to delete the data
+				Swal.fire({
+					title: 'Deleted!',
+					text: 'Data has been deleted.',
+					icon: 'success',
+					confirmButtonText: 'OK'
+				}).then(() => {
+					// Redirect to delete the data after user confirms the success message
+					window.location =
+						"{{ url('/kas/delete/' . $header->NO_ID . '/?flagz=' . $flagz . '') }}";
+				});
+			}
+		});
 	}
 	
+	function closeTrans() {
+		console.log("masuk");
+
+		Swal.fire({
+			title: 'Are you sure?',
+			text: 'Do you really want to close this page? Unsaved changes will be lost.',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, close it',
+			cancelButtonText: 'No, stay here'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location = "{{ url('/kas?flagz=' . $flagz) }}";
+			} else {
+				Swal.fire({
+					icon: 'info',
+					title: 'Cancelled',
+					text: 'You stayed on the page'
+				});
+			}
+		});
+	}
+
+	// tutupannya
 
 	function CariBukti() {
 		
@@ -820,7 +982,7 @@
                 </td>
 				
 				<td>
-		            <input name='JUMLAH[]'  onblur='hitung()' value='0' id='JUMLAH${idrow}' type='text' style='text-align: right' class='form-control JUMLAH text-primary' required >
+		            <input name='JUMLAH[]'  onclick='select()' onblur='hitung()' value='0' id='JUMLAH${idrow}' type='text' style='text-align: right' class='form-control JUMLAH text-primary' required >
                 </td>
 
                 <td>

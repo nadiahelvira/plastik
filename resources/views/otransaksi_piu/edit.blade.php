@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.plain')
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -10,6 +10,41 @@
     .form-control:focus {
         background-color: #b5e5f9 !important;
     }
+
+	/* query LOADX */
+
+	.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
+
 </style>
 
 @section('content')
@@ -70,7 +105,7 @@
                                 </div>
 								
                                 <div class="col-md-3" >
-                                   <select id="KODEC"  name="KODEC" style="width: 100%" ></select>        							      
+                                   <select id="KODEC"  name="KODEC" onchange ="ambil_sales()" style="width: 100%" ></select>        							      
                                 </div>
 		
 							</div>
@@ -83,10 +118,15 @@
                                 </div>
 								
                                 <div class="col-md-3" >
-                                   <select id="BACNO"  name="BACNO" style="width: 100%" ></select>        							      
+                                   <select id="BACNO"  onchange="ambil_nacno()" name="BACNO" style="width: 100%" ></select>        		
+                                   <input type="text" hidden class="form-control BNAMA" id="BNAMA" name="BNAMA" value="{{$header->BNAMA}}" placeholder="Masukkan Nama" >
                                 </div>
 		
 							</div>	
+							
+							<!-- loader tampil di modal  -->
+							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
+
 							
 							<div class="form-group row">
                                 <div class="col-md-1" align="right">
@@ -330,15 +370,22 @@
 	}
 	
     $(document).ready(function () {
+		
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
+
 		idrow=<?=$no?>;
 		baris=<?=$no?>;
 
-    $('#BACNO').select2({
+  $('#BACNO').select2({
 		
 		placeholder:'Pilih Cash',
 		allowClear: true,
         ajax: {
-			url: '{{url('account/browsecash')}}',
+			url: '{{url('account/browsecashbank')}}',
             dataType: 'json',
             delay: 250,
             data: function(params) {
@@ -386,8 +433,7 @@
             cache: true
         },
 		
-		
-		
+	
 	});
 	
 		
@@ -424,15 +470,17 @@
 		{
 			 ganti();	
 
-			 
+
+			    var initkode ="{{ $header->BACNO }}";
 			    var initcombo ="{{ $header->BNAMA }}";
-				var defaultOption = { id: 1, text: initcombo }; // Set your default option ID and text
+				var defaultOption = { id: initkode, text: initcombo }; // Set your default option ID and text
                 var newOption = new Option(defaultOption.text, defaultOption.id, true, true);
                 $('#BACNO').append(newOption).trigger('change');
 			 
-			 			 
+			 
+			    var initkode1 ="{{ $header->KODEC }}";			 
 			    var initcombo1 ="{{ $header->NAMAC }}";
-				var defaultOption1 = { id: 1, text: initcombo1 }; // Set your default option ID and text
+		    	var defaultOption1 = { id: initkode1, text: initcombo1 }; // Set your default option ID and text
                 var newOption1 = new Option(defaultOption1.text, defaultOption1.id, true, true);
                 $('#KODEC').append(newOption1).trigger('change');
 			 
@@ -741,10 +789,16 @@
 				alert("Bukti# Harus Diisi.");
 			}
 			
-			if ( $('#KODEC').val()=='' ) 
+			if ( $('#KODEC').val() == null ) 
             {				
 			    check = '1';
-				alert("Suplier# Harus Diisi.");
+				alert("Customer# Harus Diisi.");
+			}
+			
+			if ( $('#BACNO').val() == null ) 
+            {				
+			    check = '1';
+				alert("Cash/Bank# Harus Diisi.");
 			}
 			
 			if (baris==0)
@@ -764,7 +818,7 @@
 		    	document.getElementById("entri").submit();  
 			}
 
-		
+
 	}
 		
     function nomor() {
@@ -866,6 +920,9 @@
 			$("#NO_BUKTI").attr("readonly", true);		   
 			$("#TGL").attr("readonly", false);
 			$("#KODEC").attr("readonly", true);
+    		$("#KODEC").attr("disabled", false);
+	    	$("#BACNO").attr("disabled", false);
+
 			$("#NAMAC").attr("readonly", true);
 
 			$("#NOTES").attr("readonly", false);
@@ -921,6 +978,10 @@
 		
 		$("#TGL").attr("readonly", true);
 		$("#KODEC").attr("readonly", true);
+
+		$("#KODEC").attr("disabled", true);
+		$("#BACNO").attr("disabled", true);
+			
 		$("#NAMAC").attr("readonly", true);
 		$("#NOTES").attr("readonly", true);
 
@@ -982,8 +1043,54 @@
 	}
 
 
+    function ambil_sales() {
+      
 
+		$.ajax(
+		{
+			type: 'GET',    
+			url: "{{url('cust/browse_hari')}}",
+			async : false,
+			data: {
+					'KODEC' : $("#KODEC").val(),
+			},
+			success: function( response )
 
+			{
+				resp = response;
+				$("#KODEP").val( resp[0].KODEP );
+				$("#NAMAP").val( resp[0].NAMAP );
+				$("#KOM").val( resp[0].KOM );
+				
+			}
+		});
+
+	}
+	
+	
+    function ambil_nacno() {
+
+		    
+		$.ajax(
+		{
+			type: 'GET',    
+			url: "{{url('account/browse_acno')}}",
+			data: {
+					'BACNO' : $("#BACNO").val(),
+			},
+			
+			success: function( response )
+
+			{
+				resp = response;
+				$("#BNAMA").val( resp[0].NAMA );
+        				
+			}
+		});
+		
+		  
+	}
+	
     function tambah() {
 
         var x = document.getElementById('datatable').insertRow(baris + 1);

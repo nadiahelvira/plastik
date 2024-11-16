@@ -1,4 +1,6 @@
-@extends('layouts.main')
+@extends('layouts.plain')
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <style>
     .card {
@@ -8,6 +10,41 @@
     .form-control:focus {
         background-color: #E0FFFF !important;
     }
+
+	/* query LOADX */
+
+	.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
+
 </style>
 
 @section('content')
@@ -75,42 +112,64 @@
                             </div>
  
                             <div class="form-group row">
-								<div class="col-md-1" align="right">
-									<label style="color:red;font-size:20px">* </label>
-                                    <label for="NO_SO" class="form-label">SO#</label>
-                                </div>
-                                <div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control NO_SO" id="NO_SO" name="NO_SO" placeholder="Masukkan So"value="{{$header->NO_SO}}" style="text-align: left" readonly >
-                                </div>
-                                
-                            </div>
-							
-							<div class="form-group row">
-                                <div class="col-md-1" align="right">
+                                <div class="col-md-1">	
                                     <label for="KODEC" class="form-label">Customer#</label>
                                 </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KODEC" id="KODEC" name="KODEC" placeholder="Masukkan Customer#" value="{{$header->KODEC}}" readonly style="width:140px">
+								
+                                <div class="col-md-3" >
+                                   <select id="KODEC"  name="KODEC" style="width: 100%" ></select>        							      
                                 </div>
+		
+		
+		                        <div class="col-md-1" align="center">
+									<label for="TYPE" class="form-label">Type</label>
+								</div>
+								<div class="col-md-2">
+									<select id="TYPE" class="form-control"  name="TYPE">
+										<option value="BANK" {{ ($header->TYPE == 'BANK') ? 'selected' : '' }}>Bank</option>
+										<option value="KAS" {{ ($header->TYPE == 'KAS') ? 'selected' : '' }}>Kas</option>
+									</select>
+								</div>
+								
+							</div>
+   
 
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="Nama" value="{{$header->NAMAC}}" readonly>
-                                </div>
-                            </div>
+                            <div {{($flagz == 'TP') ? '' : 'hidden' }} class="form-group row">
+                                
+                                
+                                        <div class="col-md-1">	
+                                            <label for="ACNOB" class="form-label">Account#</label>
+                                        </div>
+        								
+                                        <div class="col-md-4" >
+                                           <select id="ACNOB"  name="ACNOB" style="width: 100%" ></select>        							      
+                                        </div>
+                                
+							</div>
 							
-							 <div class="form-group row">
-                                <div class="col-md-1" align="right">
-                                    <label for="ALAMAT" class="form-label">Alamat</label>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control ALAMAT" id="ALAMAT" name="ALAMAT" placeholder="Masukkan Alamat" value="{{$header->ALAMAT}}" readonly>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KOTA" id="KOTA" name="KOTA" placeholder="Kota" value="{{$header->KOTA}}" readonly>
-                                </div>
-                            </div>
+                            <div {{($flagz == 'UM') ? '' : 'hidden' }} class="form-group row">
 
-							<div class="form-group row">
+
+                                        <div class="col-md-1">	
+                                            <label for="BACNO" class="form-label">Account#</label>
+                                        </div>
+        								
+                                        <div class="col-md-3" >
+                                           <select id="BACNO" onchange="ambil_nacno()" name="BACNO" style="width: 100%" ></select>  
+                                           <input type="text" hidden class="form-control BNAMA" id="BNAMA" name="BNAMA" value="{{$header->BNAMA}}" placeholder="Masukkan Nama" >
+                                        </div>
+        
+        
+                                       <div class="col-md-2">
+                                            <input type="text" class="form-control NO_BANK" id="NO_BANK" name="NO_BANK" placeholder="-" value="{{ $header->NO_BANK }}" readonly>
+                                        </div>
+                                
+                                                                
+							</div>
+							
+
+
+                        	<div class="form-group row">
 								
                                 <div class="col-md-1" align="right">
                                     <label for="TOTAL" class="form-label">Total</label>
@@ -120,48 +179,22 @@
                                 </div>
 
                             </div>
-                           
 
-							<div class="form-group row">
+				
+							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
+                     
+                        	<div class="form-group row">
+								
 								<div class="col-md-1" align="right">
                                     <label for="NOTES" class="form-label">Notes</label>
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control NOTES" id="NOTES" name="NOTES" placeholder="Masukkan Notes"  value="{{$header->NOTES}}">
-                                </div>
-                            </div>					
-
-                            <div {{($flagz == 'TP') ? '' : 'hidden' }} class="form-group row">
-                                <div class="col-md-1" align="right">
-                                    <label for="ACNOB" class="form-label">Acc#</label>
-                                </div>
-                                <div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control ACNOB" id="ACNOB" name="ACNOB" placeholder="Masukkan Acc#" value="{{$header->ACNOB}}" style="text-align: left" readonly >
-        							
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control NACNOB" id="NACNOB" name="NACNOB" placeholder="-" value="{{$header->NACNOB}}" readonly >
-                                </div>
-							</div>
-
-                            <div {{($flagz == 'UM') ? '' : 'hidden' }} class="form-group row">
-                                <div class="col-md-1" align="right">
-                                    <label for="BACNO" class="form-label">Bank#</label>
-                                </div>
-                                <div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control BACNO" id="BACNO" name="BACNO" placeholder="Bank#" value="{{$header->BACNO}}" style="text-align: left" readonly >
-        						
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control BNAMA" id="BNAMA" name="BNAMA" placeholder="-" value="{{ $header->BNAMA }}" readonly>
+                                    <input type="text" class="form-control NOTES" id="NOTES" name="NOTES" placeholder="Masukkan Notes" value="{{$header->NOTES}}">
                                 </div>
 
-                               <div class="col-md-2">
-                                    <input type="text" class="form-control NO_BANK" id="NO_BANK" name="NO_BANK" placeholder="-" value="{{ $header->NO_BANK }}" readonly>
-                                </div>
-                                
-                                                                
-							</div>
+								
+								
+                            </div>
 							
                     </div>
 						    
@@ -327,6 +360,10 @@
 @endsection
 
 @section('footer-scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
 <script src="{{asset('foxie_js_css/bootstrap.bundle.min.js')}}"></script>
@@ -340,10 +377,105 @@
 
 	$(document).ready(function() {
 
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
+
 		$tipx = $('#tipx').val();
 		$searchx = $('#CARI').val();
 		
 		
+		 $('#KODEC').select2({
+		
+		placeholder:'Pilih Customer',
+		allowClear: true,
+        ajax: {
+			url: '{{url('cust/browse')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.KODEC, // The ID of the user
+                        text: item.NAMAC // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+		
+	});
+	
+		
+		
+			
+			
+        $('#BACNO').select2({
+    		
+    		placeholder:'Pilih Cash',
+    		allowClear: true,
+            ajax: {
+    			url: '{{url('account/browsecashbank')}}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term // Search term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.map(item => ({
+                            id: item.ACNO, // The ID of the user
+                            text: item.NAMAX // The text to display
+                        }))
+                    };
+                },
+                cache: true
+            },
+    		
+    	
+    	});
+	
+	
+	
+	
+	    $('#ACNOB').select2({
+    		
+    		placeholder:'Pilih Account',
+    		allowClear: true,
+            ajax: {
+    			url: '{{url('account/browse')}}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term // Search term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.map(item => ({
+                            id: item.ACNO, // The ID of the user
+                            text: item.NAMAX // The text to display
+                        }))
+                    };
+                },
+                cache: true
+            },
+    		
+    	
+    	});
+    	
+    	
+    	
 		$('body').on('keydown', 'input, select', function(e) {
 			if (e.key === "Enter") {
 				var self = $(this), form = self.parents('form:eq(0)'), focusable, next;
@@ -370,7 +502,29 @@
 
         if ( $tipx != 'new' )
 		{
-			 ganti();			
+			 ganti();		
+
+			    var initkode ="{{ $header->BACNO }}";
+			    var initcombo ="{{ $header->BNAMA }}";
+				var defaultOption = { id: initkode, text: initcombo }; // Set your default option ID and text
+                var newOption = new Option(defaultOption.text, defaultOption.id, true, true);
+                $('#BACNO').append(newOption).trigger('change');
+			 
+			 
+			    var initkode1 ="{{ $header->KODES }}";			 
+			    var initcombo1 ="{{ $header->NAMAS }}";
+		    	var defaultOption1 = { id: initkode1, text: initcombo1 }; // Set your default option ID and text
+                var newOption1 = new Option(defaultOption1.text, defaultOption1.id, true, true);
+                $('#KODES').append(newOption1).trigger('change');
+			 
+			 
+			    var initkode2 ="{{ $header->ACNOB }}";	
+			 	var initcombo2 ="{{ $header->NAMA }}";
+				var defaultOption2 = { id: initkode2, text: initcombo2 }; // Set your default option ID and text
+                var newOption2 = new Option(defaultOption2.text, defaultOption2.id, true, true);
+                $('#ACNOB').append(newOption1).trigger('change');
+			 
+			 			 
 		}    
 		
 	
@@ -437,8 +591,11 @@
 			{
 				type: 'GET',    
 				url: '{{url('so/browse')}}',
+
+
 				success: function( response )
 				{
+
 					resp = response;
 					if(dTableBSo){
 						dTableBSo.clear();
@@ -525,11 +682,10 @@
 			{
 				type: 'GET', 		
 				url: "{{url('so/browseuang')}}",
-				// data: {
-				// 	'GOL': 'Y',
-				// },
+
 				success: function( response )
 				{
+
 					resp = response;
 					if(dTableBSox){
 						dTableBSox.clear();
@@ -763,17 +919,42 @@
         //var noDropship = '';
 		
 
-			if ( $('#NO_SO').val()=='' ) 
+
+			
+			if ( $('#KODEC').val()=='' ) 
             {			
 			    check = '1';
-				alert("SO# Harus diisi.");
+				alert("Customer Harus diisi.");
 			}
 			
-			if ( $('#ACNOB').val()=='' ) 
-            {			
-			    check = '1';
-				alert("Account Harus diisi.");
+			
+	    	var flagz = $('#flagz').val();
+		    
+			if ( flagz =='TP'  ){
+
+        			if ( $('#ACNOB').val()=='' ) 
+                    {			
+        			    check = '1';
+        				alert("Account Harus diisi.");
+        			}
+							
+				
 			}
+
+			if ( flagz =='UM'  ){
+
+        			if ( $('#BACNO').val()=='' ) 
+                    {			
+        			    check = '1';
+        				alert("Cash/Bank Harus diisi.");
+        			}
+
+			}			
+			
+			
+			
+			
+			
 			
 			if ( tgl.substring(3,5) != bulanPer ) 
 			{
@@ -792,7 +973,7 @@
 			
 		(check==0) ? document.getElementById("entri").submit() : alert('Masih ada kesalahan');
 
-			
+		$("#LOADX").hide();
 	}
 	
  
@@ -846,23 +1027,17 @@
 		   
 			$("#NO_BUKTI").attr("readonly", true);		   
 			$("#TGL").attr("readonly", false);
-			$("#NO_SO").attr("readonly", true);
+
 			$("#KODEC").attr("readonly", true);
 			$("#NAMAC").attr("readonly", true);
 			$("#ALAMAT").attr("readonly", true);
 			$("#KOTA").attr("readonly", true);
-			$("#KD_BRG").attr("readonly", true);
-			$("#NA_BRG").attr("readonly", true);
-			$("#KG").attr("readonly", false);
-			$("#HARGA").attr("readonly", false);
-			$("#QTY").attr("readonly", false);
+
+    		$("#KODEC").attr("disabled", false);
+    		$("#BACNO").attr("disabled", false);
+    		$("#BACNOB").attr("disabled", false);
+    		
 			$("#TOTAL").attr("readonly", true);
-			$("#DPP").attr("readonly", true);
-			$("#PPN").attr("readonly", false);
-
-			$("#TRUCK").attr("readonly", false);
-			$("#GDG").attr("readonly", true);
-
 
 	        var flagz = $('#flagz').val();
 		 
@@ -901,22 +1076,17 @@
 	    $(".NO_BUKTI").attr("readonly", true);	
 		
 		$("#TGL").attr("readonly", true);
-		$("#NO_SO").attr("readonly", true);
+
 		$("#KODEC").attr("readonly", true);
 		$("#NAMAC").attr("readonly", true);
 		$("#ALAMAT").attr("readonly", true);
 		$("#KOTA").attr("readonly", true);
-		$("#KD_BRG").attr("readonly", true);
-		$("#NA_BRG").attr("readonly", true);
-		$("#KG").attr("readonly", true);
-		$("#HARGA").attr("readonly", true);
-		$("#QTY").attr("readonly", true);
-		$("#TOTAL").attr("readonly", true)
-		$("#DPP").attr("readonly", true);
-		$("#PPN").attr("readonly", true);
 
-		$("#TRUCK").attr("readonly", true);
-		$("#GDG").attr("readonly", true);
+    		$("#KODEC").attr("disabled", true);
+    		$("#BACNO").attr("disabled", true);
+    		$("#BACNOB").attr("disabled", true);
+
+		$("#TOTAL").attr("readonly", true)
 
 		
 	}
@@ -926,24 +1096,15 @@
 				
 		 $('#NO_BUKTI').val("+");	
 	//	 $('#TGL').val("");	
-		 $('#NO_SO').val("");	
+
 		 $('#KODEC').val("");	
 		 $('#NAMAC').val("");
 		 $('#ALAMAT').val("");	
 		 $('#KOTA').val("");
 		 
-		 $('#KD_BRG').val("");	
-		 $('#NA_BRG').val("");	
-		 $('#KG').val("0");
-		 $('#HARGA').val("0");		 
-		 $('#QTY').val("0");
 		 $('#TOTAL').val("0.00");		 
-		 $('#DPP').val("0.00");		 
-		 $('#PPN').val("0.00");
-		 
 
-		 $('#TRUCK').val("");	
-		 $('#GDG').val("");	
+		 
 		 $('#ACNOB').val("");	
 		 $('#NACNOB').val("");
 		 $('#BACNO').val("");	
@@ -981,6 +1142,29 @@
 		return false;
 	}
 	
+	
+	function ambil_nacno() {
+
+		    
+		$.ajax(
+		{
+			type: 'GET',    
+			url: "{{url('account/browse_acno')}}",
+			data: {
+					'BACNO' : $("#BACNO").val(),
+			},
+			
+			success: function( response )
+
+			{
+				resp = response;
+				$("#BNAMA").val( resp[0].NAMA );
+        				
+			}
+		});
+		
+		  
+	}
 
 	function CariBukti() {
 		

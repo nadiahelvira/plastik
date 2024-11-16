@@ -168,14 +168,55 @@ class PiuController extends Controller
         $query = DB::table('piu')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ )->where('CBG', $CBG )
                 ->orderByDesc('NO_BUKTI')->limit(1)->get();
 
-        if ($query != '[]') {
-            $query = substr($query[0]->NO_BUKTI, -4);
-            $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-            $no_bukti = 'PU' . $CBG . $tahun . $bulan . '-' . $query;
-        } else {
-            $no_bukti = 'PU' . $CBG . $tahun . $bulan . '-0001';
-        }
 
+        $type1 = substr( $request['BNAMA'],0,3);
+
+        if ( $type1 ='KAS')
+        {          
+                    $bulan    = session()->get('periode')['bulan'];
+                    $tahun    = substr(session()->get('periode')['tahun'], -2);
+                    $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKM')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+            
+                    if ($query2 != '[]') {
+                        $query2 = substr($query2[0]->NO_BUKTI, -4);
+                        $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti2 = 'BKM' . $CBG . $tahun . $bulan . '-' . $query2;
+                    } else {
+                        $no_bukti2 = 'BKM' . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+        }
+        else
+        {
+
+                    $bulan    = session()->get('periode')['bulan'];
+                    $tahun    = substr(session()->get('periode')['tahun'], -2);
+                    $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKM')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+            
+                    if ($query2 != '[]') {
+                        $query2 = substr($query2[0]->NO_BUKTI, -4);
+                        $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti2 = 'BKM' . $CBG . $tahun . $bulan . '-' . $query2;
+                    } else {
+                        $no_bukti2 = 'BKM' . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+            
+        }
+        
+    /////////////////////////////////////////////////////////////////////////////////
+
+        $bulan    = session()->get('periode')['bulan'];
+        $tahun    = substr(session()->get('periode')['tahun'], -2);
+        $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBM')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+
+        if ($query2 != '[]') {
+            $query2 = substr($query2[0]->NO_BUKTI, -4);
+            $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+            $no_bukti2 = 'BBM' . $CBG . $tahun . $bulan . '-' . $query2;
+        } else {
+            $no_bukti2 = 'BBM' . $CBG . $tahun . $bulan . '-0001';
+        }
 		
         // Insert Header
 
@@ -225,18 +266,28 @@ class PiuController extends Controller
 				$detail->NO_FAKTUR = ($NO_FAKTUR[$key]==null) ? "" :  $NO_FAKTUR[$key];
 				$detail->TOTAL	= (float) str_replace(',', '', $TOTAL[$key]);
 				$detail->BAYAR	= (float) str_replace(',', '', $BAYAR[$key]);					
+				$detail->SISA	= (float) str_replace(',', '', $SISA[$key]);	
 				$detail->save();
 			}
 		}
 		
 
 //  ganti 11
-		// $variablell = DB::select('call piuins(?)',array($no_bukti));
+
 
        $no_buktix = $no_bukti;
 		
 		$piu = Piu::where('NO_BUKTI', $no_buktix )->first();
 
+
+        DB::SELECT("UPDATE PIU, CUST
+                            SET PIU.NAMAC = CUST.NAMAC  WHERE PIU.KODEC = CUST.KODEC 
+							AND PIU.NO_BUKTI='$no_buktix';");
+
+        DB::SELECT("UPDATE PIU, ACCOUNT
+                            SET PIU.BNAMA = ACCOUNT.NAMA  WHERE PIU.BACNO = ACCOUNT.ACNO 
+							AND PIU.NO_BUKTI='$no_buktix';");
+							
 
         DB::SELECT("UPDATE piu, piud
                             SET piud.ID = piu.NO_ID  WHERE piu.NO_BUKTI =
@@ -244,6 +295,7 @@ class PiuController extends Controller
 							AND piu.NO_BUKTI='$no_buktix';");
 
 		
+        $variablell = DB::select('call piuins(?,?)', array($no_bukti, $no_bukti2));
 					 
         return redirect('/piu/edit/?idx=' . $piu->NO_ID . '&tipx=edit&flagz=' . $FLAGZ . '&judul=' . $this->judul . '');
 
@@ -452,7 +504,8 @@ class PiuController extends Controller
         );
 		
 // ganti 20
-		// $variablell = DB::select('call piudel(?)',array($piu['NO_BUKTI']));		
+
+        $variablell = DB::select('call piudel(?,?)', array($piu['NO_BUKTI'], '0'));		
 
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
@@ -513,7 +566,8 @@ class PiuController extends Controller
                         'NO_FAKTUR'  => ($NO_FAKTUR[$i]==null) ? "" :  $NO_FAKTUR[$i],
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'BAYAR'      => (float) str_replace(',', '', $BAYAR[$i]),
-
+                        'SISA'      => (float) str_replace(',', '', $SISA[$i]),
+           
                     ]
                 );
             } else {
@@ -529,7 +583,8 @@ class PiuController extends Controller
                         'NO_FAKTUR'  => ($NO_FAKTUR[$i]==null) ? "" :  $NO_FAKTUR[$i],	
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'BAYAR'      => (float) str_replace(',', '', $BAYAR[$i]),
-
+                        'SISA'      => (float) str_replace(',', '', $SISA[$i]),
+                        
                     ]
                 );
             }
@@ -539,7 +594,22 @@ class PiuController extends Controller
 ///////////////////////////////////////////
 
 //  ganti 21
-		// $variablell = DB::select('call piuins(?)',array($piu['NO_BUKTI']));
+
+        DB::SELECT("UPDATE PIU, CUST
+                            SET PIU.NAMAC = CUST.NAMAC  WHERE PIU.KODEC = CUST.KODEC 
+							AND PIU.NO_BUKTI='$no_buktix';");
+
+        DB::SELECT("UPDATE PIU, ACCOUNT
+                            SET PIU.BNAMA = ACCOUNT.NAMA  WHERE PIU.BACNO = ACCOUNT.ACNO 
+							AND PIU.NO_BUKTI='$no_buktix';");
+							
+
+        DB::SELECT("UPDATE piu, piud
+                            SET piud.ID = piu.NO_ID  WHERE piu.NO_BUKTI =
+							piud.NO_BUKTI 
+							AND piu.NO_BUKTI='$no_buktix';");
+							
+        $variablell = DB::select('call piuins(?,?)', array($piu['NO_BUKTI'], 'X'));
 		
 
  		$piu = Piu::where('NO_BUKTI', $no_buktix )->first();
@@ -575,7 +645,7 @@ class PiuController extends Controller
                 ->with(['judul' => $this->judul, 'flagz' => $this->FLAGZ]);
         }
 		
-		// $variablell = DB::select('call piudel(?)',array($piu['NO_BUKTI']));
+        $variablell = DB::select('call piudel(?,?)', array($piu['NO_BUKTI'], '1'));
 		
 		
 // ganti 23
@@ -598,5 +668,13 @@ class PiuController extends Controller
        
     }
  
+    public function getDetailPiu(){
+
+        $no_bukti = $_GET['no_bukti'];
+        $result = DB::table('piud')->where('NO_BUKTI', $no_bukti)->get();
+        
+        return response()->json($result);;
+    }
+	
     
 }

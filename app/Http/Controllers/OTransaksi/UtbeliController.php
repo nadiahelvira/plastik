@@ -187,38 +187,10 @@ class UtbeliController extends Controller
         $no_bukti ='';
         $no_bukti2 ='';
 		
-		if ( $request->flagz == 'BL'  ) {
-
-            $query = DB::table('beli')->select(DB::raw("TRIM(NO_BUKTI) AS NO_BUKTI"))->where('PER', $periode)
-			         ->where('FLAG', 'BL')->where('GOL', 'Y')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
-			
-			if ($query != '[]') {
-            
-				$query = substr($query[0]->NO_BUKTI, -4);
-				$query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-				$no_bukti = 'BY' . $CBG . $tahun . $bulan . '-' . $query;
-			
-			} else {
-				$no_bukti = 'BY' . $CBG . $tahun . $bulan . '-0001';
-				}
-		
-        } else if ( $request->flagz == 'BL' && $request->golz == 'Z' ) {
-
-            $query = DB::table('beli')->select(DB::raw("TRIM(NO_BUKTI) AS NO_BUKTI"))->where('PER', $periode)
-			         ->where('FLAG', 'BL')->where('GOL', 'Z')->orderByDesc('NO_BUKTI')->limit(1)->get();
-			
-			if ($query != '[]') {
-            
-				$query = substr($query[0]->NO_BUKTI, -4);
-				$query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-				$no_bukti = 'BZ' . $tahun . $bulan . '-' . $query;
-			
-			} else {
-				$no_bukti = 'BZ' . $tahun . $bulan . '-0001';
-				}
 
 
-        } else if ( $request->flagz == 'TH'  ) {
+
+        if ( $request->flagz == 'TH'  ) {
 
             $query = DB::table('beli')->select(DB::raw("TRIM(NO_BUKTI) AS NO_BUKTI"))->where('PER', $periode)
 			         ->where('FLAG', 'TH')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
@@ -262,19 +234,51 @@ class UtbeliController extends Controller
 			} else {
 				$no_bukti = 'UM' . $CBG . $tahun . $bulan . '-0001';
 				}
-				
-			$bulan    = session()->get('periode')['bulan'];
-            $tahun    = substr(session()->get('periode')['tahun'], -2);
-            $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)
-                    ->orderByDesc('NO_BUKTI')->limit(1)->get();
-
-            if ($query2 != '[]') {
-                $query2 = substr($query2[0]->NO_BUKTI, -4);
-                $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-' . $query2;
-            } else {
-                $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-0001';
-            }
+			
+			
+			
+            $type1 = substr( $request['BNAMA'],0,3);
+		
+		
+		    if ( $type1 ='KAS' )
+		    {
+		        
+                			$bulan    = session()->get('periode')['bulan'];
+                            $tahun    = substr(session()->get('periode')['tahun'], -2);
+                            $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKK')->where('CBG', $CBG)
+                                    ->orderByDesc('NO_BUKTI')->limit(1)->get();
+                
+                            if ($query2 != '[]') {
+                                $query2 = substr($query2[0]->NO_BUKTI, -4);
+                                $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                                $no_bukti2 = 'BKK' . $CBG . $tahun . $bulan . '-' . $query2;
+                            } else {
+                                $no_bukti2 = 'BKK' . $CBG . $tahun . $bulan . '-0001';
+                            }
+                			
+			
+		    }
+		    else
+		    {
+			 
+                			$bulan    = session()->get('periode')['bulan'];
+                            $tahun    = substr(session()->get('periode')['tahun'], -2);
+                            $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)
+                                    ->orderByDesc('NO_BUKTI')->limit(1)->get();
+                
+                            if ($query2 != '[]') {
+                                $query2 = substr($query2[0]->NO_BUKTI, -4);
+                                $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                                $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-' . $query2;
+                            } else {
+                                $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-0001';
+                            }
+                			
+			    
+			}
+			
+			
+			
 			
 				
  
@@ -335,25 +339,15 @@ class UtbeliController extends Controller
                 'NO_BUKTI'         => $no_bukti,
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
                 'PER'              => $periode,
-                'NO_BL'            => ($request['NO_PO'] == null) ? "" : $request['NO_BL'],
-                'NO_PO'            => ($request['NO_PO'] == null) ? "" : $request['NO_PO'],
+
                 'KODES'            => ($request['KODES'] == null) ? "" : $request['KODES'],
                 'NAMAS'            => ($request['NAMAS'] == null) ? "" : $request['NAMAS'],
                 'ALAMAT'           => ($request['ALAMAT'] == null) ? "" : $request['ALAMAT'],
                 'KOTA'             => ($request['KOTA'] == null) ? "" : $request['KOTA'],
                 'FLAG'             =>  $FLAGZ,
-                // 'GOL'              =>  $GOLZ,
-                'NOTES'            => ($request['NOTES'] == null) ? "" : $request['NOTES'],
-                'KG'               => (float) str_replace(',', '', $request['KG']),
-                'SISA'               => (float) str_replace(',', '', $request['KG']),
-                'HARGA'            => (float) str_replace(',', '', $request['HARGA']),
-                'LAIN'             => (float) str_replace(',', '', $request['LAIN']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TOTAL']),
-                'RPRATE'           => (float) str_replace(',', '', $request['RPRATE']),
-                'RPHARGA'          => (float) str_replace(',', '', $request['RPHARGA']),
-                'RPLAIN'           => (float) str_replace(',', '', $request['RPLAIN']),				
-                'RPTOTAL'          => ($FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['RPTOTAL'] ),      
-				'RPSISA'           => ($FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['RPTOTAL'] ),      
+                'NETT'             => ($FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['TOTAL'] ),     
+                'SISA'             => ($FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['TOTAL'] ),      
                 'ACNOA'            => ($request['ACNOA'] == null) ? "" : $request['ACNOA'],
                 'NACNOA'           => ($request['NACNOA'] == null) ? "" : $request['NACNOA'],
                 'ACNOB'            => $ACNOB,
@@ -370,15 +364,31 @@ class UtbeliController extends Controller
         );
 
 
-		if ( $FLAGZ == 'UM' ) {
-			// $variablell = DB::select('call umins(?,?)', array($no_bukti, $no_bukti2));
-
-        } else if ( $FLAGZ == 'TH' ) {
-            // $variablell = DB::select('call thutins(?)', array($no_bukti));
-        }
-		
 
 	    $no_buktix = $no_bukti;
+		
+		
+	    DB::SELECT("UPDATE BELI, SUP
+                            SET BELI.NAMAS = SUP.NAMAS, BELI.ALAMAT = SUP.ALAMAT, BELI.KOTA = SUP.KOTA  WHERE BELI.KODES = SUP.KODES 
+							AND BELI.NO_BUKTI='$no_buktix';");
+
+        DB::SELECT("UPDATE BELI, ACCOUNT
+                            SET BELI.BNAMA = ACCOUNT.NAMA  WHERE BELI.BACNO = ACCOUNT.ACNO 
+							AND BELI.NO_BUKTI='$no_buktix';");
+							
+        DB::SELECT("UPDATE BELI, ACCOUNT
+                            SET BELI.NACNOA = ACCOUNT.NAMA  WHERE BELI.ACNOA = ACCOUNT.ACNO 
+							AND BELI.NO_BUKTI='$no_buktix';");
+						
+		
+		if ( $FLAGZ == 'UM' ) {
+			 $variablell = DB::select('call umins(?,?)', array($no_bukti, $no_bukti2));
+
+        } else if ( $FLAGZ == 'TH' ) {
+             $variablell = DB::select('call thutins(?)', array($no_bukti));
+        }
+		
+		
 		
 		$utbeli = Beli::where('NO_BUKTI', $no_buktix )->first();
 					 
@@ -590,11 +600,11 @@ class UtbeliController extends Controller
 		
 		if ( $FLAGZ == 'UM' ) {
 
-            // $variablell = DB::select('call umdel(?,?)', array($utbeli['NO_BUKTI'], '0'));
+             $variablell = DB::select('call umdel(?,?)', array($utbeli['NO_BUKTI'], '0'));
 
 
         } else if ( $FLAGZ == 'TH' ) {
-            // $variablell = DB::select('call thutdel(?)', array($utbeli['NO_BUKTI']));
+             $variablell = DB::select('call thutdel(?)', array($utbeli['NO_BUKTI']));
 
         }
 		
@@ -603,24 +613,15 @@ class UtbeliController extends Controller
         $utbeli->update(
             [
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
-				'NO_BL'            => ($request['NO_BL'] == null) ? "" : $request['NO_BL'],
-                'NO_PO'            => ($request['NO_PO'] == null) ? "" : $request['NO_PO'],
+
                 'KODES'            => ($request['KODES'] == null) ? "" : $request['KODES'],
                 'NAMAS'            => ($request['NAMAS'] == null) ? "" : $request['NAMAS'],
                 'ALAMAT'           => ($request['ALAMAT'] == null) ? "" : $request['ALAMAT'],
                 'KOTA'             => ($request['KOTA'] == null) ? "" : $request['KOTA'],
                 'NOTES'            => ($request['NOTES'] == null) ? "" : $request['NOTES'],
-                'KG'               => (float) str_replace(',', '', $request['KG']),
-                'SISA'             => (float) str_replace(',', '', $request['KG']),			
-                'HARGA'            => (float) str_replace(',', '', $request['HARGA']),
-                'LAIN'             => (float) str_replace(',', '', $request['LAIN']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TOTAL']),
-                'RPRATE'           => (float) str_replace(',', '', $request['RPRATE']),
-                'RPHARGA'          => (float) str_replace(',', '', $request['RPHARGA']),
-                'RPLAIN'           => (float) str_replace(',', '', $request['RPLAIN']),				
-                'RPTOTAL'          => ( $FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['RPTOTAL'] ),      
-				'RPSISA'           => ( $FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['RPTOTAL'] ),      
-                		
+                'NETT'             => ( $FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['TOTAL'] ),      
+				'SISA'             => ( $FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['TOTAL'] ),      
                 'ACNOA'            => ($request['ACNOA'] == null) ? "" : $request['ACNOA'],				
 				'NACNOA'           => ($request['NACNOA'] == null) ? "" : $request['NACNOA'],
                 'BACNO'            => ($request['BACNO'] == null) ? "" : $request['BACNO'],
@@ -637,19 +638,33 @@ class UtbeliController extends Controller
 		$no_buktix = $utbeli->NO_BUKTI;
 		
 	
+	   DB::SELECT("UPDATE BELI, SUP
+                            SET BELI.NAMAS = SUP.NAMAS, BELI.ALAMAT = SUP.ALAMAT, BELI.KOTA = SUP.KOTA  WHERE BELI.KODES = SUP.KODES 
+							AND BELI.NO_BUKTI='$no_buktix';");
+
+        DB::SELECT("UPDATE BELI, ACCOUNT
+                            SET BELI.BNAMA = ACCOUNT.NAMA  WHERE BELI.BACNO = ACCOUNT.ACNO 
+							AND BELI.NO_BUKTI='$no_buktix';");
+							
+        DB::SELECT("UPDATE BELI, ACCOUNT
+                            SET BELI.NACNOA = ACCOUNT.NAMA  WHERE BELI.ACNOA = ACCOUNT.ACNO 
+							AND BELI.NO_BUKTI='$no_buktix';");
+	
 
 		if ( $FLAGZ == 'UM' ) {
           
-    	    // $variablell = DB::select('call umins(?,?)', array($utbeli['NO_BUKTI'], 'X'));
+    	     $variablell = DB::select('call umins(?,?)', array($utbeli['NO_BUKTI'], 'X'));
 
         } else if ( $FLAGZ == 'TH' ) {
-            // $variablell = DB::select('call thutins(?)', array($utbeli['NO_BUKTI']));
+             $variablell = DB::select('call thutins(?)', array($utbeli['NO_BUKTI']));
         }
 		
-		
-
+	
 		$utbeli = Beli::where('NO_BUKTI', $no_buktix )->first();
-					 
+	
+	
+	 
+						
 		return redirect('/utbeli?flagz='.$FLAGZ.'&golz='.$GOLZ)
 	   ->with(['judul' => $judul, 'golz' => $GOLZ, 'flagz' => $FLAGZ ]);
 
@@ -679,10 +694,10 @@ class UtbeliController extends Controller
 				
 		if ( $FLAGZ == 'UM' ) {
            
-		//    $variablell = DB::select('call umdel(?,?)', array($utbeli['NO_BUKTI'], '1'));
+		     $variablell = DB::select('call umdel(?,?)', array($utbeli['NO_BUKTI'], '1'));
 
         } else if ( $FLAGZ == 'TH' ) {
-            // $variablell = DB::select('call thutdel(?)', array($utbeli['NO_BUKTI']));
+             $variablell = DB::select('call thutdel(?)', array($utbeli['NO_BUKTI']));
         }
 		
         $deleteBeli = Beli::find($utbeli->NO_ID);
@@ -705,76 +720,6 @@ class UtbeliController extends Controller
 	
 	public function jsutbelic(Beli $utbeli)
     {
-        $no_utbeli = $utbeli->NO_BUKTI;
-
-        $file     = 'utbelic';
-        $PHPJasperXML = new PHPJasperXML();
-        $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
-
-        $query = DB::SELECT("
-			SELECT NO_BUKTI,  TGL, KODES, NAMAS, KD_BHN, NA_BHN, KG, HARGA, TOTAL, NOTES, AJU, BL, EMKL
-			FROM utbeli 
-			WHERE utbeli.NO_BUKTI='$no_utbeli' 
-			ORDER BY NO_BUKTI;
-		");
-
-        $xno_utbeli1   = $query[0]->NO_BUKTI;
-        $xtgl1     = $query[0]->TGL;
-        $xkodes1   = $query[0]->KODES;
-        $xnamas1   = $query[0]->NAMAS;
-        $xnotes1   = $query[0]->NOTES;
-        $xkd_brg1  = $query[0]->KD_BHN;
-        $xna_brg1  = $query[0]->NA_BHN;
-        $xkg1      = $query[0]->KG;
-        $xaju1     = $query[0]->AJU;
-        $xbl1      = $query[0]->BL;
-        $xemkl1    = $query[0]->EMKL;
-        $xharga1   = $query[0]->HARGA;
-        $xtotal1   = $query[0]->TOTAL;
-        
-        $PHPJasperXML->arrayParameter = array("HARGA1" => (float) $xharga1, "TOTAL1" => (float) $xtotal1, "KG1" => (float) $xkg1, 
-										"NO_BELI1" => (string) $xno_utbeli1, "TGL1" => (string) $xtgl1, 
-										"KODES1" => (string) $xkodes1,  "NAMAS1" => (string) $xnamas1,
-										"KD_BHN1" => (string) $xkd_brg1, "AJU1" => (string) $xaju1,
-										"BL1" => (string) $xbl1, "EMKL1" => (string) $xemkl1,
-										"NA_BHN1" => (string) $xna_brg1,  "NOTES1" => (string) $xnotes1 );
-        $PHPJasperXML->arraysqltable = array();
-
-
-        $query2 = DB::SELECT("
-			SELECT NO_BUKTI, TGL, TRUCK, NO_CONT, KG1, KG, SEAL, GUDANG, NOTES, NO_BL, SUSUT
-			FROM terima 
-			WHERE terima.NO_BL='$no_utbeli'  
-			ORDER BY TGL, NO_BUKTI;
-		");
-
-        $data = [];
-
-        foreach ($query2 as $key => $value) {
-            array_push($data, array(
-                'NO_BUKTI' => $query2[$key]->NO_BUKTI,
-                'TGL'      => $query2[$key]->TGL,
-                'KODES'    => $query2[$key]->KODES,
-                'NAMAS'    => $query2[$key]->NAMAS,
-                'ALAMAT'    => $query2[$key]->ALAMAT,
-                'AJU'    => $query2[$key]->AJU,
-                'BL'       => $query2[$key]->BL,
-                'EMKL'    => $query2[$key]->EMKL,
-                'TRUCK'    => $query2[$key]->TRUCK,
-                'SEAL'    => $query2[$key]->SEAL,
-                'GUDANG'    => $query2[$key]->GUDANG,
-                'JCONT'    => $query2[$key]->NO_CONT,
-                'KG'       => $query2[$key]->KG,
-                'KG1'       => $query2[$key]->KG1,
-                'HARGA'    => $query2[$key]->HARGA,
-                'SUSUT'    => $query2[$key]->SUSUT,
-                'BAYAR'    => $query2[$key]->BAYAR,
-                'NOTES'    => $query2[$key]->NOTES
-            ));
-        }
-		
-        $PHPJasperXML->setData($data);
-        ob_end_clean();
-        $PHPJasperXML->outpage("I");
+       
     }
 }

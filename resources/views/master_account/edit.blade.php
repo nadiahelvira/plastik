@@ -1,5 +1,39 @@
-@extends('layouts.main')
+@extends('layouts.plain')
+<style>
 
+.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
+	
+</style>
 @section('content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -90,6 +124,9 @@
 									</div>                             
 							</div>
 								
+							<!-- loader tampil di modal  -->
+							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
+
 							<div class="form-group row">
 									<div class="col-md-1">
 										<label for="POS2" class="form-label">Type</label>
@@ -190,6 +227,12 @@
 	var idrow = 1;
 
     $(document).ready(function () {
+
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
 
  		$tipx = $('#tipx').val();
 				
@@ -436,10 +479,9 @@
 	
 			
 		(hasilCek==0) ? document.getElementById("entri").submit() : alert('Masih ada kesalahan');
+			      
+		$("#LOADX").hide();         
 
-
-    				      
-               
 	}
 </script>
 </script>

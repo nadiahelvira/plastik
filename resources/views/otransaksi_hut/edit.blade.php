@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.plain')
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -11,6 +11,40 @@
     .form-control:focus {
         background-color: #b5e5f9 !important;
     }
+
+	/* query LOADX */
+
+	.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
 
 </style>
 
@@ -92,7 +126,9 @@
                                 </div>
 								
                                 <div class="col-md-3" >
-                                   <select id="BACNO"  name="BACNO" style="width: 100%" ></select>        							      
+                                   <select id="BACNO"  onchange="ambil_nacno()" name="BACNO" style="width: 100%" ></select>        							      
+                                    <input type="text" hidden class="form-control BNAMA" id="BNAMA" name="BNAMA" value="{{$header->BNAMA}}" placeholder="Masukkan Nama" >
+                                    
                                 </div>
 		
 							</div>	
@@ -108,7 +144,8 @@
 
                             </div>
 
-
+							<!-- loader tampil di modal  -->
+							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
 
                             <table id="datatable" class="table table-striped table-border">
                                 <thead>
@@ -324,6 +361,13 @@
 	}
 	
     $(document).ready(function () {
+
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
+
 		idrow=<?=$no?>;
 		baris=<?=$no?>;
 
@@ -362,7 +406,7 @@
 		placeholder:'Pilih Cash',
 		allowClear: true,
         ajax: {
-			url: '{{url('account/browsecash')}}',
+			url: '{{url('account/browsecashbank')}}',
             dataType: 'json',
             delay: 250,
             data: function(params) {
@@ -420,14 +464,16 @@
 		{
 			 ganti();		
 			 
+			    var initkode ="{{ $header->BACNO }}";
 			    var initcombo ="{{ $header->BNAMA }}";
-				var defaultOption = { id: 1, text: initcombo }; // Set your default option ID and text
+				var defaultOption = { id: initkode, text: initcombo }; // Set your default option ID and text
                 var newOption = new Option(defaultOption.text, defaultOption.id, true, true);
                 $('#BACNO').append(newOption).trigger('change');
 			 
 			 
+			    var initkode1 ="{{ $header->KODES }}";			 
 			    var initcombo1 ="{{ $header->NAMAS }}";
-				var defaultOption1 = { id: 1, text: initcombo1 }; // Set your default option ID and text
+		    	var defaultOption1 = { id: initkode1, text: initcombo1 }; // Set your default option ID and text
                 var newOption1 = new Option(defaultOption1.text, defaultOption1.id, true, true);
                 $('#KODES').append(newOption1).trigger('change');
 			 
@@ -442,6 +488,7 @@
 		for (i = 0; i <= jumlahdata; i++) {
 			$("#TOTAL" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#BAYAR" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#SISA" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 		}	
 
 		$(".NO_FAKTUR").each(function() {
@@ -831,10 +878,16 @@
 				alert("Tahun tidak sama dengan Periode");
 		    }	 
 
-			if ( $('#KODES').val()=='' ) 
+			if ( $('#KODES').val() == null ) 
             {				
 			    check = '1';
 				alert("Suplier# Harus Diisi.");
+			}
+			
+			if ( $('#BACNO').val() == null ) 
+            {				
+			    check = '1';
+				alert("Cash/Bank# Harus Diisi.");
 			}
 			
 			if (baris==0)
@@ -848,7 +901,7 @@
 		    	document.getElementById("entri").submit();  
 			}
 
-		
+			$("#LOADX").hide();
 	}
 		
     function nomor() {
@@ -940,6 +993,10 @@
 			$("#NO_BUKTI").attr("readonly", true);		   
 			$("#TGL").attr("readonly", false);
 			$("#KODES").attr("readonly", true);
+			
+			$("#KODES").attr("disabled", false);
+			$("#BACNO").attr("disabled", false);
+			
 			$("#NAMAS").attr("readonly", true);
 			$("#NOTES").attr("readonly", false);
 		
@@ -993,6 +1050,10 @@
 		
 		$("#TGL").attr("readonly", true);
 		$("#KODES").attr("readonly", true);
+		
+		$("#KODES").attr("disabled", true);
+		$("#BACNO").attr("disabled", true);
+			
 		$("#NAMAS").attr("readonly", true);
 		$("#NOTES").attr("readonly", true);
 
@@ -1045,6 +1106,30 @@
 	}
 
 
+
+	function ambil_nacno() {
+
+		    
+		$.ajax(
+		{
+			type: 'GET',    
+			url: "{{url('account/browse_acno')}}",
+			data: {
+					'BACNO' : $("#BACNO").val(),
+			},
+			
+			success: function( response )
+
+			{
+				resp = response;
+				$("#BNAMA").val( resp[0].NAMA );
+        				
+			}
+		});
+		
+		  
+	}
+	
 
     function tambah() {
 

@@ -27,6 +27,18 @@ class AccountController extends Controller
         return view('master_account.index');
     }
 
+
+    public function browse_nacno(Request $request)
+    {
+        $acno = $request->BACNO;
+
+         $account = DB::SELECT("SELECT NO_ID, ACNO, NAMA
+                            FROM account WHERE ACNO = '$acno' "); 
+	
+
+        return response()->json($account);
+    }
+    
     public function browseKel(Request $request)
     {
         $tipe = $request->tipe;
@@ -45,30 +57,69 @@ class AccountController extends Controller
         }
 		return response()->json($kel);
     }
-    public function browsecash()
+    public function browsecash(Request $request)
     {
 
-        $account = Account::where('BNK', '=', '1')->get();
+
+		if (!empty(request('q'))) {
+			$account = Account::where('BNK', '=', '1')->where('NAMA', 'LIKE', '%'.request('q').'%')->get();
+        } else {
+			$account = Account::where('BNK', '=', '1')->get();			
+		}
+
         return response()->json($account);
+ 
     }
 
-    public function browsebank()
+    public function browsebank(Request $request)
     {
-        $account = Account::where('BNK', '=', '2')->get();
-        return response()->json($account);
+
+		if (!empty(request('q'))) {
+			$account = Account::where('BNK', '=', '2')->where('NAMA', 'LIKE', '%'.request('q').'%')->get();
+        } else {
+			$account = Account::where('BNK', '=', '2')->get();			
+		}
+
+         return response()->json($account);
+         
     }
     
     
-    public function browsecashbank()
+    public function browsecashbank(Request $request)
     {
 
-        $account = Account::where('BNK', '<>', '')->get();
+        if (!empty(request('q'))) {
+
+
+            $account = DB::SELECT("SELECT ACNO, NAMA, CONCAT(ACNO, '-', NAMA) AS NAMAX 
+                            FROM account WHERE BNK <>'' AND NAMA LIKE ('%$request->q%') ORDER BY NAMA "); 
+	
+    	    
+        } else {
+            
+			$account = DB::SELECT("SELECT ACNO, NAMA, CONCAT(ACNO, '-', NAMA) AS NAMAX 
+                            FROM account WHERE BNK <>'' 
+                            ORDER BY NAMA ");			
+		}
         return response()->json($account);
     }
 
-    public function browse()
+    public function browse(Request $request)
     {
-        $account = Account::where('BNK', '=', '')->get();
+
+    	if (!empty(request('q'))) {
+
+
+            $account = DB::SELECT("SELECT ACNO, NAMA, CONCAT(ACNO, '-', NAMA) AS NAMAX 
+                            FROM account WHERE NAMA LIKE ('%$request->q%') ORDER BY NAMA "); 
+	
+    	    
+        } else {
+            
+			$account = DB::SELECT("SELECT ACNO, NAMA, CONCAT(ACNO, '-', NAMA) AS NAMAX 
+                            FROM account
+                            ORDER BY NAMA ");			
+		}
         return response()->json($account);
     }
 

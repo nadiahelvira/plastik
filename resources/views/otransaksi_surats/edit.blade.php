@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.plain')
 
 <style>
     .card {
@@ -8,6 +8,40 @@
     .form-control:focus {
         background-color: #b5e5f9 !important;
     }
+
+	/* query LOADX */
+
+	.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
 </style>
 
 @section('content')
@@ -78,10 +112,10 @@
                             <div class="form-group row">
 								<div {{( $flagz =='AJ') ? '' : 'hidden' }} class="col-md-1" align="left">
 									<label style="color:red">*</label>									
-                                    <label for="NO_SURAT" class="form-label">SJ#</label>
+                                    <label for="NO_SURATS" class="form-label">SJ#</label>
                                 </div>
                                	<div {{( $flagz =='AJ') ? '' : 'hidden' }} class="col-md-2 input-group" >
-                                  <input type="text" class="form-control NO_SURAT" id="NO_SURAT" name="NO_SURAT" placeholder="Pilih SJ"value="{{$header->NO_SURAT}}" style="text-align: left" readonly >
+                                  <input type="text" class="form-control NO_SURATS" id="NO_SURATS" name="NO_SURATS" placeholder="Pilih SJ"value="{{$header->NO_SURATS}}" style="text-align: left" readonly >
         						  <button type="button" class="btn btn-primary" onclick="browseSurats()"><i class="fa fa-search"></i></button>
                                 </div>
                             </div>
@@ -165,6 +199,9 @@
 
                             </div>
 
+							<!-- loader tampil di modal  -->
+							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
+
 							<div class="form-group row">
                                 <div class="col-md-1" align="left">
 									<!-- <label style="color:red">*</label>									 -->
@@ -232,7 +269,7 @@
                                             <input name="SATUAN[]" id="SATUAN{{$no}}" type="text" class="form-control SATUAN" placeholder="Satuan" value="{{$detail->SATUAN}}">
                                         </td>
 										<td>
-											<input name="QTY[]" onkeyup="hitung()" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" value="{{$detail->QTY}}">
+											<input name="QTY[]" onclick='select()' onkeyup="hitung()" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" value="{{$detail->QTY}}">
 											<input hidden name="QTY_KIRIM[]" onkeyup="hitung()" id="QTY_KIRIM{{$no}}" type="text" style="text-align: right"  class="form-control QTY_KIRIM text-primary" value="{{$detail->QTY_KIRIM}}">
 											<input hidden name="HARGA[]" onkeyup="hitung()" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" value="{{$detail->HARGA}}">
 											<input hidden name="TOTAL[]" onkeyup="hitung()" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" value="{{$detail->TOTAL}}" readonly>
@@ -519,6 +556,13 @@
 	}
 	
     $(document).ready(function () {
+
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
+
     idrow=<?=$no?>;
     baris=<?=$no?>;
 
@@ -784,8 +828,15 @@
 				// 'GOL': "{{$golz}}",
 				// kodec: $("#KODEC").val(),
 			},
+
+			beforeSend: function(){
+					$("#LOADX").show();
+				},
+
 			success: function( response )
 			{
+				$("#LOADX").hide();
+
 				resp = response;
 				if(dTableDo){
 					dTableDo.clear();
@@ -877,8 +928,16 @@
 				data: {
 					'GOL': "{{$golz}}",
 				},
+
+				beforeSend: function(){
+					$("#LOADX").show();
+				},
+
 				success: function( response )
 				{
+
+					$("#LOADX").hide();
+
 					resp = response;
 					if(dTableBSurats){
 						dTableBSurats.clear();
@@ -909,7 +968,7 @@
 		}
 		
 		chooseSurats = function(NO_BUKTI, NO_SO, KODEC,NAMAC, ALAMAT, KOTA, SOPIR, TRUCK){
-			$("#NO_SURAT").val(NO_BUKTI);
+			$("#NO_SURATS").val(NO_BUKTI);
 			$("#NO_SO").val(NO_SO);
 			$("#KODEC").val(KODEC);
 			$("#NAMAC").val(NAMAC);
@@ -922,7 +981,7 @@
 			getSuratsd(NO_BUKTI);
 		}
 		
-		$("#NO_SURAT").keypress(function(e){
+		$("#NO_SURATS").keypress(function(e){
 
 			if(e.keyCode == 46){
 				 e.preventDefault();
@@ -958,7 +1017,7 @@
                                     <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='NA_BHN[]' data-rowid=${i} id='NA_BHN${i}' value="${resp[i].NA_BHN}" type='text' class='form-control  NA_BHN' readonly></td>
                                     <td><input name='SATUAN[]' data-rowid=${i} id='SATUAN${i}' value="${resp[i].SATUAN}" type='text' class='form-control  SATUAN' placeholder="Satuan"  readonly></td>
                                     <td>
-										<input name='QTY[]' onclick='select()' onkeyup='hitung()' id='QTY${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY text-primary' readonly >
+										<input name='QTY[]' onclick='select()' onkeyup='hitung()' id='QTY${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY text-primary' >
 										<input hidden name='QTY_KIRIM[]' onclick='select()' onkeyup='hitung()' id='QTY_KIRIM${i}' value="${resp[i].QTY}" type='text' style='text-align: right' class='form-control QTY_KIRIM text-primary' readonly >
 										<input hidden name='HARGA[]' onclick='select()' onkeyup='hitung()' id='HARGA${i}' value="${resp[i].HARGA}" type='text' style='text-align: right' class='form-control HARGA text-primary' readonly> 
 										<input hidden name='TOTAL[]' onclick='select()' onkeyup='hitung()' id='TOTAL${i}' value="${resp[i].TOTAL}" type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly> 
@@ -994,6 +1053,7 @@
 					baris=resp.length;
 
 					nomor();
+					hitung();
 				}
 			});
 	}
@@ -1164,7 +1224,8 @@
 		// }
 
 		(check==0) ? document.getElementById("entri").submit() : alert('Masih ada kesalahan');
-			
+		
+		$("#LOADX").hide();
 	}
 		
     function nomor() {

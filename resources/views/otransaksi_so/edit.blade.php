@@ -1,4 +1,6 @@
-@extends('layouts.main')
+@extends('layouts.plain')
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <style>
     .card {
@@ -8,6 +10,40 @@
     .form-control:focus {
         background-color: #E0FFFF !important;
     }
+
+	/* query LOADX */
+
+	.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
 </style>
 
 @section('content')
@@ -75,77 +111,28 @@
         
 	                          
                             <div class="form-group row">
-
-								<div class="col-md-1">
-                                    <label for="KODEC" class="form-label">Customer</label>
+                                <div class="col-md-1">	
+                                    <label for="KODEC" class="form-label">Customer#</label>
                                 </div>
-                               	<div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control KODEC" id="KODEC" name="KODEC" placeholder="Pilih Customer"value="{{$header->KODEC}}" style="text-align: left" readonly >
-        						  <button type="button" class="btn btn-primary" onclick="browseCust()"><i class="fa fa-search"></i></button>
-                                </div>
-                            </div>
-							
-
-							<div class="form-group row">
-
-
-								<div class="col-md-1" align="left">
-                                    <label for="NAMAC" class="form-label"></label>
-                                </div>
-								<div class="col-md-3">
-                                    <input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="-" value="{{$header->NAMAC}}" readonly>
-									
-									<input hidden type="text" onclick="select()" onblur="jtempo()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
-									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
-								    
-								</div>
 								
-								<div class="col-md-1">
-									<!-- <input type="checkbox" class="form-check-input" id="PKP" name="PKP" value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}> -->
-									<input type="text" class="form-control PKP" id="PKP" name="PKP" placeholder="-" 
-									value="{{$header->PKP}}" readonly>
-									<label for="PKP">PKP</label>
-								</div>
-                            </div>
+                                <div class="col-md-3" >
+                                   <select id="KODEC"  onchange="ambil_hari()" name="KODEC" style="width: 100%" ></select>        							 
+                                   
+                                    <input type="text" hidden class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="" value="{{$header->NAMAC}}" readonly>
+                                    <input type="text" hidden class="form-control HARI" id="HARI" name="HARI" value="{{$header->HARI}}" placeholder="Masukkan Hari" >
 
-							
-                            <div class="form-group row">
-
-
-								<div class="col-md-1" align="right">
-                                    <label for="ALAMAT" class="form-label"></label>
                                 </div>
-								<div class="col-md-3">
-                                    <input type="text" class="form-control ALAMAT" id="ALAMAT" name="ALAMAT" value="{{$header->ALAMAT}}"placeholder="Alamat" readonly >
+		
+                                <div class="col-md-1" >
+                                  	<input type="checkbox" class="form-check-input" id="PKP" name="PKP" readonly  value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}>
+                                    <label for="PKP" class="form-label">Pkp</label>
                                 </div>
-                            </div>
-   
-							<div class="form-group row">
-
-								<div class="col-md-1" align="right">
-                                    <label for="KOTA" class="form-label"></label>
-                                </div>
-								<div class="col-md-2">
-                                    <input type="text" class="form-control KOTA" id="KOTA" name="KOTA" value="{{$header->KOTA}}"placeholder="Kota" readonly>
-                                </div>
-                            </div>							
-							
-							<div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="NOTES" class="form-label">Notes</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control NOTES" id="NOTES" name="NOTES" placeholder="Masukkan NOTES" value="{{$header->NOTES}}">
-                                </div>
-
-								<div class="col-md-1">								
+		
+			                    <div class="col-md-1">								
                                     <label for="KODEP" class="form-label">Sales</label>
                                 </div>
                                	<div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder=""value="{{$header->KODEP}}" style="text-align: left" readonly >
-        						  </div>
-        
-                                <div class="col-md-2">
+                                    <input type="text" hidden class="form-control KODEP" id="KODEP" name="KODEP" placeholder=""value="{{$header->KODEP}}" style="text-align: left" readonly >
                                     <input type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="" value="{{$header->NAMAP}}" readonly>
                                     <input hidden type="text" onclick="select()" class="form-control KOM" id="KOM" name="KOM" placeholder="Masukkan KOM" 
 									value="{{ number_format( $header->KOM, 0, '.', ',') }}" style="text-align: right" >
@@ -157,10 +144,28 @@
 								<div class="col-md-1" >
 									<input type="text" class="form-control RING" id="RING" name="RING" placeholder=""value="{{$header->RING}}" style="text-align: left" readonly >
 								</div>
+								
+		
+							</div>
+							
+
+							<!-- loader tampil di modal  -->
+							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
+							
+   						
+							
+							<div class="form-group row">
+                                <div class="col-md-1">
+                                    <label for="NOTES" class="form-label">Notes</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control NOTES" id="NOTES" name="NOTES" placeholder="Masukkan Notes" value="{{$header->NOTES}}">
+                                </div>
+
+							
 
                             </div>
 							
-							<hr style="margin-top: 30px; margin-buttom: 30px">
 							
 							<div style="overflow-y:scroll;" class="col-md-12 scrollable" align="right">
 
@@ -182,16 +187,12 @@
                                         </th>
 										<th {{( $golz =='J') ? '' : 'hidden' }} width="200px" style="text-align:center">Nama</th>
 
-										<th width="150px" style="text-align:center">Satuan</th>
+										<th width="100px" style="text-align:center">Satuan</th>
 										<th width="150px" style="text-align:center">Qty</th> 
 										<th width="150px" style="text-align:center">Harga</th>
 
 										<th width="150px" style="text-align:center">Total</th>							
-										<th width="150px" tyle="text-align: center;">PPN</th>								
-										<th width="150px" style="text-align: center;">DPP</th>	
 										<th width="150px" style="text-align: center;">Diskon</th>	
-
-										<th width="200px" style="text-align:center">Ket</th>
 										<th></th>										
                                     </tr>
 									
@@ -240,19 +241,13 @@
 											<input name="QTY[]" onclick='select()' onblur="hitung()" value="{{$detail->QTY}}" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" >
 										</td>
 										<td><input name="HARGA[]" onclick='select()' onblur="hitung()" value="{{$detail->HARGA}}" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" readonly></td>
- 										<td><input name="TOTAL[]" onclick='select()' onblur="hitung()" value="{{$detail->TOTAL}}" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" readonly ></td>
-                                        
-										<td>
-											<input name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
+ 										<td><input name="TOTAL[]" onclick='select()' onblur="hitung()" value="{{$detail->TOTAL}}" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" readonly >
+											<input name="PPNX[]" hidden  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
+											<input name="DPP[]"  hidden onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
 										</td>
 										<td>
-											<input name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
-										</td>
-										<td>
-											<input name="DISK[]" onblur="hitung()"  value="0" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK">
-										</td>
-										<td>
-                                            <input name="KET[]" id="KET{{$no}}" type="text" value="{{$detail->KET}}" class="form-control KET" >
+											<input name="DISK[]" onblur="hitung()"  value="{{$detail->DISK}}" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK">
+                                            <input name="KET[]" hidden id="KET{{$no}}" type="text" value="{{$detail->KET}}" class="form-control KET" >
                                         </td>       
 											
 										<td>
@@ -280,34 +275,34 @@
 					<!-- nambah div ini -->						
 						</div>
 					<!-- batas div -->
-
-							<div class="col-md-2 row">
-								<a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
-
-							</div>	
-
-						<hr style="margin-top: 30px; margin-buttom: 30px">		
                                  
 						<div class="tab-content mt-6">
 
 							<div class="form-group row">
+							    
+							     <div class="col-md-1" align="right">
+                                	<a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
+                                </div>
+                                
                                 <div class="col-md-4" align="right">
                                     <label for="TTOTAL" class="form-label">Total Qty</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL_QTY" id="TTOTAL_QTY" name="TTOTAL_QTY" placeholder="TTOTAL_QTY" value="{{$header->TOTAL_QTY}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL_QTY" id="TTOTAL_QTY" name="TTOTAL_QTY" placeholder="" value="{{$header->TOTAL_QTY}}" style="text-align: right" readonly>
                                 </div>
 
 								<div class="col-md-2" align="right">
                                     <label for="TTOTAL" class="form-label">Total</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="TTOTAL" value="{{$header->TOTAL}}" style="text-align: right" readonly>
+                                    <input type="text"  hidden onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="" value="{{$header->TOTAL}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TDPP" name="TDPP" placeholder="" value="{{$header->TDPP}}" style="text-align: right" readonly>
+      
                                 </div>
 							</div>
 
 							<div class="form-group row">
-								<div class="col-md-8" align="right">
+								<div class="col-md-9" align="right">
 									<label for="TDISK" class="form-label">Total Diskon</label>
 								</div>
 								<div class="col-md-2">
@@ -316,20 +311,20 @@
 							</div>
 							
                             <div class="form-group row">
-                                <div class="col-md-8" align="right">
-                                    <label for="PPN" class="form-label">Ppn</label>
+                                <div class="col-md-9" align="right">
+                                    <label for="TPPN" class="form-label">Ppn</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control PPN" id="PPN" name="PPN" placeholder="PPN" value="{{$header->PPN}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TPPN" id="TPPN" name="TPPN" placeholder="" value="{{$header->TPPN}}" style="text-align: right" readonly>
                                 </div>
 							</div>
 							
                             <div class="form-group row">
-                                <div class="col-md-8" align="right">
+                                <div class="col-md-9" align="right">
                                     <label for="NETT" class="form-label">Nett</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control NETT" id="NETT" name="NETT" placeholder="NETT" value="{{$header->NETT}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control NETT" id="NETT" name="NETT" placeholder="" value="{{$header->NETT}}" style="text-align: right" readonly>
                                 </div>
 							</div>
 							
@@ -467,6 +462,9 @@
 
 @section('footer-scripts')
 <!-- TAMBAH 1 -->
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -480,9 +478,44 @@
 
 // TAMBAH HITUNG
 	$(document).ready(function() {
+
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
 		
 		idrow=<?php echo $no; ?>;
 		baris=<?php echo $no; ?>;
+
+     $('#KODEC').select2({
+		
+		placeholder:'Pilih Customer',
+		allowClear: true,
+        ajax: {
+			url: '{{url('cust/browse')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.KODEC, // The ID of the user
+                        text: item.NAMAC // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+		
+		
+		
+	});
+	
 
 		$('body').on('keydown', 'input, select', function(e) {
 			if (e.key === "Enter") {
@@ -516,12 +549,23 @@
         if ( $tipx != 'new' )
 		{
 			 ganti();			
+			 
+			
+                
+		    	var initkode1 ="{{ $header->KODEC }}";                
+			    var initcombo1 ="{{ $header->NAMAC }}";
+				var defaultOption1 = { id: initkode1, text: initcombo1 }; // Set your default option ID and text
+                var newOption1 = new Option(defaultOption1.text, defaultOption1.id, true, true);
+                $('#KODEC').append(newOption1).trigger('change');
+			 
+			 
 		}    
 		
 		$("#TTOTAL_QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#TTOTAL").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#TDISK").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
-		$("#PPN").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#TPPN").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#TDPP").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#NETT").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 
 		jumlahdata = 100;
@@ -559,8 +603,16 @@
 				// data: {
 				// 	'GOL': 'Y',
 				// },
+
+				beforeSend: function(){
+					$("#LOADX").show();
+				},
+
 				success: function( response )
 				{
+
+					$("#LOADX").hide();
+
 					resp = response;
 					if(dTableBCust){
 						dTableBCust.clear();
@@ -817,6 +869,12 @@
 		var tahunPer = {{session()->get('periode')['tahun']}};
 		
         var check = '0';
+
+			if ( $('#NAMAC').val()=='' ) 
+            {				
+			    check = '1';
+				alert("Customer# Harus Diisi.");
+			}
 		
 		
 			if ( tgl.substring(3,5) != bulanPer ) 
@@ -859,7 +917,7 @@
 		      document.getElementById("entri").submit();  
 			}
 			
-	      
+	      $("#LOADX").hide();
 	}
 
 
@@ -878,7 +936,8 @@
 		var TTOTAL_QTY = 0;
 		var TTOTAL = 0;
 		var TDISK = 0;
-		var PPN = 0;
+		var TPPNX = 0;
+		var TDPPX = 0;
 		var NETTX = 0;
 
 		$(".QTY").each(function() {
@@ -976,17 +1035,28 @@
             var TOTALX  =  ( QTYX * HARGAX );
 			z.find('.TOTAL').val(TOTALX);
 
-			var dpp = Math.floor(TOTALX / ((100+11)/100) );
-			z.find('.DPP').val(dpp);
 
-			if (PKP == 1) {
-				var PPNX = parseFloat((Math.round(TOTALX * 0.11 * 100) / 100).toFixed(0));
+		
+			var DPPX = 0 ;
+			var PPNX = 0;
+			
+
+
+			if (PKP == '1' ) {
+			    DPPX = Math.floor(TOTALX / ((100+11)/100) );
+	     		z.find('.DPP').val(DPPX);
+
 			} else {
-				var PPNX = 0;
+			    DPPX = TOTALX;
+	     		z.find('.DPP').val(DPPX);
+	     		
 			}
 
-			z.find('.PPNX').val(PPNX);	
 
+            PPNX = TOTALX - DPPX;
+            
+			z.find('.PPNX').val(PPNX);
+			
 		    z.find('.HARGA').autoNumeric('update');			
 		    z.find('.QTY').autoNumeric('update');	
 		    z.find('.TOTAL').autoNumeric('update');				
@@ -996,13 +1066,15 @@
 
             // TTOTAL_QTY +=QTYX;		
             TTOTAL +=TOTALX;				
-            PPN +=PPNX;				
+            TPPNX +=PPNX;				
+            TDPPX +=DPPX;
             TDISK +=DISKX;				
 		
 		});
 
-		
-		NETTX = TTOTAL + PPN - TDISK;
+	
+		NETTX = TTOTAL + TPPNX - TDISK;
+	
 		
 		if(isNaN(TTOTAL_QTY)) TTOTAL_QTY = 0;
 
@@ -1020,8 +1092,11 @@
 		$("#TDISK").autoNumeric('update');
 
 
-		$('#PPN').val(numberWithCommas(PPN));		
-		$("#PPN").autoNumeric('update');
+		$('#TDPP').val(numberWithCommas(TDPPX));		
+		$("#TDPP").autoNumeric('update');
+		
+		$('#TPPN').val(numberWithCommas(TPPNX));		
+		$("#TPPN").autoNumeric('update');
 
 		$('#NETT').val(numberWithCommas(NETTX));		
 		$("#NETT").autoNumeric('update');
@@ -1104,6 +1179,8 @@
 			$("#NO_BUKTI").attr("readonly", true);		   
 			$("#TGL").attr("readonly", false);
 			$("#KODEC").attr("readonly", true);
+			$("#KODEC").attr("disabled", false);
+					
 			$("#NAMAC").attr("readonly", true);
 			$("#ALAMAT").attr("readonly", true);
 			$("#KOTA").attr("readonly", true);			
@@ -1172,6 +1249,8 @@
 		$("#TGL").attr("readonly", true);
 		$("#JTEMPO").attr("readonly", true);
 		$("#KODEC").attr("readonly", true);
+		$("#KODEC").attr("disabled", true);
+			
 		$("#NAMAC").attr("readonly", true);
 		$("#ALAMAT").attr("readonly", true);
 		$("#KOTA").attr("readonly", true);		
@@ -1213,7 +1292,8 @@
 		 $('#NOTES').val("");	
 		 $('#TTOTAL_QTY').val("0.00");
 		 $('#TTOTAL').val("0.00")
-		 $('#PPN').val("0.00")
+		 $('#TPPN').val("0.00")
+		 $('#TDPP').val("0.00")
 		 $('#NETT').val("0.00")
 		 $('#TDISK').val("0.00")
 
@@ -1268,6 +1348,53 @@
 		
 	}
 
+
+	function ambil_hari() {
+
+		    
+		$.ajax(
+		{
+			type: 'GET',    
+			url: "{{url('cust/browse_hari')}}",
+			data: {
+					'KODEC' : $("#KODEC").val(),
+			},
+			
+			success: function( response )
+
+			{
+				resp = response;
+				$("#NAMAC").val( resp[0].NAMAC );
+				$("#PKP").val( resp[0].PKP );
+				$("#HARI").val( resp[0].HARI );
+				$("#KODEP").val( resp[0].KODEP );
+				$("#NAMAP").val( resp[0].NAMAP );
+				$("#RING").val( resp[0].RING );
+				$("#KOM").val( resp[0].KOM );
+				
+	
+	
+        		if ( $("#PKP").val() == '1' )
+        		{
+
+                     document.getElementById("PKP").checked = true;
+                    	
+        		}
+        
+                else
+                {
+                     document.getElementById("PKP").checked = false;
+                    
+                }
+        				
+			}
+		});
+		
+		   
+	
+	}
+	
+	
     function tambah() {
 
         var x = document.getElementById('datatable').insertRow(baris + 1);
@@ -1315,23 +1442,13 @@
 				
 				<td>
 		            <input name='TOTAL[]' onclick='select()' onblur='hitung()' value='0' id='TOTAL${idrow}' type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly required >
-                </td>
-
-				<td>
-					<input name='PPNX[]'  onblur='hitung()' value='0' id='PPNX${idrow}' type='text' style='text-align: right' class='form-control PPNX text-primary' readonly required >
-				</td>
-
-				<td>
-					<input name='DPP[]'  onblur='hitung()' value='0' id='DPP${idrow}' type='text' style='text-align: right' class='form-control DPP text-primary' readonly required >
+					<input name='PPNX[]'  hidden onblur='hitung()' value='0' id='PPNX${idrow}' type='text' style='text-align: right' class='form-control PPNX text-primary' readonly required >
+					<input name='DPP[]'  hidden onblur='hitung()' value='0' id='DPP${idrow}' type='text' style='text-align: right' class='form-control DPP text-primary' readonly required >
 				</td>	
 
 				<td>
 					<input name='DISK[]'  onblur='hitung()' value='0' id='DISK${idrow}' type='text' style='text-align: right' class='form-control DISK text-primary' >
-				</td>				
-					
-				
-                <td>
-				    <input name='KET[]'   id='KET${idrow}' type='text' class='form-control  KET' required>
+				    <input name='KET[]'  hidden  id='KET${idrow}' type='text' class='form-control  KET' required>
                 </td>
 				
                 <td>

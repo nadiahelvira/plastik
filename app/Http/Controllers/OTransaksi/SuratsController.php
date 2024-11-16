@@ -66,7 +66,7 @@ class SuratsController extends Controller
 		
         $surats = DB::SELECT("SELECT distinct surats.NO_BUKTI, suratsd.NO_SO, surats.KODEC, surats.NAMAC, 
 		                  surats.ALAMAT, surats.KOTA, surats.KODEP, surats.NAMAP, surats.KOM, 
-                          surats.RING, surats.SOPIR, surats.TRUCK
+                          surats.RING, surats.SOPIR, surats.TRUCK, SURATS.PKP
                           from surats, suratsd 
                           WHERE surats.NO_BUKTI = suratsD.NO_BUKTI AND surats.GOL ='$golz' 
                           AND surats.CBG = '$CBG' AND suratsd.SISA > 0	");
@@ -361,7 +361,7 @@ class SuratsController extends Controller
                 'PER'           => $periode,			
                 'FLAG'          => $FLAGZ,							
                 'GOL'           => $GOLZ,
-                // 'NO_SO'         => ($request['NO_SO']==null) ? "" : $request['NO_SO'],
+                'NO_SURATS'         => ($request['NO_SURATS']==null) ? "" : $request['NO_SURATS'],
                 'NO_DO'         => ($request['NO_DO']==null) ? "" : $request['NO_DO'],
                 'TRUCK'         => ($request['TRUCK']==null) ? "" : $request['TRUCK'],
                 'SOPIR'         => ($request['SOPIR']==null) ? "" : $request['SOPIR'],
@@ -374,6 +374,7 @@ class SuratsController extends Controller
 				'KODEP'			=>($request['KODEP']==null) ? "" : $request['KODEP'],
 				'NAMAP'			=>($request['NAMAP']==null) ? "" : $request['NAMAP'],
 				'RING'			=>($request['RING']==null) ? "" : $request['RING'],
+                'PKP'           => (float) str_replace(',', '', $request['PKP']),
                 'KOM'           => (float) str_replace(',', '', $request['KOM']),
                 'TOTAL_QTY'     => (float) str_replace(',', '', $request['TQTY']),
                 'TOTAL'      	=> (float) str_replace(',', '', $request['TTOTAL']),
@@ -445,14 +446,15 @@ class SuratsController extends Controller
 		
 		$surats = Surats::where('NO_BUKTI', $no_buktix )->first();
 
-        // DB::SELECT("CALL suratsins('$no_buktix')");
 
         DB::SELECT("UPDATE surats,  suratsd
                             SET  suratsd.ID =  surats.NO_ID  WHERE  surats.NO_BUKTI =  suratsd.NO_BUKTI 
 							AND  surats.NO_BUKTI='$no_buktix';");
 
 		
-					 
+         DB::SELECT("CALL suratsins('$no_buktix')");
+         
+         
         return redirect('/surats/edit/?idx=' . $surats->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '&golz=' . $this->GOLZ . '');
 		
     }
@@ -670,14 +672,18 @@ class SuratsController extends Controller
 		
         $CBG = Auth::user()->CBG;
 		
+		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
+		$no_buktix = $surats->NO_BUKTI;
+		
+         DB::SELECT("CALL suratsdel('$no_buktix')");
 
         $surats->update(
             [
                 'TGL'           => date('Y-m-d', strtotime($request['TGL'])),	
                 'JTEMPO'           => date('Y-m-d', strtotime($request['JTEMPO'])),	
-                // 'NO_SO'         => ($request['NO_SO']==null) ? "" : $request['NO_SO'],
+                'NO_SURATS'         => ($request['NO_SURATS']==null) ? "" : $request['NO_SURATS'],
                 'NO_DO'         => ($request['NO_DO']==null) ? "" : $request['NO_DO'],
                 'TRUCK'         => ($request['TRUCK']==null) ? "" : $request['TRUCK'],
                 'SOPIR'         => ($request['SOPIR']==null) ? "" : $request['SOPIR'],
@@ -693,6 +699,7 @@ class SuratsController extends Controller
 				'KODEP'			=>($request['KODEP']==null) ? "" : $request['KODEP'],
 				'NAMAP'			=>($request['NAMAP']==null) ? "" : $request['NAMAP'],
 				'RING'			=>($request['RING']==null) ? "" : $request['RING'],
+                'PKP'           => (float) str_replace(',', '', $request['PKP']),
                 'KOM'           => (float) str_replace(',', '', $request['KOM']),
                 'HARI'           => (float) str_replace(',', '', $request['HARI']),
 				'USRNM'         => Auth::user()->username,						
@@ -704,7 +711,6 @@ class SuratsController extends Controller
             ]
         );
 
-		$no_buktix = $surats->NO_BUKTI;
 		
         // Update Detail
         $length = sizeof($request->input('REC'));
@@ -798,7 +804,7 @@ class SuratsController extends Controller
             }
         }	   
 	   
-        // DB::SELECT("CALL suratsins('$surats->NO_BUKTI')");
+         DB::SELECT("CALL suratsins('$surats->NO_BUKTI')");
 
  		$surats = Surats::where('NO_BUKTI', $no_buktix )->first();
 
@@ -839,7 +845,7 @@ class SuratsController extends Controller
                 ->with(['judul' => $this->judul, 'flagz' => $this->FLAGZ, 'golz' => $this->GOLZ]);
         }
         
-        // DB::SELECT("CALL suratsdel('$surats->NO_BUKTI')");
+         DB::SELECT("CALL suratsdel('$surats->NO_BUKTI')");
 		
         $deleteSurats = Surats::find($surats->NO_ID);
 
@@ -955,6 +961,13 @@ class SuratsController extends Controller
     }
 	
 	
+	public function getDetailSurats(){
+
+        $no_bukti = $_GET['no_bukti'];
+        $result = DB::table('suratsd')->where('NO_BUKTI', $no_bukti)->get();
+        
+        return response()->json($result);;
+    }
 	
 	
 	

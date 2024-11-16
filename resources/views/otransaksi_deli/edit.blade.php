@@ -1,4 +1,6 @@
-@extends('layouts.main')
+@extends('layouts.plain')
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <style>
     .card {
@@ -8,16 +10,44 @@
     .form-control:focus {
         background-color: #b5e5f9 !important;
     }
+
+	/* query LOADX */
+
+	.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
+
 </style>
 
 @section('content')
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dropdown with Select2</title>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-</head>
 
 
 <div class="content-wrapper">
@@ -68,44 +98,25 @@
 								
                             </div>
 
-							<div class="form-group row">
-								<div class="col-md-1" align="left">
-									<label style="color:red;font-size:20px">* </label>	
-                                    <label for="KODEC" class="form-label">Cust</label>
-                                </div>
-                                <div class="col-md-2 " >
-                                  <input type="text" class="form-control KODEC" id="KODEC" name="KODEC" onclick="browseCust()" placeholder="Pilih Customer"value="{{$header->KODEC}}" style="text-align: left" readonly >
-        						  <!-- <button type="button" class="btn btn-primary" onclick="browseCust()"><i class="fa fa-search"></i></button> -->
-                                </div>
-
-								<div class="col-md-4">
-                                    <input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC" placeholder="-" value="{{$header->NAMAC}}" readonly>
-                                    <input hidden type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder="-" value="{{$header->KODEP}}" readonly>
-                                    <input hidden type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="-" value="{{$header->NAMAP}}" readonly>
-                                    <input hidden type="text" class="form-control RING" id="RING" name="RING" placeholder="-" value="{{$header->RING}}" readonly>
-									<input hidden type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="KOM" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
-                                
-									<input hidden type="text" onclick="select()" onblur="hitung()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
-									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
-								   
-								</div>
-                            </div>
-							
-							
                             <div class="form-group row">
-
-
-								<div class="col-md-1" align="right">
-                                    <label for="ALAMAT" class="form-label"></label>
+                                <div class="col-md-1">	
+                                    <label for="KODEC" class="form-label">Customer#</label>
                                 </div>
-								<div class="col-md-4">
-                                    <input type="text" class="form-control ALAMAT" id="ALAMAT" name="ALAMAT" value="{{$header->ALAMAT}}"placeholder="Alamat" readonly >
-                                </div>
+								
+                                <div class="col-md-3" >
+                                   <select id="KODEC"  onchange="ambil_hari()" name="KODEC" style="width: 100%" ></select>        							      
+                                    <input type="text" hidden class="form-control HARI" id="HARI" name="HARI" value="{{$header->HARI}}" placeholder="Masukkan Hari" >
 
-								<div class="col-md-2">
-									<input type="text" class="form-control KOTA" id="KOTA" name="KOTA" value="{{$header->KOTA}}"placeholder="Kota" readonly>
-								</div>
-                            </div>
+                                </div>
+		
+                                <div class="col-md-1" >
+                                  	<input type="checkbox" class="form-check-input" id="PKP" name="PKP" readonly  value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}>
+                                    <label for="PKP" class="form-label">Pkp</label>
+                                </div>
+		
+							</div>
+							
+							
 
 							<div class="form-group row">
                                 <div class="col-md-1" align="left">
@@ -118,7 +129,9 @@
         
                             </div>
 							
-
+							<!-- loader tampil di modal  -->
+							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
+							
 
                         <div class="tab-content mt-3">
 							
@@ -126,7 +139,7 @@
                                 <thead>
                                     <tr>
 										<th width="50px" style="text-align: center;">No.</th>
-                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">No SO</th>
+                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">SO#</th>
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Kode Barang</th>
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Uraian</th>
                                         <th {{($golz == 'J') ? 'hidden' : '' }} style="text-align: center;">Kode Bahan</th>
@@ -285,18 +298,14 @@
 			<table class="table table-stripped table-bordered" id="table-so">
 				<thead>
 					<tr>
-						<th>No Bukti</th>
+						<th>SO@</th>
 						<th>Tanggal</th>
-						<!-- <th>No Terima</th> -->
-						<!-- <th>Customer</th>
+                        <th>Customer</th>
 						<th>Kode</th>
 						<th>Barang</th>
-						<th>Satuan</th> -->
-						<!-- <th>Seri#</th> -->
-						<!-- <th>Ket</th> -->
-						<!-- <th>Qty</th>
+						<th>Qty</th>
 						<th>Kirim</th>
-						<th>Sisa</th> -->
+						<th>Sisa</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -404,6 +413,10 @@
 @endsection
 
 @section('footer-scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
 <script src="{{asset('foxie_js_css/bootstrap.bundle.min.js')}}"></script>
@@ -420,9 +433,44 @@
 	}
 	
     $(document).ready(function () {
+
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
+
     idrow=<?=$no?>;
     baris=<?=$no?>;
 
+
+       $('#KODEC').select2({
+		
+		placeholder:'Pilih Customer',
+		allowClear: true,
+        ajax: {
+			url: '{{url('cust/browse')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.KODEC, // The ID of the user
+                        text: item.NAMAC // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+        
+	});
+	
+	        
 		$('body').on('keydown', 'input, select', function(e) {
 			if (e.key === "Enter") {
 				var self = $(this), form = self.parents('form:eq(0)'), focusable, next;
@@ -456,6 +504,14 @@
         if ( $tipx != 'new' )
 		{
 			 ganti();			
+			 
+                
+		    	var initkode1 ="{{ $header->KODEC }}";                
+			    var initcombo1 ="{{ $header->NAMAC }}";
+				var defaultOption1 = { id: initkode1, text: initcombo1 }; // Set your default option ID and text
+                var newOption1 = new Option(defaultOption1.text, defaultOption1.id, true, true);
+                $('#KODEC').append(newOption1).trigger('change');
+			 
 		}    
 		
 		$("#TQTY").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
@@ -561,24 +617,24 @@
 			$("#browseCustModal").modal("hide");
 		}
 		
-		var PKP=$("#PKP").val();	
-		
-		if (PKP == 1 ) 
-		{
-		$("#PKP").prop('checked', true)
-		} 
-		else 
-		{
-		$("#PKP").prop('checked', false)
-		}
-
-		$("#KODEC").keypress(function(e){
-
-			if(e.keyCode == 46){
-				 e.preventDefault();
-				 browseCust();
-			}
-		}); 
+            		var PKP=$("#PKP").val();	
+            		
+            		if (PKP == 1 ) 
+            		{
+            		$("#PKP").prop('checked', true)
+            		} 
+            		else 
+            		{
+            		$("#PKP").prop('checked', false)
+            		}
+            
+            		$("#KODEC").keypress(function(e){
+            
+            			if(e.keyCode == 46){
+            				 e.preventDefault();
+            				 browseCust();
+            			}
+            		}); 
 		
 //////////////////////////////////////////////////////
 
@@ -609,6 +665,14 @@
 						dTableSo.row.add([
 							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\')">'+resp[i].NO_BUKTI+'</a>',
 							resp[i].TGL,
+							resp[i].NAMAC,
+							resp[i].KD_BRG,
+							resp[i].NA_BRG,
+							resp[i].QTY,
+							resp[i].KIRIM,
+							resp[i].SISA,
+
+
 						]);
 					}
 					dTableSo.draw();
@@ -638,19 +702,20 @@
 			$("#browseSoModal").modal("show");
 		}
 		
-		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN,QTY, HARGA, TOTAL, PPNX, DPP, DISK){
+		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN,SISA, HARGA, TOTAL, PPNX, DPP, DISK){
 			$("#NO_SO"+rowidSo).val(NO_BUKTI);
 			// $("#JTEMPO"+rowidSo).val(JTEMPO);
 			$("#KD_BRG"+rowidSo).val(KD_BRG);
 			$("#NA_BRG"+rowidSo).val(NA_BRG);
 			$("#SATUAN"+rowidSo).val(SATUAN);
-			$("#QTY"+rowidSo).val(QTY!=0 ? QTY : 0);
+			$("#QTY"+rowidSo).val(SISA);
 			$("#HARGA"+rowidSo).val(HARGA);	
 			$("#TOTAL"+rowidSo).val(TOTAL);	
 			$("#PPNX"+rowidSo).val(PPNX);	
 			$("#DPP"+rowidSo).val(DPP);	
 			$("#DISK"+rowidSo).val(DISK);	
 			$("#browseSoModal").modal("hide");
+			hitung();
 		}
 		
 		$("#NO_SO").keypress(function(e){
@@ -738,6 +803,8 @@
 
 		(check==0) ? document.getElementById("entri").submit() : alert('Masih ada kesalahan');
 			
+	
+		$("#LOADX").hide();
 	}
 		
     function nomor() {
@@ -838,8 +905,8 @@
 			$("#NO_SO").attr("readonly", true);		   
 			$("#TGL").attr("readonly", false);
 			// $("#JTEMPO").attr("readonly", false);
-			$("#KODES").attr("readonly", true);
-			$("#NAMAS").attr("readonly", true);			
+			$("#KODEC").attr("readonly", true);
+			$("#NAMAC").attr("readonly", true);			
 			$("#ALAMAT").attr("readonly", true);
 			$("#KOTA").attr("readonly", true);
 			$("#TRUCK").attr("readonly", true);
@@ -909,14 +976,14 @@
 		
 		$("#TGL").attr("readonly", true);
 		// $("#JTEMPO").attr("readonly", true);
-		$("#KODES").attr("readonly", true);
-		$("#NAMAS").attr("readonly", true);
+		$("#KODEC").attr("readonly", true);
+	    $("#KODEC").attr("disabled", true);
+
+
+		$("#NAMAC").attr("readonly", true);
 		$("#ALAMAT").attr("readonly", true);
 		$("#KOTA").attr("readonly", true);
-		$("#TRUCK").attr("readonly", true);
-		$("#SOPIR").attr("readonly", true);
-		$("#VIA").attr("readonly", true);
-	
+
 		
 		$("#NOTES").attr("readonly", true);
 
@@ -945,14 +1012,15 @@
 	function kosong() {
 				
 		 $('#NO_BUKTI').val("+");		
-		 $('#KODES').val("");	
-		 $('#NAMAS').val("");	
+		 $('#KODEC').val("");	
+		 $('#NAMAC').val("");	
 		 $('#ALAMAT').val("");	
 		 $('#KOTA').val("");	
 		 $('#NOTES').val("");	
 		 $('#TTOTAL_QTY').val("0.00");	
 		 $('#TTOTAL').val("0.00");
-		 
+		 $('#NETT').val("0.00");
+		
 		var html = '';
 		$('#detailx').html(html);	
 		
@@ -978,7 +1046,52 @@
 		
 	}
 
+	function ambil_hari() {
 
+		    
+		$.ajax(
+		{
+			type: 'GET',    
+			url: "{{url('cust/browse_hari')}}",
+			data: {
+					'KODEC' : $("#KODEC").val(),
+			},
+			
+			success: function( response )
+
+			{
+				resp = response;
+				$("#PKP").val( resp[0].PKP );
+				$("#HARI").val( resp[0].HARI );
+				$("#KODEP").val( resp[0].KODEP );
+				$("#NAMAP").val( resp[0].NAMAP );
+				$("#RING").val( resp[0].RING );
+				$("#KOM").val( resp[0].KOM );
+				
+	
+	
+        		if ( $("#PKP").val() == '1' )
+        		{
+
+                     document.getElementById("PKP").checked = true;
+                    	
+        		}
+        
+                else
+                {
+                     document.getElementById("PKP").checked = false;
+                    
+                }
+        				
+			}
+		});
+		
+		   
+	
+	}
+	
+	
+	
     function tambah() {
 
         var x = document.getElementById('datatable').insertRow(baris + 1);

@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.plain')
 
 <style>
     .card {
@@ -21,6 +21,40 @@
 	.uppercase {
 		text-transform: uppercase;
 	}
+
+	/* query LOADX */
+
+	.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
 
 </style>
 
@@ -90,6 +124,9 @@
 								<input type="text" class="form-control NO_BELI" id="NO_BELI" name="NO_BELI" placeholder="Pilih Beli"value="{{$header->NO_BELI}}" style="text-align: left" readonly >
 								<button type="button" class="btn btn-primary" onclick="browseBeli()"><i class="fa fa-search"></i></button>
 								</div>
+								
+								
+								
 							</div>
 
                             <div class="form-group row">
@@ -102,14 +139,8 @@
                                   <input type="text" class="form-control NO_PO" id="NO_PO" name="NO_PO" placeholder="Pilih PO"value="{{$header->NO_PO}}" style="text-align: left" readonly >
         						  <button type="button" class="btn btn-primary" onclick="browsePo()"><i class="fa fa-search"></i></button>
                                 </div>
-                            </div>
-							
+                                
 
-							<div class="form-group row">
-
-								<div class="col-md-1" align="left">
-                                    <label for="NAMAS" class="form-label"></label>
-                                </div>
 								<div class="col-md-4">
 								    <input type="text" hidden class="form-control KODES" id="KODES" name="KODES" placeholder="Masukkan Suplier#" value="{{$header->KODES}}"readonly>
                                     <input type="text" class="form-control NAMAS" id="NAMAS" name="NAMAS" placeholder="-" value="{{$header->NAMAS}}" readonly>
@@ -118,44 +149,98 @@
                                 
 									<input hidden type="text" onclick="select()" onblur="hitung()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
 									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
-								   </div>
+							    </div>
 
-								<div class="col-md-1">
-									<!-- <input type="checkbox" class="form-check-input" id="PKP" name="PKP" value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}> -->
-									<input type="text" class="form-control PKP" id="PKP" name="PKP" placeholder="-" 
-									value="{{$header->PKP}}" readonly>
-									<label for="PKP">PKP</label>
-								</div>
+                                <div class="col-md-3" >
+                                  	<input type="checkbox" class="form-check-input" id="PKP" name="PKP" readonly  value="{{$header->PKP}}" {{ ($header->PKP == 1) ? 'checked' : '' }}>
+                                    <label for="PKP" class="form-label">Pkp</label>
+                                </div>
+                                
+                                
                             </div>
-
-						
+							
 
 							<div class="form-group row">
-                                <div class="col-md-1" align="right">
-									<label style="color:red">*</label>									
-                                    <label for="NOTES" class="form-label">Notes</label>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control NOTES" id="NOTES" name="NOTES" value="{{$header->NOTES}}" placeholder="Masukkan Notes" >
-                                </div>
 
 								<div class="col-md-1" align="right">
                                     <label for="GUDANG" class="form-label">Gudang</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control GUDANG" id="GUDANG" name="GUDANG" placeholder="Masukkan Gudang"  value="{{$header->GUDANG}}" style="width:200px" readonly >
+                                    <input type="text" class="form-control GUDANG" id="GUDANG" name="GUDANG" placeholder="Masukkan Gudang"  value="{{$header->GUDANG}}"  readonly >
                                 </div>
 
-								<div class="col-md-1" align="right">
-									<label for="TYPE" class="form-label">Type</label>
-								</div>
-								<div class="col-md-1">
+								<div class="col-md-2">
 									<select id="TYPE" class="form-control"  name="TYPE">
 										<option value="CASH" {{ ($header->TYPE == 'CASH') ? 'selected' : '' }}>Cash</option>
 										<option value="KREDIT" {{ ($header->TYPE == 'KREDIT') ? 'selected' : '' }}>Kredit</option>
 									</select>
-                            	</div> 
-        
+								</div> 
+								
+                            </div>
+
+						<!-- loader tampil di modal  -->
+						<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
+						<!-- tutupan load -->
+
+						<!-- style text box model baru -->
+
+							<style>
+								/* Ensure specificity with class targeting */
+								.form-group.special-input-label {
+									position: relative;
+
+									/* geser kanan kirinya di atur disini */
+									margin-left: 50px ;
+								}
+						
+								/* Ensure only bottom border for input */
+								.form-group.special-input-label input {
+									width: 100%;
+									padding: 10px 0;
+									border: none !important;
+									border-bottom: 2px solid #ccc !important;
+									outline: none !important;
+									font-size: 16px !important;
+									background: transparent !important; /* Remove any background color */
+								}
+						
+								/* Bottom border color change on focus */
+								.form-group.special-input-label input:focus {
+									border-bottom: 2px solid #007BFF !important; /* Change color on focus */
+								}
+						
+								/* Style the label with a higher specificity */
+								.form-group.special-input-label label {
+									position: absolute;
+									top: 12px;
+									/* buat label di inputan */
+									color: #888 !important;
+									font-size: 16px !important;
+									transition: 0.3s ease all;
+									pointer-events: none;
+								}
+						
+								/* Move label above input when focused or has content */
+								.form-group.special-input-label input:focus + label,
+								.form-group.special-input-label input:not(:placeholder-shown) + label {
+									top: -10px !important;
+									font-size: 14px !important;
+									/* buat label diatas */
+									color: #007BFF !important;
+								}
+							</style>
+
+							<!-- tutupannya -->
+
+							<div class="form-group row">
+								<!-- code text box baru -->
+								<div class="col-md-5 form-group row special-input-label">
+
+									<input type="text" class="NOTES" id="NOTES" name="NOTES" 
+										value="{{$header->NOTES}}" placeholder=" " >
+									<label for="NOTES">Notes</label>
+								</div>
+								<!-- tutupannya -->
                             </div>
 							
 							
@@ -175,9 +260,7 @@
 											</th>
 											<th {{( $golz =='B') ? '' : 'hidden' }} width="200px" style="text-align:center">Nama</th>
 
-											<th {{( $golz =='J' || $golz =='N') ? '' : 'hidden' }} width="100px">
-												<label style="color:red;font-size:20px">*</label>
-												<label for="KD_BRG" class="form-label">Barang</label>
+											<th {{( $golz =='J' || $golz =='N') ? '' : 'hidden' }} width="100px">Barang
 											</th>
 											<th {{( $golz =='J' || $golz =='N') ? '' : 'hidden' }} width="200px" style="text-align:center">Nama</th>
 
@@ -240,11 +323,11 @@
 											</td>
 											
 											<td>
-												<input name="KALI[]" id="KALI{{$no}}" type="text" class="form-control KALI" value="{{$detail->KALI}}" style="text-align: right">
+												<input name="KALI[]" id="KALI{{$no}}" type="text" class="form-control KALI" value="{{$detail->KALI}}" style="text-align: right" readonly >
 											</td>
 											
 											<td>
-												<input name="SATUAN[]" id="SATUAN{{$no}}" type="text" class="form-control SATUAN" value="{{$detail->SATUAN}}">
+												<input name="SATUAN[]" id="SATUAN{{$no}}" type="text" class="form-control SATUAN" value="{{$detail->SATUAN}}" readonly >
 											</td>										
 											<td>
 												<input name="QTY[]" onclick="select()" onblur="hitung()" value="{{$detail->QTY}}" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY" >
@@ -321,22 +404,24 @@
                                     <label for="TTOTAL" class="form-label">Total</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="TTOTAL" value="{{$header->TOTAL}}" style="text-align: right" readonly>
+                                    <input type="text"  hidden onclick="select()" onkeyup="hitung()" class="form-control TTOTAL" id="TTOTAL" name="TTOTAL" placeholder="TTOTAL" value="{{$header->TOTAL}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TDPP" id="TDPP" name="TDPP" placeholder="TDPP" value="{{$header->TDPP}}" style="text-align: right" readonly>
+
                                 </div>
 							</div>
 
                             <div class="form-group row">
                                 <div class="col-md-8" align="right">
-                                    <label for="PPN" class="form-label">Ppn</label>
+                                    <label for="TPPN" class="form-label">Ppn</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control PPN" id="PPN" name="PPN" placeholder="PPN" value="{{$header->PPN}}" style="text-align: right" readonly>
+                                    <input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TPPN" id="TPPN" name="TPPN" placeholder="TPPN" value="{{$header->TPPN}}" style="text-align: right" readonly>
                                 </div>
 							</div>
 
 							<div class="form-group row">
 								<div class="col-md-8" align="right">
-									<label for="TDISK" class="form-label">Total Diskon</label>
+									<label for="TDISK" class="form-label">Diskon</label>
 								</div>
 								<div class="col-md-2">
 									<input type="text"  onclick="select()" onkeyup="hitung()" class="form-control TDISK" id="TDISK" name="TDISK" placeholder="" value="{{$header->TDISK}}" style="text-align: right" readonly>
@@ -536,6 +621,13 @@
 	}
 	
     $(document).ready(function () {
+
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
+
     idrow=<?=$no?>;
     baris=<?=$no?>;
 
@@ -577,7 +669,8 @@
 		$("#TTOTAL_QTY").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#TTOTAL").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#TDISK").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
-		$("#PPN").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#TPPN").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#TDPP").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#NETT").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 
 
@@ -624,8 +717,14 @@
 					'GOL': "{{$golz}}",
 				},
 
+				beforeSend: function(){
+					$("#LOADX").show();
+				},
+
 				success: function( response )
 				{
+					$("#LOADX").hide();
+
 					resp = response;
 					if(dTableBPo){
 						dTableBPo.clear();
@@ -666,6 +765,23 @@
 			$("#GUDANG").val(GUDANG);			
 			$("#JTEMPO").val(JTEMPO);			
 			$("#NOTES").val(NOTES);			
+			
+			
+				if ( $("#PKP").val() == '1' )
+        		{
+
+                     document.getElementById("PKP").checked = true;
+                    	
+        		}
+        
+                else
+                {
+                     document.getElementById("PKP").checked = false;
+                    
+                }
+			
+			
+			
 			$("#browsePoModal").modal("hide");
 			
 			getPod(NO_BUKTI);
@@ -719,10 +835,10 @@
 									
 									<td><input name='SATUAN_PO[]' id='SATUAN_PO${i}' value="${resp[i].SATUAN_PO}" type='text' class='form-control  SATUAN_PO' readonly></td>
                                     <td>
-										<input name='QTY_PO[]' onclick='select()' onblur='hitung()' id='QTY_PO${i}' value="${resp[i].QTY_PO}" type='text' style='text-align: right' class='form-control QTY_PO text-primary' readonly >
+										<input name='QTY_PO[]' onclick='select()' onblur='hitung()' id='QTY_PO${i}' value="${resp[i].QTY_PO}" type='text' style='text-align: right' class='form-control QTY_PO text-primary' >
 									</td>
                                     <td>
-										<input name='KALI[]' onclick='select()' onblur='hitung()' id='KALI${i}' value="${resp[i].KALI}" type='text' style='text-align: right' class='form-control KALI text-primary'> 
+										<input name='KALI[]' onclick='select()' onblur='hitung()' id='KALI${i}' value="${resp[i].KALI}" type='text' style='text-align: right' class='form-control KALI text-primary' readonly > 
 									</td>
 									<td><input name='SATUAN[]' id='SATUAN${i}' value="${resp[i].SATUAN}" type='text' class='form-control  SATUAN' readonly></td>
                                     <td>
@@ -799,8 +915,14 @@
 					'GOL': "{{$golz}}",
 				},
 
+				beforeSend: function(){
+					$("#LOADX").show();
+				},
+
 				success: function( response )
 				{
+					$("#LOADX").hide();
+
 					resp = response;
 					if(dTableBBeli){
 						dTableBBeli.clear();
@@ -1084,6 +1206,7 @@
 		      	document.getElementById("entri").submit();  
 			}
 			
+			$("#LOADX").hide();
 	}
 		
     function nomor() {
@@ -1100,7 +1223,8 @@
 		var TTOTAL_QTY = 0;
 		var TTOTAL = 0;
 		var TDISK = 0;
-		var PPNX = 0;
+		var TDPPX = 0;
+		var TPPNX = 0;
 		var NETTX = 0;
 
 		
@@ -1113,7 +1237,7 @@
 			var PPN = parseFloat(z.find('.PPNX').val().replace(/,/g, ''));
 			var DISKX = parseFloat(z.find('.DISK').val().replace(/,/g, ''));
 	
-			var PKP = parseFloat($('#PKP').val().replace(/,/g, ''));
+			var PKPX  = $('#PKP').val();
 
 			var FLAGZ = $('#flagz').val();
 	
@@ -1130,45 +1254,54 @@
 		    z.find('.KALI').autoNumeric('update');	
 		    z.find('.QTY').autoNumeric('update');	
 
-
-            var TOTALX  = ( QTYX * HARGAX );
+            
+            var TOTALX  =  ( QTY_POX * HARGAX ) - DISKX;
+            
 			z.find('.TOTAL').val(TOTALX);
 
-			// var dpp = Math.floor(TOTALX / ((100+11)/100) );
-			var dpp = Math.floor(TOTALX - PPN );
-			z.find('.DPP').val(dpp);
 
-			if (PKP == 1) {
-				var PPN = parseFloat((Math.round(TOTALX * 0.11 * 100) / 100).toFixed(0));
-			} else {
-				var PPN = 0;
-			}
+			var DPPX = 0 ;
+			var PPNX = 0;
+			
+            DPPX = TOTALX;
+	     	z.find('.DPP').val(DPPX);
 
-			// var ppn = TOTALX - dpp;
-			z.find('.PPNX').val(PPN);		
+			if (PKPX == '0' ) {
+			    PPNX = 0;
+			    
+			} 
+
+	     		
+			if (PKPX == '1' ) {
+			    DPPX = TOTALX * 100/111;
+			    PPNX = TOTALX - DPPX;
+	     	    z.find('.DPP').val(DPPX);
+	     	
+			} 
 
 
-		    // z.find('.HARGA').autoNumeric('update');			
-		    // z.find('.QTY_PO').autoNumeric('update');	
-		     z.find('.TOTAL').autoNumeric('update');			
-		     z.find('.DPP').autoNumeric('update');			
-		     z.find('.PPNX').autoNumeric('update');			
+            
+			z.find('.PPNX').val(PPNX);	
+
+		    z.find('.HARGA').autoNumeric('update');			
+		    z.find('.QTY').autoNumeric('update');	
+		    z.find('.TOTAL').autoNumeric('update');				
+		    z.find('.DPP').autoNumeric('update');			
+		    z.find('.DISK').autoNumeric('update');			
+		    z.find('.PPNX').autoNumeric('update');		
 
             TTOTAL_QTY +=QTYX;		
             TTOTAL +=TOTALX;				
-            PPNX +=PPN;						
-            TDISK +=DISKX;						
+            TPPNX +=PPNX;
+            TDPPX +=DPPX;
+            
+            TDISK +=DISKX;				
 		
 		});
-		
-		// if (PKP == 1) {
-		// 	var PPN = (Math.round(TTOTAL * 0.11 * 100) / 100).toFixed(0);
-		// } else {
-		// 	var PPN = 0;
-		// }
 
-		// PPNX =  TTOTAL * 11 / 100;
-		NETTX = TTOTAL + PPNX - TDISK;
+		
+		NETTX = TDPPX + TPPNX ;
+
 		
 		if(isNaN(TTOTAL_QTY)) TTOTAL_QTY = 0;
 
@@ -1183,8 +1316,12 @@
 		$('#TDISK').val(numberWithCommas(TDISK));		
 		$("#TDISK").autoNumeric('update');
 
-		$('#PPN').val(numberWithCommas(PPNX));		
-		$("#PPN").autoNumeric('update');
+
+		$('#TDPP').val(numberWithCommas(TDPPX));		
+		$("#TDPP").autoNumeric('update');
+		
+		$('#TPPN').val(numberWithCommas(TPPNX));		
+		$("#TPPN").autoNumeric('update');
 
 		$('#NETT').val(numberWithCommas(NETTX));		
 		$("#NETT").autoNumeric('update');
@@ -1255,8 +1392,9 @@
 			
 			$("#NOTES").attr("readonly", false);
 			$("#TYPE").attr("readonly", false);
-			
-			$("#PPN").attr("readonly", true);
+
+			$("#TDPP").attr("readonly", true);			
+			$("#TPPN").attr("readonly", true);
 			$("#NETT").attr("readonly", true);	
 			$("#TTOTAL").attr("readonly", true);	
 
@@ -1268,14 +1406,15 @@
 			$("#NA_BHN" + i.toString()).attr("readonly", true);
 			$("#NA_BRG" + i.toString()).attr("readonly", true);
 			$("#SATUAN_PO" + i.toString()).attr("readonly", true);
-			$("#QTY_PO" + i.toString()).attr("readonly", true);
-			$("#KALI" + i.toString()).attr("readonly", false);
+			$("#QTY_PO" + i.toString()).attr("readonly", false );
+			$("#KALI" + i.toString()).attr("readonly", true );
 			$("#SATUAN" + i.toString()).attr("readonly", true);
 			$("#QTY" + i.toString()).attr("readonly", true);
 			$("#HARGA" + i.toString()).attr("readonly", false);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#DPP" + i.toString()).attr("readonly", true);
-			$("#PPNX" + i.toString()).attr("readonly", true);
+			$("#PPN" + i.toString()).attr("readonly", true);
+			$("#DISK" + i.toString()).attr("readonly", true);
 			$("#KET" + i.toString()).attr("readonly", false);
 			$("#DELETEX" + i.toString()).attr("hidden", false);
 
@@ -1330,8 +1469,9 @@
 			$("#TGL_FAKTUR").attr("readonly", true);
 			$("#JTEMPO").attr("readonly", true);
 			$("#TYPE").attr("readonly", true);
-			
-		$("#PPN").attr("readonly", true);
+
+		$("#TDPP").attr("readonly", true);			
+		$("#TPPN").attr("readonly", true);
 		$("#NETT").attr("readonly", true);		
 		$("#TTOTAL").attr("readonly", true);		
 		
@@ -1353,7 +1493,8 @@
 			$("#HARGA" + i.toString()).attr("readonly", true);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#DPP" + i.toString()).attr("readonly", true);
-			$("#PPNX" + i.toString()).attr("readonly", true);
+			$("#PPN" + i.toString()).attr("readonly", true);
+			$("#DISK" + i.toString()).attr("readonly", true);
 			$("#KET" + i.toString()).attr("readonly", true);
 
 			$("#DELETEX" + i.toString()).attr("hidden", true);

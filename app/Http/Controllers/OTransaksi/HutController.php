@@ -176,18 +176,43 @@ class HutController extends Controller
 
         /////////////////////////////////////////////////////////////////////////////////
 
-        $bulan    = session()->get('periode')['bulan'];
-        $tahun    = substr(session()->get('periode')['tahun'], -2);
-        $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+        $type1 = substr( $request['BNAMA'],0,3);
 
-        if ($query2 != '[]') {
-            $query2 = substr($query2[0]->NO_BUKTI, -4);
-            $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
-            $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-' . $query2;
-        } else {
-            $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-0001';
+        if ( $type1 ='KAS')
+        {          
+                    $bulan    = session()->get('periode')['bulan'];
+                    $tahun    = substr(session()->get('periode')['tahun'], -2);
+                    $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+            
+                    if ($query2 != '[]') {
+                        $query2 = substr($query2[0]->NO_BUKTI, -4);
+                        $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti2 = 'BKK' . $CBG . $tahun . $bulan . '-' . $query2;
+                    } else {
+                        $no_bukti2 = 'BKK' . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
         }
-		
+        else
+        {
+
+                    $bulan    = session()->get('periode')['bulan'];
+                    $tahun    = substr(session()->get('periode')['tahun'], -2);
+                    $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+            
+                    if ($query2 != '[]') {
+                        $query2 = substr($query2[0]->NO_BUKTI, -4);
+                        $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-' . $query2;
+                    } else {
+                        $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+            
+        }
+        
+        
+        
         // Insert Header
 
 // ganti 10
@@ -236,6 +261,7 @@ class HutController extends Controller
 				$detail->NO_FAKTUR = ($NO_FAKTUR[$key]==null) ? "" :  $NO_FAKTUR[$key];
 				$detail->TOTAL	= (float) str_replace(',', '', $TOTAL[$key]);
 				$detail->BAYAR	= (float) str_replace(',', '', $BAYAR[$key]);					
+				$detail->SISA	= (float) str_replace(',', '', $SISA[$key]);	
 				$detail->save();
 			}
 		}
@@ -246,7 +272,7 @@ class HutController extends Controller
 
 
 //  ganti 11
-		// $variablell = DB::select('call hutins(?)',array($no_bukti));
+
 
        $no_buktix = $no_bukti;
 		
@@ -263,6 +289,9 @@ class HutController extends Controller
         DB::SELECT("UPDATE hut, hutd
                             SET hutd.ID = hut.NO_ID  WHERE hut.NO_BUKTI = hutd.NO_BUKTI 
 							AND hut.NO_BUKTI='$no_buktix';");
+
+        $variablell = DB::select('call hutins(?,?)', array($no_bukti, $no_bukti2));
+        
 
         return redirect('/hut/edit/?idx=' . $hut->NO_ID . '&tipx=edit&flagz=' . $FLAGZ . '&judul=' . $this->judul . '');
 
@@ -474,7 +503,7 @@ class HutController extends Controller
         );
 		
 // ganti 20
-		// $variablell = DB::select('call hutdel(?)',array($hut['NO_BUKTI']));		
+        $variablell = DB::select('call hutdel(?,?)', array($hut['NO_BUKTI'], '0'));		
 
         // ganti 20
         $periode = $request->session()->get('periode')['bulan']. '/' . $request->session()->get('periode')['tahun'];
@@ -515,7 +544,9 @@ class HutController extends Controller
 		$NO_FAKTUR = $request->input('NO_FAKTUR');
 		$BAYAR	= $request->input('BAYAR');
 		$TOTAL	= $request->input('TOTAL');
+		$SISA	= $request->input('SISA');
 
+		
          $query = DB::table('hutd')->where('NO_BUKTI', $request->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
 
         // Update / Insert
@@ -531,7 +562,8 @@ class HutController extends Controller
                         'NO_FAKTUR'  => ($NO_FAKTUR[$i]==null) ? "" :  $NO_FAKTUR[$i],
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'BAYAR'      => (float) str_replace(',', '', $BAYAR[$i]),
-
+                        'SISA'      => (float) str_replace(',', '', $SISA[$i]),
+                
                     ]
                 );
             } else {
@@ -547,7 +579,8 @@ class HutController extends Controller
                         'NO_FAKTUR'  => ($NO_FAKTUR[$i]==null) ? "" :  $NO_FAKTUR[$i],	
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'BAYAR'      => (float) str_replace(',', '', $BAYAR[$i]),
-
+                        'SISA'       => (float) str_replace(',', '', $SISA[$i]),
+                
                     ]
                 );
             }
@@ -564,8 +597,7 @@ class HutController extends Controller
 
 
 //  ganti 21
-		// $variablell = DB::select('call hutins(?)',array($hut['NO_BUKTI']));
-		
+
 		
         DB::SELECT("UPDATE HUT, SUP
                             SET HUT.NAMAS = SUP.NAMAS  WHERE HUT.KODES = SUP.KODES 
@@ -578,6 +610,10 @@ class HutController extends Controller
         DB::SELECT("UPDATE hut, hutd
                             SET hutd.ID = hut.NO_ID  WHERE hut.NO_BUKTI = hutd.NO_BUKTI 
 							AND hut.NO_BUKTI='$no_buktix';");
+
+		
+        $variablell = DB::select('call hutins(?,?)', array($hut['NO_BUKTI'], 'X'));
+		
 							
  		$hut = Hut::where('NO_BUKTI', $no_buktix )->first();
 					 
@@ -611,7 +647,8 @@ class HutController extends Controller
                 ->with(['judul' => $this->judul, 'flagz' => $this->FLAGZ]);
         }
 		
-		// $variablell = DB::select('call hutdel(?)',array($hut['NO_BUKTI']));
+		
+        $variablell = DB::select('call hutdel(?,?)', array($hut['NO_BUKTI'], '1'));
 		
 		
 // ganti 23
@@ -669,5 +706,13 @@ class HutController extends Controller
         $PHPJasperXML->outpage("I");
     }
  
+    public function getDetailHut(){
+
+        $no_bukti = $_GET['no_bukti'];
+        $result = DB::table('hutd')->where('NO_BUKTI', $no_bukti)->get();
+        
+        return response()->json($result);;
+    }
+	
     
 }
