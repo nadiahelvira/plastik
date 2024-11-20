@@ -62,7 +62,7 @@
                         <tr>
                             <th width="35px" style="text-align:center"></th>
                             <th width="35px" style="text-align:center">#</th>
-				     		            <th width="75px" style="text-align:center">-</th>							
+                            <th width="75px" style="text-align:center">-</th>							
                             <th width="150px" style="text-align:center">Bukti#</th>
                             <th width="150px" style="text-align:center">Customer</th>
                             <th width="100px" style="text-align:center">Tgl</th>
@@ -123,7 +123,7 @@
                   // tutupannya
           
                 {data: 'DT_RowIndex', orderable: false, searchable: false },
-				        {data: 'action', name: 'action'},
+                {data: 'action', name: 'action'},
                 {data: 'NO_BUKTI', name: 'NO_BUKTI'},
                 {data: 'NAMAC', name: 'NAMAC',
                   render : function ( data, type, row, meta )
