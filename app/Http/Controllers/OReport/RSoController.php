@@ -99,6 +99,10 @@ class RSoController extends Controller
 				$filtercbg = " and so.CBG='".$request->cbg."' ";
 			}
 			
+			
+			$tgl_1 = date("Y-m-d", strtotime($request->tglDr));
+			$tgl_2 = date("Y-m-d", strtotime($request->tglSmp));
+			
 
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodec1', $request->kodec);
@@ -113,7 +117,8 @@ class RSoController extends Controller
 		
 		if($filtergol == 'B'){
 				$query = DB::SELECT("SELECT so.NO_BUKTI AS NO_BUKTI, so.TGL AS TGL, so.KODEC AS KODEC, so.NAMAC AS NAMAC, sod.KD_BHN AS KD_BRG, sod.NA_BHN AS NA_BRG, 
-								sod.QTY AS QTY, sod.HARGA AS HARGA, sod.TOTAL AS TOTAL, sod.KET AS KET, so.GOL AS GOL 
+								sod.QTY AS QTY, sod.HARGA AS HARGA, sod.TOTAL AS TOTAL,
+								sod.KET AS KET, so.GOL AS GOL 
 						from so,sod
 						WHERE so.NO_BUKTI=sod.NO_BUKTI
 						$filtertgl $filtergol $filterkodec $filtercbg
@@ -122,8 +127,9 @@ class RSoController extends Controller
 
 		} else {
 
-			$query = DB::SELECT("SELECT so.NO_BUKTI AS NO_BUKTI, so.TGL AS TGL, so.KODEC AS KODEC, so.NAMAC AS NAMAC, sod.KD_BRG AS KD_BRG, sod.NA_BRG AS NA_BRG, 
-								sod.QTY AS QTY, sod.HARGA AS HARGA, sod.TOTAL AS TOTAL, sod.KET AS KET, so.GOL AS GOL  
+			$query = DB::SELECT("SELECT so.NO_BUKTI AS NO_SO, so.TGL AS TGL, so.KODEC AS KODEC, so.NAMAC AS NAMAC, sod.KD_BRG AS KD_BRG, sod.NA_BRG AS NA_BRG, 
+								sod.QTY AS QTY, sod.HARGA AS HARGA, sod.TOTAL AS TOTAL, 
+								sod.KET AS KET, so.GOL AS GOL  
 						from so,sod
 						WHERE so.NO_BUKTI=sod.NO_BUKTI
 						$filtertgl $filtergol $filterkodec $filtercbg
@@ -145,6 +151,8 @@ class RSoController extends Controller
 			array_push($data, array(
 				'NO_SO' => $query[$key]->NO_SO,
 				'TGL' => $query[$key]->TGL,
+				'TGL_1' => $tgl_1,
+				'TGL_2' => $tgl_2,
 				'KODEC' => $query[$key]->KODEC,
 				'NAMAC' => $query[$key]->NAMAC,
 				'KD_BRG' => $query[$key]->KD_BRG,

@@ -12,20 +12,6 @@
 
 @section('content')
 <div class="content-wrapper">
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-		        <h1 class="m-0">Master Customer</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item active">Master Customer</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Status -->
     @if (session('status'))
@@ -44,15 +30,15 @@
                     <thead class="table-dark">
                         <tr>										
                             <th scope="col" style="text-align: center">No</th>
-				     		<th scope="col" style="text-align: center">-</th>							
+				     		            <th scope="col" style="text-align: center">-</th>							
                             <th scope="col" style="text-align: center">Kode</th>
                             <th scope="col" style="text-align: center">Nama</th>
                             <th scope="col" style="text-align: center">Alamat</th>
                             <th scope="col" style="text-align: center">Kota</th>
-							<th scope="col" style="text-align: center">Telpon</th>
-							<th scope="col" style="text-align: center">HP</th>
-							<th scope="col" style="text-align: center">NPWP</th>
-							<th scope="col" style="text-align: center">Ket</th>
+                            <th scope="col" style="text-align: center">Telpon</th>
+                            <th scope="col" style="text-align: center">HP</th>
+                            <th scope="col" style="text-align: center">NPWP</th>
+                            <th scope="col" style="text-align: center">Ket</th>
 
                         </tr>
                     </thead>
@@ -89,7 +75,7 @@
             ajax: 
             {
 				
- <!--// ganti 7a -->
+//  <!-- ganti 7a -->
  
                 url: '{{ route('get-cust') }}'
             },
@@ -97,7 +83,7 @@
             [
                 {  data: 'DT_RowIndex', orderable: false, searchable: false },
 
- <!--// ganti 8 -->
+//  <!--// ganti 8 -->
 			    {
 				data: 'action',
 				name: 'action'

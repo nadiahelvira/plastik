@@ -794,7 +794,8 @@ class DeliController extends Controller
 
         $query = DB::SELECT("SELECT deli.NO_BUKTI, deli.TGL, deli.KODEC, deli.NAMAC, deli.TOTAL_QTY, deli.NOTES, deli.ALAMAT, 
                                     deli.KOTA, delid.KD_BRG, delid.NA_BRG, delid.SATUAN, delid.QTY, 
-                                    delid.HARGA, delid.TOTAL, delid.KET, deli.PPN, deli.NETT, delid.NO_SO
+                                    delid.HARGA, delid.TOTAL, delid.KET, deli.PPN, deli.NETT, 
+                                    delid.NO_SO, deli.USRNM
                             FROM deli, delid 
                             WHERE deli.NO_BUKTI='$no_deli' AND deli.NO_BUKTI = delid.NO_BUKTI 
                             ;
@@ -824,7 +825,8 @@ class DeliController extends Controller
                 'QTY'    => $query[$key]->QTY,
                 'PPN'    => $query[$key]->PPN,
                 'NETT'    => $query[$key]->NETT,
-                'KET'    => $query[$key]->KET
+                'KET'    => $query[$key]->KET,
+                'USRNM'    => $query[$key]->USRNM
             ));
         }
 		

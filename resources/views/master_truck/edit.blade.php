@@ -80,54 +80,125 @@
                         </ul>
         
                         <div class="tab-content mt-3">
-
 							<!-- <div id="truckInfo" class="tab-pane active"> -->
+
+							<!-- style text box model baru -->
+
+							<style>
+								/* Ensure specificity with class targeting */
+								.form-group.special-input-label {
+									position: relative;
+									margin-left: 5px ;
+								}
+						
+								/* Ensure only bottom border for input */
+								.form-group.special-input-label input {
+									width: 100%;
+									padding: 10px 0;
+									border: none !important;
+									border-bottom: 2px solid #ccc !important;
+									outline: none !important;
+									font-size: 16px !important;
+									background: transparent !important; /* Remove any background color */
+								}
+						
+								/* Bottom border color change on focus */
+								.form-group.special-input-label input:focus {
+									border-bottom: 2px solid #007BFF !important; /* Change color on focus */
+								}
+						
+								/* Style the label with a higher specificity */
+								.form-group.special-input-label label {
+									position: absolute;
+									top: 12px;
+									color: #888 !important;
+									font-size: 16px !important;
+									transition: 0.3s ease all;
+									pointer-events: none;
+								}
+						
+								/* Move label above input when focused or has content */
+								.form-group.special-input-label input:focus + label,
+								.form-group.special-input-label input:not(:placeholder-shown) + label {
+									top: -10px !important;
+									font-size: 12px !important;
+									color: #007BFF !important;
+								}
+							</style>
+
+							<!-- tutupannya -->
         
                             <div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="KODE" class="form-label">Kode</label>
-                                </div>
- 
+
                                     <input type="text" class="form-control NO_ID" id="NO_ID" name="NO_ID"
                                     placeholder="Masukkan NO_ID" value="{{$header->NO_ID ?? ''}}" hidden readonly>
 
-									<input name="tipx" class="form-control flagz" id="tipx" value="{{$tipx}}" hidden>
-		 
+									<input name="tipx" class="form-control flagz" id="tipx" value="{{$tipx}}" hidden>   
 
-								<div class="col-md-2">
-                                    <input type="text" class="form-control KODE" id="KODE" name="KODE"
-                                    placeholder="Masukkan Kode Customer" value="{{$header->KODE}}" readonly>
-                                </div>   
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="KODE" id="KODE" name="KODE" 
+										value="{{$header->KODE}}" placeholder=" " >
+									<label for="KODE">Kode</label>
+								</div>
+								<!-- tutupannya -->
 								
                                 <div class="col-md-1">
-                                    <label for="NOPOL" class="form-label">Nopol</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control NOPOL" id="NOPOL" name="NOPOL"
-                                    placeholder="Masukkan NOPOL Customer" value="{{$header->NOPOL}}">
                                 </div>   
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="NOPOL" id="NOPOL" name="NOPOL" 
+										value="{{$header->NOPOL}}" placeholder=" " >
+									<label for="NOPOL">Nopol</label>
+								</div>
+								<!-- tutupannya -->
 
                             </div>
 
 							<!-- loader tampil di modal  -->
 							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
+							<!-- Batas loadx -->
 
 							<div class="form-group row">
-								<div class="col-md-1">
+								<!-- <div class="col-md-1">
                                     <label for="MAXK" class="form-label">Max Kubikasi</label>
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text" onclick="select()" class="form-control MAXK" id="MAXK" name="MAXK" placeholder="Masukkan MAXK" 
 									value="{{ number_format( $header->MAXK, 0, '.', ',') }}" style="text-align: right" >
-                                </div>
+                                </div> -->
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="MAXK" id="MAXK" name="MAXK" 
+										value="{{$header->MAXK}}" placeholder=" " >
+									<label for="MAXK">Max Kubikasi</label>
+								</div>
+								<!-- tutupannya -->
 
 								<div class="col-md-1">
+								</div>
+								
+								<!-- <div class="col-md-1">
 									<label for="MAXB" class="form-label">Max Berat</label>
 								</div>
 								<div class="col-md-2">
 									<input type="text" onclick="select()" class="form-control MAXB" id="MAXB" name="MAXB" placeholder="Masukkan MAXB" 
 									value="{{ number_format( $header->MAXB, 0, '.', ',') }}" style="text-align: right" >
+								</div> -->
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="MAXB" id="MAXB" name="MAXB" 
+										value="{{$header->MAXB}}" placeholder=" " >
+									<label for="MAXB">Max Berat</label>
 								</div>
+								<!-- tutupannya -->
 							</div>
                                 
                         </div>

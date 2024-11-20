@@ -69,6 +69,7 @@
                             <th scope="col" style="text-align: center">Truck</th>
                             <th scope="col" style="text-align: center">Sopir</th>
                             <th scope="col" style="text-align: center">Total Qty</th>
+                            <th scope="col" style="text-align: center">Posted</th>
                         </tr>
                     </thead>
     
@@ -139,6 +140,15 @@
                 {data: 'TRUCK', name: 'TRUCK'},
                 {data: 'SOPIR', name: 'SOPIR'},
                 {data: 'TOTAL_QTY', name: 'TOTAL_QTY'},
+                { data: 'POSTED', name: 'POSTED',
+                  render : function(data, type, row, meta) {
+                    if(row['POSTED']=="0"){
+                        return '';
+                    }else{
+                        return '<input type="checkbox" checked style="pointer-events: none;">';
+                    }
+                  }
+                },                           
             ],
             columnDefs: 
             [

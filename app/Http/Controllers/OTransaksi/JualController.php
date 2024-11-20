@@ -282,7 +282,7 @@ class JualController extends Controller
                 'PER'              => $periode,
                 'FLAG'             => $FLAGZ,						
                 'GOL'              => $GOLZ,			
-                'NO_SO'            => ($request['NO_SO'] == null) ? "" : $request['NO_SO'],
+                // 'NO_SO'            => ($request['NO_SO'] == null) ? "" : $request['NO_SO'],
                 'NO_JUAL'            => ($request['NO_JUAL'] == null) ? "" : $request['NO_JUAL'],
                 'NO_SURATS'            => ($request['NO_SURATS'] == null) ? "" : $request['NO_SURATS'],
  
@@ -306,6 +306,7 @@ class JualController extends Controller
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
                 'HARI'            => (float) str_replace(',', '', $request['HARI']),
+                'PKP'            => (float) str_replace(',', '', $request['PKP']),
 
                 'USRNM'            => Auth::user()->username,
                 'TG_SMP'           => Carbon::now(),
@@ -318,6 +319,7 @@ class JualController extends Controller
 		$REC        = $request->input('REC');
 		$KD_BHN     = $request->input('KD_BHN');
         $NA_BHN     = $request->input('NA_BHN');
+		$NO_SO     = $request->input('NO_SO');
 		$KD_BRG     = $request->input('KD_BRG');
         $NA_BRG     = $request->input('NA_BRG');
         $SATUAN     = $request->input('SATUAN');
@@ -344,6 +346,7 @@ class JualController extends Controller
                 $detail->GOL 	     = $GOLZ;               
                 $detail->KD_BHN      = ($KD_BHN[$key] == null) ? "" :  $KD_BHN[$key];
                 $detail->NA_BHN      = ($NA_BHN[$key] == null) ? "" :  $NA_BHN[$key];          
+                $detail->NO_SO      = ($NO_SO[$key] == null) ? "" :  $NO_SO[$key];
                 $detail->KD_BRG      = ($KD_BRG[$key] == null) ? "" :  $KD_BRG[$key];
                 $detail->NA_BRG      = ($NA_BRG[$key] == null) ? "" :  $NA_BRG[$key];
                 $detail->SATUAN      = ($SATUAN[$key] == null) ? "" :  $SATUAN[$key];				
@@ -603,7 +606,7 @@ class JualController extends Controller
         $jual->update(
             [
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
-                'NO_SO'            => ($request['NO_SO'] == null) ? "" : $request['NO_SO'],
+                // 'NO_SO'            => ($request['NO_SO'] == null) ? "" : $request['NO_SO'],
                 'NO_SURATS'            => ($request['NO_SURATS'] == null) ? "" : $request['NO_SURATS'],
                 'NO_JUAL'            => ($request['NO_JUAL'] == null) ? "" : $request['NO_JUAL'],
  
@@ -627,6 +630,7 @@ class JualController extends Controller
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
                 'HARI'            => (float) str_replace(',', '', $request['HARI']),
+                'PKP'            => (float) str_replace(',', '', $request['PKP']),
 
 				'USRNM'            => Auth::user()->username,
                 'TG_SMP'           => Carbon::now(),
@@ -647,6 +651,7 @@ class JualController extends Controller
         $REC    = $request->input('REC');
         $KD_BHN = $request->input('KD_BHN');
         $NA_BHN = $request->input('NA_BHN');
+        $NO_SO = $request->input('NO_SO');
         $KD_BRG = $request->input('KD_BRG');
         $NA_BRG = $request->input('NA_BRG');
         $SATUAN = $request->input('SATUAN');		
@@ -674,6 +679,7 @@ class JualController extends Controller
                         'GOL'        => $this->GOLZ,
                         'KD_BHN'     => ($KD_BHN[$i] == null) ? "" :  $KD_BHN[$i],
                         'NA_BHN'     => ($NA_BHN[$i] == null) ? "" :  $NA_BHN[$i],
+                        'NO_SO'     => ($NO_SO[$i] == null) ? "" :  $NO_SO[$i],
                         'KD_BRG'     => ($KD_BRG[$i] == null) ? "" :  $KD_BRG[$i],
                         'NA_BRG'     => ($NA_BRG[$i] == null) ? "" :  $NA_BRG[$i],
                         'SATUAN'     => ($SATUAN[$i] == null) ? "" :  $SATUAN[$i],						
@@ -701,6 +707,7 @@ class JualController extends Controller
                       
                         'KD_BHN'     => ($KD_BHN[$i] == null) ? "" :  $KD_BHN[$i],
                         'NA_BHN'     => ($NA_BHN[$i] == null) ? "" :  $NA_BHN[$i],
+                        'NO_SO'     => ($NO_SO[$i] == null) ? "" :  $NO_SO[$i],
                         'KD_BRG'     => ($KD_BRG[$i] == null) ? "" :  $KD_BRG[$i],
                         'NA_BRG'     => ($NA_BRG[$i] == null) ? "" :  $NA_BRG[$i],
                         'SATUAN'     => ($SATUAN[$i] == null) ? "" :  $SATUAN[$i],						
@@ -835,6 +842,8 @@ class JualController extends Controller
         $PHPJasperXML->setData($data);
         ob_end_clean();
         $PHPJasperXML->outpage("I");
+       
+        DB::SELECT("UPDATE jual SET POSTED = 1 WHERE jual.NO_BUKTI='$no_jual';");
     }
 	
 	

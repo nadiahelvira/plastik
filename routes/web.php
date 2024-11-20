@@ -47,7 +47,7 @@ Route::get('/raccount', 'App\Http\Controllers\FReport\RAccountController@report'
     // GET ACCOUNT
     Route::get('/get-account', 'App\Http\Controllers\FMaster\AccountController@getAccount')->middleware(['auth'])->name('get-account');
     Route::get('/account/browse', 'App\Http\Controllers\FMaster\AccountController@browse')->middleware(['auth'])->name('accoumt/browse');
-    Route::get('/account/browse_acno', 'App\Http\Controllers\FMaster\AccountController@browse_acno')->middleware(['auth'])->name('accoumt/browse_acno');
+    Route::get('/account/browse_nacno', 'App\Http\Controllers\FMaster\AccountController@browse_nacno')->middleware(['auth'])->name('accoumt/browse_nacno');
     
     
     Route::get('/account/browsecash', 'App\Http\Controllers\FMaster\AccountController@browsecash')->middleware(['auth'])->name('accoumt/browsecash');
@@ -704,6 +704,9 @@ Route::get('/utbeli/repost/{utbeli}', 'App\Http\Controllers\OTransaksi\UtbeliCon
 Route::get('/jsutbelic/{utbeli:NO_ID}', 'App\Http\Controllers\OTransaksi\UtbeliController@jsutbelic')->middleware(['auth']);
     
 
+Route::get('/rum', 'App\Http\Controllers\OReport\RUmController@report')->middleware(['auth'])->name('rum');
+Route::post('jasper-um-report', 'App\Http\Controllers\OReport\RUmController@jasperUmReport')->middleware(['auth']);
+
 
 
 // Operational Jual
@@ -1055,6 +1058,12 @@ Route::get('/thutb/b/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@
 Route::get('/thutb/edit/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('thutb.edit');
 Route::post('/thutb/update/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@update')->middleware(['auth', 'role:superadmin|operational'])->name('thutb.update');
 Route::get('/thutb/delete/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@destroy')->middleware(['auth', 'role:superadmin'])->name('thutb.delete');
+
+
+
+Route::get('/rthut', 'App\Http\Controllers\OReport\RThutController@report')->middleware(['auth'])->name('rthut');
+Route::post('jasper-thut-report', 'App\Http\Controllers\OReport\RThutController@jasperThutReport')->middleware(['auth']);
+
 
 
 // Um Beli 

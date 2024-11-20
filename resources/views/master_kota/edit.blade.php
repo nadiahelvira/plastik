@@ -65,22 +65,20 @@
 
 	/* penutup LOADX */
 
+	/* style tambahan baru */
+	.form-control:disabled,
+    .form-control[readonly] {
+        background-color: #f7d8b4 !important;
+        opacity: 1;
+    }
+
+    .row {
+        margin-bottom: 8px !important;
+    }
 </style>
 
 @section('content')
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-            <h1 class="m-0">Data Kota </h1>
-            </div>
-            <!-- /.col -->
-        </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
 
     <div class="content">
         <div class="container-fluid">
@@ -92,31 +90,69 @@
                     <form action="{{($tipx=='new')? url('/kota/store/') : url('/kota/update/'.$header->NO_ID ) }}" method="POST" name ="entri" id="entri" >
   
                       @csrf
-						
-                        <ul class="nav nav-tabs">
-                            <!-- <li class="nav-item active">
-                                <a class="nav-link active" href="#kotaInfo" data-toggle="tab">Pegawai Info</a>
-                            </li> -->
-                            <!-- <li class="nav-item">
-                                <a class="nav-link" href="#bankInfo" data-toggle="tab">Bank Info</a>
-                            </li> -->
-                        </ul>
         
                         <div class="tab-content mt-3">
-							
-							<!-- <div id="kotaInfo" class="tab-pane active"> -->
-    
 
-    
-            					<div class="form-group label-floating">
-                                     <label class="control-label" for="name">Kota</label>
-                                     <input type="text" class="form-control input-lg" id="KOTA" value="{{$header->KOTA}}" required>
-                                     
-                                </div>
+							<!-- style text box model baru -->
+
+							<style>
+								/* Ensure specificity with class targeting */
+								.form-group.special-input-label {
+									position: relative;
+									margin-left: 5px ;
+								}
+						
+								/* Ensure only bottom border for input */
+								.form-group.special-input-label input {
+									width: 100%;
+									padding: 10px 0;
+									border: none !important;
+									border-bottom: 2px solid #ccc !important;
+									outline: none !important;
+									font-size: 16px !important;
+									background: transparent !important; /* Remove any background color */
+								}
+						
+								/* Bottom border color change on focus */
+								.form-group.special-input-label input:focus {
+									border-bottom: 2px solid #007BFF !important; /* Change color on focus */
+								}
+						
+								/* Style the label with a higher specificity */
+								.form-group.special-input-label label {
+									position: absolute;
+									top: 12px;
+									color: #888 !important;
+									font-size: 16px !important;
+									transition: 0.3s ease all;
+									pointer-events: none;
+								}
+						
+								/* Move label above input when focused or has content */
+								.form-group.special-input-label input:focus + label,
+								.form-group.special-input-label input:not(:placeholder-shown) + label {
+									top: -10px !important;
+									font-size: 12px !important;
+									color: #007BFF !important;
+								}
+							</style>
+
+							<!-- tutupannya -->
+							
+							<div class="form-group row">
+								<!-- code text box baru -->
+								<div class="col-md-5 form-group row special-input-label">
+
+									<input type="text" class="KOTA" id="KOTA" name="KOTA" 
+										value="{{$header->KOTA}}" placeholder=" " >
+									<label for="KOTA">Kota</label>
+								</div>
+								<!-- tutupannya -->
+							</div>
                                 
 
 					
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <div class="col-md-1" >
 									<label style="color:red">*</label>	
 									<label for="RING" class="form-label">Ring</label>
@@ -127,10 +163,9 @@
 										<option value="1" {{ ($header->RING == '1') ? 'selected' : '' }}>Ring 1</option>
 										<option value="2" {{ ($header->RING == '2') ? 'selected' : '' }}>Ring 2</option>
 										<option value="3" {{ ($header->RING == '3') ? 'selected' : '' }}>Ring 3</option>
-										<!-- <option value="4" {{ ($header->RING == '4') ? 'selected' : '' }}>Ring 4</option> -->
-									</select>
+										</select>
 								</div>  
-                            </div>
+                            </div> -->
                             
 							<!-- loader tampil di modal  -->
 							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
@@ -225,17 +260,17 @@
 			}
 		});
 
- 		$tipx = $('#tipx').val();
+		$tipx = $('#tipx').val();
 				
-        if ( $tipx == 'new' )
+		if ( $tipx == 'new' )
 		{
-			 baru();			
+				baru();			
 		}
 
-        if ( $tipx != 'new' )
+		if ( $tipx != 'new' )
 		{
-			 //mati();	
-    		 ganti();
+				//mati();	
+				ganti();
 		} 
 
 		// $("#UMAKAN").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
@@ -247,29 +282,29 @@
 
 	function baru() {
 		
-		 kosong();
-		 hidup();
-		 
-	}
-	
+		kosong();
+		hidup();
+		
+   	}
+   
 	function ganti() {
 		
 		mati();
 		// hidup();
 	
 	}
-	
-	
+   
+   
 	function batal() {
 			
-		 mati();
+			mati();
 	
 	}
 	
 
 	function hidup() {
 
-	    $("#TOPX").attr("disabled", true);
+		$("#TOPX").attr("disabled", true);
 	    $("#PREVX").attr("disabled", true);
 	    $("#NEXTX").attr("disabled", true);
 	    $("#BOTTOMX").attr("disabled", true);
@@ -281,7 +316,6 @@
 		
 	    $("#HAPUSX").attr("disabled", true);
 	    $("#CLOSEX").attr("disabled", true);
-		
 		
  		$tipx = $('#tipx').val();
 		
@@ -298,7 +332,7 @@
 		   }
 		   
 		
-		$("#RING").attr("readonly", false);	
+		// $("#RING").attr("readonly", false);	
 		
 		//document.getElementById("KET").disabled = false;
 		
@@ -322,15 +356,15 @@
 	    $("#CLOSEX").attr("disabled", false);
 		
 		$("#KOTA").attr("readonly", true);			
-		$("#RING").attr("readonly", true);	
+		// $("#RING").attr("readonly", true);	
 		
 	}
 
 
 	function kosong() {
 				
-		 $('#KOTA').val("");	
-		 $('#RING').val("");	
+		//  $('#KOTA').val("");	
+		//  $('#RING').val("");	
 
 		 
 	}

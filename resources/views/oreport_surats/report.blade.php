@@ -90,7 +90,7 @@
                                 "showFooter" => "bottom",
                                 "columns" => array(
                                     "NO_BUKTI" => array(
-                                        "label" => "SO#",
+                                        "label" => "Bukti#",
                                     ),
                                     "TGL" => array(
                                         "label" => "Tanggal",
@@ -107,8 +107,8 @@
                                     "NAMAC" => array(
                                         "label" => "-",
                                     ),
-                                    "TOTAL" => array(
-                                        "label" => "Total",
+                                    "QTY" => array(
+                                        "label" => "Qty",
                                         "type" => "number",
                                         "decimals" => 2,
                                         "decimalPoint" => ".",

@@ -86,39 +86,101 @@
                         </ul>
         
                         <div class="tab-content mt-3">
+
+							<!-- style text box model baru -->
+
+							<style>
+								/* Ensure specificity with class targeting */
+								.form-group.special-input-label {
+									position: relative;
+									margin-left: 5px ;
+								}
+						
+								/* Ensure only bottom border for input */
+								.form-group.special-input-label input {
+									width: 100%;
+									padding: 10px 0;
+									border: none !important;
+									border-bottom: 2px solid #ccc !important;
+									outline: none !important;
+									font-size: 16px !important;
+									background: transparent !important; /* Remove any background color */
+								}
+						
+								/* Bottom border color change on focus */
+								.form-group.special-input-label input:focus {
+									border-bottom: 2px solid #007BFF !important; /* Change color on focus */
+								}
+						
+								/* Style the label with a higher specificity */
+								.form-group.special-input-label label {
+									position: absolute;
+									top: 12px;
+									color: #888 !important;
+									font-size: 16px !important;
+									transition: 0.3s ease all;
+									pointer-events: none;
+								}
+						
+								/* Move label above input when focused or has content */
+								.form-group.special-input-label input:focus + label,
+								.form-group.special-input-label input:not(:placeholder-shown) + label {
+									top: -10px !important;
+									font-size: 12px !important;
+									color: #007BFF !important;
+								}
+							</style>
+
+							<!-- tutupannya -->
+
+
 							<div id="custInfo" class="tab-pane active">
         
                              <div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="KODEC" class="form-label">Kode</label>
-                                </div>
  
                                     <input type="text" class="form-control NO_ID" id="NO_ID" name="NO_ID"
                                     placeholder="Masukkan NO_ID" value="{{$header->NO_ID ?? ''}}" hidden readonly>
 
 									<input name="tipx" class="form-control flagz" id="tipx" value="{{$tipx}}" hidden>
-		 
 
-								<div class="col-md-2">
-                                    <input type="text" class="form-control KODEC" id="KODEC" name="KODEC"
-                                    placeholder="Masukkan Kode Customer" value="{{$header->KODEC}}" readonly>
-                                </div>    
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="KODEC" id="KODEC" name="KODEC" 
+										value="{{$header->KODEC}}" placeholder=" " >
+									<label for="KODEC">Kode</label>
+								</div>
+								<!-- tutupannya -->  
 
 								<div class="col-md-1">
-                                </div>
+								</div>
 								
-                                <div class="col-md-1">
-                                    <label for="NAMAC" class="form-label">Nama</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control NAMAC" id="NAMAC" name="NAMAC"
-                                    placeholder="Masukkan Nama Customer" value="{{$header->NAMAC}}">
-                                </div> 
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="NAMAC" id="NAMAC" name="NAMAC" 
+										value="{{$header->NAMAC}}" placeholder=" " >
+									<label for="NAMAC">Nama</label>
+								</div>
+								<!-- tutupannya -->  
 									
+								<div class="col-md-1">
+								</div>
+
 								<div class="col-md-1">
 									<input type="checkbox" class="form-check-input" id="PKP" name="PKP" value="1" {{ ($header->PKP == 1) ? 'checked' : '' }}>
 									<label for="PKP">PKP</label>
 								</div>	
+
+								<div class="col-md-1" align="right">
+									<label for="GOL" class="form-label">Golongan</label>
+								</div>
+								<div class="col-md-1">
+									<select id="GOL" class="form-control"  name="GOL">
+										<option value="Y" {{ ($header->GOL == 'Y') ? 'selected' : '' }}>Y</option>
+										<option value="Z" {{ ($header->GOL == 'Z') ? 'selected' : '' }}>Z</option>
+									</select>
+                            	</div> 
 							
 								<div class="col-md-4" hidden>
 									<input type="checkbox" class="form-check-input" id="AKT"name="AKT"
@@ -128,144 +190,158 @@
                             </div>
         
                             <div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="ALAMAT" class="form-label">Alamat</label>
-                                </div>
+                                <!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
 
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control ALAMAT" id="ALAMAT" name="ALAMAT"
-                                    placeholder="Masukkan Alamat" value="{{$header->ALAMAT}}">
-                                </div>
-								
-                                <div class="col-md-1">
-									<label style="color:red">*</label>	
-                                    <label for="KOTA" class="form-label">Kota</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KOTA" id="KOTA" name="KOTA"
-                                    placeholder="Masukkan Kota" value="{{$header->KOTA}}" readonly >
-                                </div>
-							</div>
-        
-							<div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="TELPON1" class="form-label">Telpon</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control TELPON1" id="TELPON1"name="TELPON1"
-                                    placeholder="Masukkan Telpon" value="{{$header->TELPON1}}">
-                                </div>
+									<input type="text" class="ALAMAT" id="ALAMAT" name="ALAMAT" 
+										value="{{$header->ALAMAT}}" placeholder=" " >
+									<label for="ALAMAT">Alamat 1</label>
+								</div>
+								<!-- tutupannya -->  
 
 								<div class="col-md-1">
 								</div>
 
-                                <div class="col-md-1">
-                                    <label for="HP" class="form-label">HP</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control HP" id="HP"name="HP"
-                                    placeholder="Masukkan HP" value="{{$header->HP}}">
-                                </div>
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
 
-                                <div class="col-md-1">
-                                    <label for="KONTAK" class="form-label">Kontak</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KONTAK" id="KONTAK"name="KONTAK"
-                                    placeholder="Masukkan Kontak" value="{{$header->KONTAK}}">
-                                </div>
+									<input type="text" class="KOTA" id="KOTA" name="KOTA" 
+										value="{{$header->KOTA}}" placeholder=" " >
+									<!-- <label style="color:red">*</label>	 -->
+									<label for="KOTA" style="color:red">*Kota (pilih kota)</label>
+								</div>
+								<!-- tutupannya -->  
+
+								<div class="col-md-1" align="right">
+									<label for="RING" class="form-label">Ring</label>
+								</div>
+								
+								 <div class="col-md-1">
+									<select id="RING" class="form-control"  name="RING">
+										<option value="LOKAL" {{ ($header->RING == 'LOKAL') ? 'selected' : '' }}>Lokal</option>
+										<option value="1" {{ ($header->RING == '1') ? 'selected' : '' }}>1</option>
+										<option value="2" {{ ($header->RING == '2') ? 'selected' : '' }}>2</option>
+										<option value="3" {{ ($header->RING == '3') ? 'selected' : '' }}>3</option>
+									</select>
+								</div>
+							</div>
+        
+							<div class="form-group row">
+							
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="KONTAK" id="KONTAK" name="KONTAK" 
+										value="{{$header->KONTAK}}" placeholder=" " >
+									<label for="KONTAK">Kontak</label>
+								</div>
+								<!-- tutupannya -->
+
+								<div class="col-md-1">
+								</div>
+
+								 <!-- code text box baru -->
+								 <div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="TELPON1" id="TELPON1" name="TELPON1" 
+										value="{{$header->TELPON1}}" placeholder=" " >
+									<label for="TELPON1">Telepon</label>
+								</div>
+								<!-- tutupannya --> 
+
+								<div class="col-md-1">
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="HP" id="HP" name="HP" 
+										value="{{$header->HP}}" placeholder=" " >
+									<label for="HP">HP</label>
+								</div>
+								<!-- tutupannya -->
 
                             </div>
 
 							
 							<div class="form-group row">
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="FAX" id="FAX" name="FAX" 
+										value="{{$header->FAX}}" placeholder=" " >
+									<label for="FAX">Fax</label>
+								</div>
+								<!-- tutupannya -->
+
 								<div class="col-md-1">
-                                    <label for="FAX" class="form-label">Fax</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control FAX" id="FAX"name="FAX"
-                                    placeholder="Masukkan Fax" value="{{$header->FAX}}">
-                                </div>
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="EMAIL" id="EMAIL" name="EMAIL" 
+										value="{{$header->EMAIL}}" placeholder=" " >
+									<label for="EMAIL">Email</label>
+								</div>
+								<!-- tutupannya -->
+
+								<div class="col-md-1">
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="NPWP" id="NPWP" name="NPWP" 
+										value="{{$header->NPWP}}" placeholder=" " >
+									<label for="NPWP">NPWP</label>
+								</div>
+								<!-- tutupannya -->
+
 							</div>
 
 							<div class="form-group row">
 
-                                <div class="col-md-1">
-                                    <label for="EMAIL" class="form-label">Email</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control EMAIL" id="EMAIL"name="EMAIL"
-                                    placeholder="Masukkan Email" value="{{$header->EMAIL}}">
-                                </div>
+                                <!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="KET" id="KET" name="KET" 
+										value="{{$header->KET}}" placeholder=" " >
+									<label for="KET">Ket</label>
+								</div>
+								<!-- tutupannya -->
 
 								<div class="col-md-1">
-									<label style="color:red">*</label>									
-                                    <label for="KODEP" class="form-label">Sales</label>
-                                </div>
-                               	<div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder="Pilih Pegawai"value="{{$header->KODEP}}" style="text-align: left" readonly >
-        						  <button type="button" class="btn btn-primary" onclick="browsePegawai()" style="width:40px"><i class="fa fa-search"></i></button>
-                                </div>
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-1 form-group row special-input-label">
+
+									<input type="text" class="KODEP" id="KODEP" name="KODEP" 
+										value="{{$header->KODEP}}" placeholder=" " >
+									<label for="KODEP">Sales</label>
+
+								</div>
+
+								<div class="col-md-1 form-group row special-input-label">
+									<button type="button" class="btn btn-primary" onclick="browsePegawai()" style="width:40px"><i class="fa fa-search"></i></button>
+								</div>
+								<!-- tutupannya -->  
         
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="" value="{{$header->NAMAP}}" readonly>
-                                </div>
+                                <div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="NAMAP" id="NAMAP" name="NAMAP" 
+										value="{{$header->NAMAP}}" placeholder=" " >
+									<label for="NAMAP"></label>
+									
+								</div>
                             </div>
 
 							<!-- loader tampil di modal  -->
 							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
  
-							<div class="form-group row">
-
-                                <div class="col-md-1">
-                                    <label for="NPWP" class="form-label">NPWP</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control NPWP" id="NPWP"name="NPWP"
-                                    placeholder="Masukkan NPWP" value="{{$header->NPWP}}">
-                                </div>
-
-								<div class="col-md-1" >
-									<label style="color:red">*</label>	
-									<label for="RING" class="form-label">Ring</label>
-								</div>
-								<!-- <div class="col-md-1">
-									<select id="RING" class="form-control"  name="RING">
-										<option value="LOKAL" {{ ($header->RING == 'LOKAL') ? 'selected' : '' }}>Lokal</option>
-										<option value="1" {{ ($header->RING == '1') ? 'selected' : '' }}>Ring 1</option>
-										<option value="2" {{ ($header->RING == '2') ? 'selected' : '' }}>Ring 2</option>
-										<option value="3" {{ ($header->RING == '3') ? 'selected' : '' }}>Ring 3</option>
-									</select>
-								</div> -->
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control RING" id="RING"name="RING"
-                                    placeholder="Masukkan RING" value="{{$header->RING}}" readonly>
-                                </div>
-
-								<div class="col-md-1">
-									<label for="GOL" class="form-label">Golongan</label>
-								</div>
-								<div class="col-md-1">
-									<select id="GOL" class="form-control"  name="GOL">
-										<option value="Y" {{ ($header->GOL == 'Y') ? 'selected' : '' }}>Y</option>
-										<option value="Z" {{ ($header->GOL == 'Z') ? 'selected' : '' }}>Z</option>
-									</select>
-                            	</div> 
-                            </div> 
- 
 							
-							<div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="KET" class="form-label">Ket</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control KET" id="KET"name="KET"
-                                    placeholder="Masukkan Ket" value="{{$header->KET}}">
-                                </div>
-                            </div>
-        								
-								
-							</div>
+						 </div>
 
 							
 							<div id="bankInfo" class="tab-pane">
@@ -281,62 +357,81 @@
 												<option value="{{$pilihbankD->KODE}}" {{ $header->BANK == $pilihbankD->KODE ? 'selected' : '' }}>{{ $pilihbankD->NAMA }}</option>
 											@endforeach
 										</select>
-									</div>                                  
+									</div>       
+
+									<div class="col-md-1">
+									</div>			
+
+									<!-- code text box baru -->
+									<div class="col-md-3 form-group row special-input-label">
+
+										<input type="text" class="BANK_CAB" id="BANK_CAB" name="BANK_CAB" 
+											value="{{$header->BANK_CAB}}" placeholder=" " >
+										<label for="BANK_CAB">Cabang</label>
+									</div>
+									<!-- tutupannya -->
+
+									<div class="col-md-1">
+									</div>			
+
+									<!-- code text box baru -->
+									<div class="col-md-3 form-group row special-input-label">
+
+										<input type="text" class="BANK_KOTA" id="BANK_KOTA" name="BANK_KOTA" 
+											value="{{$header->BANK_KOTA}}" placeholder=" " >
+										<label for="BANK_KOTA">Kota</label>
+									</div>
+									<!-- tutupannya -->
+
+								</div>
+								
+								<div class="form-group row">
+									<!-- code text box baru -->
+									<div class="col-md-3 form-group row special-input-label">
+
+										<input type="text" class="BANK_NAMA" id="BANK_NAMA" name="BANK_NAMA" 
+											value="{{$header->BANK_NAMA}}" placeholder=" " >
+										<label for="BANK_NAMA">A/N</label>
+									</div>
+									<!-- tutupannya -->
+
+									<div class="col-md-1">
+									</div>			
+
+									<!-- code text box baru -->
+									<div class="col-md-3 form-group row special-input-label">
+
+										<input type="text" class="BANK_REK" id="BANK_REK" name="BANK_REK" 
+											value="{{$header->BANK_REK}}" placeholder=" " >
+										<label for="BANK_REK">Rek</label>
+									</div>
+									<!-- tutupannya -->
+
+									<div class="col-md-1">
+									</div>			
+
+									<!-- code text box baru -->
+									<div class="col-md-3 form-group row special-input-label">
+
+										<input type="text" class="LIM" id="LIM" name="LIM" 
+											value="{{$header->LIM}}" placeholder=" " >
+										<label for="LIM">Kredit Limit</label>
+									</div>
+									<!-- tutupannya -->
+									
+
 								</div>
 
-								<div class="form-group row">							       
-									<div class="col-md-1">
-										<label for="BANK_CAB" class="form-label">Cabang</label>
-									</div>
-									<div class="col-md-4">
-										<input type="text" class="form-control BANK_CAB" id="BANK_CAB" name="BANK_CAB" placeholder="Masukkan Cabang" value="{{$header->BANK_CAB}}">
-									</div>
-								</div>
+								<div class="form-group row">
+									
+									<div class="col-md-3 form-group row special-input-label">
 
-								<div class="form-group row">							       
-									<div class="col-md-1">
-										<label for="BANK_KOTA" class="form-label">Kota</label>
+										<input type="text" class="HARI" id="HARI" name="HARI" 
+											value="{{$header->HARI}}" placeholder=" " >
+										<label for="HARI">Jatuh Tempo (Hari)</label>
 									</div>
-									<div class="col-md-2">
-										<input type="text" class="form-control BANK_KOTA" id="BANK_KOTA" name="BANK_KOTA" placeholder="Masukkan Kota" value="{{$header->BANK_KOTA}}">
-									</div>
-								</div>
-								
-								<div class="form-group row">
-									<div class="col-md-1">
-										<label for="BANK_NAMA" class="form-label">A/N</label>
-									</div>
-									<div class="col-md-4">
-										<input type="text" class="form-control BANK_NAMA" id="BANK_NAMA" name="BANK_NAMA" placeholder="Masukkan Nama" value="{{$header->BANK_NAMA}}">
-									</div>                                
-								</div>
-								
-								<div class="form-group row">
-									<div class="col-md-1">
-										<label for="BANK_REK" class="form-label">Rek</label>
-									</div>
-									<div class="col-md-4">
-										<input type="text" class="form-control BANK_REK" id="BANK_REK" name="BANK_REK" placeholder="Masukkan Nomor Rekening" value="{{$header->BANK_REK}}">
-									</div>                                
-								</div>
-								
-								<div class="form-group row">
-									<div class="col-md-1">
-										<label for="LIM" class="form-label">Kredit Limit</label>
-									</div>
-									<div class="col-md-2">
-										<!-- <input type="text" class="form-control LIM" onclick="select()" id="LIM" name="LIM" placeholder="Masukkan Limit" value="{{$header->LIM}}"> -->
-										<input type="text" class="form-control LIM" onclick="select()"  id="LIM" name="LIM" placeholder="LIM" value="{{ number_format($header->LIM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
-									</div>                                
-								</div>
-								
-								<div class="form-group row">
-									<div class="col-md-1">
-										<label for="HARI" class="form-label">Jatuh Tempo (Hari)</label>
-									</div>
-									<div class="col-md-2">
-										<input type="text" class="form-control HARI" onclick="select()" id="HARI" name="HARI" placeholder="Masukkan Jumlah Hari" style="text-align: right; width:140px" value="{{$header->HARI}}">
-									</div>                                
+									<!-- tutupannya -->
+
 								</div>
 								
 							</div>
@@ -599,7 +694,6 @@
 		
 		chooseKota = function(KOTA,RING){
 			$("#KOTA").val(KOTA);
-			$("#RING").val(RING);
 			$("#browseKotaModal").modal("hide");
 		}
 		

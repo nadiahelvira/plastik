@@ -157,11 +157,19 @@
                                     <input hidden type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="-" value="{{$header->NAMAP}}" readonly>
                                     <input hidden type="text" class="form-control RING" id="RING" name="RING" placeholder="-" value="{{$header->RING}}" readonly>
 									<input hidden type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="KOM" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
+                                    <!-- <input hidden type="text" class="form-control PKP" id="PKP" name="PKP" placeholder="-" value="{{$header->PKP}}" readonly> -->
                                 
 									<input hidden type="text" onclick="select()" onblur="hitung()" class="form-control HARI" id="HARI" name="HARI" placeholder="Masukkan HARI" 
 									value="{{ number_format( $header->HARI, 0, '.', ',') }}" style="text-align: right" >
 								   
 								</div>
+
+								
+								
+								<div class="col-md-1" >
+                                  	<input type="checkbox" class="form-check-input" id="PKP" name="PKP" readonly  value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}>
+                                    <label for="PKP" class="form-label">Pkp</label>
+                                </div>
                             </div>
 							
 							
@@ -428,6 +436,7 @@
 						<th>No SO</th>
 						<th>Tgl</th>
 						<th>Customer</th>
+						<th>PKP</th>
 						<th>Barang</th>
 						<th>Satuan</th>
 						<th>Qty</th>
@@ -546,6 +555,10 @@
 
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> -->
+
+<!-- tambahan untuk sweetalert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- tutupannya -->
 
 <script>
 	var idrow = 1;
@@ -844,10 +857,11 @@
 				for(i=0; i<resp.length; i++){
 					
 					dTableDo.row.add([
-						'<a href="javascript:void(0);" onclick="chooseDo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].NO_SO+'\', \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\', \''+resp[i].SATUAN+'\',  \''+resp[i].SISA+'\', \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\')">'+resp[i].NO_BUKTI+'</a>',
+						'<a href="javascript:void(0);" onclick="chooseDo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',\''+resp[i].RING+'\', \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\', \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\', \''+resp[i].KOTA+'\',  \''+resp[i].HARI+'\',  \''+resp[i].PKP+'\',  \''+resp[i].NO_SO+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\' )">'+resp[i].NO_BUKTI+'</a>',
 						resp[i].NO_SO,
 						resp[i].TGL,
 						resp[i].NAMAC,
+						resp[i].PKP,
 						resp[i].KD_BRG,
 						resp[i].NA_BRG,
 						resp[i].SATUAN,
@@ -883,7 +897,7 @@
 			$("#browseDoModal").modal("show");
 		}
 	
-	chooseDo = function(NO_BUKTI, NO_SO, KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA, HARI){
+	chooseDo = function(NO_BUKTI, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA, HARI, PKP, NO_SO, KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA ){
 		$("#NO_DO").val(NO_BUKTI);
 		$("#KODEP").val(KODEP);
 		$("#NAMAP").val(NAMAP);
@@ -893,15 +907,30 @@
 		$("#NAMAC").val(NAMAC);
 		$("#ALAMAT").val(ALAMAT);
 		$("#KOTA").val(KOTA);
-		$("#HARI").val(HARI);
+		$("#HARI").val(HARI);	
+		$("#PKP").val(PKP);
 		$("NO_SO"+rowidDo).val(NO_SO);
 		$("#KD_BRG"+rowidDo).val(KD_BRG);
 		$("#NA_BRG"+rowidDo).val(NA_BRG);
 		$("#SATUAN"+rowidDo).val(SATUAN);
 		$("#QTY"+rowidDo).val(QTY!=0 ? QTY : 0);
 		$("#ID_SOD"+rowidDo).val(NO_ID);
-		$("#HARGA"+rowidDo).val(HARGA);	
+		$("#HARGA"+rowidDo).val(HARGA);
+
 		$("#browseDoModal").modal("hide");
+
+		if ( $("#PKP").val() == '1' )
+		{
+
+			document.getElementById("PKP").checked = true;
+				
+		}
+
+		else
+		{
+			document.getElementById("PKP").checked = false;
+			
+		}
 
 		getDod(NO_BUKTI);
 	}
@@ -1195,27 +1224,56 @@
 		if ( $('#KODEC').val()=='' ) 
 		{			
 			check = '1';
-			alert("No Customer Harus diisi.");
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'No Customer Harus Diisi.'
+				});
+				return; // Stop function execution
 		}
+
 		if ( $('#TRUCK').val()=='' ) 
 		{			
 			check = '1';
-			alert("Truk Harus diisi.");
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Truk Harus Diisi.'
+				});
+				return; // Stop function execution
 		}
+
 		if ( $('#SOPIR').val()=='' ) 
 		{			
 			check = '1';
-			alert("Sopir Harus diisi.");
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Sopir Harus Diisi.'
+				});
+				return; // Stop function execution
 		}
+
 		if ( tgl.substring(3,5) != bulanPer ) 
 		{
 			check = '1';
-			alert("Bulan ("+tgl+") tidak sama dengan Periode");
-		}	
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Bulan tidak sama dengan Periode'
+				});
+				return; // Stop function execution
+		}
+
 		if ( tgl.substring(tgl.length-4) != tahunPer )
 		{
 			check = '1';
-			alert("Tahun ("+tgl+") tidak sama dengan Periode");
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Tahun tidak sama dengan Periode'
+				});
+				return; // Stop function execution
 		}	 
 	
 		// if ( check == '0' )
@@ -1223,7 +1281,34 @@
 		// 	document.getElementById("entri").submit();  
 		// }
 
-		(check==0) ? document.getElementById("entri").submit() : alert('Masih ada kesalahan');
+		if (check == '0') {
+				Swal.fire({
+					title: 'Are you sure?',
+					text: 'Are you sure you want to save?',
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonText: 'Yes, save it!',
+					cancelButtonText: 'No, cancel',
+				}).then((result) => {
+					if (result.isConfirmed) {
+						document.getElementById("entri").submit();
+					} else {
+						Swal.fire({
+							icon: 'info',
+							title: 'Cancelled',
+							text: 'Your data was not saved'
+						});
+					}
+				});
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: 'Masih ada kesalahan'
+				});
+			}
+
+		// tutupannya
 		
 		$("#LOADX").hide();
 	}

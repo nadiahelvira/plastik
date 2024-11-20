@@ -106,7 +106,7 @@ class RSuratsController extends Controller
 			{
 				$tglDrD = date("Y-m-d", strtotime($request->tglDr));
 				$tglSmpD = date("Y-m-d", strtotime($request->tglSmp));
-				$filtertgl = " WHERE a.TGL between '".$tglDrD."' and '".$tglSmpD."' ";
+				$filtertgl = " and a.TGL between '".$tglDrD."' and '".$tglSmpD."' ";
 			}
 			
 			if (!empty($request->cbg))
@@ -117,12 +117,11 @@ class RSuratsController extends Controller
 
 			session()->put('filter_cbg', $request->cbg);
 			
-		$query = DB::SELECT("
-			SELECT a.NO_BUKTI, a.TGL, b.NO_SO, a.KODEC, a.NAMAC, a.TOTAL, a.NOTES, a.GOL, a.TRUCK,
+		$query = DB::SELECT("SELECT a.NO_BUKTI, a.TGL, b.NO_SO, a.KODEC, a.NAMAC, a.TOTAL, a.NOTES, a.GOL, a.TRUCK,
 			b.NA_BRG, b.QTY 
 			from surats a, suratsd b 
-			$filtertgl $filtergol $filterkodec $filtercbg
-			ORDER BY NO_BUKTI;
+			WHERE a.NO_BUKTI = b.NO_BUKTI and a.FLAG='JL' $filtertgl $filtergol $filterkodec $filtercbg 
+			ORDER BY a.NO_BUKTI;
 		");
 
 		

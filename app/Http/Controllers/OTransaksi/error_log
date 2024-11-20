@@ -22,3 +22,31 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/UtbeliController.php on line 14
+[16-Nov-2024 19:50:14 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PostingSLSController.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PostingSLSController.php on line 13
+[16-Nov-2024 21:12:24 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PoController.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PoController.php on line 17
+[17-Nov-2024 00:04:34 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PpController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PpController.php on line 16
+[17-Nov-2024 00:20:56 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PakaiController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/PakaiController.php on line 16
+[17-Nov-2024 01:10:15 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/TerimaController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/TerimaController.php on line 16
+[19-Nov-2024 04:39:55 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/StockaController.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/StockaController.php on line 17
+[19-Nov-2024 05:10:18 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OTransaksi\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/HutController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OTransaksi/HutController.php on line 16

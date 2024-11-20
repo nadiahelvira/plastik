@@ -141,24 +141,36 @@
                                     "TGL" => array(
                                         "label" => "Tanggal",
                                     ),
-                                    "NO_SO" => array(
-                                        "label" => "SO#",
-                                    ),
-                                    "NAMAT" => array(
-                                        "label" => "Tujuan",
-                                    ),
                                     "KODEC" => array(
                                         "label" => "Customer#",
                                     ),
                                     "NAMAC" => array(
                                         "label" => "-",
                                     ),
-                                    "NO_FAKTUR" => array(
-                                        "label" => "Faktur#",
+									"NO_FAKTUR" => array(
+                                        "label" => "Jual#",
                                         "footerText" => "<b>Grand Total :</b>",
+                                    ),
+                                    "TOTAL" => array(
+                                        "label" => "Total",
+                                        "type" => "number",
+                                        "decimals" => 2,
+                                        "decimalPoint" => ".",
+                                        "thousandSeparator" => ",",
+                                        "footer" => "sum",
+                                        "footerText" => "<b>@value</b>",
                                     ),
                                     "BAYAR" => array(
                                         "label" => "Bayar",
+                                        "type" => "number",
+                                        "decimals" => 2,
+                                        "decimalPoint" => ".",
+                                        "thousandSeparator" => ",",
+                                        "footer" => "sum",
+                                        "footerText" => "<b>@value</b>",
+                                    ),
+                                    "SISA" => array(
+                                        "label" => "Sisa",
                                         "type" => "number",
                                         "decimals" => 2,
                                         "decimalPoint" => ".",

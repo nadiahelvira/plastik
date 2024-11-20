@@ -79,39 +79,86 @@
                                 <a class="nav-link active" href="#data" data-toggle="tab">Data</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#dokumen" data-toggle="tab">Dokumen</a>
+                                <a class="nav-link" href="#dokumen" data-toggle="tab">Nilai</a>
                             </li>
                         </ul> --}}
         
                         <div class="tab-content mt-3">
-        
+
+							<!-- style textbox model baru -->
+						<style>
+								/* Ensure specificity with class targeting */
+								.form-group.special-input-label {
+									position: relative;
+									margin-left: 5px ;
+								}
+						
+								/* Ensure only bottom border for input */
+								.form-group.special-input-label input {
+									width: 100%;
+									padding: 10px 0;
+									border: none !important;
+									border-bottom: 2px solid #ccc !important;
+									outline: none !important;
+									font-size: 16px !important;
+									background: transparent !important; /* Remove any background color */
+								}
+						
+								/* Bottom border color change on focus */
+								.form-group.special-input-label input:focus {
+									border-bottom: 2px solid #007BFF !important; /* Change color on focus */
+								}
+						
+								/* Style the label with a higher specificity */
+								.form-group.special-input-label label {
+									position: absolute;
+									top: 12px;
+									color: #888 !important;
+									font-size: 16px !important;
+									transition: 0.3s ease all;
+									pointer-events: none;
+								}
+						
+								/* Move label above input when focused or has content */
+								.form-group.special-input-label input:focus + label,
+								.form-group.special-input-label input:not(:placeholder-shown) + label {
+									top: -10px !important;
+									font-size: 12px !important;
+									color: #007BFF !important;
+								}
+							</style>
+						<!-- tutupannya -->
+
                             <div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="KD_BRG" class="form-label">Kode</label>
-                                </div>
-								
+
                                     <input type="text" class="form-control NO_ID" id="NO_ID" name="NO_ID"
                                     placeholder="Masukkan NO_ID" value="{{$header->NO_ID ?? ''}}" hidden readonly>
 
 									<input name="tipx" class="form-control flagz" id="tipx" value="{{$tipx}}" hidden>
-		 								
-								
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KD_BRG" id="KD_BRG" name="KD_BRG"
-                                    placeholder="Masukkan Barang" value="{{$header->KD_BRG}}" readonly>
-                                </div>
+		 							
 
-								
-                                <div class="col-md-1">
-                                    <label for="NA_BRG" class="form-label">Nama</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control NA_BRG" id="NA_BRG" name="NA_BRG"
-                                    placeholder="Masukkan Nama Barang" value="{{$header->NA_BRG}}" >
-                                </div>
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
 
-								
-                                <div class="col-md-1">
+									<input type="text" class="KD_BRG" id="KD_BRG" name="KD_BRG" 
+										value="{{$header->KD_BRG}}" placeholder=" " >
+									<label for="KD_BRG">Kode</label>
+								</div>
+								<!-- tutupannya -->
+
+								<div class="col-md-1">
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="NA_BRG" id="NA_BRG" name="NA_BRG" 
+										value="{{$header->NA_BRG}}" placeholder=" " >
+									<label for="NA_BRG">Nama</label>
+								</div>
+								<!-- tutupannya -->
+
+                                <div class="col-md-1" align="right">
 									<label for="GOL" class="form-label">Golongan</label>
 								</div>
 								<div class="col-md-1">
@@ -121,7 +168,7 @@
 									</select>
 								</div>
 
-								<div class="col-md-1" align="center">
+								<div class="col-md-1" align="right">
 									<label for="PN" class="form-label">PPN</label>
 								</div>
 								<div class="col-md-1">
@@ -143,180 +190,234 @@
 
 							
 							<div class="form-group row">
-								<div class="col-md-1">
-									<label style="color:red">*</label>	
-                                    <label for="KD_GRUP" class="form-label">Grup</label>
-                                </div>
-								
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KD_GRUP" id="KD_GRUP" name="KD_GRUP"
-                                    placeholder="" value="{{$header->KD_GRUP}}" readonly>
-                                </div>
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
 
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control NA_GRUP" id="NA_GRUP" name="NA_GRUP"
-                                    placeholder="" value="{{$header->NA_GRUP}}" readonly>
-                                </div>
-								
+									<input type="text" class="KD_GRUP" id="KD_GRUP" name="KD_GRUP" 
+										value="{{$header->KD_GRUP}}" placeholder=" " >
+									<label for="KD_GRUP">Grup *(Pilih Grup)</label>
+								</div>
+
 								<div class="col-md-1">
-									<label style="color:red">*</label>	
-                                    <label for="LOKASI" class="form-label">Lokasi</label>
+								</div>
+
+								<div class="col-md-3 form-group row special-input-label">
+									<input type="text" class="NA_GRUP" id="NA_GRUP" name="NA_GRUP" 
+										value="{{$header->NA_GRUP}}" placeholder=" " >
+									<label for="NA_GRUP"></label>
                                 </div>
-								
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control LOKASI" id="LOKASI" name="LOKASI"
-                                    placeholder="" value="{{$header->LOKASI}}" readonly>
-                                </div>
+								<!-- tutupannya -->
+
+								<div class="col-md-1">
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="LOKASI" id="LOKASI" name="LOKASI" 
+										value="{{$header->LOKASI}}" placeholder=" " >
+									<label for="LOKASI">Lokasi *(Pilih Lokasi)</label>
+								</div>
+								<!-- tutupannya -->
 							</div>
 							
                             <div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="SATUAN_BELI" class="form-label">Satuan Beli</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control SATUAN_BELI" id="SATUAN_BELI" name="SATUAN_BELI"
-                                    placeholder="Masukkan Satuan Beli" value="{{$header->SATUAN_BELI}}">
-                                </div>
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
+
+									<input type="text" class="SATUAN_BELI" id="SATUAN_BELI" name="SATUAN_BELI" 
+										value="{{$header->SATUAN_BELI}}" placeholder=" " >
+									<label for="SATUAN_BELI">Satuan Beli</label>
+								</div>
+								<!-- tutupannya -->
 
 								<div class="col-md-1">
-                                    <label for="KALI" class="form-label" style="text-align: left; width:200px">Konversi</label>
-                                </div>
-                                <div class="col-md-2">
-									<input type="text" class="form-control KALI" onclick="select()"  id="KALI" name="KALI" placeholder="KALI" 
-									value="{{ number_format($header->KALI, 2, '.', ',') }}" style="text-align: right; width:140px">
-                                </div>
+								</div>
 
-                                <div class="col-md-1">
-                                    <label for="SATUAN" class="form-label">Satuan Pakai</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control SATUAN" id="SATUAN" name="SATUAN"
-                                    placeholder="Masukkan Satuan Pakai" value="{{$header->SATUAN}}">
-                                </div>
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
 
-								
+									<input type="text" class="KALI" id="KALI" name="KALI" 
+										value="{{$header->KALI}}" placeholder=" " >
+									<label for="KALI">Konversi</label>
+								</div>
+								<!-- tutupannya -->
+
+								<div class="col-md-1">
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="SATUAN" id="SATUAN" name="SATUAN" 
+										value="{{$header->SATUAN}}" placeholder=" " >
+									<label for="SATUAN">Satuan Pakai</label>
+								</div>
+								<!-- tutupannya -->
                             </div>
 
 							<div class="form-group row">
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
+
+									<input type="text" class="MERK" id="MERK" name="MERK" 
+										value="{{$header->MERK}}" placeholder=" " >
+									<label for="MERK">Merk</label>
+								</div>
+								<!-- tutupannya -->
 
                                 <div class="col-md-1">
-									<label for="MERK" class="form-label">Merk</label>
-								</div>
-								<div class="col-md-2">
-                                    <input type="text" class="form-control MERK" id="MERK" name="MERK"
-                                    placeholder="Masukkan Merk" value="{{$header->MERK}}">
-                                </div>
-
-                                <div class="col-md-1">
-									<label for="JENIS" class="form-label">Jenis</label>
-								</div>
-								<div class="col-md-2">
-                                    <input type="text" class="form-control JENIS" id="JENIS" name="JENIS"
-                                    placeholder="Masukkan Jenis" value="{{$header->JENIS}}">
                                 </div>
 								
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="JENIS" id="JENIS" name="JENIS" 
+										value="{{$header->JENIS}}" placeholder=" " >
+									<label for="JENIS">Jenis</label>
+								</div>
+								<!-- tutupannya -->
+
                             </div>
 
 							<!-- loader tampil di modal  -->
 							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
 
 							<div class="form-group row">
-								<div class="col-md-1">
-                                    <label for="PANJANG" class="form-label">Panjang</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" onclick="select()" class="form-control PANJANG" id="PANJANG" name="PANJANG" placeholder="Masukkan PANJANG" 
-									value="{{ number_format( $header->PANJANG, 0, '.', ',') }}" style="text-align: right" >
-                                </div>
+
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
+
+									<input type="text" class="PANJANG" id="PANJANG" name="PANJANG" 
+										value="{{$header->PANJANG}}" placeholder=" " >
+									<label for="PANJANG">Panjang</label>
+								</div>
+								<!-- tutupannya -->
 
 								<div class="col-md-1">
-									<label for="LEBAR" class="form-label">Lebar</label>
-								</div>
-								<div class="col-md-2">
-									<input type="text" onclick="select()" class="form-control LEBAR" id="LEBAR" name="LEBAR" placeholder="Masukkan LEBAR" 
-									value="{{ number_format( $header->LEBAR, 0, '.', ',') }}" style="text-align: right" >
 								</div>
 
-								
-								<div class="col-md-1">
-                                    <label for="DIMENSI" class="form-label">Dimensi</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" onclick="select()" class="form-control DIMENSI" id="DIMENSI" name="DIMENSI" placeholder="Masukkan DIMENSI" 
-									value="{{ number_format( $header->DIMENSI, 0, '.', ',') }}" style="text-align: right" >
-                                </div>
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
+
+									<input type="text" class="LEBAR" id="LEBAR" name="LEBAR" 
+										value="{{$header->LEBAR}}" placeholder=" " >
+									<label for="LEBAR">Lebar</label>
+								</div>
+								<!-- tutupannya -->
 
 								<div class="col-md-1">
-									<label for="VOLUME" class="form-label">Volume</label>
 								</div>
-								<div class="col-md-2">
-									<input type="text" onclick="select()" class="form-control VOLUME" id="VOLUME" name="VOLUME" placeholder="Masukkan VOLUME" 
-									value="{{ number_format( $header->VOLUME, 0, '.', ',') }}" style="text-align: right" >
+
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
+
+									<input type="text" class="DIMENSI" id="DIMENSI" name="DIMENSI" 
+										value="{{$header->DIMENSI}}" placeholder=" " >
+									<label for="DIMENSI">Diemensi</label>
 								</div>
+								<!-- tutupannya -->
+
+								<div class="col-md-1">
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
+
+									<input type="text" class="VOLUME" id="VOLUME" name="VOLUME" 
+										value="{{$header->VOLUME}}" placeholder=" " >
+									<label for="VOLUME">Volume</label>
+								</div>
+								<!-- tutupannya -->
 							</div>
 
 							<div class="form-group row">
-								<div class="col-md-1">
-                                    <label for="ROP" class="form-label">ROP</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" onclick="select()" class="form-control ROP" id="ROP" name="ROP" placeholder="Masukkan ROP" 
-									value="{{ number_format( $header->ROP, 0, '.', ',') }}" style="text-align: right" >
-                                </div>
 
-								<div class="col-md-1" hidden>
-									<label for="HJUAL" class="form-label">Harga Jual</label>
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
+
+									<input type="text" class="ROP" id="ROP" name="ROP" 
+										value="{{$header->ROP}}" placeholder=" " >
+									<label for="ROP">ROP</label>
 								</div>
-								<div class="col-md-2" hidden>
-									<input type="text" onclick="select()" class="form-control HJUAL" id="HJUAL" name="HJUAL" placeholder="Masukkan HJUAL" 
-									value="{{ number_format( $header->HJUAL, 0, '.', ',') }}" style="text-align: right" >
+								<!-- tutupannya -->
+
+								<div class="col-md-1">
 								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
+
+								<input type="text" class="SMIN" id="SMIN" name="SMIN" 
+									value="{{$header->SMIN}}" placeholder=" " >
+								<label for="SMIN">SMIN</label>
+								</div>
+								<!-- tutupannya -->
+
+								<div class="col-md-1">
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+								<input type="text" class="SMAX" id="SMAX" name="SMAX" 
+									value="{{$header->SMAX}}" placeholder=" " >
+								<label for="SMAX">SMAX</label>
+								</div>
+								<!-- tutupannya -->
+
+								<div class="col-md-1">
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label" hidden>
+
+									<input type="text" class="HJUAL" id="HJUAL" name="HJUAL" 
+										value="{{$header->HJUAL}}" placeholder=" " >
+									<label for="HJUAL">Harga Jual</label>
+								</div>
+								<!-- tutupannya -->
 							</div>
 
 							<div class="form-group row">
-								<div class="col-md-1">
-                                    <label for="SMIN" class="form-label">SMIN</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" onclick="select()" class="form-control SMIN" id="SMIN" name="SMIN" placeholder="Masukkan SMIN" 
-									value="{{ number_format( $header->SMIN, 0, '.', ',') }}" style="text-align: right" >
-                                </div>
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
 
-								<div class="col-md-1">
-									<label for="SMAX" class="form-label">SMAX</label>
+									<input type="text" class="ACNOA" id="ACNOA" name="ACNOA" 
+										value="{{$header->ACNOA}}" placeholder=" " >
+									<label for="ACNOA">Acno Debet *(Pilih Acno Debet)</label>
 								</div>
-								<div class="col-md-2">
-									<input type="text" onclick="select()" class="form-control SMAX" id="SMAX" name="SMAX" placeholder="Masukkan SMAX" 
-									value="{{ number_format( $header->SMAX, 0, '.', ',') }}" style="text-align: right" >
+								<div class="col-md-1 form-group row special-input-label">
+									<button type="button" class="btn btn-primary" onclick="browseAcno()" style="width:40px"><i class="fa fa-search"></i></button>
 								</div>
-							</div>
-
-							<div class="form-group row">
-                                <div class="col-md-1">
-									<label style="color:red">*</label>									
-                                    <label for="ACNOA" class="form-label">Acno Debet</label>
-                                </div>
-                               	<div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control ACNOA" id="ACNOA" name="ACNOA" placeholder="Pilih Acno Debet"value="{{$header->ACNOA}}" style="text-align: left" readonly >
-        						  <button type="button" class="btn btn-primary" onclick="browseAcno()" style="width:40px"><i class="fa fa-search"></i></button>
-                                </div>
+								<!-- tutupannya -->
         
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control NACNOA" id="NACNOA" name="NACNOA" placeholder="" value="{{$header->NACNOA}}" readonly>
-                                </div>
+								<div class="col-md-2 form-group row special-input-label">
+									<input type="text" class="NACNOA" id="NACNOA" name="NACNOA" 
+										value="{{$header->NACNOA}}" placeholder=" " >
+									<label for="NACNOA"></label>
+								</div>
 
 								<div class="col-md-1">
-									<label style="color:red">*</label>									
-                                    <label for="ACNOB" class="form-label">Acno Kredit</label>
-                                </div>
-                               	<div class="col-md-2 input-group" >
-                                  <input type="text" class="form-control ACNOB" id="ACNOB" name="ACNOB" placeholder="Pilih Acno Kredit"value="{{$header->ACNOB}}" style="text-align: left" readonly >
-        						  <button type="button" class="btn btn-primary" onclick="browseAcnob()"><i class="fa fa-search"></i></button>
-                                </div>
+								</div>
+
+								<!-- code text box baru -->
+								<div class="col-md-2 form-group row special-input-label">
+
+									<input type="text" class="ACNOB" id="ACNOB" name="ACNOB" 
+										value="{{$header->ACNOB}}" placeholder=" " >
+									<label for="ACNOB">Acno Kredit *(Pilih Acno Kredit)</label>
+								</div>
+								<div class="col-md-1 form-group row special-input-label">
+									<button type="button" class="btn btn-primary" onclick="browseAcno()" style="width:40px"><i class="fa fa-search"></i></button>
+								</div>
+								<!-- tutupannya -->
         
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control NACNOB" id="NACNOB" name="NACNOB" placeholder="" value="{{$header->NACNOB}}" readonly>
-                                </div>
+								<div class="col-md-2 form-group row special-input-label">
+									<input type="text" class="NACNOB" id="NACNOB" name="NACNOB" 
+										value="{{$header->NACNOB}}" placeholder=" " >
+									<label for="NACNOB"></label>
+								</div>
                             </div>
 							
 							

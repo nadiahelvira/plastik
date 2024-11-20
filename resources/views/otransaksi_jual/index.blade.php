@@ -65,7 +65,7 @@
                         <tr>
                             <th scope="col" style="text-align: center"></th>
                             <th scope="col" style="text-align: center">#</th>
-				     		            <th scope="col" style="text-align: center">-</th>							
+                            <th scope="col" style="text-align: center">-</th>							
                             <th scope="col" style="text-align: center">Bukti#</th>
                             <th scope="col" style="text-align: center">Customer#</th>
                             <th scope="col" style="text-align: center">Tgl</th>
@@ -74,6 +74,7 @@
                      
                             <th scope="col" style="text-align: center">Notes</th>
                             <th scope="col" style="text-align: center">User</th>
+                            <th scope="col" style="text-align: center">Posted</th>
                         </tr>
                     </thead>
     
@@ -137,11 +138,21 @@
                 {data: 'TOTAL', name: 'TOTAL', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},
                 {data: 'NOTES', name: 'NOTES'},
                 {data: 'USRNM', name: 'USRNM'},
+                { data: 'POSTED', name: 'POSTED',
+                  render : function(data, type, row, meta) {
+                    if(row['POSTED']=="0"){
+                        return '';
+                    }else{
+                        return '<input type="checkbox" checked style="pointer-events: none;">';
+                    }
+                  }
+                },
+                
             ],
             columnDefs: [
                 {
                     "className": "dt-center", 
-                    "targets": [0,1,2,3,4,5,7,8],
+                    "targets": [0,1,2,3,4,5,7,8,10],
                 },		
                 {
                     "className": "dt-right", 

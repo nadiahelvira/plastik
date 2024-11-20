@@ -78,30 +78,77 @@
                         </ul> --}}
         
                         <div class="tab-content mt-3">
-        
+							
+						<style>
+								/* Ensure specificity with class targeting */
+								.form-group.special-input-label {
+									position: relative;
+									margin-left: 5px ;
+								}
+						
+								/* Ensure only bottom border for input */
+								.form-group.special-input-label input {
+									width: 100%;
+									padding: 10px 0;
+									border: none !important;
+									border-bottom: 2px solid #ccc !important;
+									outline: none !important;
+									font-size: 16px !important;
+									background: transparent !important; /* Remove any background color */
+								}
+						
+								/* Bottom border color change on focus */
+								.form-group.special-input-label input:focus {
+									border-bottom: 2px solid #007BFF !important; /* Change color on focus */
+								}
+						
+								/* Style the label with a higher specificity */
+								.form-group.special-input-label label {
+									position: absolute;
+									top: 12px;
+									color: #888 !important;
+									font-size: 16px !important;
+									transition: 0.3s ease all;
+									pointer-events: none;
+								}
+						
+								/* Move label above input when focused or has content */
+								.form-group.special-input-label input:focus + label,
+								.form-group.special-input-label input:not(:placeholder-shown) + label {
+									top: -10px !important;
+									font-size: 12px !important;
+									color: #007BFF !important;
+								}
+							</style>
+
                             <div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="KODE" class="form-label">Kode</label>
-                                </div>
 								
                                     <input type="text" class="form-control NO_ID" id="NO_ID" name="NO_ID"
                                     placeholder="Masukkan NO_ID" value="{{$header->NO_ID ?? ''}}" hidden readonly>
 
 									<input name="tipx" class="form-control flagz" id="tipx" value="{{$tipx}}" hidden>
 		 								
-										
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control KODE" id="KODE" name="KODE"
-                                    placeholder="Masukkan Kode" value="{{$header->KODE}}" readonly>
-                                </div>
-        
+								
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="KODE" id="KODE" name="KODE" 
+										value="{{$header->KODE}}" placeholder=" " >
+									<label for="KODE">Kode</label>
+								</div>
+								<!-- tutupannya -->
+
                                 <div class="col-md-1">
-                                    <label for="NAMA" class="form-label">Nama</label>
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control NAMA" id="NAMA" name="NAMA"
-                                    placeholder="Masukkan Nama" value="{{$header->NAMA}}" >
-                                </div>
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="NAMA" id="NAMA" name="NAMA" 
+										value="{{$header->NAMA}}" placeholder=" " >
+									<label for="NAMA">Nama</label>
+								</div>
+								<!-- tutupannya -->
                             </div>
 							
 							<!-- loader tampil di modal  -->
@@ -112,20 +159,20 @@
         
          				<div class="mt-3 col-md-12 form-group row">
 							<div class="col-md-4">
-								<button type="button" hidden id='TOPX'  onclick="location.href='{{url('/gdg/edit/?idx=' .$idx. '&tipx=top')}}'" class="btn btn-outline-primary">Top</button>
-								<button type="button" hidden id='PREVX' onclick="location.href='{{url('/gdg/edit/?idx='.$header->NO_ID.'&tipx=prev&kodex='.$header->ACNO )}}'" class="btn btn-outline-primary">Prev</button>
-								<button type="button" hidden id='NEXTX' onclick="location.href='{{url('/gdg/edit/?idx='.$header->NO_ID.'&tipx=next&kodex='.$header->ACNO )}}'" class="btn btn-outline-primary">Next</button>
-								<button type="button" hidden id='BOTTOMX' onclick="location.href='{{url('/gdg/edit/?idx=' .$idx. '&tipx=bottom')}}'" class="btn btn-outline-primary">Bottom</button>
+								<button type="button" id='TOPX'  onclick="location.href='{{url('/gdg/edit/?idx=' .$idx. '&tipx=top')}}'" class="btn btn-outline-primary">Top</button>
+								<button type="button" id='PREVX' onclick="location.href='{{url('/gdg/edit/?idx='.$header->NO_ID.'&tipx=prev&kodex='.$header->ACNO )}}'" class="btn btn-outline-primary">Prev</button>
+								<button type="button" id='NEXTX' onclick="location.href='{{url('/gdg/edit/?idx='.$header->NO_ID.'&tipx=next&kodex='.$header->ACNO )}}'" class="btn btn-outline-primary">Next</button>
+								<button type="button" id='BOTTOMX' onclick="location.href='{{url('/gdg/edit/?idx=' .$idx. '&tipx=bottom')}}'" class="btn btn-outline-primary">Bottom</button>
 							</div>
 							<div class="col-md-5">
-								<button type="button" hidden id='NEWX' onclick="location.href='{{url('/gdg/edit/?idx=0&tipx=new')}}'" class="btn btn-warning">New</button>
-								<button type="button" hidden id='EDITX' onclick='hidup()' class="btn btn-secondary">Edit</button>                    
-								<button type="button" hidden id='UNDOX' onclick="location.href='{{url('/gdg/edit/?idx=' .$idx. '&tipx=undo' )}}'" class="btn btn-info">Undo</button> 
+								<button type="button" id='NEWX' onclick="location.href='{{url('/gdg/edit/?idx=0&tipx=new')}}'" class="btn btn-warning">New</button>
+								<button type="button" id='EDITX' onclick='hidup()' class="btn btn-secondary">Edit</button>                    
+								<button type="button" id='UNDOX' onclick="location.href='{{url('/gdg/edit/?idx=' .$idx. '&tipx=undo' )}}'" class="btn btn-info">Undo</button> 
 								<button type="button" id='SAVEX' onclick='simpan()'   class="btn btn-success" class="fa fa-save"></i>Save</button>
 
 							</div>
 							<div class="col-md-3">
-								<button type="button" hidden id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
+								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
 								<button type="button" id='CLOSEX'  onclick="location.href='{{url('/gdg' )}}'" class="btn btn-outline-secondary">Close</button>
 
 
@@ -175,6 +222,7 @@
 			}
 		});
 				
+				
         if ( $tipx == 'new' )
 		{
 			 baru();			
@@ -185,46 +233,46 @@
 			 //mati();	
     		 ganti();
 		} 
-
     });
 
 
 	function baru() {
 		
-		 kosong();
-		 hidup();
-		 
+		kosong();
+		hidup();
+			
 	}
 	
 	function ganti() {
 		
-		// mati();
-		hidup();
+		mati();
+		// hidup();
 	
 	}
 	
 	
 	function batal() {
 			
-		 mati();
+			mati();
 	
 	}
 	
 
 	function hidup() {
 
-	    $("#TOPX").attr("disabled", true);
-	    $("#PREVX").attr("disabled", true);
-	    $("#NEXTX").attr("disabled", true);
-	    $("#BOTTOMX").attr("disabled", true);
+		$("#TOPX").attr("disabled", true);
+		$("#PREVX").attr("disabled", true);
+		$("#NEXTX").attr("disabled", true);
+		$("#BOTTOMX").attr("disabled", true);
 
-	    $("#NEWX").attr("disabled", true);
-	    $("#EDITX").attr("disabled", true);
-	    $("#UNDOX").attr("disabled", false);
-	    $("#SAVEX").attr("disabled", false);
-		
-	    $("#HAPUSX").attr("disabled", true);
-	    $("#CLOSEX").attr("disabled", true);
+		$("#NEWX").attr("disabled", true);
+		$("#EDITX").attr("disabled", true);
+		$("#UNDOX").attr("disabled", false);
+		$("#SAVEX").attr("disabled", false);
+
+		$("#HAPUSX").attr("disabled", true);
+		$("#CLOSEX").attr("disabled", true);
+
 		
 		
  		$tipx = $('#tipx').val();
@@ -250,17 +298,17 @@
 
 	function mati() {
 
-	    $("#TOPX").attr("disabled", false);
-	    $("#PREVX").attr("disabled", false);
-	    $("#NEXTX").attr("disabled", false);
-	    $("#BOTTOMX").attr("disabled", false);
+		$("#TOPX").attr("disabled", false);
+		$("#PREVX").attr("disabled", false);
+		$("#NEXTX").attr("disabled", false);
+		$("#BOTTOMX").attr("disabled", false);
 
-	    $("#NEWX").attr("disabled", false);
-	    $("#EDITX").attr("disabled", false);
-	    $("#UNDOX").attr("disabled", true);
-	    $("#SAVEX").attr("disabled", true);
-	    $("#HAPUSX").attr("disabled", false);
-	    $("#CLOSEX").attr("disabled", false);
+		$("#NEWX").attr("disabled", false);
+		$("#EDITX").attr("disabled", false);
+		$("#UNDOX").attr("disabled", true);
+		$("#SAVEX").attr("disabled", true);
+		$("#HAPUSX").attr("disabled", false);
+		$("#CLOSEX").attr("disabled", false);
 		
 		$("#KODE").attr("readonly", true);			
 		$("#NAMA").attr("readonly", true);	

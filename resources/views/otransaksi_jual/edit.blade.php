@@ -101,7 +101,7 @@
                                     placeholder="Masukkan Bukti#" value="{{$header->NO_BUKTI}}" readonly >
                                 </div>
         
-                                <div class="col-md-1">
+                                <div class="col-md-1" align="right">
                                     <label for="TGL" class="form-label">Tgl</label>
                                 </div>
                                 <div class="col-md-2">
@@ -140,16 +140,6 @@
                                   <input type="text" class="form-control NO_JUAL" id="NO_JUAL" name="NO_JUAL" placeholder="Pilih Jual"value="{{$header->NO_JUAL}}" style="text-align: left" readonly >
         						  <button type="button" class="btn btn-primary" onclick="browseJual()"><i class="fa fa-search"></i></button>
                                 </div>
-
-								<div class="col-md-1" align="right">
-									<!-- <label style="color:red">*</label>									 -->
-                                    <label for="NO_SO" class="form-label">SO#</label>
-                                </div>
-                               	<div class="col-md-2 input-group" >
-                                  	<input type="text" class="form-control NO_SO" id="NO_SO" name="NO_SO" placeholder="Pilih SO"value="{{$header->NO_SO}}" style="text-align: left" readonly >
-        						  <!-- <button type="button" class="btn btn-primary" onclick="browseCust()"><i class="fa fa-search"></i></button> -->
-								
-								</div>
                             </div>
 							
 
@@ -187,7 +177,7 @@
 							
 
 							<div class="form-group row">
-                                <div class="col-md-1">
+                                <div class="col-md-1" align="right">
                                     <label for="NOTES" class="form-label">Notes</label>
                                 </div>
                                 <div class="col-md-4">
@@ -224,17 +214,20 @@
 												<label for="KD_BHN" class="form-label">Bahan</label>
 											</th>
 											<th {{( $golz =='B') ? '' : 'hidden' }} width="200px" style="text-align:center">Nama</th>
-
+											<th {{( $golz =='J') ? '' : 'hidden' }} width="200px">
+                                                No SO
+											</th>
 											<th {{( $golz =='J') ? '' : 'hidden' }} width="100px">
                                                 Barang
 											</th>
-											<th {{( $golz =='J') ? '' : 'hidden' }} width="200px" style="text-align:center">Nama</th>
+											<th {{( $golz =='J') ? '' : 'hidden' }} width="400px" style="text-align:center">Nama</th>
 											
 											<th width="100px" style="text-align: center;">Satuan</th>
 											<th width="150px" style="text-align: center;">Qty</th>
 											<th width="150px" style="text-align: center;">Harga</th>
 											<th width="150px" style="text-align: center;">Total</th>								
 											<th width="150px" style="text-align: center;">Diskon</th>								
+											<th width="150px" style="text-align: center;">Ket</th>								
 											<th></th>										
 										</tr>
 										
@@ -257,6 +250,11 @@
 											</td>
 											<td {{( $golz =='B') ? '' : 'hidden' }}>
 												<input name="NA_BHN[]" id="NA_BHN{{$no}}" type="text" class="form-control KD_BHN" value="{{$detail->NA_BHN}}" readonly required>
+											</td>
+
+											<td {{( $golz =='J') ? '' : 'hidden' }}>
+												<input name="NO_SO[]" id="NO_SO{{$no}}" type="text" class="form-control NO_SO " 
+												value="{{$detail->NO_SO}}" >
 											</td>
 
 											<td {{( $golz =='J') ? '' : 'hidden' }}>
@@ -289,7 +287,7 @@
 												<input name="DISK[]"  onblur="hitung()" value="{{$detail->DISK}}" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK text-primary" readonly >
 											</td>
 											<td>
-												<input name="KET[]" id="KET{{$no}}" type="text" value="{{$detail->KET}}" class="form-control KET" >
+												<input name="KET[]" id="KET{{$no}}" type="text" value="{{$detail->KET}}" class="form-control KET" readonly>
 												<button type='button' hidden id='DELETEX{{$no}}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
 											</td>   
 										</tr>
@@ -301,6 +299,7 @@
 										<td></td>
 										<td {{( $golz =='B') ? '' : 'hidden' }}></td>
 										<td {{( $golz =='B') ? '' : 'hidden' }}></td>
+										<td {{( $golz =='J') ? '' : 'hidden' }}></td>
 										<td {{( $golz =='J') ? '' : 'hidden' }}></td>
 										<td {{( $golz =='J') ? '' : 'hidden' }}></td>
 										<td></td>		
@@ -542,6 +541,10 @@
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- tambahan untuk sweetalert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- tutupannya -->
+
 <script>
 
 	var idrow = 1;
@@ -657,7 +660,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBSurats.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSurats(\''+resp[i].NO_BUKTI+'\' , \''+resp[i].NO_SO+'\', \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\' ,  \''+resp[i].PKP+'\'   )">'+resp[i].NO_BUKTI+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseSurats(\''+resp[i].NO_BUKTI+'\' , \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\' ,  \''+resp[i].PKP+'\'   )">'+resp[i].NO_BUKTI+'</a>',
 							resp[i].NO_SO,
 							resp[i].KODEC,
 							resp[i].NAMAC,
@@ -679,9 +682,8 @@
 			$("#browseSuratsModal").modal("show");
 		}
 		
-		chooseSurats = function(NO_BUKTI, NO_SO, KODEC,NAMAC, ALAMAT, KOTA, KODEP, NAMAP, KOM, RING, PKP ){
+		chooseSurats = function(NO_BUKTI, KODEC,NAMAC, ALAMAT, KOTA, KODEP, NAMAP, KOM, RING, PKP ){
 			$("#NO_SURATS").val(NO_BUKTI);
-			$("#NO_SO").val(NO_SO);
 			$("#KODEC").val(KODEC);
 			$("#NAMAC").val(NAMAC);
 			$("#ALAMAT").val(ALAMAT);
@@ -693,16 +695,29 @@
 			$("#PKP").val(PKP);	
 			$("#browseSuratsModal").modal("hide");
 
-                	var PKP=$("#PKP").val();	
-            		
-            		if (PKP == 1 ) 
-            		{
-            		$("#PKP").prop('checked', true)
-            		} 
-            		else 
-            		{
-            		$("#PKP").prop('checked', false)
-            		}
+			// var PKP=$("#PKP").val();	
+			
+			// if (PKP == 1 ) 
+			// {
+			// $("#PKP").prop('checked', true)
+			// } 
+			// else 
+			// {
+			// $("#PKP").prop('checked', false)
+			// }
+
+			if ( $("#PKP").val() == '1' )
+			{
+
+				document.getElementById("PKP").checked = true;
+					
+			}
+	
+			else
+			{
+				document.getElementById("PKP").checked = false;
+				
+			}
             		
 
 			getSuratsd(NO_BUKTI);
@@ -827,6 +842,7 @@ function getSuratsd(bukti)
 					for(i=0; i<resp.length; i++){
 						html+=`<tr>
                                     <td><input name='REC[]' id='REC${i}' value=${resp[i].REC+1} type='text' class='REC form-control' onkeypress='return tabE(this,event)' readonly></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }} ><input name='NO_SO[]' data-rowid=${i} id='NO_SO${i}' value="${resp[i].NO_SO}" type='text' class='form-control NO_SO' readonly></td>
                                     <td {{($golz == 'B') ? 'hidden' : '' }} ><input name='KD_BRG[]' data-rowid=${i} id='KD_BRG${i}' value="${resp[i].KD_BRG}" type='text' class='form-control KD_BRG' readonly></td>
                                     <td {{($golz == 'B') ? 'hidden' : '' }}><input name='NA_BRG[]' data-rowid=${i} id='NA_BRG${i}' value="${resp[i].NA_BRG}" type='text' class='form-control  NA_BRG' readonly></td>
                                     <td {{($golz == 'J') ? 'hidden' : '' }} ><input name='KD_BHN[]' data-rowid=${i} id='KD_BHN${i}' value="${resp[i].KD_BHN}" type='text' class='form-control KD_BHN' readonly></td>
@@ -846,9 +862,11 @@ function getSuratsd(bukti)
 									</td>
 									<td>
 										<input name='DISK[]' onclick='select()' onkeyup='hitung()' id='DISK${i}' value="${resp[i].DISK}" type='text' style='text-align: right' class='form-control DISK text-primary' readonly> 
-                                        <input name='KET[]' hidden id='KET${i}' value="${resp[i].KET}" type='text' class='form-control  KET' required>
                                     </td>
-                                    <td><button type='button' class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button></td>
+									<td>
+                                        <input name='KET[]' id='KET${i}' value="${resp[i].KET}" type='text' class='form-control  KET' readonly>
+										<button hidden type='button' class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
+									</td>
                                 </tr>`;
 					}
 					$('#detailJuald').html(html);
@@ -1131,42 +1149,78 @@ function getSuratsd(bukti)
 			{
 				
 				check = '1';
-				alert("Bulan tidak sama dengan Periode");
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Bulan tidak sama dengan Periode'
+				});
+				return; // Stop function execution
 			}	
 			
 
 			if ( tgl.substring(tgl.length-4) != tahunPer )
 			{
 				check = '1';
-				alert("Tahun tidak sama dengan Periode");
-				
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Tahun tidak sama dengan Periode'
+				});
+				return; // Stop function execution				
 		    }	 
 
 			if ( $('#KD_BRG').val()=='' ) 
             {				
 			    check = '1';
-				alert("Bahan# Harus Diisi.");
-			}
-
-			if ( $('#KD_BHN').val()=='' ) 
-            {				
-			    check = '1';
-				alert("Bahan# Harus Diisi.");
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Barang# Harus Diisi.'
+				});
+				return; // Stop function execution
 			}
 
         
 			if ( $('#KODEC').val()=='' ) 
             {				
 			    check = '1';
-				alert("Customer# Harus Diisi.");
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Customer# Harus Diisi.'
+				});
+				return; // Stop function execution
 			}
 			
-		if ( check == '0' )
-			{
-				
-		      document.getElementById("entri").submit();  
+			if (check == '0') {
+				Swal.fire({
+					title: 'Are you sure?',
+					text: 'Are you sure you want to save?',
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonText: 'Yes, save it!',
+					cancelButtonText: 'No, cancel',
+				}).then((result) => {
+					if (result.isConfirmed) {
+						document.getElementById("entri").submit();
+					} else {
+						Swal.fire({
+							icon: 'info',
+							title: 'Cancelled',
+							text: 'Your data was not saved'
+						});
+					}
+				});
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: 'Masih ada kesalahan'
+				});
 			}
-			
+
+		// tutupannya
+		
 			$("#LOADX").hide();
 	      
 	}
@@ -1339,7 +1393,6 @@ function getSuratsd(bukti)
 		   
 			$("#NO_BUKTI").attr("readonly", true);		   
 			$("#TGL").attr("readonly", false);
-			$("#NO_SO").attr("readonly", true);
 			$("#KODEC").attr("readonly", true);			
 			$("#NAMAC").attr("readonly", true);
 			$("#ALAMAT").attr("readonly", true);
@@ -1353,6 +1406,7 @@ function getSuratsd(bukti)
 			$("#REC" + i.toString()).attr("readonly", true);
 			$("#KD_BHN" + i.toString()).attr("readonly", false);
 			$("#KD_BRG" + i.toString()).attr("readonly", false);
+			$("#NO_SO" + i.toString()).attr("readonly", false);
 			$("#NA_BHN" + i.toString()).attr("readonly", true);
 			$("#NA_BRG" + i.toString()).attr("readonly", true);
 			$("#SATUAN" + i.toString()).attr("readonly", false);
@@ -1362,7 +1416,7 @@ function getSuratsd(bukti)
 			$("#TOTAL" + i.toString()).attr("readonly", false);
 			$("#DPP" + i.toString()).attr("readonly", true);
 			$("#PPN" + i.toString()).attr("readonly", true);
-			$("#KET" + i.toString()).attr("readonly", false);
+			$("#KET" + i.toString()).attr("readonly", true);
 
 			$("#DELETEX" + i.toString()).attr("hidden", false);
 
@@ -1421,6 +1475,7 @@ function getSuratsd(bukti)
 			$("#KD_BHN" + i.toString()).attr("readonly", true);
 			$("#NA_BHN" + i.toString()).attr("readonly", true);
 			$("#KD_BRG" + i.toString()).attr("readonly", true);
+			$("#NO_SO" + i.toString()).attr("readonly", true);
 			$("#NA_BRG" + i.toString()).attr("readonly", true);
 			$("#SATUAN" + i.toString()).attr("readonly", true);
 			$("#QTY" + i.toString()).attr("readonly", true);

@@ -163,8 +163,8 @@
 									"footerText" => "<b>Grand Total :</b>",
 								),
 								
-								"TOTAL_QTY" => array(
-									"label" => "Total Qty",
+								"QTY" => array(
+									"label" => "Qty",
 									"type" => "number",
 									"decimals" => 2,
 									"decimalPoint" => ".",

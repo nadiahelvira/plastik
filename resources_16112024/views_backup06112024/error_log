@@ -1,4 +1,0 @@
-[13-Nov-2024 01:37:15 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Auth' not found in /home/januar13/public_html/plastik/resources/views_backup06112024/profile.blade.php:114
-Stack trace:
-#0 {main}
-  thrown in /home/januar13/public_html/plastik/resources/views_backup06112024/profile.blade.php on line 114

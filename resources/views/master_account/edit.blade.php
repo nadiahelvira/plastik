@@ -69,25 +69,82 @@
     
    
                         <div class="tab-content mt-3">
+
+							<!-- style text box model baru -->
+
+							<style>
+								/* Ensure specificity with class targeting */
+								.form-group.special-input-label {
+									position: relative;
+									margin-left: 5px ;
+								}
+						
+								/* Ensure only bottom border for input */
+								.form-group.special-input-label input {
+									width: 100%;
+									padding: 10px 0;
+									border: none !important;
+									border-bottom: 2px solid #ccc !important;
+									outline: none !important;
+									font-size: 16px !important;
+									background: transparent !important; /* Remove any background color */
+								}
+						
+								/* Bottom border color change on focus */
+								.form-group.special-input-label input:focus {
+									border-bottom: 2px solid #007BFF !important; /* Change color on focus */
+								}
+						
+								/* Style the label with a higher specificity */
+								.form-group.special-input-label label {
+									position: absolute;
+									top: 12px;
+									color: #888 !important;
+									font-size: 16px !important;
+									transition: 0.3s ease all;
+									pointer-events: none;
+								}
+						
+								/* Move label above input when focused or has content */
+								.form-group.special-input-label input:focus + label,
+								.form-group.special-input-label input:not(:placeholder-shown) + label {
+									top: -10px !important;
+									font-size: 12px !important;
+									color: #007BFF !important;
+								}
+							</style>
+
+							<!-- tutupannya -->
         
                             <div class="form-group row">
-                                <div class="col-md-1">
-                                    <label for="ACNO" class="form-label">Account</label>
-                                </div>
-                                <div class="col-md-2">
 								
                                     <input type="text" class="form-control NO_ID" id="NO_ID" name="NO_ID"
                                     placeholder="Masukkan NO_ID" value="{{$header->NO_ID ?? ''}}" hidden readonly>
 
 									<input name="tipx" class="form-control flagz" id="tipx" value="{{$tipx}}" hidden>
-		
-		
-                                    <input type="text" class="form-control ACNO" id="ACNO" name="ACNO"
-                                    placeholder="Masukkan Account" value="{{$header->ACNO ?? ''}}" required readonly>
-								
-								</div>      
         
-                                <div class="col-md-1">
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="ACNO" id="ACNO" name="ACNO" 
+										value="{{$header->ACNO}}" placeholder=" " >
+									<label for="ACNO">Account</label>
+								</div>
+								<!-- tutupannya -->
+								
+								<div class="col-md-1">
+								</div>
+									
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="NAMA" id="NAMA" name="NAMA" 
+										value="{{$header->NAMA}}" placeholder=" " >
+									<label for="NAMA">Nama</label>
+								</div>
+								<!-- tutupannya -->
+
+                                <div class="col-md-1" align="right">
                                     <label for="BNK" class="form-label">Type</label>
                                 </div>
                                 <div class="col-md-2">
@@ -115,13 +172,6 @@
                             </div>
 							
 							<div class="form-group row">
-									<div class="col-md-1">
-										<label for="NAMA" class="form-label">Nama</label>
-									</div>
-									<div class="col-md-4">
-										<input type="text" class="form-control NAMA" id="NAMA" name="NAMA" 
-										placeholder="Masukkan Nama" value="{{$header->NAMA ?? ''}}" required >
-									</div>                             
 							</div>
 								
 							<!-- loader tampil di modal  -->
@@ -141,16 +191,28 @@
 								</div>	
 								
 							<div class="form-group row">
-									<div class="col-md-1">
+									<div class="col-md-2 form-group row special-input-label">
+										<input type="text" class="KEL" id="KEL" name="KEL" 
+											value="{{$header->KEL}}" placeholder=" " >
+										<label for="KEL">*Kelompok (pilih kelompok)</label>
+									</div>
+
+									<div class="col-md-3 form-group row special-input-label">
+										<input type="text" class="NAMA_KEL" id="NAMA_KEL" name="NAMA_KEL" 
+											value="{{$header->NAMA_KEL}}" placeholder=" " >
+										<label for="NAMA_KEL"></label>
+									</div>
+
+									<!-- <div class="col-md-1">
 										<label for="KEL" class="form-label">Kelompok</label>
 									</div>
 									<div class="col-md-2">
 										<input type="text" class="form-control KEL" id="KEL" name="KEL" 
 										placeholder="Pilih Kel" value="{{$header->KEL ?? ''}}" required readonly>
-									</div>    
-									<div class="col-md-3">
+									</div>     -->
+									<!-- <div class="col-md-3">
 										<input type="text" class="form-control NAMA_KEL" id="NAMA_KEL" name="NAMA_KEL" placeholder="Nama Kel" value="{{$header->NAMA_KEL ?? ''}}" required readonly>
-									</div>                              
+									</div> -->
 							</div>
 
         

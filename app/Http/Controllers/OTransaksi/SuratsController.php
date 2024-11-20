@@ -66,7 +66,7 @@ class SuratsController extends Controller
 		
         $surats = DB::SELECT("SELECT distinct surats.NO_BUKTI, suratsd.NO_SO, surats.KODEC, surats.NAMAC, 
 		                  surats.ALAMAT, surats.KOTA, surats.KODEP, surats.NAMAP, surats.KOM, 
-                          surats.RING, surats.SOPIR, surats.TRUCK, SURATS.PKP
+                          surats.RING, surats.SOPIR, surats.TRUCK, surats.PKP
                           from surats, suratsd 
                           WHERE surats.NO_BUKTI = suratsD.NO_BUKTI AND surats.GOL ='$golz' 
                           AND surats.CBG = '$CBG' AND suratsd.SISA > 0	");
@@ -107,13 +107,15 @@ class SuratsController extends Controller
 		
 		$deli = DB::SELECT("SELECT delid.NO_ID, deli.NO_BUKTI, delid.NO_SO, deli.TGL, deli.NAMAC, deli.KODEC, deli.ALAMAT, deli.KOTA,
                                 delid.KD_BRG, delid.NA_BRG, delid.SATUAN, delid.QTY, delid.KIRIM, delid.HARGA,
-                                delid.SISA, deli.KODEP, deli.NAMAP, deli.RING, deli.KOM, deli.HARI, delid.KD_GRUP from deli, delid 
-                        WHERE deli.NO_BUKTI=delid.NO_BUKTI 
-                        -- AND deli.CBG = '$CBG' 
-                        -- and delid.SISA>0 
-                        -- and deli.KODEC='".$request->kodec."' 
-                        -- AND deli.GOL ='$golz' AND POSTED = 1
-                        GROUP BY NO_BUKTI");
+                                delid.SISA, deli.KODEP, deli.NAMAP, deli.RING, deli.KOM, deli.HARI, delid.KD_GRUP,
+                                deli.PKP
+                            from deli, delid 
+                            WHERE deli.NO_BUKTI=delid.NO_BUKTI 
+                            -- AND deli.CBG = '$CBG' 
+                            -- and delid.SISA>0 
+                            -- and deli.KODEC='".$request->kodec."' 
+                            -- AND deli.GOL ='$golz' AND POSTED = 1
+                            GROUP BY NO_BUKTI");
 		return response()->json($deli);
 	}
 	
@@ -181,7 +183,7 @@ class SuratsController extends Controller
         //     $filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' ";
         // }
         $sod = DB::SELECT("SELECT REC, SATUAN , QTY, HARGA, KIRIM, SISA, TOTAL, KET, 
-                                KD_BRG, NA_BRG, DPP, PPN, QTY_KIRIM, DISK
+                                KD_BRG, NA_BRG, DPP, PPN, QTY_KIRIM, DISK, NO_SO
                             from suratsd
                             where NO_BUKTI='".$request->nobukti."' ORDER BY NO_BUKTI ");
 	
@@ -913,7 +915,7 @@ class SuratsController extends Controller
 
         $query = DB::SELECT("SELECT surats.NO_BUKTI, surats.TGL, surats.KODEC, surats.NAMAC, surats.TOTAL_QTY, surats.NOTES, surats.ALAMAT, 
                                     surats.KOTA, suratsd.KD_BRG, suratsd.NA_BRG, suratsd.SATUAN, suratsd.QTY, 
-                                    suratsd.HARGA, suratsd.TOTAL, suratsd.KET, surats.PPN, surats.NETT
+                                    suratsd.HARGA, suratsd.TOTAL, suratsd.KET, surats.PPN, surats.NETT, surats.USRNM
                             FROM surats, suratsd 
                             WHERE surats.NO_BUKTI='$no_surats' AND surats.NO_BUKTI = suratsd.NO_BUKTI 
                             ;
@@ -941,7 +943,8 @@ class SuratsController extends Controller
                 'QTY'    => $query[$key]->QTY,
                 'PPN'    => $query[$key]->PPN,
                 'NETT'    => $query[$key]->NETT,
-                'KET'    => $query[$key]->KET
+                'KET'    => $query[$key]->KET,
+                'USRNM'    => $query[$key]->USRNM
             ));
         }
 		

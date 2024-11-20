@@ -85,7 +85,10 @@ class RJualController extends Controller
 				$filtercbg = " and a.CBG='".$request->cbg."' ";
 			}
 			
-
+			
+			$tgl_1 = date("Y-m-d", strtotime($request->tglDr));
+			$tgl_2 = date("Y-m-d", strtotime($request->tglSmp));
+			
 
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodec1', $request->kodec);
@@ -100,11 +103,15 @@ class RJualController extends Controller
 			session()->put('filter_cbg', $request->cbg);
 			
 		$query = DB::SELECT("
-			SELECT a.NO_BUKTI, a.TGL, a.NO_SO, a.TRUCK, a.KODEC, a.NAMAC, b.KD_BRG,b.NA_BRG,
+			
+			SELECT a.NO_BUKTI, a.TGL, b.NO_SO, a.TRUCK, a.KODEC, a.NAMAC, b.KD_BRG,b.NA_BRG,
 					b.QTY, b.HARGA, b.TOTAL, 
-					b.DPP, b.PPN, a.NOTES, a.TOTAL_QTY
+					b.DPP, b.PPN, b.DISK
 			from jual a, juald b 
-			WHERE a.FLAG='JL' $filtertgl  $filterkodec $filterbrg $filtergudang $filtercbg;
+			WHERE a.NO_BUKTI = b.NO_BUKTI and a.FLAG='JL' 
+			$filtertgl  $filterkodec $filterbrg $filtergudang $filtercbg
+			ORDER BY a.NO_BUKTI;
+
 		");
       
 		if($request->has('filter'))
@@ -120,6 +127,8 @@ class RJualController extends Controller
 			array_push($data, array(
 				'NO_BUKTI' => $query[$key]->NO_BUKTI,
 				'TGL' => $query[$key]->TGL,
+				'TGL_1' => $tgl_1,
+				'TGL_2' => $tgl_2,
 				'NO_SO' => $query[$key]->NO_SO,
 				'KODEC' => $query[$key]->KODEC,
 				'NAMAC' => $query[$key]->NAMAC,
