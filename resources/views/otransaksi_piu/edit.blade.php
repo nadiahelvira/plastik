@@ -67,6 +67,52 @@
   
                         @csrf
                         <div class="tab-content mt-3">
+
+							<!-- style text box model baru -->
+
+							<style>
+								/* Ensure specificity with class targeting */
+								.form-group.special-input-label {
+									position: relative;
+									margin-left: 5px ;
+								}
+						
+								/* Ensure only bottom border for input */
+								.form-group.special-input-label input {
+									width: 100%;
+									padding: 10px 0;
+									border: none !important;
+									border-bottom: 2px solid #ccc !important;
+									outline: none !important;
+									font-size: 16px !important;
+									background: transparent !important; /* Remove any background color */
+								}
+						
+								/* Bottom border color change on focus */
+								.form-group.special-input-label input:focus {
+									border-bottom: 2px solid #007BFF !important; /* Change color on focus */
+								}
+						
+								/* Style the label with a higher specificity */
+								.form-group.special-input-label label {
+									position: absolute;
+									top: 12px;
+									color: #888 !important;
+									font-size: 16px !important;
+									transition: 0.3s ease all;
+									pointer-events: none;
+								}
+						
+								/* Move label above input when focused or has content */
+								.form-group.special-input-label input:focus + label,
+								.form-group.special-input-label input:not(:placeholder-shown) + label {
+									top: -10px !important;
+									font-size: 12px !important;
+									color: #007BFF !important;
+								}
+							</style>
+
+							<!-- tutupannya -->
         
                             <div class="form-group row">
                                 <div class="col-md-1" align="right">
@@ -129,13 +175,14 @@
 
 							
 							<div class="form-group row">
-                                <div class="col-md-1" align="right">
-									<label style="color:red">*</label>									
-                                    <label for="NOTES" class="form-label">Notes</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control NOTES" id="NOTES" name="NOTES" value="{{$header->NOTES}}" placeholder="Masukkan Notes" >
-                                </div>
+								<!-- code text box baru -->
+								<div class="col-md-4 form-group row special-input-label">
+
+									<input type="text" class="NOTES" id="NOTES" name="NOTES" 
+										value="{{$header->NOTES}}" placeholder=" " >
+									<label for="NOTES">Notes</label>
+								</div>
+								<!-- tutupannya -->
 
 								<div class="col-md-1">								
                                     <label for="KODEP" class="form-label">Sales</label>
