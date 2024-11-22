@@ -114,7 +114,29 @@ class SuratsController extends Controller
                             -- AND deli.CBG = '$CBG' 
                             -- and delid.SISA>0 
                             -- and deli.KODEC='".$request->kodec."' 
-                            -- AND deli.GOL ='$golz' AND POSTED = 1
+                            -- AND deli.GOL ='$golz' 
+                            AND POSTED = 1
+                            GROUP BY NO_BUKTI");
+		return response()->json($deli);
+	}
+
+    public function browseDo_Cust(Request $request)
+    {
+        $golz = $request->GOL;
+
+        $CBG = Auth::user()->CBG;
+		
+		$deli = DB::SELECT("SELECT delid.NO_ID, deli.NO_BUKTI, delid.NO_SO, deli.TGL, delid.NAMAC, delid.KODEC, delid.ALAMAT, delid.KOTA,
+                                delid.KD_BRG, delid.NA_BRG, delid.SATUAN, delid.QTY, delid.KIRIM, delid.HARGA,
+                                delid.SISA, deli.KODEP, deli.NAMAP, deli.RING, deli.KOM, deli.HARI, delid.KD_GRUP,
+                                deli.PKP, delid.TYPE_KOM, delid.KOM, delid.TKOM, deli.TOTAL_TKOM
+                            from deli, delid 
+                            WHERE deli.NO_BUKTI=delid.NO_BUKTI 
+                            -- AND deli.CBG = '$CBG' 
+                            -- and delid.SISA>0 
+                            -- and deli.KODEC='".$request->kodec."' 
+                            -- AND deli.GOL ='$golz' 
+                            AND POSTED = 1
                             GROUP BY NO_BUKTI");
 		return response()->json($deli);
 	}

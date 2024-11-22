@@ -74,7 +74,8 @@ class SoController extends Controller
                                 SO.ALAMAT, SO.KOTA, SOD.KD_BRG, SOD.NA_BRG, SOD.QTY, SOD.HARGA, SOD.KIRIM, SOD.SISA,
                                 SOD.TOTAL, SOD.PPN, SOD.DPP, SOD.DISK, SOD.SATUAN, SOD.TYPE_KOM, 
                                 SOD.KOM, SOD.TKOM, SO.TOTAL_TKOM  from so, sod 
-                          WHERE SO.NO_BUKTI = SOD.NO_BUKTI AND SO.KODEC ='$kodec' 
+                          WHERE SO.NO_BUKTI = SOD.NO_BUKTI 
+                        --   AND SO.KODEC ='$kodec' 
                           AND SO.GOL ='$golz' AND SO.TYPE ='$typez'
                           AND SOD.SISA > 0
                         --   AND CBG = '$CBG' 
@@ -149,7 +150,7 @@ class SoController extends Controller
         $CBG = Auth::user()->CBG;
 		
 		$this->setFlag($request);
-        
+
         $FLAGZ = $this->FLAGZ;
         $GOLZ = $this->GOLZ;
         $TYPEZ = $this->TYPEZ;

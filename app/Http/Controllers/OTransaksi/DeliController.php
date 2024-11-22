@@ -231,7 +231,7 @@ class DeliController extends Controller
             [
                 'NO_BUKTI'   => 'required',
                 'TGL'        => 'required',
-                'KODEC'      => 'required',
+                // 'KODEC'      => 'required',
 
             ]
         );
@@ -293,13 +293,13 @@ class DeliController extends Controller
                 'GOL'           => $GOLZ,
                 // 'NO_SO'         => ($request['NO_SO']==null) ? "" : $request['NO_SO'],
                 // 'NO_DO'         => ($request['NO_DO']==null) ? "" : $request['NO_DO'],
-                'TRUCK'         => ($request['TRUCK']==null) ? "" : $request['TRUCK'],
-                'SOPIR'         => ($request['SOPIR']==null) ? "" : $request['SOPIR'],
-                'VIA'           => ($request['VIA']==null) ? "" : $request['VIA'],
-                'KODEC'         => ($request['KODEC']==null) ? "" : $request['KODEC'],	
-				'NAMAC'		    =>($request['NAMAC']==null) ? "" : $request['NAMAC'],
-				'ALAMAT'		=>($request['ALAMAT']==null) ? "" : $request['ALAMAT'],
-				'KOTA'		    =>($request['KOTA']==null) ? "" : $request['KOTA'],
+                // 'TRUCK'         => ($request['TRUCK']==null) ? "" : $request['TRUCK'],
+                // 'SOPIR'         => ($request['SOPIR']==null) ? "" : $request['SOPIR'],
+                // 'VIA'           => ($request['VIA']==null) ? "" : $request['VIA'],
+                // 'KODEC'         => ($request['KODEC']==null) ? "" : $request['KODEC'],	
+				// 'NAMAC'		    =>($request['NAMAC']==null) ? "" : $request['NAMAC'],
+				// 'ALAMAT'		=>($request['ALAMAT']==null) ? "" : $request['ALAMAT'],
+				// 'KOTA'		    =>($request['KOTA']==null) ? "" : $request['KOTA'],
 				'NOTES'			=>($request['NOTES']==null) ? "" : $request['NOTES'],
 				'KODEP'			=>($request['KODEP']==null) ? "" : $request['KODEP'],
 				'NAMAP'			=>($request['NAMAP']==null) ? "" : $request['NAMAP'],
@@ -336,7 +336,12 @@ class DeliController extends Controller
 		$KOM	= $request->input('KOM');	
 		$TKOM	= $request->input('TKOM');	
 		// $JTEMPO	= $request->input('JTEMPO');	
-		// $ID_SOD	= $request->input('ID_SOD');		
+		// $ID_SOD	= $request->input('ID_SOD');	
+
+		$KODEC	= $request->input('KODEC');	
+		$NAMAC	= $request->input('NAMAC');	
+		$ALAMAT	= $request->input('ALAMAT');	
+		$KOTA	= $request->input('KOTA');	
 
 		// Check jika value detail ada/tidak
 		if ($REC) {
@@ -370,6 +375,11 @@ class DeliController extends Controller
 				$detail->KOM	= (float) str_replace(',', '', $KOM[$key]);
 				$detail->TKOM	= (float) str_replace(',', '', $TKOM[$key]);
 				// $detail->ID_SOD	= ($ID_SOD[$key]==null) ? '' : $ID_SOD[$key];
+
+				$detail->KODEC	= ($KODEC[$key]==null) ? '' : $KODEC[$key];
+				$detail->NAMAC	= ($NAMAC[$key]==null) ? '' : $NAMAC[$key];
+				$detail->ALAMAT	= ($ALAMAT[$key]==null) ? '' : $ALAMAT[$key];
+				$detail->KOTA	= ($KOTA[$key]==null) ? '' : $KOTA[$key];
 
                 // $detail->JTEMPO     = date('Y-m-d', strtotime($JTEMPO[$key]));
 
@@ -596,9 +606,6 @@ class DeliController extends Controller
 
                 'NO_BUKTI'   => 'required',
                 'TGL'        => 'required',
-                'KODEC'      => 'required',
-                'TRUCK'     => 'required',
-                'SOPIR'     => 'required',
             ]
         );
 
@@ -617,13 +624,13 @@ class DeliController extends Controller
                 'TGL'           => date('Y-m-d', strtotime($request['TGL'])),	
                 // 'NO_SO'         => ($request['NO_SO']==null) ? "" : $request['NO_SO'],
                 // 'NO_DO'         => ($request['NO_DO']==null) ? "" : $request['NO_DO'],
-                'TRUCK'         => ($request['TRUCK']==null) ? "" : $request['TRUCK'],
-                'SOPIR'         => ($request['SOPIR']==null) ? "" : $request['SOPIR'],
-                'VIA'           => ($request['VIA']==null) ? "" : $request['VIA'],
-                'KODEC'         => ($request['KODEC']==null) ? "" : $request['KODEC'],	
-				'NAMAC'		    =>($request['NAMAC']==null) ? "" : $request['NAMAC'],
-				'ALAMAT'		=>($request['ALAMAT']==null) ? "" : $request['ALAMAT'],
-				'KOTA'		    =>($request['KOTA']==null) ? "" : $request['KOTA'],
+                // 'KODEC'         => ($request['KODEC']==null) ? "" : $request['KODEC'],	
+				// 'NAMAC'		    =>($request['NAMAC']==null) ? "" : $request['NAMAC'],
+				// 'ALAMAT'		=>($request['ALAMAT']==null) ? "" : $request['ALAMAT'],
+				// 'KOTA'		    =>($request['KOTA']==null) ? "" : $request['KOTA'],
+                // 'TRUCK'         => ($request['TRUCK']==null) ? "" : $request['TRUCK'],
+                // 'SOPIR'         => ($request['SOPIR']==null) ? "" : $request['SOPIR'],
+                // 'VIA'           => ($request['VIA']==null) ? "" : $request['VIA'],
 				'NOTES'			=>($request['NOTES']==null) ? "" : $request['NOTES'],
                 'TOTAL_QTY'     => (float) str_replace(',', '', $request['TQTY']),
                 'TOTAL'      	=> (float) str_replace(',', '', $request['TTOTAL']),
@@ -667,6 +674,10 @@ class DeliController extends Controller
 		$TYPE_KOM	= $request->input('TYPE_KOM');	
 		$KOM	= $request->input('KOM');	
 		$TKOM	= $request->input('TKOM');	
+		$KODEC	= $request->input('KODEC');	
+		$NAMAC	= $request->input('NAMAC');	
+		$ALAMAT	= $request->input('ALAMAT');	
+		$KOTA	= $request->input('KOTA');	
        
        // Delete yang NO_ID tidak ada di input
         $query = DB::table('delid')->where('NO_BUKTI', $deli->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
@@ -701,6 +712,10 @@ class DeliController extends Controller
                         'TKOM'        => (float) str_replace(',', '', $TKOM[$i]),
                         'ID'         => $deli->NO_ID,
                         // 'ID_SOD'     => ($ID_SOD[$i]==null) ? "" : $ID_SOD[$i],
+                        'KODEC'   => ($KODEC[$i]==null) ? "" : $KODEC[$i],
+                        'NAMAC'   => ($NAMAC[$i]==null) ? "" : $NAMAC[$i],
+                        'ALAMAT'   => ($ALAMAT[$i]==null) ? "" : $ALAMAT[$i],
+                        'KOTA'   => ($KOTA[$i]==null) ? "" : $KOTA[$i],
 
                         // 'JTEMPO'     => ($JTEMPO[$i] != '') ? date("Y-m-d", strtotime($JTEMPO[$i])) : "",
                         
@@ -735,6 +750,10 @@ class DeliController extends Controller
                         'TYPE_KOM'   => ($TYPE_KOM[$i]==null) ? "" : $TYPE_KOM[$i],
                         'KOM'        => (float) str_replace(',', '', $KOM[$i]),
                         'TKOM'        => (float) str_replace(',', '', $TKOM[$i]),
+                        'KODEC'   => ($KODEC[$i]==null) ? "" : $KODEC[$i],
+                        'NAMAC'   => ($NAMAC[$i]==null) ? "" : $NAMAC[$i],
+                        'ALAMAT'   => ($ALAMAT[$i]==null) ? "" : $ALAMAT[$i],
+                        'KOTA'   => ($KOTA[$i]==null) ? "" : $KOTA[$i],
                         // 'ID_SOD'     => ($ID_SOD[$i]==null) ? "" : $ID_SOD[$i],
 
                         // 'JTEMPO'     => ($JTEMPO[$i] != '') ? date("Y-m-d", strtotime($JTEMPO[$i])) : "",

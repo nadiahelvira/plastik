@@ -247,6 +247,7 @@ class PiuController extends Controller
 				'NAMAP'            => ($request['NAMAP']==null) ? "" : $request['NAMAP'],
                 'KOM'             => (float) str_replace(',', '', $request['KOM']),
                 'TKOM'             => (float) str_replace(',', '', $request['TKOM']),
+                'HARI'             => (float) str_replace(',', '', $request['HARI']),
 
 				'USRNM'            => Auth::user()->username,
 				'TG_SMP'           => Carbon::now(),
@@ -260,6 +261,10 @@ class PiuController extends Controller
 		$TOTAL	= $request->input('TOTAL');
 		$BAYAR	= $request->input('BAYAR');		
 		$SISA	= $request->input('SISA');
+
+		$TGL_FAKTUR	= $request->input('TGL_FAKTUR');
+		$LAIN	= $request->input('LAIN');
+		$NO_TAGIH	= $request->input('NO_TAGIH');
 		
 		// Check jika value detail ada/tidak
 		if ($REC) {
@@ -276,6 +281,10 @@ class PiuController extends Controller
 				$detail->TOTAL	= (float) str_replace(',', '', $TOTAL[$key]);
 				$detail->BAYAR	= (float) str_replace(',', '', $BAYAR[$key]);					
 				$detail->SISA	= (float) str_replace(',', '', $SISA[$key]);	
+
+                $detail->TGL_FAKTUR   = date('Y-m-d', strtotime($TGL_FAKTUR[$key]));
+				$detail->LAIN	= (float) str_replace(',', '', $LAIN[$key]);	
+				$detail->NO_TAGIH = ($NO_TAGIH[$key]==null) ? "" :  $NO_TAGIH[$key];
 				$detail->save();
 			}
 		}
@@ -539,6 +548,7 @@ class PiuController extends Controller
 				'NAMAP'            => ($request['NAMAP']==null) ? "" : $request['NAMAP'],
                 'KOM'             => (float) str_replace(',', '', $request['KOM']),
                 'TKOM'             => (float) str_replace(',', '', $request['TKOM']),
+                'HARI'             => (float) str_replace(',', '', $request['HARI']),
 
 				'USRNM'            => Auth::user()->username,
 				'TG_SMP'           => Carbon::now(),
@@ -560,6 +570,10 @@ class PiuController extends Controller
 		$BAYAR	= $request->input('BAYAR');
 		$TOTAL	= $request->input('TOTAL');
 
+		$TGL_FAKTUR	= $request->input('TGL_FAKTUR');
+		$LAIN	= $request->input('LAIN');
+		$NO_TAGIH	= $request->input('NO_TAGIH');
+
          $query = DB::table('piud')->where('NO_BUKTI', $request->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
 
         // Update / Insert
@@ -577,6 +591,10 @@ class PiuController extends Controller
                         'BAYAR'      => (float) str_replace(',', '', $BAYAR[$i]),
                         'SISA'      => (float) str_replace(',', '', $SISA[$i]),
            
+                        'TGL_FAKTUR'   => ($TGL_FAKTUR[$i] != '') ? date("Y-m-d", strtotime($TGL_FAKTUR[$i])) : "",
+                        'LAIN'      => (float) str_replace(',', '', $LAIN[$i]),
+                        'NO_TAGIH'  => ($NO_TAGIH[$i]==null) ? "" :  $NO_TAGIH[$i],
+
                     ]
                 );
             } else {
@@ -593,6 +611,10 @@ class PiuController extends Controller
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'BAYAR'      => (float) str_replace(',', '', $BAYAR[$i]),
                         'SISA'      => (float) str_replace(',', '', $SISA[$i]),
+           
+                        'TGL_FAKTUR'   => ($TGL_FAKTUR[$i] != '') ? date("Y-m-d", strtotime($TGL_FAKTUR[$i])) : "",
+                        'LAIN'      => (float) str_replace(',', '', $LAIN[$i]),
+                        'NO_TAGIH'  => ($NO_TAGIH[$i]==null) ? "" :  $NO_TAGIH[$i],
                         
                     ]
                 );

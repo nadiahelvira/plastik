@@ -188,6 +188,8 @@
                                     <tr>
 										<th width="50px" style="text-align: center;">No.</th>
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">SO#</th>
+                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Supplier</th>
+                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">-</th>
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Kode Barang</th>
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Uraian</th>
                                         <th {{($golz == 'J') ? 'hidden' : '' }} style="text-align: center;">Kode Bahan</th>
@@ -218,6 +220,15 @@
 											placeholder="SO#" value="{{$detail->NO_SO}}" onblur="browseSo({{$no}})">
 										
                                         </td>
+                                        <td {{($golz == 'B') ? 'hidden' : '' }}>
+                                            <input name="KODEC[]"  id="KODEC{{$no}}" type="text" class="form-control KODEC" placeholder="" value="{{$detail->KODEC}}">
+                                        </td>
+                                        <td {{($golz == 'B') ? 'hidden' : '' }}>
+                                            <input name="NAMAC[]"  id="NAMAC{{$no}}" type="text" class="form-control NAMAC" placeholder="" value="{{$detail->NAMAC}}">
+                                            <input hidden name="ALAMAT[]" id="ALAMAT{{$no}}" type="text" class="form-control ALAMAT" placeholder="" value="{{$detail->ALAMAT}}">
+                                            <input hidden name="KOTA[]" id="KOTA{{$no}}" type="text" class="form-control KOTA" placeholder="" value="{{$detail->KOTA}}">
+                                        </td>
+
                                         <td {{($golz == 'B') ? 'hidden' : '' }}>
                                             <input name="KD_BRG[]"  id="KD_BRG{{$no}}" type="text" class="form-control KD_BRG" placeholder="Barang#" value="{{$detail->KD_BRG}}">
                                         </td>
@@ -252,6 +263,8 @@
 								<tfoot>
 								<td></td>
                                     <td></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }}></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }}></td>
                                     <td {{($golz == 'B') ? 'hidden' : '' }}></td>
                                     <td {{($golz == 'B') ? 'hidden' : '' }}></td>
                                     <td {{($golz == 'B') ? 'hidden' : '' }}></td>
@@ -718,7 +731,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableSo.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\',\''+resp[i].TYPE_KOM+'\',\''+resp[i].KOM+'\',\''+resp[i].TKOM+'\',\''+resp[i].TOTAL_TKOM+'\')">'+resp[i].NO_BUKTI+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\',\''+resp[i].TYPE_KOM+'\',\''+resp[i].KOM+'\',\''+resp[i].TKOM+'\',\''+resp[i].TOTAL_TKOM+'\',\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\')">'+resp[i].NO_BUKTI+'</a>',
 							resp[i].TGL,
 							resp[i].NAMAC,
 							resp[i].KD_BRG,
@@ -757,7 +770,7 @@
 			$("#browseSoModal").modal("show");
 		}
 		
-		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN,SISA, HARGA, TOTAL, PPNX, DPP, DISK, TYPE_KOM, KOM, TKOM, TOTAL_TKOM){
+		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN,SISA, HARGA, TOTAL, PPNX, DPP, DISK, TYPE_KOM, KOM, TKOM, TOTAL_TKOM, KODEC, NAMAC, ALAMAT, KOTA){
 			$("#NO_SO"+rowidSo).val(NO_BUKTI);
 			// $("#JTEMPO"+rowidSo).val(JTEMPO);
 			$("#KD_BRG"+rowidSo).val(KD_BRG);
@@ -773,6 +786,10 @@
 			$("#KOM"+rowidSo).val(KOM);	
 			$("#TKOM"+rowidSo).val(TKOM);	
 			$("#TOTAL_TKOM").val(TOTAL_TKOM);	
+			$("#KODEC"+rowidSo).val(KODEC);	
+			$("#NAMAC"+rowidSo).val(NAMAC);	
+			$("#ALAMAT"+rowidSo).val(ALAMAT);	
+			$("#KOTA"+rowidSo).val(KOTA);	
 			$("#browseSoModal").modal("hide");
 			hitung();
 		}
@@ -838,16 +855,16 @@
 			}
 		});
 
-		if ( $('#KODEC').val()=='' ) 
-		{			
-			check = '1';
-				Swal.fire({
-					icon: 'warning',
-					title: 'Warning',
-					text: 'No Customer Harus diisi.'
-				});
-				return; // Stop function execution
-		}
+		// if ( $('#KODEC').val()=='' ) 
+		// {			
+		// 	check = '1';
+		// 		Swal.fire({
+		// 			icon: 'warning',
+		// 			title: 'Warning',
+		// 			text: 'No Customer Harus diisi.'
+		// 		});
+		// 		return;
+		// }
 
 		if ( tgl.substring(3,5) != bulanPer ) 
 		{
@@ -1006,13 +1023,13 @@
 			$("#NO_SO").attr("readonly", true);		   
 			$("#TGL").attr("readonly", false);
 			// $("#JTEMPO").attr("readonly", false);
-			$("#KODEC").attr("readonly", true);
-			$("#NAMAC").attr("readonly", true);			
-			$("#ALAMAT").attr("readonly", true);
-			$("#KOTA").attr("readonly", true);
-			$("#TRUCK").attr("readonly", true);
-			$("#SOPIR").attr("readonly", true);
-			$("#VIA").attr("readonly", false);
+			// $("#KODEC").attr("readonly", true);
+			// $("#NAMAC").attr("readonly", true);			
+			// $("#ALAMAT").attr("readonly", true);
+			// $("#KOTA").attr("readonly", true);
+			// $("#TRUCK").attr("readonly", true);
+			// $("#SOPIR").attr("readonly", true);
+			// $("#VIA").attr("readonly", false);
 
 			
 			$("#NOTES").attr("readonly", false);
@@ -1031,6 +1048,10 @@
 			$("#HARGA" + i.toString()).attr("readonly", true);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#KET" + i.toString()).attr("readonly", true);
+			$("#KODEC" + i.toString()).attr("readonly", true);
+			$("#NAMAC" + i.toString()).attr("readonly", true);
+			$("#ALAMAT" + i.toString()).attr("readonly", true);
+			$("#KOTA" + i.toString()).attr("readonly", true);
 			$("#DELETEX" + i.toString()).attr("hidden", false);
 
 			$tipx = $('#tipx').val();
@@ -1077,13 +1098,13 @@
 		
 		$("#TGL").attr("readonly", true);
 		// $("#JTEMPO").attr("readonly", true);
-		$("#KODEC").attr("readonly", true);
-	    $("#KODEC").attr("disabled", true);
+		// $("#KODEC").attr("readonly", true);
+	    // $("#KODEC").attr("disabled", true);
 
 
-		$("#NAMAC").attr("readonly", true);
-		$("#ALAMAT").attr("readonly", true);
-		$("#KOTA").attr("readonly", true);
+		// $("#NAMAC").attr("readonly", true);
+		// $("#ALAMAT").attr("readonly", true);
+		// $("#KOTA").attr("readonly", true);
 
 		
 		$("#NOTES").attr("readonly", true);
@@ -1101,6 +1122,10 @@
 			$("#HARGA" + i.toString()).attr("readonly", true);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#KET" + i.toString()).attr("readonly", true);
+			$("#KODEC" + i.toString()).attr("readonly", true);
+			$("#NAMAC" + i.toString()).attr("readonly", true);
+			$("#ALAMAT" + i.toString()).attr("readonly", true);
+			$("#KOTA" + i.toString()).attr("readonly", true);
 			
 			$("#DELETEX" + i.toString()).attr("hidden", true);
 		}
@@ -1207,6 +1232,14 @@
 				    <input name='NO_SO[]' data-rowid=${idrow} onclick='browseSo(${idrow})' id='NO_SO${idrow}' type='text' class='form-control  NO_SO' readonly>
 					
 				</td>
+				<td {{( $golz =='J') ? '' : 'hidden' }} >
+				    <input name='KODEC[]' data-rowid=${idrow} id='KODEC${idrow}' type='text' class='form-control  KODEC' readonly>
+                </td>
+				<td {{( $golz =='J') ? '' : 'hidden' }} >
+				    <input name='NAMAC[]' data-rowid=${idrow} id='NAMAC${idrow}' type='text' class='form-control  NAMAC' readonly>
+				    <input hidden name='ALAMAT[]' data-rowid=${idrow} id='ALAMAT${idrow}' type='text' class='form-control  ALAMAT' readonly>
+				    <input hidden name='KOTA[]' data-rowid=${idrow} id='KOTA${idrow}' type='text' class='form-control  KOTA' readonly>
+                </td>
 				<td {{( $golz =='J') ? '' : 'hidden' }} >
 				    <input name='KD_BRG[]' data-rowid=${idrow} id='KD_BRG${idrow}' type='text' class='form-control  KD_BRG' readonly>
                 </td>

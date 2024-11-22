@@ -15,6 +15,7 @@ class PiuDetail extends Model
 
     protected $fillable =
     [
-        "REC", "NO_BUKTI", "ID", "NO_FAKTUR", "TOTAL", "BAYAR", "SISA", "KET", "FLAG"
+        "REC", "NO_BUKTI", "ID", "NO_FAKTUR", "TOTAL", "BAYAR", "SISA", "KET", "FLAG", "TGL_FAKTUR",
+        "LAIN", "NO_TAGIH"
     ];
 }

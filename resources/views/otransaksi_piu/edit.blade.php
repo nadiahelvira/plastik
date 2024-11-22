@@ -115,7 +115,7 @@
 							<!-- tutupannya -->
         
                             <div class="form-group row">
-                                <div class="col-md-1" align="right">
+                                <div class="col-md-1" align="left">
                                     <label for="NO_BUKTI" class="form-label">Bukti#</label>
                                 </div>
 								
@@ -135,7 +135,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <div class="col-md-1" align="right">
+                                <div class="col-md-1" align="left">
                                     <label for="TGL" class="form-label">Tgl</label>
                                 </div>
                                 <div class="col-md-2">
@@ -175,6 +175,38 @@
 
 							
 							<div class="form-group row">
+
+								<div class="col-md-1" align="left">								
+                                    <label for="KODEP" class="form-label">Sales</label>
+                                </div>
+
+                               	<div class="col-md-1 input-group" >
+                                  <input type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder=""value="{{$header->KODEP}}" style="text-align: left" readonly >
+        						</div>
+        
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="" value="{{$header->NAMAP}}" readonly>
+                                </div>
+
+								<div class="col-md-1" align="right">								
+                                    <label for="KOM" class="form-label">Komisi</label>
+                                </div>
+                               	
+								<div class="col-md-2">
+									<input type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
+								</div> 
+
+								<div class="col-md-1" align="right">								
+                                    <label for="HARI" class="form-label">Hari</label>
+                                </div>
+                               	
+								<div class="col-md-2">
+									<input type="text" class="form-control HARI" onclick="select()"  id="HARI" name="HARI" placeholder="" value="{{ number_format($header->HARI, 0, '.', ',') }}" style="text-align: right; width:140px" readonly>
+								</div> 
+        
+                            </div>
+
+							<div class="form-group row">
 								<!-- code text box baru -->
 								<div class="col-md-4 form-group row special-input-label">
 
@@ -183,28 +215,8 @@
 									<label for="NOTES">Notes</label>
 								</div>
 								<!-- tutupannya -->
-
-								<div class="col-md-1">								
-                                    <label for="KODEP" class="form-label">Sales</label>
-                                </div>
-
-                               	<div class="col-md-1 input-group" >
-                                  <input type="text" class="form-control KODEP" id="KODEP" name="KODEP" placeholder=""value="{{$header->KODEP}}" style="text-align: left" readonly >
-        						</div>
         
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control NAMAP" id="NAMAP" name="NAMAP" placeholder="" value="{{$header->NAMAP}}" readonly>
-                                </div>
-
-								<div class="col-md-1">								
-                                    <label for="KOM" class="form-label">Komisi</label>
-                                </div>
-                               	
-								<div class="col-md-2">
-									<input type="text" class="form-control KOM" onclick="select()"  id="KOM" name="KOM" placeholder="" value="{{ number_format($header->KOM, 2, '.', ',') }}" style="text-align: right; width:140px" readonly>
-								</div> 
-        
-                            </div>
+							</div>
 
 
 	
@@ -215,9 +227,12 @@
                                         <th width="200px" style="text-align:center">
 								        	<label style="color:red;font-size:20px">* </label>									
                                             <label for="BACNO" class="form-label">Faktur#</label></th>
-                                        <th width="200px" style="text-align:right">Total</th>
-                                        <th width="200px" style="text-align:right">Bayar</th>
-                                        <th width="200px" style="text-align:right">Sisa</th> 
+                                        <th width="200px" style="text-align:center">Tgl Faktur</th>
+                                        <th width="200px" style="text-align:center">Total</th>
+                                        <th width="200px" style="text-align:center">Bayar</th>
+                                        <th width="200px" style="text-align:center">Sisa</th> 
+                                        <th width="200px" style="text-align:center">Lain</th> 
+                                        <th width="200px" style="text-align:center">No Tagih</th> 
                                         <th></th>										
                                     </tr>
                                 </thead>
@@ -236,6 +251,9 @@
                                             <input name="NO_FAKTUR[]" id="NO_FAKTUR{{$no}}" type="text" class="form-control NO_FAKTUR" value="{{$detail->NO_FAKTUR}}" readonly required>
                                         </td>
 										<td>
+											<input name="TGL_FAKTUR[]" id	="TGL_FAKTUR{{$no}}" type="text" class="date form-control text_input TGL_FAKTUR" data-date-format="dd-mm-yyyy" value="{{($detail->TGL_FAKTUR=='0000-00-00')?'00-00-0000':date('d-m-Y',strtotime($detail->TGL_FAKTUR));}}" readonly>
+										</td>
+										<td>
 										    <input name="TOTAL[]"  onblur="hitung()" value="{{$detail->TOTAL}}" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL" readonly >
 										</td>    
 										<td>
@@ -244,7 +262,15 @@
 
 										<td>
 										    <input name="SISA[]"  value="{{$detail->SISA}}" id="SISA{{$no}}" type="text" style="text-align: right"  class="form-control SISA" readonly >
-										</td>   
+										</td>      
+
+										<td>
+											<input name="LAIN[]"  value="{{$detail->LAIN}}" id="LAIN{{$no}}" type="text" style="text-align: right"  class="form-control LAIN" >
+										</td> 
+
+                                        <td>
+                                            <input name="NO_TAGIH[]" id="NO_TAGIH{{$no}}" type="text" class="form-control NO_TAGIH" value="{{$detail->NO_TAGIH}}" readonly>
+                                        </td>
 										
 										<td>
 											<button type='button' id='DELETEX{{$no}}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
@@ -256,6 +282,8 @@
                                 </tbody>
 
 								<tfoot>
+                                    <td></td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -345,6 +373,7 @@
 						<th>Jual#</th>
 						<th>Kode</th>
 						<th>-</th>
+						<th>Tgl</th>
 						<th>Total</th>
 						<th>Bayar</th>
 						<th>Sisa</th>	
@@ -671,9 +700,10 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBJual.row.add([
-							'<a href="javascript:void(0);" onclick="chooseJual(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KODEC+'\',   \''+resp[i].NAMAC+'\',  \''+resp[i].TOTAL+'\' ,  \''+resp[i].BAYAR+'\', \''+resp[i].SISA+'\'   )">'+resp[i].NO_BUKTI+'<input id="pilihFaktur'+i+'" hidden value="'+resp[i].NO_BUKTI+'"></a>',
+							'<a href="javascript:void(0);" onclick="chooseJual(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].TGL+'\',  \''+resp[i].KODEC+'\',   \''+resp[i].NAMAC+'\',  \''+resp[i].TOTAL+'\' ,  \''+resp[i].BAYAR+'\', \''+resp[i].SISA+'\'   )">'+resp[i].NO_BUKTI+'<input id="pilihFaktur'+i+'" hidden value="'+resp[i].NO_BUKTI+'"></a>',
 							resp[i].KODEC,
 							resp[i].NAMAC,
+							'<label for="pilihTgl" id="pilihTgl'+i+'" value="'+resp[i].TGL+'">'+resp[i].TGL+'</label>',
 							'<label for="pilihTotal" id="pilihTotal'+i+'" value="'+resp[i].TOTAL+'">'+Intl.NumberFormat('en-US').format(resp[i].TOTAL)+'</label>',
 							Intl.NumberFormat('en-US').format(resp[i].BAYAR),
 							'<label for="pilihSisa" id="pilihSisa'+i+'" value="'+resp[i].SISA+'">'+Intl.NumberFormat('en-US').format(resp[i].SISA)+'</label>',
@@ -701,8 +731,9 @@
 			$("#browseJualModal").modal("show");
 		}
 		
-		chooseJual = function(NO_BUKTI,KODEC, NAMAC, TOTAL, BAYAR, SISA){
+		chooseJual = function(NO_BUKTI, TGL, KODEC, NAMAC, TOTAL, BAYAR, SISA){
 			$("#NO_FAKTUR"+rowidJual).val(NO_BUKTI);
+			$("#TGL_FAKTUR"+rowidJual).val(TGL);
 			$("#TOTAL"+rowidJual).val(TOTAL);
 			$("#BAYAR"+rowidJual).val(SISA);	
 			$("#TOTAL"+rowidJual).autoNumeric('update');
@@ -732,6 +763,17 @@
 				} 
 				return kode;
 			}).get();
+
+			var tglDipilih = $("input[type='checkbox']").map(function() {
+				var kode = null;
+				if($(this).prop("checked"))
+				{
+					var idx = (this.id).substring(5, 7);
+					kode = '"' + $("#pilihTgl"+idx).val() + '"';
+				} 
+				return kode;
+			}).get();
+
 			var totalDipilih = $("input[type='checkbox']").map(function() {
 				var kode = null;
 				if($(this).prop("checked"))
@@ -752,6 +794,7 @@
 			}).get();
 
 			var fakturArr = JSON.parse("[" + fakturDipilih + "]");
+			var tglArr = JSON.parse("[" + tglDipilih + "]");
 			var totalArr = JSON.parse("[" + totalDipilih + "]");
 			var sisaArr = JSON.parse("[" + sisaDipilih + "]");
 
@@ -763,6 +806,7 @@
 			for (i=0 ; i<fakturArr.length ; i++) 
 			{
 				$("#NO_FAKTUR"+(rowidJual+i)).val(fakturArr[i]);
+				$("#TGL_FAKTUR"+(rowidJual+i)).val(tglArr[i]);
 				$("#TOTAL"+(rowidJual+i)).val(totalArr[i]);
 				$("#BAYAR"+(rowidJual+i)).val(sisaArr[i]);
 			};
@@ -1053,6 +1097,9 @@
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#BAYAR" + i.toString()).attr("readonly", false);
 			$("#SISA" + i.toString()).attr("readonly", true);
+			$("#TGL_FAKTUR" + i.toString()).attr("readonly", true);
+			$("#LAIN" + i.toString()).attr("readonly", false);
+			$("#NO_TAGIH" + i.toString()).attr("readonly", true);
 			$("#DELETEX" + i.toString()).attr("hidden", false);
 
 			$tipx = $('#tipx').val();
@@ -1110,6 +1157,9 @@
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#BAYAR" + i.toString()).attr("readonly", true);
 			$("#SISA" + i.toString()).attr("readonly", true);
+			$("#TGL_FAKTUR" + i.toString()).attr("readonly", true);
+			$("#LAIN" + i.toString()).attr("readonly", true);
+			$("#NO_TAGIH" + i.toString()).attr("readonly", true);
 
 			$("#DELETEX" + i.toString()).attr("hidden", true);
 		}
@@ -1222,6 +1272,11 @@
                 <td>
 				    <input name='NO_FAKTUR[]' onclick="browseJual(${idrow})" data-rowid=${idrow}  id='NO_FAKTUR${idrow}' type='text' class='form-control  NO_FAKTUR' required readonly>
                 </td>
+
+				<td>
+					<input name="TGL_FAKTUR[]" ocnlick='select()' id="TGL_FAKTUR${idrow}" type="text" class="date form-control text_input TGL_FAKTUR" data-date-format="dd-mm-yyyy" value="<?php if (isset($_POST["tampilkan"])) {
+																																										} else echo 											date('00-00-0000'); ?>" onclick="select()" readonly>
+				</td>
 				
 				<td>
 		            <input name='TOTAL[]' onblur='hitung()' value='0' id='TOTAL${idrow}' type='text' style='text-align: right' class='form-control TOTAL text-primary' required readonly >
@@ -1234,6 +1289,14 @@
 				<td>
 		            <input name='SISA[]'  onblur='hitung()' value='0' id='SISA${idrow}' type='text' style='text-align: right' class='form-control SISA text-primary' readonly >
                 </td>
+
+				<td>
+					<input name='LAIN[]'  onblur='hitung()' value='0' id='LAIN${idrow}' type='text' style='text-align: right' class='form-control LAIN text-primary' >
+				</td>
+						       
+				<td>
+					<input name='NO_TAGIH[]' onclick="browseJual(${idrow})" data-rowid=${idrow}  id='NO_TAGIH${idrow}' type='text' class='form-control  NO_TAGIH' required>
+				</td>
                 
                 <td>
 					<button type='button' id='DELETEX${idrow}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>

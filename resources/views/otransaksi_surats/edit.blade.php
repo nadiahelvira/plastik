@@ -184,18 +184,19 @@
 									<label for="NO_DO" class="form-label">DO#</label>
 								</div>
 								<div class="col-md-2 input-group" >
-								<input type="text" class="form-control NO_DO" id="NO_DO" name="NO_DO" placeholder="Pilih DO"value="{{$header->NO_DO}}" style="text-align: left" readonly >
-								<button type="button" class="btn btn-primary" onclick="browseDo()"><i class="fa fa-search"></i></button>
+									<input type="text" class="form-control NO_DO" id="NO_DO" name="NO_DO" placeholder="Pilih DO"value="{{$header->NO_DO}}" style="text-align: left" readonly >
+									<button type="button" class="btn btn-primary" onclick="browseDo()"><i class="fa fa-search"></i></button>
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<div class="col-md-1" align="left">
-									<!-- <label style="color:red;font-size:20px">* </label>	 -->
+									<label style="color:red;font-size:20px">* </label>	
                                     <label for="KODEC" class="form-label">Cust</label>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 input-group">
                                     <input type="text" class="form-control KODEC" id="KODEC" name="KODEC" placeholder="Kode Customer" value="{{$header->KODEC}}" readonly>
+									<button type="button" class="btn btn-primary" onclick="browseCust()"><i class="fa fa-search"></i></button>
                                 </div>
 
 								<div class="col-md-4">
@@ -245,7 +246,7 @@
                                 </div>
 
                                 <div class="col-md-1" align="right">
-									<label style="color:red;font-size:20px">* </label>	
+									<!-- <label style="color:red;font-size:20px">* </label>	 -->
                                     <label for="SOPIR" class="form-label">Sopir</label>
                                 </div>
                                 <div class="col-md-2">
@@ -403,37 +404,6 @@
         </div>
         </div>
     </div>
-
-
-	<div class="modal fade" id="browseCustModal" tabindex="-1" role="dialog" aria-labelledby="browseCustModalLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="browseCustModalLabel">Cari Customer</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-			<table class="table table-stripped table-bordered" id="table-customer">
-				<thead>
-					<tr>
-						<th>Kode</th>
-						<th>Nama</th>
-						<th>Alamat</th>
-						<th>Kota</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		  </div>
-		</div>
-	  </div>
-	</div>
 	
 	<div class="modal fade" id="browseSoModal" tabindex="-1" role="dialog" aria-labelledby="browseSoModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-xl" role="document">
@@ -484,6 +454,42 @@
 		  </div>
 		  <div class="modal-body">
 			<table class="table table-stripped table-bordered" id="table-bdo">
+				<thead>
+					<tr>
+						<th>No Bukti</th>
+						<th>No SO</th>
+						<th>Tgl</th>
+						<th>Customer</th>
+						<th>PKP</th>
+						<th>Barang</th>
+						<th>Satuan</th>
+						<th>Qty</th>
+						<th>Kirim</th>
+						<th>Sisa</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="browseCustModal" tabindex="-1" role="dialog" aria-labelledby="browseCustModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseCustModalLabel">Cari DO Customer</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-bdo_cust">
 				<thead>
 					<tr>
 						<th>No Bukti</th>
@@ -678,27 +684,6 @@
 			$("#HARGA" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#TOTAL" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 		}	
-
-
-		
-		// $('#supxz').select2({
-        //     minimumInputLength:2,
-        //     placeholder:'Select Suplier',
-        //     ajax:{
-        //         url:route('sup/browsesupz'),
-        //         dataType:'json',
-        //         processResults:data=>{
-                    
-        //             return {
-        //                 results:data.map(res=>{
-        //                     return {text:res.NAMAS,id:res.KODES}
-        //                 })
-        //             }
-        //         }
-        //     }
-        // })
-		
-		
 				
 		
         $('body').on('click', '.btn-delete', function() {
@@ -990,13 +975,135 @@
 			
 		}
 
-		getDod(NO_BUKTI);
+		// getDod(NO_BUKTI);
 	}
 	
 	$("#NO_DO").keypress(function(e){
 		if(e.keyCode == 46){
 			e.preventDefault();
 			browseDo();
+		}
+	}); 
+
+//////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////
+
+	var dTableCust;
+	var rowidCust;
+	loadDataCust = function(){
+		
+		$.ajax(
+		{
+			type: 'GET',    
+			url: "{{url('surats/browseDo_Cust')}}",
+			data: {
+				// kdbrg: kode,
+				// 'GOL': "{{$golz}}",
+				no_do: $("#NO_DO").val(),
+			},
+
+			beforeSend: function(){
+					$("#LOADX").show();
+				},
+
+			success: function( response )
+			{
+				$("#LOADX").hide();
+
+				resp = response;
+				if(dTableCust){
+					dTableCust.clear();
+				}
+				for(i=0; i<resp.length; i++){
+					
+					dTableCust.row.add([
+						'<a href="javascript:void(0);" onclick="chooseCust(\''+resp[i].NO_BUKTI+'\', \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',\''+resp[i].RING+'\', \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\', \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\', \''+resp[i].KOTA+'\',  \''+resp[i].HARI+'\',  \''+resp[i].PKP+'\',  \''+resp[i].NO_SO+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TYPE_KOM+'\',  \''+resp[i].KOM+'\',  \''+resp[i].TKOM+'\',  \''+resp[i].TOTAL_TKOM+'\' )">'+resp[i].KODEC+'</a>',
+						resp[i].NAMAC,
+						resp[i].NO_SO,
+						resp[i].TGL,
+						resp[i].PKP,
+						resp[i].KD_BRG,
+						resp[i].NA_BRG,
+						resp[i].SATUAN,
+						resp[i].QTY,
+						resp[i].KIRIM,
+						resp[i].SISA,
+					]);
+				}
+				dTableCust.draw();
+			}
+		});
+	}
+	
+	dTableCust = $("#table-bdo_cust").DataTable({
+
+		// columnDefs: 
+		// [
+		// 	{
+		// 		className: "dt-right", 
+		// 		targets: [6,7,8],
+		// 	},		
+		// 	{
+		// 		targets: 1,
+		// 		render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ),
+		// 	}
+		// ],
+
+	});
+	
+		browseCust = function(rid){
+			rowidCust = rid;
+			loadDataCust();
+			$("#browseCustModal").modal("show");
+		}
+	
+	chooseCust = function(NO_BUKTI, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA, HARI, PKP, NO_SO, KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA, TYPE_KOM, KOM, TKOM, TOTAL_TKOM ){
+		$("#NO_DO").val(NO_BUKTI);
+		$("#KODEP").val(KODEP);
+		$("#NAMAP").val(NAMAP);
+		$("#RING").val(RING);
+		$("#KOM").val(KOM);
+		$("#KODEC").val(KODEC);
+		$("#NAMAC").val(NAMAC);
+		$("#ALAMAT").val(ALAMAT);
+		$("#KOTA").val(KOTA);
+		$("#HARI").val(HARI);	
+		$("#PKP").val(PKP);
+		$("NO_SO"+rowidCust).val(NO_SO);
+		$("#KD_BRG"+rowidCust).val(KD_BRG);
+		$("#NA_BRG"+rowidCust).val(NA_BRG);
+		$("#SATUAN"+rowidCust).val(SATUAN);
+		$("#QTY"+rowidCust).val(QTY!=0 ? QTY : 0);
+		$("#ID_SOD"+rowidCust).val(NO_ID);
+		$("#HARGA"+rowidCust).val(HARGA);
+		$("#TYPE_KOM"+rowidCust).val(TYPE_KOM);
+		$("#KOM"+rowidCust).val(KOM);
+		$("#TKOM"+rowidCust).val(TKOM);
+		$("#TOTAL_TKOM").val(TOTAL_TKOM);
+
+		$("#browseCustModal").modal("hide");
+
+		if ( $("#PKP").val() == '1' )
+		{
+
+			document.getElementById("PKP").checked = true;
+				
+		}
+
+		else
+		{
+			document.getElementById("PKP").checked = false;
+			
+		}
+
+		getDod(NO_BUKTI);
+	}
+	
+	$("#KODEC").keypress(function(e){
+		if(e.keyCode == 46){
+			e.preventDefault();
+			browseCust();
 		}
 	}); 
 

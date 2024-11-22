@@ -567,6 +567,7 @@ Route::get('/surats/delete/{surats}', 'App\Http\Controllers\OTransaksi\SuratsCon
 Route::get('/surats/browseCust', 'App\Http\Controllers\OTransaksi\SuratsController@browseCust')->middleware(['auth']);
 Route::get('/surats/browseSo', 'App\Http\Controllers\OTransaksi\SuratsController@browseSo')->middleware(['auth']);
 Route::get('/surats/browseDo', 'App\Http\Controllers\OTransaksi\SuratsController@browseDo')->middleware(['auth']);
+Route::get('/surats/browseDo_Cust', 'App\Http\Controllers\OTransaksi\SuratsController@browseDo_Cust')->middleware(['auth']);
 Route::get('/surats/browse_detail', 'App\Http\Controllers\OTransaksi\SuratsController@browse_detail')->middleware(['auth']);
 Route::get('/surats/do_detail', 'App\Http\Controllers\OTransaksi\SuratsController@do_detail')->middleware(['auth']);
 Route::get('/surats/browse_suratsd', 'App\Http\Controllers\OTransaksi\SuratsController@browse_suratsd')->middleware(['auth']);

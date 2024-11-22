@@ -61,13 +61,9 @@
                         <tr>
                             <th scope="col" style="text-align: center"></th>
                             <th scope="col" style="text-align: center">#</th>
-				     		            <th scope="col" style="text-align: center">-</th>							
+				     		<th scope="col" style="text-align: center">-</th>							
                             <th scope="col" style="text-align: center">No Bukti</th>
                             <th scope="col" style="text-align: center">Tgl</th>
-                            <th scope="col" style="text-align: center">Kode</th>
-                            <th scope="col" style="text-align: center">Customer</th>
-                            <th scope="col" style="text-align: center">Truck</th>
-                            <th scope="col" style="text-align: center">Sopir</th>
                             <th scope="col" style="text-align: center">Total Qty</th>
                             <th scope="col" style="text-align: center">Posted</th>
                         </tr>
@@ -127,18 +123,14 @@
                   // tutupannya
 
                 {data: 'DT_RowIndex', orderable: false, searchable: false },
-			          {data: 'action', name: 'action'},
-                {data: 'NO_BUKTI', name: 'NO_BUKTI'},
-                {data: 'TGL', name: 'TGL'},
-                {data: 'KODEC', name: 'KODEC'},
-                {data: 'NAMAC', name: 'NAMAC',
+			    {data: 'action', name: 'action'},
+                {data: 'NO_BUKTI', name: 'NO_BUKTI',
                   render : function ( data, type, row, meta )
                   {
                     return ' <h5><span class="badge badge-pill badge-warning">' + data + '</span></h5>';
                   }
                 },
-                {data: 'TRUCK', name: 'TRUCK'},
-                {data: 'SOPIR', name: 'SOPIR'},
+                {data: 'TGL', name: 'TGL'},
                 {data: 'TOTAL_QTY', name: 'TOTAL_QTY'},
                 { data: 'POSTED', name: 'POSTED',
                   render : function(data, type, row, meta) {
@@ -154,11 +146,11 @@
             [
                 {
                     "className": "dt-center", 
-                    "targets": 0,
+                    "targets": [0,1,2,3,6],
                 },	
                 {
                     "className": "dt-right", 
-                    "targets": 8,
+                    "targets": 5,
                     render: $.fn.dataTable.render.number( ',', '.', 0, '' ),
                 },			
                 {
