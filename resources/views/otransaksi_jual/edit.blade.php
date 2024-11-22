@@ -329,6 +329,9 @@
 												<input name="TOTAL[]" onblur="hitung()" value="{{$detail->TOTAL}}" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" readonly >
 												<input name="PPNX[]" hidden onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
 												<input name="DPP[]"  hidden onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
+												<input name="TYPE_KOM[]" hidden id="TYPE_KOM{{$no}}" type="text" value="{{$detail->TYPE_KOM}}" class="form-control TYPE_KOM" readonly>
+												<input name="KOM[]"  hidden onblur="hitung()" value="{{$detail->KOM}}" id="KOM{{$no}}" type="text" style="text-align: right"  class="form-control KOM text-primary" readonly >
+												<input name="TKOM[]"  hidden onblur="hitung()" value="{{$detail->TKOM}}" id="TKOM{{$no}}" type="text" style="text-align: right"  class="form-control TKOM text-primary" readonly >
 											</td>
 											<td>
 												<input name="DISK[]"  onblur="hitung()" value="{{$detail->DISK}}" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK text-primary" readonly >
@@ -351,7 +354,10 @@
 										<td {{( $golz =='J') ? '' : 'hidden' }}></td>
 										<td></td>		
 										<td></td>
-										<td></td>
+										<td>
+											<input hidden class="form-control TOTAL_TKOM  text-primary font-weight-bold" style="text-align: right"  id="TOTAL_TKOM" name="TOTAL_TKOM" value="{{$header->TOTAL_TKOM}}" readonly>
+
+										</td>
 									</tfoot>
 								</table>					
 							</div>
@@ -652,6 +658,7 @@
 		$("#TPPN").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#TDPP").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#NETT").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#TOTAL_TKOM").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 
 
 		jumlahdata = 100;
@@ -663,6 +670,8 @@
 			$("#PPNX" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#DPP" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#DISK" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#KOM" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#TKOM" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 
 		}
 		
@@ -707,7 +716,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBSurats.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSurats(\''+resp[i].NO_BUKTI+'\' , \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\' ,  \''+resp[i].PKP+'\'   )">'+resp[i].NO_BUKTI+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseSurats(\''+resp[i].NO_BUKTI+'\' , \''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].PKP+'\',  \''+resp[i].TOTAL_TKOM+'\'   )">'+resp[i].NO_BUKTI+'</a>',
 							resp[i].NO_SO,
 							resp[i].KODEC,
 							resp[i].NAMAC,
@@ -729,17 +738,17 @@
 			$("#browseSuratsModal").modal("show");
 		}
 		
-		chooseSurats = function(NO_BUKTI, KODEC,NAMAC, ALAMAT, KOTA, KODEP, NAMAP, KOM, RING, PKP ){
+		chooseSurats = function(NO_BUKTI, KODEC,NAMAC, ALAMAT, KOTA, KODEP, NAMAP, RING, PKP, TOTAL_TKOM ){
 			$("#NO_SURATS").val(NO_BUKTI);
 			$("#KODEC").val(KODEC);
 			$("#NAMAC").val(NAMAC);
 			$("#ALAMAT").val(ALAMAT);
 			$("#KOTA").val(KOTA);			
 			$("#KODEP").val(KODEP);			
-			$("#NAMAP").val(NAMAP);			
-			$("#KOM").val(KOM);			
+			$("#NAMAP").val(NAMAP);		
 			$("#RING").val(RING);			
 			$("#PKP").val(PKP);	
+			$("#TOTAL_TKOM").val(TOTAL_TKOM);	
 			$("#browseSuratsModal").modal("hide");
 
 			// var PKP=$("#PKP").val();	
@@ -847,19 +856,7 @@ function getJuald(bukti)
 
 					$(".DISK").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 					$(".DISK").autoNumeric('update');
-					/*
-					$(".KD_BHN").each(function() {
-						var getid = $(this).attr('id');
-						var noid = getid.substring(6,11);
-
-						$("#KD_BHN"+noid).keypress(function(e){
-							if(e.keyCode == 46){
-								e.preventDefault();
-								browseBhn(noid);
-							}
-						}); 
-					});*/
-
+					
 					idrow=resp.length;
 					baris=resp.length;
 
@@ -906,6 +903,9 @@ function getSuratsd(bukti)
 										<input name='TOTAL[]' onclick='select()' onkeyup='hitung()' id='TOTAL${i}' value="${resp[i].TOTAL}" type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly> 
 										<input name='PPNX[]'hidden  onclick='select()' onkeyup='hitung()' id='PPNX${i}' value="${resp[i].PPN}" type='text' style='text-align: right' class='form-control PPNX text-primary' readonly> 
 										<input name='DPP[]' hidden onclick='select()' onkeyup='hitung()' id='DPP${i}' value="${resp[i].DPP}" type='text' style='text-align: right' class='form-control DPP text-primary' readonly> 
+                                        <input name='TYPE_KOM[]' hidden id='TYPE_KOM${i}' value="${resp[i].TYPE_KOM}" type='text' class='form-control  TYPE_KOM' readonly>
+										<input name='KOM[]' hidden onclick='select()' onkeyup='hitung()' id='KOM${i}' value="${resp[i].KOM}" type='text' style='text-align: right' class='form-control KOM text-primary' readonly> 
+										<input name='TKOM[]' hidden onclick='select()' onkeyup='hitung()' id='TKOM${i}' value="${resp[i].TKOM}" type='text' style='text-align: right' class='form-control TKOM text-primary' readonly> 
 									</td>
 									<td>
 										<input name='DISK[]' onclick='select()' onkeyup='hitung()' id='DISK${i}' value="${resp[i].DISK}" type='text' style='text-align: right' class='form-control DISK text-primary' readonly> 
@@ -938,6 +938,12 @@ function getSuratsd(bukti)
 
 					$(".DISK").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 					$(".DISK").autoNumeric('update');
+
+					$(".KOM").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".KOM").autoNumeric('update');
+
+					$(".TKOM").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".TKOM").autoNumeric('update');
 					/*
 					$(".KD_BHN").each(function() {
 						var getid = $(this).attr('id');

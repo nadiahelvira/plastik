@@ -145,7 +145,7 @@
 								
                             </div>
 
-                            <div class="form-group row" hidden >
+                            <div class="form-group row">
                                 <div class="col-md-1">	
                                     <label for="KODEC" class="form-label">Customer#</label>
                                 </div>
@@ -707,7 +707,7 @@
 				data: {
 					// kdbrg: kode,
 					'GOL': "{{$golz}}",
-					// 'KODEC': $("#KODEC").val(),
+					'KODEC': $("#KODEC").val(),
 				},
 				success: function( response )
 				{

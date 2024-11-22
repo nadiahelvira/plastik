@@ -21,6 +21,6 @@ class So extends Model
     [
         "NO_BUKTI", "TGL", "PER","KODEC", "NAMAC", "ALAMAT", "KOTA", "TOTAL_QTY",  "TOTAL", "NOTES", "GOL", 
         "FLAG", "USRNM", "TG_SMP", "CBG", "KODEP", "NAMAP", "RING", "KOM", "NETT", "TPPN", "TDISK", "TDPP",
-        "HARI", "JTEMPO"
+        "HARI", "JTEMPO", "TOTAL_TKOM", "NAMAC_2", "ALAMAT_2", "KOTA_2", "TYPE"
     ];
 }

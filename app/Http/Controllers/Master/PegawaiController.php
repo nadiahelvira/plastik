@@ -160,6 +160,7 @@ class PegawaiController extends Controller
                 'HARI'            => ($request['HARI'] == null) ? "" : $request['HARI'],
                 'UMAKAN'            => (float) str_replace(',', '', $request['UMAKAN']),
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
+                'PINJAM'            => (float) str_replace(',', '', $request['PINJAM']),
                 'USRNM'          => Auth::user()->username,
                 'TG_SMP'         => Carbon::now()
             ]
@@ -396,6 +397,7 @@ class PegawaiController extends Controller
                 'LIM'            => (float) str_replace(',', '', $request['LIM']),
                 'HARI'            => (float) str_replace(',', '', $request['HARI']),
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
+                'PINJAM'            => (float) str_replace(',', '', $request['PINJAM']),
                 'UMAKAN'            => (float) str_replace(',', '', $request['UMAKAN']),
                 'USRNM'          => Auth::user()->username,
                 'TG_SMP'         => Carbon::now()

@@ -253,6 +253,32 @@ Route::post('/lokasi/update/{lokasi}', 'App\Http\Controllers\Master\LokasiContro
 Route::get('/lokasi/delete/{lokasi}', 'App\Http\Controllers\Master\LokasiController@destroy')->middleware(['auth'])->name('gdg.delete');
 
 
+// Master Komisi
+Route::get('/komisi', 'App\Http\Controllers\Master\KomisiController@index')->middleware(['auth'])->name('komisi');
+Route::post('/komisi/store', 'App\Http\Controllers\Master\KomisiController@store')->middleware(['auth'])->name('komisi/store');
+    // GET Komisi
+    Route::get('/get-komisi', 'App\Http\Controllers\Master\KomisiController@getKomisi')->middleware(['auth'])->name('get-komisi');
+    Route::get('/komisi/browse', 'App\Http\Controllers\Master\KomisiController@browse')->middleware(['auth'])->name('komisi/browse');
+    Route::get('komisi/cekkomisi', 'App\Http\Controllers\Master\KomisiController@cekkomisi')->middleware(['auth']);
+// Dynamic Komisi
+Route::get('/komisi/edit', 'App\Http\Controllers\Master\KomisiController@edit')->middleware(['auth'])->name('komisi.edit');
+Route::post('/komisi/update/{komisi}', 'App\Http\Controllers\Master\KomisiController@update')->middleware(['auth'])->name('komisi.update');
+Route::get('/komisi/delete/{komisi}', 'App\Http\Controllers\Master\KomisiController@destroy')->middleware(['auth'])->name('komisi.delete');
+
+
+// Master Kategori
+Route::get('/kategori', 'App\Http\Controllers\Master\KategoriController@index')->middleware(['auth'])->name('kategori');
+Route::post('/kategori/store', 'App\Http\Controllers\Master\KategoriController@store')->middleware(['auth'])->name('kategori/store');
+    // GET Kategori
+    Route::get('/get-kategori', 'App\Http\Controllers\Master\KategoriController@getKategori')->middleware(['auth'])->name('get-kategori');
+    Route::get('/kategori/browse', 'App\Http\Controllers\Master\KategoriController@browse')->middleware(['auth'])->name('kategori/browse');
+    Route::get('kategori/cekkategori', 'App\Http\Controllers\Master\KategoriController@cekkategori')->middleware(['auth']);
+// Dynamic Kategori
+Route::get('/kategori/edit', 'App\Http\Controllers\Master\KategoriController@edit')->middleware(['auth'])->name('kategori.edit');
+Route::post('/kategori/update/{kategori}', 'App\Http\Controllers\Master\KategoriController@update')->middleware(['auth'])->name('kategori.update');
+Route::get('/kategori/delete/{kategori}', 'App\Http\Controllers\Master\KategoriController@destroy')->middleware(['auth'])->name('kategori.delete');
+
+
 
 
 // Master Fo

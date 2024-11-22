@@ -332,6 +332,9 @@
 											<input hidden name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
 											<input hidden name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
 											<input hidden name="DISK[]"  onblur="hitung()" value="{{$detail->DISK}}" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK text-primary" readonly >
+                                            <input hidden name="TYPE_KOM[]" id="TYPE_KOM{{$no}}" type="text" class="form-control TYPE_KOM" placeholder="Ket" value="{{$detail->TYPE_KOM}}" required>
+											<input hidden name="KOM[]"  onblur="hitung()" value="{{$detail->KOM}}" id="KOM{{$no}}" type="text" style="text-align: right"  class="form-control KOM text-primary" readonly >
+											<input hidden name="TKOM[]"  onblur="hitung()" value="{{$detail->TKOM}}" id="TKOM{{$no}}" type="text" style="text-align: right"  class="form-control TKOM text-primary" readonly >
 										</td>
 										<td>
                                             <input name="KET[]" id="KET{{$no}}" type="text" class="form-control KET" placeholder="Ket" value="{{$detail->KET}}" required>
@@ -351,7 +354,10 @@
                                     <td {{($golz == 'B') ? 'hidden' : '' }}></td>
                                     <td {{($golz == 'J') ? 'hidden' : '' }}></td>
                                     <td {{($golz == 'J') ? 'hidden' : '' }}></td>
-                                    <td><input class="form-control TQTY  text-primary font-weight-bold" style="text-align: right"  id="TQTY" name="TQTY" value="{{$header->TOTAL_QTY}}" readonly></td>
+                                    <td>
+										<input class="form-control TQTY  text-primary font-weight-bold" style="text-align: right"  id="TQTY" name="TQTY" value="{{$header->TOTAL_QTY}}" readonly>
+										<input hidden class="form-control TOTAL_TKOM  text-primary font-weight-bold" style="text-align: right"  id="TOTAL_TKOM" name="TOTAL_TKOM" value="{{$header->TOTAL_TKOM}}" readonly>
+									</td>
                                     <td></td>
                                 </tfoot>
                             </table>
@@ -905,7 +911,7 @@
 				for(i=0; i<resp.length; i++){
 					
 					dTableDo.row.add([
-						'<a href="javascript:void(0);" onclick="chooseDo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',\''+resp[i].RING+'\', \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\', \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\', \''+resp[i].KOTA+'\',  \''+resp[i].HARI+'\',  \''+resp[i].PKP+'\',  \''+resp[i].NO_SO+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\' )">'+resp[i].NO_BUKTI+'</a>',
+						'<a href="javascript:void(0);" onclick="chooseDo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',\''+resp[i].RING+'\', \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\', \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\', \''+resp[i].KOTA+'\',  \''+resp[i].HARI+'\',  \''+resp[i].PKP+'\',  \''+resp[i].NO_SO+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TYPE_KOM+'\',  \''+resp[i].KOM+'\',  \''+resp[i].TKOM+'\',  \''+resp[i].TOTAL_TKOM+'\' )">'+resp[i].NO_BUKTI+'</a>',
 						resp[i].NO_SO,
 						resp[i].TGL,
 						resp[i].NAMAC,
@@ -945,7 +951,7 @@
 			$("#browseDoModal").modal("show");
 		}
 	
-	chooseDo = function(NO_BUKTI, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA, HARI, PKP, NO_SO, KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA ){
+	chooseDo = function(NO_BUKTI, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA, HARI, PKP, NO_SO, KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA, TYPE_KOM, KOM, TKOM, TOTAL_TKOM ){
 		$("#NO_DO").val(NO_BUKTI);
 		$("#KODEP").val(KODEP);
 		$("#NAMAP").val(NAMAP);
@@ -964,6 +970,10 @@
 		$("#QTY"+rowidDo).val(QTY!=0 ? QTY : 0);
 		$("#ID_SOD"+rowidDo).val(NO_ID);
 		$("#HARGA"+rowidDo).val(HARGA);
+		$("#TYPE_KOM"+rowidDo).val(TYPE_KOM);
+		$("#KOM"+rowidDo).val(KOM);
+		$("#TKOM"+rowidDo).val(TKOM);
+		$("#TOTAL_TKOM").val(TOTAL_TKOM);
 
 		$("#browseDoModal").modal("hide");
 
@@ -1101,8 +1111,13 @@
 										<input hidden name='PPNX[]' onclick='select()' onkeyup='hitung()' id='PPNX${i}' value="${resp[i].PPNX}" type='text' style='text-align: right' class='form-control PPNX text-primary' readonly> 
 										<input hidden name='DPP[]' onclick='select()' onkeyup='hitung()' id='DPP${i}' value="${resp[i].DPP}" type='text' style='text-align: right' class='form-control DPP text-primary' readonly> 
 										<input hidden name='DISK[]' onclick='select()' onkeyup='hitung()' id='DISK${i}' value="${resp[i].DISK}" type='text' style='text-align: right' class='form-control DISK text-primary' readonly> 
+										<input hidden name='TYPE_KOM[]' id='TYPE_KOM${i}' value="${resp[i].TYPE_KOM}" type='text' class='form-control  TYPE_KOM' required>
+										<input hidden name='KOM[]' onclick='select()' onkeyup='hitung()' id='KOM${i}' value="${resp[i].KOM}" type='text' style='text-align: right' class='form-control KOM text-primary' readonly> 
+										<input hidden name='TKOM[]' onclick='select()' onkeyup='hitung()' id='TKOM${i}' value="${resp[i].TKOM}" type='text' style='text-align: right' class='form-control TKOM text-primary' readonly> 
 									</td>
-                                    <td><input name='KET[]' id='KET${i}' value="${resp[i].KET}" type='text' class='form-control  KET' required></td>
+                                    <td>
+										<input name='KET[]' id='KET${i}' value="${resp[i].KET}" type='text' class='form-control  KET' required>
+									</td>
                                     <td><button type='button' class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button></td>
                                 </tr>`;
 					}
@@ -1125,6 +1140,12 @@
 
 					$(".DISK").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 					$(".DISK").autoNumeric('update');
+
+					$(".KOM").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".KOM").autoNumeric('update');
+
+					$(".TKOM").autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+					$(".TKOM").autoNumeric('update');
 
 					idrow=resp.length;
 					baris=resp.length;
@@ -1291,16 +1312,16 @@
 				return; // Stop function execution
 		}
 
-		if ( $('#SOPIR').val()=='' ) 
-		{			
-			check = '1';
-				Swal.fire({
-					icon: 'warning',
-					title: 'Warning',
-					text: 'Sopir Harus Diisi.'
-				});
-				return; // Stop function execution
-		}
+		// if ( $('#SOPIR').val()=='' ) 
+		// {			
+		// 	check = '1';
+		// 		Swal.fire({
+		// 			icon: 'warning',
+		// 			title: 'Warning',
+		// 			text: 'Sopir Harus Diisi.'
+		// 		});
+		// 		return; 
+		// }
 
 		if ( tgl.substring(3,5) != bulanPer ) 
 		{

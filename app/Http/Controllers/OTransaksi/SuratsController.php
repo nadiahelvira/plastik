@@ -66,10 +66,10 @@ class SuratsController extends Controller
 		
         $surats = DB::SELECT("SELECT distinct surats.NO_BUKTI, suratsd.NO_SO, surats.KODEC, surats.NAMAC, 
 		                  surats.ALAMAT, surats.KOTA, surats.KODEP, surats.NAMAP, surats.KOM, 
-                          surats.RING, surats.SOPIR, surats.TRUCK, surats.PKP
+                          surats.RING, surats.SOPIR, surats.TRUCK, surats.PKP, surats.TOTAL_TKOM
                           from surats, suratsd 
                           WHERE surats.NO_BUKTI = suratsD.NO_BUKTI AND surats.GOL ='$golz' 
-                          AND surats.CBG = '$CBG' AND suratsd.SISA > 0	");
+                          AND surats.CBG = '$CBG' AND suratsd.SISA > 0 AND POSTED= 1");
         return response()->json($surats);
     }
 	
@@ -108,7 +108,7 @@ class SuratsController extends Controller
 		$deli = DB::SELECT("SELECT delid.NO_ID, deli.NO_BUKTI, delid.NO_SO, deli.TGL, deli.NAMAC, deli.KODEC, deli.ALAMAT, deli.KOTA,
                                 delid.KD_BRG, delid.NA_BRG, delid.SATUAN, delid.QTY, delid.KIRIM, delid.HARGA,
                                 delid.SISA, deli.KODEP, deli.NAMAP, deli.RING, deli.KOM, deli.HARI, delid.KD_GRUP,
-                                deli.PKP
+                                deli.PKP, delid.TYPE_KOM, delid.KOM, delid.TKOM, deli.TOTAL_TKOM
                             from deli, delid 
                             WHERE deli.NO_BUKTI=delid.NO_BUKTI 
                             -- AND deli.CBG = '$CBG' 
@@ -147,7 +147,7 @@ class SuratsController extends Controller
         //     $filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' ";
         // }
         $sod = DB::SELECT("SELECT REC, NO_SO, KD_BRG, NA_BRG, SATUAN , QTY, HARGA, KIRIM, SISA, TOTAL, KET, 
-                                KD_BRG, NA_BRG, PPN, DPP, DISK
+                                KD_BRG, NA_BRG, PPN, DPP, DISK, TYPE_KOM, KOM, TKOM
                             from delid
                             where NO_BUKTI='".$request->nobukti."' ORDER BY NO_BUKTI ");
 	
@@ -183,7 +183,7 @@ class SuratsController extends Controller
         //     $filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' ";
         // }
         $sod = DB::SELECT("SELECT REC, SATUAN , QTY, HARGA, KIRIM, SISA, TOTAL, KET, 
-                                KD_BRG, NA_BRG, DPP, PPN, QTY_KIRIM, DISK, NO_SO
+                                KD_BRG, NA_BRG, DPP, PPN, QTY_KIRIM, DISK, NO_SO, TYPE_KOM, KOM, TKOM
                             from suratsd
                             where NO_BUKTI='".$request->nobukti."' ORDER BY NO_BUKTI ");
 	
@@ -301,8 +301,6 @@ class SuratsController extends Controller
                 'NO_BUKTI'   => 'required',
                 'TGL'        => 'required',
                 'KODEC'      => 'required',
-                'TRUCK'     => 'required',
-                'SOPIR'     => 'required',
 
             ]
         );
@@ -382,6 +380,7 @@ class SuratsController extends Controller
                 'TOTAL'      	=> (float) str_replace(',', '', $request['TTOTAL']),
                 'TDISK'      	=> (float) str_replace(',', '', $request['TDISK']),
                 'HARI'      	=> (float) str_replace(',', '', $request['HARI']),
+                'TOTAL_TKOM'      	=> (float) str_replace(',', '', $request['TOTAL_TKOM']),
 				'USRNM'         => Auth::user()->username,
 				'TG_SMP'        => Carbon::now(),
 				'CBG'           => $CBG,
@@ -406,6 +405,9 @@ class SuratsController extends Controller
 		$DPP = $request->input('DPP');	
 		$DISK = $request->input('DISK');	
 		$KET	= $request->input('KET');	
+		$TYPE_KOM	= $request->input('TYPE_KOM');	
+		$KOM	= $request->input('KOM');	
+		$TKOM	= $request->input('TKOM');	
 		// $ID_SOD	= $request->input('ID_SOD');		
 
 		// Check jika value detail ada/tidak
@@ -439,6 +441,9 @@ class SuratsController extends Controller
 				$detail->DPP	= (float) str_replace(',', '', $DPP[$key]);
 				$detail->DISK	= (float) str_replace(',', '', $DISK[$key]);
 				$detail->ID	    = $idSurats[0]->NO_ID;
+				$detail->TYPE_KOM	= ($TYPE_KOM[$key]==null) ? '' : $TYPE_KOM[$key];
+				$detail->KOM	= (float) str_replace(',', '', $KOM[$key]);
+				$detail->TKOM	= (float) str_replace(',', '', $TKOM[$key]);
 				// $detail->ID_SOD	= ($ID_SOD[$key]==null) ? '' : $ID_SOD[$key];
 				$detail->save();
 			}
@@ -662,8 +667,6 @@ class SuratsController extends Controller
                 'NO_BUKTI'   => 'required',
                 'TGL'        => 'required',
                 'KODEC'      => 'required',
-                'TRUCK'     => 'required',
-                'SOPIR'     => 'required',
             ]
         );
 
@@ -704,6 +707,7 @@ class SuratsController extends Controller
                 'PKP'           => (float) str_replace(',', '', $request['PKP']),
                 'KOM'           => (float) str_replace(',', '', $request['KOM']),
                 'HARI'           => (float) str_replace(',', '', $request['HARI']),
+                'TOTAL_TKOM'           => (float) str_replace(',', '', $request['TOTAL_TKOM']),
 				'USRNM'         => Auth::user()->username,						
                 'GOL'           => $GOLZ,
                 'FLAG'          => $FLAGZ,
@@ -735,6 +739,9 @@ class SuratsController extends Controller
 		$DISK = $request->input('DISK');	
 		$KET	= $request->input('KET');	
 		$ID_SOD	= $request->input('ID_SOD');	
+		$TYPE_KOM	= $request->input('TYPE_KOM');	
+		$KOM	= $request->input('KOM');	
+		$TKOM	= $request->input('TKOM');	
        
        // Delete yang NO_ID tidak ada di input
         $query = DB::table('suratsd')->where('NO_BUKTI', $surats->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
@@ -768,6 +775,9 @@ class SuratsController extends Controller
                         'DISK'        => (float) str_replace(',', '', $DISK[$i]),
                         'KET'        => ($KET[$i]==null) ? "" : $KET[$i],
                         'ID'         => $surats->NO_ID,
+                        'TYPE_KOM'   => ($TYPE_KOM[$i]==null) ? "" : $TYPE_KOM[$i],
+                        'KOM'        => (float) str_replace(',', '', $KOM[$i]),
+                        'TKOM'        => (float) str_replace(',', '', $TKOM[$i]),
                         // 'ID_SOD'     => ($ID_SOD[$i]==null) ? "" : $ID_SOD[$i],
                     ]
                 );
@@ -800,6 +810,9 @@ class SuratsController extends Controller
                         'DPP'        => (float) str_replace(',', '', $DPP[$i]),
                         'DISK'        => (float) str_replace(',', '', $DISK[$i]),
                         'KET'        => ($KET[$i]==null) ? "" : $KET[$i],
+                        'TYPE_KOM'   => ($TYPE_KOM[$i]==null) ? "" : $TYPE_KOM[$i],
+                        'KOM'        => (float) str_replace(',', '', $KOM[$i]),
+                        'TKOM'        => (float) str_replace(',', '', $TKOM[$i]),
                         // 'ID_SOD'     => ($ID_SOD[$i]==null) ? "" : $ID_SOD[$i],
                     ]
                 );

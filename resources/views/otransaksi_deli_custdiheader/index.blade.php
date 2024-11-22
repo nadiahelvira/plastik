@@ -11,10 +11,9 @@
     }
 
     .table thead {
-        background-color: #FFFFFF;
-        color: #000000;
+        background-color: #8a2be2;
+        color: #ffff;
     }
-
 
     .datatable tbody td {
         padding: 5px !important;
@@ -25,6 +24,7 @@
         border-left: solid 2px #000;
     }
 	
+
 
     .btn-secondary {
         background-color: #42047e !important;
@@ -37,6 +37,7 @@
 
 @section('content')
 <div class="content-wrapper">
+
 
     <!-- Status -->
     @if (session('status'))
@@ -51,27 +52,24 @@
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-			  
+
               <input name="flagz"  class="form-control flagz" id="flagz" value="{{$flagz}}" hidden >
               <input name="golz"  class="form-control golz" id="golz" value="{{$golz}}" hidden >
-              <input name="typez"  class="form-control typez" id="typez" value="{{$typez}}" hidden >
- 
-                <!-- <button class="btn btn-danger" type="button"  onclick="simpan()">Posting</button> -->
 
                 <table class="table table-fixed table-striped table-border table-hover nowrap datatable" id="datatable">
                     <thead class="table-dark">
                         <tr>
-                            <th width="35px" style="text-align:center"></th>
-                            <th width="35px" style="text-align:center">#</th>
-                            <th width="75px" style="text-align:center">-</th>							
-                            <th width="150px" style="text-align:center">Bukti#</th>
-                            <th width="150px" style="text-align:center">Customer</th>
-                            <th width="100px" style="text-align:center">Tgl</th>
-                            <th width="100px" style="text-align:center">Total_Qty</th>
-                            <th width="100px" style="text-align:center">Total</th>
-                            <th width="150px" style="text-align:center">Notes</th>
-                            <th width="100px" style="text-align:center">User</th>
-                            <th width="100px" style="text-align:center">Posted</th>
+                            <th scope="col" style="text-align: center"></th>
+                            <th scope="col" style="text-align: center">#</th>
+				     		            <th scope="col" style="text-align: center">-</th>							
+                            <th scope="col" style="text-align: center">No Bukti</th>
+                            <th scope="col" style="text-align: center">Tgl</th>
+                            <th scope="col" style="text-align: center">Kode</th>
+                            <th scope="col" style="text-align: center">Customer</th>
+                            <th scope="col" style="text-align: center">Truck</th>
+                            <th scope="col" style="text-align: center">Sopir</th>
+                            <th scope="col" style="text-align: center">Total Qty</th>
+                            <th scope="col" style="text-align: center">Posted</th>
                         </tr>
                     </thead>
     
@@ -85,11 +83,15 @@
       </div>
     </div>
   </div>
+  
 @endsection
 
 @section('javascripts')
 <script>
   $(document).ready(function() {
+	  
+
+			  
         var dataTable = $('.datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -99,20 +101,20 @@
             "order": [[ 0, "asc" ]],
             ajax: 
             {
-                url: "{{ route('get-so') }}",
-				data: 
+                url: "{{ route('get-deli') }}",
+				        data: 
                 {
                     flagz : $('#flagz').val(),
                     golz : $('#golz').val(),
-                    typez : $('#typez').val(),
 				   
-                }				
+                }
             },
+
             columns: 
             [
-                
-                   //add tombol + 
-                  { 
+
+                //add tombol + 
+                { 
                     data: null, // Column for the button
                     orderable: false,
                     searchable: false,
@@ -121,23 +123,23 @@
                       // tanpa ada POST (posting) di atas
                         return `<button class="btn btn-success btn-sm toggle-button" data-no_bukti="${row.NO_BUKTI}" onclick="toggleButton(this)">+</button>`;
                     }
-                  },
+                },
                   // tutupannya
-          
+
                 {data: 'DT_RowIndex', orderable: false, searchable: false },
-                {data: 'action', name: 'action'},
+			          {data: 'action', name: 'action'},
                 {data: 'NO_BUKTI', name: 'NO_BUKTI'},
+                {data: 'TGL', name: 'TGL'},
+                {data: 'KODEC', name: 'KODEC'},
                 {data: 'NAMAC', name: 'NAMAC',
                   render : function ( data, type, row, meta )
                   {
                     return ' <h5><span class="badge badge-pill badge-warning">' + data + '</span></h5>';
                   }
                 },
-                {data: 'TGL', name: 'TGL'},
-                {data: 'TOTAL_QTY', name: 'TOTAL_QTY', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},
-                {data: 'TOTAL', name: 'TOTAL', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},
-                {data: 'NOTES', name: 'NOTES'},
-                {data: 'USRNM', name: 'USRNM'},
+                {data: 'TRUCK', name: 'TRUCK'},
+                {data: 'SOPIR', name: 'SOPIR'},
+                {data: 'TOTAL_QTY', name: 'TOTAL_QTY'},
                 { data: 'POSTED', name: 'POSTED',
                   render : function(data, type, row, meta) {
                     if(row['POSTED']=="0"){
@@ -146,34 +148,36 @@
                         return '<input type="checkbox" checked style="pointer-events: none;">';
                     }
                   }
-                },
+                },                           
             ],
-            columnDefs: [
+            columnDefs: 
+            [
                 {
                     "className": "dt-center", 
-                    "targets": 9,
-                },		
+                    "targets": 0,
+                },	
                 {
                     "className": "dt-right", 
-                    "targets": [5, 6],
+                    "targets": 8,
+                    render: $.fn.dataTable.render.number( ',', '.', 0, '' ),
                 },			
                 {
                   targets: 4,
-                  render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' )
+                  render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ),
                 }
             ],
-            lengthMenu: [
-                [10, 20, 50, 100, -1],
-                [10, 20, 50, 100, "All"]
+            lengthMenu: 
+            [
+                [8, 10, 20, 50, 100, -1],
+                [8, 10, 20, 50, 100, "All"]
             ],
             dom: "<'row'<'col-md-6'><'col-md-6'>>" +
                 "<'row'<'col-md-2'l><'col-md-6 test_btn m-auto'><'col-md-4'f>>" +
                 "<'row'<'col-md-12't>><'row'<'col-md-12'ip>>",
-				stateSave:true,
 
         });
 		
-        $("div.test_btn").html('<a class="btn btn-lg btn-md btn-success" href="{{url('so/edit?flagz='.$flagz.'&golz='.$golz.'&typez='.$typez.'&idx=0&tipx=new')}}"> <i class="fas fa-plus fa-sm md-3" ></i></a');
+        $("div.test_btn").html('<a class="btn btn-lg btn-md btn-success" href="{{url('deli/edit?flagz='.$flagz.'&golz='.$golz.'&idx=0&tipx=new')}}"> <i class="fas fa-plus fa-sm md-3" ></i></a');
 
         // function buat ganti tombol + onclick
         window.toggleButton = function(button) {
@@ -186,7 +190,7 @@
 
                 // Fetch and show detail data using no_bukti
                 $.ajax({
-                    url: '{{ route('get-detail-so') }}', // Define the route to fetch detail data
+                    url: '{{ route('get-detail-deli') }}', // Define the route to fetch detail data
                     method: 'GET',
                     data: {
                         no_bukti: no_bukti
@@ -201,13 +205,12 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>No.</th>
+                                            <th>SO#</th>
                                             <th>Barang</th>
-                                            <th>Nama</th>
+                                            <th>Uraian</th>
                                             <th>Satuan</th>
                                             <th>Qty</th>
-                                            <th>Harga</th>
-                                            <th>Total</th>
-                                            <th>Diskon</th>
+                                            <th>Ket</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -219,20 +222,19 @@
                             detailHtml += `
                                 <tr>
                                     <td><div style="background-color: #f7d8b4; padding: 0.5rem;">${index + 1}</div></td>
+                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem;">${item.NO_SO}</div></td>
                                     <td><div style="background-color: #f7d8b4; padding: 0.5rem;">${item.KD_BRG}</div></td>
                                     <td><div style="background-color: #f7d8b4; padding: 0.5rem;">${item.NA_BRG}</div></td>
                                     <td><div style="background-color: #f7d8b4; padding: 0.5rem;">${item.SATUAN}</div></td>
                                     <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: right">${parseFloat(item.QTY).toFixed(2)}</div></td>
-                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: right">${parseFloat(item.HARGA).toFixed(2)}</div></td>
-                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: right">${parseFloat(item.TOTAL).toFixed(2)}</div></td>
-                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: right">${parseFloat(item.DISK).toFixed(2)}</div></td>
+                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem;">${item.KET}</div></td>
                                 </tr>
                             `;
                         });
 
                         detailHtml += `
                                     <tr>
-                                        <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
+                                        <td colspan="5" style="text-align: right;"><strong>Total:</strong></td>
                                         <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: right">${totalQty.toFixed(2)}</div></td>
                                     </tr>
                                     </tbody>

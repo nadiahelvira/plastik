@@ -146,22 +146,22 @@ class BrgController extends Controller
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
                                     brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
-                                    brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP
+                                    brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM
                                 FROM brg, brgdx
                                 $filter_kd_brg and brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.PN='0' AND brgdx.RING = '$ringx'
-                                AND brg. GOL='$golz'
+                                -- AND brg. GOL='$golz'
                                 ORDER BY brg.KD_BRG  ");
                             
             if	( empty($brg) ) {
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
                                     brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
-                                    brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP
+                                    brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM
                                 FROM brg, brgdx
                                 WHERE brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.PN='0' AND brgdx.RING = '$ringx'
-                                AND brg. GOL='$golz'
+                                -- AND brg. GOL='$golz'
                                 ORDER BY brg.KD_BRG ");			
             }
 
@@ -174,21 +174,22 @@ class BrgController extends Controller
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
                                         brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
-                                brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP
+                                brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM
                                 FROM brg, brgdx
                                 $filter_kd_brg AND brg.KD_BRG = brgdx.KD_BRG
                                 AND brg.PN<>'0' AND brgdx.RING = '$ringx'
-                                AND brg.GOL='$golz'
+                                -- AND brg.GOL='$golz'
                                 ORDER BY brg.KD_BRG  ");
                             
             if	( empty($brg) ) {
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
                                         brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
-                                brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP
+                                brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM
                                 FROM brg, brgdx
                                 WHERE brg.PN<>'0' AND brg.KD_BRG = brgdx.KD_BRG
-                                AND brg.GOL='$golz' AND brgdx.RING = '$ringx'
+                                -- AND brg.GOL='$golz' 
+                                AND brgdx.RING = '$ringx'
                                 ORDER BY brg.KD_BRG ");			
             }
 
@@ -298,6 +299,8 @@ class BrgController extends Controller
                 'LEBAR'             => (float) str_replace(',', '', $request['LEBAR']),
                 'DIMENSI'           => (float) str_replace(',', '', $request['DIMENSI']),
                 'VOLUME'            => (float) str_replace(',', '', $request['VOLUME']),
+                'TYPE_KOM'          => ($request['TYPE_KOM'] == null) ? "" : $request['TYPE_KOM'],
+                'KOM'               => (float) str_replace(',', '', $request['KOM']),
                 'USRNM'             => Auth::user()->username,
                 'created_at'        => Carbon::now(),
 				'created_by'        => Auth::user()->username,
@@ -572,7 +575,9 @@ class BrgController extends Controller
                 'PANJANG'           => (float) str_replace(',', '', $request['PANJANG']),
                 'LEBAR'             => (float) str_replace(',', '', $request['LEBAR']),
                 'DIMENSI'           => (float) str_replace(',', '', $request['DIMENSI']),
-                'VOLUME'            => (float) str_replace(',', '', $request['VOLUME']),		 
+                'VOLUME'            => (float) str_replace(',', '', $request['VOLUME']),
+                'TYPE_KOM'          => ($request['TYPE_KOM'] == null) ? "" : $request['TYPE_KOM'],
+                'KOM'               => (float) str_replace(',', '', $request['KOM']),		 
 				'USRNM'             => Auth::user()->username,
                 'updated_at'        => Carbon::now(),
 				'updated_by'        => Auth::user()->username,

@@ -278,6 +278,27 @@
 								</div>
 								<!-- tutupannya -->
 
+                                <div class="col-md-1">
+                                </div>
+								
+								<!-- code text box baru -->
+								<div class="col-md-1 form-group row special-input-label">
+
+									<input type="text" class="TYPE_KOM" id="TYPE_KOM" name="TYPE_KOM" 
+										value="{{$header->TYPE_KOM}}" placeholder=" " >
+									<label for="TYPE_KOM">*Pilih Komisi</label>
+								</div>
+								<div class="col-md-1 form-group row special-input-label">
+									<button type="button" class="btn btn-primary" onclick="browseKomisi()" style="width:40px"><i class="fa fa-search"></i></button>
+								</div>
+								<!-- tutupannya -->
+        
+								<div class="col-md-2 form-group row special-input-label">
+									<input type="text" class="KOM" id="KOM" name="KOM" 
+										value="{{$header->KOM}}" placeholder=" " >
+									<label for="KOM"></label>
+								</div>
+
                             </div>
 
 							<!-- loader tampil di modal  -->
@@ -702,6 +723,34 @@
 	  </div>
 	</div>
 
+	<div class="modal fade" id="browseKomisiModal" tabindex="-1" role="dialog" aria-labelledby="browseKomisiModalLabel" aria-hidden="true">
+	<div class="modal-dialog mw-100 w-75" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="browseKomisiModalLabel">Cari Komisi</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-bkomisi">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Komisi</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		</div>
+		</div>
+	</div>
+	</div>
+
 @endsection
 @section('footer-scripts')
 <script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
@@ -1093,6 +1142,67 @@
 		
 		
 //////////////////////////////////////////////////////////////////////////////////////////////////
+		
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		//CHOOSE Komisi
+		var dTableBKomisi;
+		loadDataBKomisi = function(){
+			$.ajax(
+			{
+				type: 'GET',    
+				url: '{{url('komisi/browse')}}',
+
+				beforeSend: function(){
+					$("#LOADX").show();
+				},
+
+				success: function( response )
+				{
+					$("#LOADX").hide();
+			
+					resp = response;
+					if(dTableBKomisi){
+						dTableBKomisi.clear();
+					}
+					for(i=0; i<resp.length; i++){
+						
+						dTableBKomisi.row.add([
+							'<a href="javascript:void(0);" onclick="chooseKomisi(\''+resp[i].TYPE+'\',  \''+resp[i].KOM+'\' )">'+resp[i].TYPE+'</a>',
+							resp[i].KOM,
+						]);
+					}
+					dTableBKomisi.draw();
+				}
+			});
+		}
+		
+		dTableBKomisi = $("#table-bkomisi").DataTable({
+			
+		});
+		
+		browseKomisi = function(){
+			loadDataBKomisi();
+			$("#browseKomisiModal").modal("show");
+		}
+		
+		chooseKomisi = function(TYPE,KOM){
+			$("#TYPE_KOM").val(TYPE);
+			$("#KOM").val(KOM);
+			$("#browseKomisiModal").modal("hide");
+		}
+		
+		$("#TYPE_KOM").keypress(function(e){
+
+			if(e.keyCode == 46){
+				e.preventDefault();
+				browseKomisi();
+			}
+		}); 
+		
+		
+		//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 		

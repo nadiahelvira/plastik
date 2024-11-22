@@ -307,6 +307,7 @@ class JualController extends Controller
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
                 'HARI'            => (float) str_replace(',', '', $request['HARI']),
                 'PKP'            => (float) str_replace(',', '', $request['PKP']),
+                'TOTAL_TKOM'            => (float) str_replace(',', '', $request['TOTAL_TKOM']),
 
                 'USRNM'            => Auth::user()->username,
                 'TG_SMP'           => Carbon::now(),
@@ -331,6 +332,9 @@ class JualController extends Controller
         $DPP        = $request->input('DPP');
         $DISK        = $request->input('DISK');
 	    $TOTAL        = $request->input('TOTAL');		 
+	    $TYPE_KOM        = $request->input('TYPE_KOM');		 
+	    $KOM        = $request->input('KOM');		 
+	    $TKOM        = $request->input('TKOM');		 
 
         // Check jika value detail ada/tidak
         if ($REC) {
@@ -358,6 +362,9 @@ class JualController extends Controller
                 $detail->DPP         = (float) str_replace(',', '', $DPP[$key]);
                 $detail->DISK         = (float) str_replace(',', '', $DISK[$key]);
                 $detail->TOTAL         = (float) str_replace(',', '', $TOTAL[$key]);				
+                $detail->TYPE_KOM      = ($TYPE_KOM[$key] == null) ? "" :  $TYPE_KOM[$key];				
+                $detail->KOM         = (float) str_replace(',', '', $KOM[$key]);				
+                $detail->TKOM         = (float) str_replace(',', '', $TKOM[$key]);				
  		
                 $detail->save();
             }
@@ -631,6 +638,7 @@ class JualController extends Controller
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
                 'HARI'            => (float) str_replace(',', '', $request['HARI']),
                 'PKP'            => (float) str_replace(',', '', $request['PKP']),
+                'TOTAL_TKOM'            => (float) str_replace(',', '', $request['TOTAL_TKOM']),
 
 				'USRNM'            => Auth::user()->username,
                 'TG_SMP'           => Carbon::now(),
@@ -663,6 +671,9 @@ class JualController extends Controller
         $DPP    = $request->input('DPP');
         $DISK    = $request->input('DISK');
         $TOTAL    = $request->input('TOTAL');	
+        $TYPE_KOM    = $request->input('TYPE_KOM');	
+        $KOM    = $request->input('KOM');	
+        $TKOM    = $request->input('TKOM');	
 
         $query = DB::table('juald')->where('NO_BUKTI', $request->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
 
@@ -691,6 +702,9 @@ class JualController extends Controller
                         'DPP'        => (float) str_replace(',', '', $DPP[$i]),
                         'DISK'        => (float) str_replace(',', '', $DISK[$i]),
                         'TOTAL'        => (float) str_replace(',', '', $TOTAL[$i]),
+                        'TYPE_KOM'     => ($TYPE_KOM[$i] == null) ? "" :  $TYPE_KOM[$i],						
+                        'KOM'        => (float) str_replace(',', '', $KOM[$i]),
+                        'TKOM'        => (float) str_replace(',', '', $TKOM[$i]),
 						
                     ]
                 );
@@ -719,6 +733,9 @@ class JualController extends Controller
                         'PPN'        => (float) str_replace(',', '', $PPNX[$i]),
                         'DPP'        => (float) str_replace(',', '', $DPP[$i]),
                         'DISK'        => (float) str_replace(',', '', $DISK[$i]),
+                        'TYPE_KOM'     => ($TYPE_KOM[$i] == null) ? "" :  $TYPE_KOM[$i],						
+                        'KOM'        => (float) str_replace(',', '', $KOM[$i]),
+                        'TKOM'        => (float) str_replace(',', '', $TKOM[$i]),
                         'FLAG'       => $this->FLAGZ,
                         'GOL'        => $this->GOLZ,
                         'PER'        => $periode,

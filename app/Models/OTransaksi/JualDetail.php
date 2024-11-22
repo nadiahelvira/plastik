@@ -17,6 +17,6 @@ class JualDetail extends Model
     [
         "NO_BUKTI", "NO_SO", "REC", "PER", "FLAG", "TYP", "KD_BRG", "NA_BRG", "SATUAN", "QTY", "HARGA", 
         "TOTAL", "NO_SERI", "KET", "ID", "ID_SOD", "KD_BHN", "NA_BHN", "GOL", "PER", "PPN", "DPP",
-        "QTY_KIRIM", "DISK", "NO_SO"
+        "QTY_KIRIM", "DISK", "NO_SO", "TYPE_KOM", "KOM", "TKOM", "TKOM_REAL"
     ];
 }

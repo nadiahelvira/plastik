@@ -334,6 +334,24 @@
               </a>
 			      </div>
         </div>
+        <div class="col-md-3">
+            <div class="menu-card">
+              <a href="javascript:addTab('Komisi','{{url('komisi')}}')">
+                  <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
+                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-crosshairs icon-pink"></i>
+                <h6>Komisi</h6>
+              </a>
+			      </div>
+        </div>
+        <div class="col-md-3">
+            <div class="menu-card">
+              <a href="javascript:addTab('Kategori','{{url('kategori')}}')">
+                  <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
+                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-crosshairs icon-pink"></i>
+                <h6>Kategori</h6>
+              </a>
+			      </div>
+        </div>
       </div>
   </li>
 <!-----------------batas ------------------------>
@@ -448,10 +466,40 @@
       <div class="row d-flex">
         <div class="col-md-3">
             <div class="menu-card" style="">
-              <a href="javascript:addTab('Sales Order', '{{url('so?flagz=SO&golz=J')}}')">
+              <a href="javascript:addTab('Sales Order (PPN)', '{{url('so?flagz=SO&golz=J&typez=PPN')}}')">
                 <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
                   <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-yellow"></i>
-                <h6>Sales Order</h6>
+                <h6>Sales Order (PPN)</h6>
+              </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="menu-card" style="">
+              <a href="javascript:addTab('Sales Order Dropship (PPN)', '{{url('so?flagz=SO&golz=DR&typez=PPN')}}')">
+                <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
+                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-yellow"></i>
+                <h6>SO Dropship (PPN)</h6>
+              </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="menu-card" style="">
+              <a href="javascript:addTab('Sales Order (NON)', '{{url('so?flagz=SO&golz=J&typez=NON')}}')">
+                <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
+                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-yellow"></i>
+                <h6>Sales Order (Non)</h6>
+              </a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="menu-card" style="">
+              <a href="javascript:addTab('Sales Order Dropship (NON)', '{{url('so?flagz=SO&golz=DR&typez=NON')}}')">
+                <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
+                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-yellow"></i>
+                <h6>SO Dropship (Non)</h6>
               </a>
             </div>
         </div>

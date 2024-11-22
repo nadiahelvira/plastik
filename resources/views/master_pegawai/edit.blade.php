@@ -276,11 +276,20 @@
 								</div>  -->
 
 								<!-- code text box baru -->
-								<div class="col-md-3 form-group row special-input-label">
+								<div class="col-md-3 form-group row special-input-label" hidden>
 
 									<input type="text" class="KOM" id="KOM" name="KOM" 
 										value="{{$header->KOM}}" placeholder=" " >
 									<label for="KOM">Komisi (%)</label>
+								</div>
+								<!-- tutupannya -->
+
+								<!-- code text box baru -->
+								<div class="col-md-3 form-group row special-input-label">
+
+									<input type="text" class="PINJAM" id="PINJAM" name="PINJAM" 
+										value="{{$header->PINJAM}}" placeholder=" " >
+									<label for="PINJAM">Kas Bon</label>
 								</div>
 								<!-- tutupannya -->
 

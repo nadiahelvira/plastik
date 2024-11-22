@@ -52,11 +52,7 @@ class CustController extends Controller
                             WHERE a.KODEP = b.KODEP  ORDER BY NAMAC "); 
                             
 		}
-		
-
-
-
-
+        
         return response()->json($cust);
     }
 

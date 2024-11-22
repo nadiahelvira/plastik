@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Pegawai extends Model
+class Kategori extends Model
 {
     use HasFactory;
 
-    protected $table = 'pegawai';
+    protected $table = 'kategori';
     protected $primaryKey = 'NO_ID';
     public $timestamps = false;
 
     protected $fillable = 
     [
-        "KODEP", "NAMAP", "ALAMAT", "KOTA", "TELPON", "KONTAK", "HP", "GOL", "KOM", "STA", "UMAKAN", "PINJAM"
+        "KODE", "HARI", "PERSEN"
     ];
 
 }
