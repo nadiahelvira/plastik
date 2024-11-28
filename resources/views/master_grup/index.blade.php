@@ -11,6 +11,11 @@
 </style>
 
 @section('content')
+
+<!-- Sweetalert delete -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!--  -->
+
 <div class="content-wrapper">
 
     <!-- Status -->
@@ -18,6 +23,18 @@
         <div class="alert alert-success">
             {{session('status')}}
         </div>
+
+        <!-- tambahan notifikasinya untuk delete di index -->
+        <script>
+            Swal.fire({
+					title: 'Deleted!',
+					text: 'Data has been deleted. {{session('status')}}',
+					icon: 'success',
+					confirmButtonText: 'OK'
+				})
+        </script>
+        <!-- tutupannya -->
+
     @endif
 
     <div class="content">
@@ -109,7 +126,23 @@
         $("div.test_btn").html('<a class="btn btn-lg btn-md btn-success" href="{{url('grup/edit?idx=0&tipx=new')}}"> <i class="fas fa-plus fa-sm md-3" ></i></a');
     });
 	
-	
+    function deleteRow(link) {
+        console.log('Masuk');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Are you sure?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location = link;
+            }
+        });
+    }
 	
 </script>
 @endsection

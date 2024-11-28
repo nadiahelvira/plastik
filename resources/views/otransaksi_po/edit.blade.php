@@ -430,11 +430,11 @@
 							<div class="col-md-3">
 								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
 								
-								 <button type="button" id='CLOSEX'  onclick="location.href='{{url('/po?flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-secondary">Close</button> 
+								<!-- <button type="button" id='CLOSEX'  onclick="location.href='{{url('/po?flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-secondary">Close</button>  -->
 								
 								<!-- tombol close sweet alert -->
-							 <!--	<button type="button" id='CLOSEX' onclick="closeTrans()" class="btn btn-outline-secondary">Close</button></div> -->
-						</div>
+							     	<button type="button" id='CLOSEX' onclick="closeTrans()" class="btn btn-outline-secondary">Close</button></div>   
+							</div>
 						</div>
 						
 						
@@ -1517,6 +1517,10 @@
 	function hapusTrans() {
 		let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
 
+		var loc ='';
+		var flagz = "{{ $flagz }}";
+		var golz = "{{ $golz }}";
+		
 		Swal.fire({
 			title: 'Are you sure?',
 			text: text,
@@ -1536,8 +1540,12 @@
 					confirmButtonText: 'OK'
 				}).then(() => {
 					// Redirect to delete the data after user confirms the success message
-					window.location =
-						"{{url('/po/delete/'.$header->NO_ID .'/?flagz='.$flagz.'&golz=' .$golz.'' )}}";
+	            	loc = "{{ url('/po/delete/'.$header->NO_ID) }}" + '?flagz=' + encodeURIComponent(flagz) + 
+						  '&golz=' + encodeURIComponent(golz) ;
+
+		            // alert(loc);
+	            	window.location = loc;
+		
 				});
 			}
 		});
@@ -1545,7 +1553,10 @@
 	
 	function closeTrans() {
 		console.log("masuk");
-
+		var loc ='';
+		var flagz = "{{ $flagz }}";
+		var golz = "{{ $golz }}";
+		
 		Swal.fire({
 			title: 'Are you sure?',
 			text: 'Do you really want to close this page? Unsaved changes will be lost.',
@@ -1555,7 +1566,8 @@
 			cancelButtonText: 'No, stay here'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				window.location = "{{url('/po?flagz='.$flagz.'&golz='.$golz.'' )}}";
+	        	loc = "{{ url('/po/') }}" + '?flagz=' + encodeURIComponent(flagz) + '&golz=' + encodeURIComponent(golz) ;
+				window.location = loc ;
 			} else {
 				Swal.fire({
 					icon: 'info',

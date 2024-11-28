@@ -36,6 +36,9 @@
 
 
 @section('content')
+<!-- Sweetalert delete -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!--  -->
 <div class="content-wrapper">
 
 
@@ -44,6 +47,18 @@
         <div class="alert alert-success">
             {{session('status')}}
         </div>
+
+        <!-- tambahan notifikasinya untuk delete di index -->
+        <script>
+            Swal.fire({
+                    title: 'Deleted!',
+                    text: 'Data has been deleted. {{session('status')}}',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                })
+        </script>
+        <!-- tutupannya -->
+
     @endif
 
     <div class="content">
@@ -61,13 +76,13 @@
                         <tr>
                             <th scope="col" style="text-align: center"></th>
                             <th scope="col" style="text-align: center">#</th>
-				     	              <th scope="col" style="text-align: center">-</th>							
+                            <th scope="col" style="text-align: center">-</th>							
                             <th scope="col" style="text-align: center">Bukti#</th>
                             <th scope="col" style="text-align: center">Tgl</th>
                             <th scope="col" style="text-align: center">Suplier#</th>
                             <th scope="col" style="text-align: center">Nama</th>
                             <th scope="col" style="text-align: center">Total-Qty</th>
-						                <th scope="col" style="text-align: center">Total</th>
+                            <th scope="col" style="text-align: center">Total</th>
                             <th scope="col" style="text-align: center">Notes</th>
                             <th scope="col" style="text-align: center">User</th>
                             <th scope="col" style="text-align: center">Posted</th>
@@ -265,6 +280,24 @@
 
           // tutupannya
       });
+
+    function deleteRow(link) {
+        console.log('Masuk');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Are you sure?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location = link;
+            }
+        });
+    }
 	
 </script>
 @endsection

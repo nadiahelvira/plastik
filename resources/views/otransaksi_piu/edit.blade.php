@@ -338,7 +338,11 @@
 							</div>
 							<div class="col-md-3">
 								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
-								<button type="button" id='CLOSEX'  onclick="location.href='{{url('/piu?flagz='.$flagz.'' )}}'" class="btn btn-outline-secondary">Close</button>
+								
+								<!-- <button type="button" id='CLOSEX'  onclick="location.href='{{url('/piu?flagz='.$flagz.'' )}}'" class="btn btn-outline-secondary">Close</button> -->
+							
+								<!-- tombol close sweet alert -->
+								<button type="button" id='CLOSEX' onclick="closeTrans()" class="btn btn-outline-secondary">Close</button></div>
 							</div>
 						</div>
 			
@@ -1188,16 +1192,81 @@
 	}
 	
 
+	// function hapusTrans() {
+	// 	var flagz = "{{ $flagz }}";
+	// 	let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
+	// 	if (confirm(text) == true) 
+	// 	{
+	// 		window.location ="{{url('/piu/delete/'.$header->NO_ID .'/?flagz='.$flagz.'' )}}";
+	// 		//return true;
+	// 	} 
+	// 	return false;
+	// }
+
+	// sweetalert untuk tombol hapus dan close
+	
 	function hapusTrans() {
-		var flagz = "{{ $flagz }}";
 		let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
-		if (confirm(text) == true) 
-		{
-			window.location ="{{url('/piu/delete/'.$header->NO_ID .'/?flagz='.$flagz.'' )}}";
-			//return true;
-		} 
-		return false;
+
+		var loc ='';
+		var flagz = "{{ $flagz }}";
+		
+		Swal.fire({
+			title: 'Are you sure?',
+			text: text,
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!',
+			cancelButtonText: 'Cancel'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Show a success message before redirecting to delete the data
+				Swal.fire({
+					title: 'Deleted!',
+					text: 'Data has been deleted.',
+					icon: 'success',
+					confirmButtonText: 'OK'
+				}).then(() => {
+					// Redirect to delete the data after user confirms the success message
+	            	loc = "{{ url('/piu/delete/'.$header->NO_ID) }}" + '?flagz=' + encodeURIComponent(flagz) ;
+
+		            // alert(loc);
+	            	window.location = loc;
+		
+				});
+			}
+		});
 	}
+	
+	function closeTrans() {
+		console.log("masuk");
+		var loc ='';
+		var flagz = "{{ $flagz }}";
+		
+		Swal.fire({
+			title: 'Are you sure?',
+			text: 'Do you really want to close this page? Unsaved changes will be lost.',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, close it',
+			cancelButtonText: 'No, stay here'
+		}).then((result) => {
+			if (result.isConfirmed) {
+	        	loc = "{{ url('/piu/') }}" + '?flagz=' + encodeURIComponent(flagz) ;
+				window.location = loc ;
+			} else {
+				Swal.fire({
+					icon: 'info',
+					title: 'Cancelled',
+					text: 'You stayed on the page'
+				});
+			}
+		});
+	}
+
+	// tutupannya
 	
 
 	function CariBukti() {

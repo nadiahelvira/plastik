@@ -52,7 +52,13 @@ class KotaController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 if (Auth::user()->divisi=="programmer" || Auth::user()->divisi=="owner" || Auth::user()->divisi=="sales") 
-                {
+                {   
+                    // url untuk delete di index
+                    $url = "'".url("kota/delete/" . $row->NO_ID )."'";
+                    // batas
+
+                    $btnDelete = ' onclick="deleteRow('.$url.')"';
+
                     $btnPrivilege =
                         '
                                 <a class="dropdown-item" href="kota/edit/?idx=' . $row->NO_ID . '&tipx=edit";
@@ -60,7 +66,7 @@ class KotaController extends Controller
                                     Edit
                                 </a>
                                 <hr></hr>
-                                <a class="dropdown-item btn btn-danger" onclick="return confirm(&quot; Apakah anda yakin ingin hapus? &quot;)" href="kota/delete/' . $row->NO_ID . '">
+                                <a class="dropdown-item btn btn-danger" ' . $btnDelete . '>
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Delete
                                 </a> 

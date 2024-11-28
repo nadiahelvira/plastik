@@ -44,7 +44,7 @@
     }
 
     #a {
-      top:20;
+      top:10;
     }
 
     #b {
@@ -68,19 +68,19 @@
     }
 
     #g {
-      top:380;
+      top:300;
     }
 
     #h {
-      top:360;
+      top:310;
     }
 
     #i {
-      top:380;
+      top:320;
     }
 
     #j {
-      top:550;
+      top:400;
     }
 
     #k {
@@ -241,6 +241,20 @@
 
 
   <div class="mega-menu" id="a">
+
+  <!-- penambahan judul di menu -->
+      <div class="row">
+        <div class="col-md-12">
+          <h3>MASTER</h3>
+          <hr style=" height: 5px;
+            background-color: #333; 
+            border: none; 
+            margin: 20px 0; "/>
+        </div>
+      </div>
+
+  <!-- batas -->
+
       <div class="row d-flex">
         <div class="col-md-3">
            <!-- <div class="menu-card" style="">
@@ -249,38 +263,44 @@
                   <h6>Vendor</h6>
                 </a>
 			      </div> -->
+            
+            <!-- kalau di sub menu, mau di kasih background warna. style:"background" -->
+                <!-- <div class="menu-card" style="background-color:#b6d8fa;"> -->
+            <!-- batas -->
 
-            <div class="menu-card" style="">
+            <!-- kalau sub menu, di kasih warna pinggirannya. style:"border" -->
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#e3f1fc;">
+            <!-- batas -->
               <a href="javascript:addTab('Supplier', '{{url('sup')}}')">
                   <!-- <i class="nav-icon far fa-user fa-10x icon-purple"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-user icon-purple"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-user icon-blue"></i>
                   <h6>Vendor</h6>
               </a>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#e3f1fc;">
               <a href="javascript:addTab('Customer', '{{url('cust')}}')">
                   <!-- <i class="nav-icon fas fa-users icon-yellow" style="text-align: center;"></i> -->
-                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-users icon-yellow"></i>
+                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-users icon-blue"></i>
                 <h6>Customer</h6>
               </a>
 			      </div>
         </div>
 		    <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#e3f1fc;">
               <a href="javascript:addTab('Pegawai', '{{url('pegawai')}}')">
                   <!-- <i class="nav-icon fas fa-layer-group icon-green" style="text-align: center;"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-user-tie icon-green"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-user-tie icon-blue"></i>
                 <h6>Pegawai</h6>
               </a>
 			      </div>
         </div>
 		    <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
               <a href="javascript:addTab('Barang', '{{url('brg')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-10px;font-size: 40px;" class="nav-icon fas fa-cube icon-blue"></i>
+                  <i style="margin-left:-10px;font-size: 40px;" class="nav-icon fas fa-cube icon-orange"></i>
                 <h6>Barang</h6>
               </a>
 			      </div>
@@ -288,16 +308,16 @@
       </div>
 	    <div class="row">
         <div class="col-md-3">
-            <div class="menu-card">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
               <a href="javascript:addTab('Grup', '{{url('grup')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-layer-group icon-red"></i>
+                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-layer-group icon-orange"></i>
                 <h6>Grup Barang Jual</h6>
               </a>
 			      </div>
         </div>
         <div class="col-md-3">
-            <div class="menu-card">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
               <a href="javascript:addTab('Kota', '{{url('kota')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
                   <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-city icon-orange"></i>
@@ -306,16 +326,16 @@
 			      </div>
         </div>
         <div class="col-md-3">
-            <div class="menu-card">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
               <a href="javascript:addTab('Gudang', '{{url('gdg')}}')" >
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-warehouse icon-purple"></i>
+                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-warehouse icon-green"></i>
                 <h6>Gudang</h6>
               </a>
 			      </div>
         </div>
         <div class="col-md-3">
-            <div class="menu-card">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
               <a href="javascript:addTab('Truck', '{{url('truck')}}')" >
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
                   <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-truck icon-green"></i>
@@ -326,28 +346,28 @@
       </div>
     <div class="row">
         <div class="col-md-3">
-            <div class="menu-card">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
               <a href="javascript:addTab('Lokasi','{{url('lokasi')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-crosshairs icon-pink"></i>
+                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-crosshairs icon-green"></i>
                 <h6>Lokasi</h6>
               </a>
 			      </div>
         </div>
         <div class="col-md-3">
-            <div class="menu-card">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe6ff;">
               <a href="javascript:addTab('Komisi','{{url('komisi')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-crosshairs icon-pink"></i>
+                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-thumbtack icon-pink"></i>
                 <h6>Komisi</h6>
               </a>
 			      </div>
         </div>
         <div class="col-md-3">
-            <div class="menu-card">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe6ff;">
               <a href="javascript:addTab('Kategori','{{url('kategori')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-crosshairs icon-pink"></i>
+                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-folder icon-pink"></i>
                 <h6>Kategori</h6>
               </a>
 			      </div>
@@ -369,36 +389,50 @@
 
 
     <div class="mega-menu" id="b">
+
+      <!-- penambahan judul di menu -->
+          <div class="row">
+            <div class="col-md-12">
+              <h3>TRANSAKSI PEMBELIAN</h3>
+              <hr style=" height: 5px;
+                background-color: #333; 
+                border: none; 
+                margin: 20px 0; "/>
+            </div>
+          </div>
+
+      <!-- batas -->
+
       <div class="row d-flex">
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
               <a href="javascript:addTab('Purchase Order', '{{url('po?flagz=PO&golz=J')}}')">
                 <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                  <i style="margin-left:-10px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-red"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-red"></i>
                 <h6>Purchase Order</h6>
               </a>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card"  style="border:1px solid #aabbcc; background-color:#ffd9d9;">
                 <a href="javascript:addTab('Pembelian', '{{url('beli?flagz=BL&golz=J')}}')">
                   <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                  <i style="margin-left:-40px;font-size: 40px;" class="nav-icon fas fa-store icon-purple"></i>
+                  <i style="margin-left:-40px;font-size: 40px;" class="nav-icon fas fa-store icon-red"></i>
                   <h6>Pembelian</h6>
                 </a>
 			      </div>
         </div>
 		    <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
                 <a href="javascript:addTab('Retur Pembelian', '{{url('beli?flagz=RB&golz=J')}}')">
                   <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-retweet icon-yellow"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-retweet icon-red"></i>
                   <h6>Retur Pembelian</h6>
                 </a>
 			      </div>
         </div>
         <div class="col-md-3">
-          <div class="menu-card" style="">
+          <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ebd9ff;">
               <a href="javascript:addTab('U.M Pembelian', '{{url('utbeli?flagz=UM')}}')">
                 <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
                   <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-money-bill icon-purple"></i>
@@ -410,19 +444,19 @@
 
 	    <div class="row">
 		    <div class="col-md-3">
-          <div class="menu-card" style="">
+          <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ebd9ff;">
               <a href="javascript:addTab('Transaksi Hutang', '{{url('utbeli?flagz=TH')}}')">
                 <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-hand-holding-heart icon-yellow"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-hand-holding-heart icon-purple"></i>
                 <h6>Transaksi Hutang</h6>
               </a>
 			    </div>
         </div>
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ebd9ff;">
               <a href="javascript:addTab('Pembayaran Hutang', '{{url('hut?flagz=B')}}')">
                 <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-cash-register icon-green"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-cash-register icon-purple"></i>
                 <h6>Pembayaran Hutang</h6>
               </a>
 			      </div>
@@ -463,101 +497,118 @@
 
 
     <div class="mega-menu" id="c">
+
+      <!-- penambahan judul di menu -->
+          <div class="row">
+            <div class="col-md-12">
+              <h3>TRANSAKSI PENJUALAN</h3>
+              <hr style=" height: 5px;
+                background-color: #333; 
+                border: none; 
+                margin: 20px 0; "/>
+            </div>
+          </div>
+
+      <!-- batas -->
+
       <div class="row d-flex">
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
               <a href="javascript:addTab('Sales Order (PPN)', '{{url('so?flagz=SO&golz=J&typez=PPN')}}')">
                 <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-yellow"></i>
+                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-green"></i>
                 <h6>Sales Order (PPN)</h6>
               </a>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
               <a href="javascript:addTab('Sales Order Dropship (PPN)', '{{url('so?flagz=SO&golz=DR&typez=PPN')}}')">
                 <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-yellow"></i>
+                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-green"></i>
                 <h6>SO Dropship (PPN)</h6>
               </a>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
               <a href="javascript:addTab('Sales Order (NON)', '{{url('so?flagz=SO&golz=J&typez=NON')}}')">
                 <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-yellow"></i>
+                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-green"></i>
                 <h6>Sales Order (Non)</h6>
               </a>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
               <a href="javascript:addTab('Sales Order Dropship (NON)', '{{url('so?flagz=SO&golz=DR&typez=NON')}}')">
                 <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-yellow"></i>
+                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-green"></i>
                 <h6>SO Dropship (Non)</h6>
               </a>
             </div>
         </div>
-        
-		    <div class="col-md-3">
-            <div class="menu-card" style="">
-                <a href="javascript:addTab('Delivery Order', '{{url('deli?flagz=DO&golz=J')}}')">
-                  <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-file icon-orange"></i>
-                  <h6>Delivery Order</h6>
+      </div>
+
+        <div class="row">
+          <div class="col-md-3">
+              <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+                  <a href="javascript:addTab('Delivery Order', '{{url('deli?flagz=DO&golz=J')}}')">
+                    <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
+                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-file icon-orange"></i>
+                    <h6>Delivery Order</h6>
+                  </a>
+              </div>
+          </div>
+          
+          <div class="col-md-3">
+              <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+                  <a href="javascript:addTab('Surat Jalan', '{{url('surats?flagz=JL&golz=J')}}')">                
+                    <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
+                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-envelope-open-text icon-orange"></i>
+                    <h6>Surat Jalan</h6>
+                    <!-- <h6>Barang</h6> -->
+                  </a>
+              </div>
+          </div>
+
+          <div class="col-md-3">
+              <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+                  <a href="javascript:addTab('Penjualan', '{{url('jual?flagz=JL&golz=J')}}')">
+                  <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
+                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-copy icon-orange"></i>
+                    <h6>Penjualan</h6>
+                  </a>
+              </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+                <a href="javascript:addTab('Retur Penjualan', '{{url('jual?flagz=AJ&golz=J')}}')">
+                  <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
+                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-retweet icon-orange"></i>
+                  <h6>Retur Penjualan</h6>
                 </a>
-			      </div>
-        </div>
-        
-		    <div class="col-md-3">
-            <div class="menu-card" style="">
-                <a href="javascript:addTab('Surat Jalan', '{{url('surats?flagz=JL&golz=J')}}')">                
-                  <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-file icon-orange"></i>
-                  <h6>Surat Jalan</h6>
-                  <!-- <h6>Barang</h6> -->
-                </a>
-			      </div>
+            </div>
+          </div>
         </div>
 
-		    <div class="col-md-3">
-            <div class="menu-card" style="">
-                <a href="javascript:addTab('Penjualan', '{{url('jual?flagz=JL&golz=J')}}')">
-                 <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-copy icon-blue"></i>
-                <h6>Penjualan</h6>
-              </a>
-			      </div>
-        </div >
-      </div>
       <div class="row">
         <div class="col-md-3">
-          <div class="menu-card" style="">
-              <a href="javascript:addTab('Retur Penjualan', '{{url('jual?flagz=AJ&golz=J')}}')">
-                <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-retweet icon-green"></i>
-                <h6>Retur Penjualan</h6>
-              </a>
-			      </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
               <a href="javascript:addTab('Retur Surat Jalan', '{{url('surats?flagz=AJ&golz=J')}}')">
                 <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-crop icon-aqua"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-crop icon-red"></i>
                 <h6>Retur Surat Jalan</h6>
               </a>
 			      </div>
         </div>
 
         <div class="col-md-3">
-          <div class="menu-card" style="">
+          <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
               <a href="javascript:addTab('U.M Penjualan', '{{url('utjual?flagz=UM')}}')">
                 <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
                   <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-wallet icon-red"></i>
@@ -568,27 +619,26 @@
         </div>
 
         <div class="col-md-3">
-          <div class="menu-card" style="">
+          <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
               <a href="javascript:addTab('Transaksi Piutang', '{{url('utjual?flagz=TP')}}')">
                 <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-envelope icon-purple"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-envelope icon-red"></i>
                 <h6>Transaksi Piutang</h6>
               </a>
 			    </div>
         </div>
-      </div>
 
-	    <div class="row">
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
               <a href="javascript:addTab('Pembayaran Piutang', '{{url('piu?flagz=B')}}')">
                 <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-folder-open icon-pink"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-folder-open icon-red"></i>
                 <h6>Pembayaran Piutang</h6>
               </a>
 			      </div>
         </div>
       </div>
+
 	
       @endif			 		
       </li> 
@@ -607,22 +657,36 @@
 
 
     <div class="mega-menu" id="k">
+
+      <!-- penambahan judul di menu -->
+          <div class="row">
+            <div class="col-md-12">
+              <h3>TRANSAKSI STOCK</h3>
+              <hr style=" height: 5px;
+                background-color: #333; 
+                border: none; 
+                margin: 20px 0; "/>
+            </div>
+          </div>
+
+      <!-- batas -->
+
       <div class="row d-flex">
         
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#e3f1fc;">
               <a href="javascript:addTab('Koreksi Stock', '{{url('stockb?flagz=KZ')}}')" >
                 <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-pen icon-red"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-pen icon-blue"></i>
                 <h6>Koreksi Stock</h6>
               </a>
 			      </div>
         </div>
         <div class="col-md-3">
-            <div class="menu-card" style="">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#e3f1fc;">
               <a href="javascript:addTab('Mutasi Stock', '{{url('stockb?flagz=MT')}}')" >
                 <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-paste icon-orange"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-paste icon-blue"></i>
                 <h6>Mutasi Stock</h6>
               </a>
 			      </div>
@@ -648,9 +712,23 @@
 
 
           <div class="mega-menu" id="d">
+
+            <!-- penambahan judul di menu -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3>LAPORAN MASTER</h3>
+                    <hr style=" height: 5px;
+                      background-color: #333; 
+                      border: none; 
+                      margin: 20px 0; "/>
+                  </div>
+                </div>
+
+            <!-- batas -->
+
             <div class="row d-flex">
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
                     <a href="javascript:addTab('Report Barang', '{{url('rbrg')}}')">
                       <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
                         <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-cubes icon-red"></i>
@@ -659,19 +737,19 @@
                   </div>
               </div>
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
                     <a href="javascript:addTab('Report Suplier', '{{url('rsup')}}')">
                         <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-user-tie icon-green"></i>
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-user-tie icon-red"></i>
                         <h6>Suplier</h6>
                       </a>
                   </div>
               </div>
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
                     <a href="javascript:addTab('Report Customer', '{{url('rcust')}}')">
                         <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-users icon-blue"></i>
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-users icon-red"></i>
                         <h6>Customer</h6>
                       </a>
                   </div>
@@ -699,39 +777,53 @@
 
 
           <div class="mega-menu" id="e">
+
+            <!-- penambahan judul di menu -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3>LAPORAN PEMBELIAN</h3>
+                    <hr style=" height: 5px;
+                      background-color: #333; 
+                      border: none; 
+                      margin: 20px 0; "/>
+                  </div>
+                </div>
+
+            <!-- batas -->
+
             <div class="row d-flex">
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe6ff;">
                     <a href="javascript:addTab('Report Purchase Order', '{{url('rpo')}}')">
                       <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-orange"></i>
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-pink"></i>
                       <h6>Purchase Order</h6>
                     </a>
                   </div>
               </div>
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe6ff;">
                       <a href="javascript:addTab('Report Pembelian', '{{url('rbeli')}}')">
                         <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-store icon-purple"></i>
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-store icon-pink"></i>
                         <h6>Pembelian</h6>
                       </a>
                   </div>
               </div>
               <div class="col-md-3">
-                <div class="menu-card" style="">
+                <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe6ff;">
                     <a href="javascript:addTab('Report Transaksi Hutang', '{{url('rthut')}}')" >
                       <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
-                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-briefcase icon-yellow"></i>
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-briefcase icon-pink"></i>
                       <h6>Transaksi Hutang</h6>
                     </a>
                   </div>
               </div>
               <div class="col-md-3">
-                <div class="menu-card" style="">
+                <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
                     <a href="javascript:addTab('Report U.M Pembelian', '{{url('rum')}}')" >
                       <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
-                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-wallet icon-red"></i>
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-wallet icon-orange"></i>
                       <h6>U.M Pembelian</h6>
                     </a>
                 </div>
@@ -757,10 +849,10 @@
             </div>
             <div class="row">
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
                     <a href="javascript:addTab('Report Pembayaran Hutang', '{{url('rhut')}}')" >
                       <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-industry icon-purple"></i>
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-industry icon-orange"></i>
                       <h6>Pembayaran Hutang</h6>
                     </a>
                   </div>
@@ -768,7 +860,7 @@
 
               
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
                     <a href="javascript:addTab('Report Pembelian Gudang', '{{url('rbeli_gdg')}}')" >
                         <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
                           <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-store icon-orange"></i>
@@ -799,27 +891,41 @@
 
 
             <div class="mega-menu" id="f">
+
+              <!-- penambahan judul di menu -->
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h3>LAPORAN PENJUALAN</h3>
+                      <hr style=" height: 5px;
+                        background-color: #333; 
+                        border: none; 
+                        margin: 20px 0; "/>
+                    </div>
+                  </div>
+
+              <!-- batas -->
+
               <div class="row d-flex">
                 <div class="col-md-3">
-                    <div class="menu-card" style="">
+                    <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ebd9ff;">
                       <a href="javascript:addTab('Report Sales Order', '{{url('rso')}}')">
                         <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-user-tie icon-green"></i>
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-user-tie icon-purple"></i>
                         <h6>Sales Order</h6>
                       </a>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="menu-card" style="">
+                    <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ebd9ff;">
                       <a href="javascript:addTab('Report Surat Jalan', '{{url('rsurats')}}')">
                           <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                            <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-paste icon-red"></i>
+                            <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-paste icon-purple"></i>
                           <h6>Surat Jalan</h6>
                         </a>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="menu-card" style="">
+                    <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ebd9ff;">
                       <a href="javascript:addTab('Report Penjualan', '{{url('rjual')}}')">
                           <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
                             <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-store icon-purple"></i>
@@ -828,10 +934,10 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="menu-card" style="">
+                    <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ebd9ff;">
                       <a href="javascript:addTab('Report Transaksi Piutang', '{{url('rtpiu')}}')">
                         <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-cash-register icon-blue"></i>
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-cash-register icon-purple"></i>
                         <h6>Transaksi Piutang</h6>
                       </a>
                     </div>
@@ -839,28 +945,28 @@
               </div>
               <div class="row">
                 <div class="col-md-3">
-                    <div class="menu-card" style="">
+                    <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
                       <a href="javascript:addTab('Report U.M Penjualan', '{{url('ruj')}}')" >
                         <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-coins icon-purple"></i>
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-coins icon-green"></i>
                         <h6>U.M Penjualan</h6>
                       </a>
                     </div>
                 </div>
                 <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
                       <a href="javascript:addTab('Report Pembayaran Piutang', '{{url('rpiu')}}')">
                         <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
-                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-money-bill icon-pink"></i>
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-money-bill icon-green"></i>
                         <h6>Pembayaran Piutang</h6>
                       </a>
                     </div>
                 </div>
                 <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
                       <a href="javascript:addTab('Report Koreksi Stock', '{{url('rstockb')}}')" >
                         <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
-                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-pen icon-aqua"></i>
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-pen icon-green"></i>
                         <h6>Koreksi Stock</h6>
                       </a>
                   </div>
@@ -877,7 +983,7 @@
 <!-- ...................................................................................... -->
 
       @if ( (Auth::user()->divisi=="programmer") || (Auth::user()->divisi=="owner") || (Auth::user()->divisi=="accounting"))
-        <li class="nav-header">Financial</li>
+        <li class="nav-header"></li>
           <li class="nav-item">
             <a href="#" class="nav-link" data-bs-toggle="tooltip" title="Account">
               <i class="nav-icon fas fa-location-arrow icon-blue"></i>
@@ -889,9 +995,23 @@
 
 
           <div class="mega-menu"id="g">
+
+          <!-- penambahan judul di menu -->
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>MASTER FINANCIAL</h3>
+                  <hr style=" height: 5px;
+                    background-color: #333; 
+                    border: none; 
+                    margin: 20px 0; "/>
+                </div>
+              </div>
+
+          <!-- batas -->
+
             <div class="row d-flex">
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
                     <a href="javascript:addTab('Account', '{{url('account')}}')">
                       <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
                         <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-user icon-orange"></i>
@@ -921,40 +1041,54 @@
 
 
           <div class="mega-menu" id="h">
+
+            <!-- penambahan judul di menu -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3>TRANSAKSI FINANCIAL</h3>
+                    <hr style=" height: 5px;
+                      background-color: #333; 
+                      border: none; 
+                      margin: 20px 0; "/>
+                  </div>
+                </div>
+
+            <!-- batas -->
+
             <div class="row d-flex">
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
                     <a href="javascript:addTab('Kas Masuk','{{url('kas?flagz=BKM')}}')">
                       <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-stamp icon-red"></i>
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-stamp icon-purple"></i>
                       <h6>Kas Masuk</h6>
                     </a>
                   </div>
               </div>
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
                     <a href="javascript:addTab('Kas Keluar','{{url('kas?flagz=BKK')}}')">
                         <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-credit-card icon-blue"></i>
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-credit-card icon-purple"></i>
                         <h6>Kas Keluar</h6>
                         <!-- <h6>Keluar</h6> -->
                       </a>
                   </div>
               </div>
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
                     <a href="javascript:addTab('Bank Masuk','{{url('bank?flagz=BBM')}}')">
                         <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-money-check icon-green"></i>
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-money-check icon-purple"></i>
                         <h6>Bank Masuk</h6>
                       </a>
                   </div>
               </div>
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#e3f1fc;">
                     <a href="javascript:addTab('Bank Keluar','{{url('bank?flagz=BBK')}}')">
                       <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-money-bill icon-orange"></i>
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-money-bill icon-blue"></i>
                       <h6>Bank Keluar</h6>
                     </a>
                   </div>
@@ -962,19 +1096,19 @@
             </div>
             <div class="row">
               <div class="col-md-3">
-                  <div class="menu-card" style="">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#e3f1fc;">
                     <a href="javascript:addTab('Penyesuaian','{{url('memo?flagz=M')}}')">
                       <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-receipt icon-purple"></i>
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-receipt icon-blue"></i>
                       <h6>Penyesuaian</h6>
                     </a>
                   </div>
               </div>
               <div class="col-md-3">
-                <div class="menu-card" style="">
+                <div class="menu-card" style="border:1px solid #aabbcc; background-color:#e3f1fc;">
                     <a href="javascript:addTab('Kas - Bank','{{url('cbin')}}')">
                       <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
-                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-tags icon-pink"></i>
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-tags icon-blue"></i>
                       <h6>Kas - Bank</h6>
                     </a>
                   </div>
@@ -999,6 +1133,20 @@
 
 
           <div class="mega-menu" id="i">
+
+            <!-- penambahan judul di menu -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3>LAPORAN FINANCIAL</h3>
+                    <hr style=" height: 5px;
+                      background-color: #333; 
+                      border: none; 
+                      margin: 20px 0; "/>
+                  </div>
+                </div>
+
+            <!-- batas -->
+
             <div class="row d-flex">
               <div class="col-md-3">
                   <div class="menu-card" style="">
@@ -1072,7 +1220,7 @@
           </li> 
           
 
-          <li class="nav-header">Utility</li>
+          <li class="nav-header"></li>
           <li class="nav-item">
             <a href="#" class="nav-link" data-bs-toggle="tooltip" title="UTILITY">
               <i class="nav-icon fas fa-plus icon-yellow"></i>
@@ -1085,6 +1233,20 @@
 
 
           <div class="mega-menu" id="j">
+
+            <!-- penambahan judul di menu -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3>UTILITY</h3>
+                    <hr style=" height: 5px;
+                      background-color: #333; 
+                      border: none; 
+                      margin: 20px 0; "/>
+                  </div>
+                </div>
+
+            <!-- batas -->
+
             <div class="row d-flex">
               <div class="col-md-3">
                   <div class="menu-card" style="">

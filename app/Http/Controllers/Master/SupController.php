@@ -74,14 +74,23 @@ class SupController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 if (Auth::user()->divisi=="programmer" || Auth::user()->divisi=="owner" || Auth::user()->divisi=="assistant" || Auth::user()->divisi=="accounting" || Auth::user()->divisi=="pembelian" || Auth::user()->divisi=="penjualan") 
-                {
+                {   
+                    // url untuk delete di index
+                    $url = "'".url("sup/delete/" . $row->NO_ID )."'";
+                    // batas
+                    
+                    $btnDelete = ' onclick="deleteRow('.$url.')"';
+
                     $btnPrivilege =
                         '
                                 <a class="dropdown-item" href="sup/edit/?idx=' . $row->NO_ID . '&tipx=edit";                                <i class="fas fa-edit"></i>
                                     Edit
                                 </a>
-                                <hr></hr>
-                                <a class="dropdown-item btn btn-danger" onclick="return confirm(&quot; Apakah anda yakin ingin hapus? &quot;)" href="sup/delete/' . $row->NO_ID . '">
+                                <hr>
+                                </hr>
+
+                                <a class="dropdown-item btn btn-danger" ' . $btnDelete . '>
+   
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Delete
                                 </a> 

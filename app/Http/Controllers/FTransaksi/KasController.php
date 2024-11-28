@@ -103,10 +103,13 @@ class KasController extends Controller
                     // CEK  SUDAH POSTED di INDEX dan EDIT
                     // <a class="dropdown-item btn btn-danger" onclick="return confirm(&quot; Apakah anda yakin ingin hapus? &quot;)" href="kas/delete/'. $row->NO_ID .'">
 				
+                    // url untuk delete di index
+                    $url = "'".url("kas/delete/" . $row->NO_ID . "/?flagz=" . $row->FLAG)."'";
+                    // batas
 
                     $btnEdit =   ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' href="kas/edit/?idx=' . $row->NO_ID . '&tipx=edit&flagz=' . $row->TYPE . '&judul=' . $this->judul . '"';
 				
-                    $btnDelete = ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' onclick="return confirm(&quot; Apakah anda yakin ingin hapus? &quot;)" href="kas/delete/' . $row->NO_ID . '/?flagz=' . $row->TYPE . '" ';
+                    $btnDelete = ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' onclick="deleteRow('.$url.')" ';
 
 
 

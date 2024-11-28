@@ -178,11 +178,13 @@ class PoController extends Controller
                 if (Auth::user()->divisi=="programmer" ) 
 				{
                     //CEK POSTED di index dan edit
-                    $url = "'".url("po/delete/" . $row->NO_ID . "/?flagz=" . $row->FLAG . "/?golz=" . $row->GOL)."'";
 
+                    // url untuk delete di index
+                    $url = "'".url("po/delete/" . $row->NO_ID . "/?flagz=" . $row->FLAG . "&golz=" . $row->GOL)."'";
+                    // batas
+                    
                     $btnEdit =   ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' href="po/edit/?idx=' . $row->NO_ID . '&tipx=edit&flagz=' . $row->FLAG . '&judul=' . $this->judul . '&golz=' . $row->GOL . '"';					
-                    $btnDelete = ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' 
-                    onclick="deleteRow('.$url.')"';
+                    $btnDelete = ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' onclick="deleteRow('.$url.')"';
 
 
                     $btnPrivilege =
@@ -774,7 +776,11 @@ class PoController extends Controller
         $FLAGZ = $this->FLAGZ;
         $GOLZ = $this->GOLZ;
         $judul = $this->judul;
-		
+
+        // ini dr mana $this->GOLZ?
+        $GOLZ = $_GET['golz'];    
+        $FLAGZ = $_GET['flagz'];
+      
 		$per = session()->get('periode')['bulan'] . '/' . session()->get('periode')['tahun'];
         $cekperid = DB::SELECT("SELECT POSTED from perid WHERE PERIO='$per'");
         if ($cekperid[0]->POSTED==1)
@@ -787,8 +793,13 @@ class PoController extends Controller
         $deletePo = Po::find($po->NO_ID);
 
         $deletePo->delete();
+        // return redirect('/po?flagz=' . $FLAGZ . '&golz=J')
+        return redirect('/po?flagz='. $FLAGZ.'&golz='.$GOLZ )
+        ->with(['judul' => $judul, 'flagz' => $this->FLAGZ, 'golz' => $this->GOLZ])
+        ->with('statusHapus', 'Data ' . $po->NO_BUKTI . ' berhasil dihapus');
 
-         return redirect('/po')->with(['judul' => $judul, 'golz' => $GOLZ , 'flagz' => $FLAGZ ])->with('statusHapus', 'Data '.$po->NO_BUKTI.' berhasil dihapus');
+        
+    
  
 
     }

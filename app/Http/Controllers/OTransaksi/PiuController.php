@@ -80,9 +80,12 @@ class PiuController extends Controller
                 ->addColumn('action', function($row) {
                     if ( Auth::user()->divisi=="programmer" ) 
                     {
+                        // url untuk delete di index
+                        $url = "'".url("piu/delete/" . $row->NO_ID . "/?flagz=" . $row->FLAG)."'";
+                        // batas
 
-                    $btnEdit =   ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' href="piu/edit/?idx=' . $row->NO_ID . '&tipx=edit&flagz=' . $row->FLAG . '&judul=' . $this->judul . '"';					
-                    $btnDelete = ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' onclick="return confirm(&quot; Apakah anda yakin ingin hapus? &quot;)" href="piu/delete/' . $row->NO_ID . '/?flagz=' . $row->FLAG . '" ';
+                        $btnEdit =   ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' href="piu/edit/?idx=' . $row->NO_ID . '&tipx=edit&flagz=' . $row->FLAG . '&judul=' . $this->judul . '"';					
+                        $btnDelete = ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' onclick="deleteRow('.$url.')"';
 
 
  						 												 
@@ -97,7 +100,7 @@ class PiuController extends Controller
                                     Print
                                 </a> 									
                                 <hr></hr>
-                                <a class="dropdown-item btn btn-danger" onclick="return confirm(&quot; Apakah anda yakin ingin hapus? &quot;)" ' . $btnDelete . '>
+                                <a class="dropdown-item btn btn-danger" ' . $btnDelete . '>
    
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Delete
