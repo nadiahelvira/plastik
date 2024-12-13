@@ -79,6 +79,7 @@
                             <th scope="col" style="text-align: center">-</th>							
                             <th scope="col" style="text-align: center">Bukti#</th>
                             <th scope="col" style="text-align: center">Tgl</th>
+                            <th scope="col" style="text-align: center">No PO</th>
                             <th scope="col" style="text-align: center">Suplier#</th>
                             <th scope="col" style="text-align: center">Nama</th>
                             <th scope="col" style="text-align: center">Total-Qty</th>
@@ -145,6 +146,7 @@
 			          { data: 'action', name: 'action'},
                 { data: 'NO_BUKTI', name: 'NO_BUKTI'},
                 { data: 'TGL', name: 'TGL'},
+                { data: 'NO_PO', name: 'NO_PO'},
                 { data: 'KODES', name: 'KODES'},
                 { data: 'NAMAS', name: 'NAMAS',
                   render : function ( data, type, row, meta )
@@ -219,6 +221,9 @@
                                             <th>No.</th>
                                             <th>Barang</th>
                                             <th>Nama</th>
+                                            <th>Satuan PO</th>
+                                            <th>QTY PO</th>
+                                            <th>X</th>
                                             <th>Satuan</th>
                                             <th>Qty</th>
                                             <th>Harga</th>
@@ -236,10 +241,13 @@
 
                             detailHtml += `
                                 <tr>
-                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem;">${index + 1}</div></td>
-                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem;">${item.KD_BRG}</div></td>
-                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem;">${item.NA_BRG}</div></td>
-                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem;">${item.SATUAN}</div></td>
+                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: center">${index + 1}</div></td>
+                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: center">${item.KD_BRG}</div></td>
+                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: center">${item.NA_BRG}</div></td>
+                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: center">${item.SATUAN_PO}</div></td>
+                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: right">${parseFloat(item.QTY_PO).toFixed(2)}</div></td>
+                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: right">${parseFloat(item.KALI).toFixed(2)}</div></td>
+                                    <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: center">${item.SATUAN}</div></td>
                                     <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: right">${parseFloat(item.QTY).toFixed(2)}</div></td>
                                     <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: right">${parseFloat(item.HARGA).toFixed(2)}</div></td>
                                     <td><div style="background-color: #f7d8b4; padding: 0.5rem; text-align: right">${parseFloat(item.TOTAL).toFixed(2)}</div></td>

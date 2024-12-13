@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.3.final using JasperReports Library version 6.20.3-415f9428cffdb6805c6f85bbb29ebaf18813a2ab  -->
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="kasc" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5662dcdd-2947-4030-a126-8345a6e9bd94">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="98"/>
@@ -134,13 +134,6 @@
 					<font fontName="Tahoma" size="12"/>
 				</textElement>
 				<text><![CDATA[No.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="60" y="87" width="10" height="18" uuid="3e9aae65-0b8c-44ca-8872-04fccd131f89"/>
-				<textElement>
-					<font fontName="Tahoma" size="12"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="87" y="47" width="274" height="18" uuid="9a007aa0-d93a-4181-88db-ce720255021a"/>

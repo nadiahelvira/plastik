@@ -64,6 +64,12 @@
 	<field name="TGL_2" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="KODEC_1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="KODEC_2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="VAR_KG" class="java.lang.Double" resetType="Group" resetGroup="KODES" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTY}]]></variableExpression>
 	</variable>
@@ -220,6 +226,26 @@
 					<reportElement x="740" y="5" width="60" height="20" uuid="06ab1f59-633b-418e-879b-8e0b0143a509"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{TGL_2}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="317" y="5" width="55" height="20" uuid="4188cdb6-ddb9-4207-a795-54810ae08924"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Customer :"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="453" y="5" width="30" height="20" uuid="edbccfb6-d613-4e4c-a391-e4844ba6ee13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["s/d"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="483" y="5" width="88" height="20" uuid="2c2cc0f9-0f13-4173-a5c2-b4d5853f859c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{KODEC_2}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="372" y="5" width="80" height="20" uuid="15b76e70-6b1a-4904-8229-e33808bc86e7"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{KODEC_1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>

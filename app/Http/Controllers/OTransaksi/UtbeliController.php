@@ -26,9 +26,9 @@ class UtbeliController extends Controller
     function setFlag(Request $request)
     {
 		
-        if ( $request->flagz == 'TH') {
+        if ( $request->flagz == 'TH' && $request->golz == 'J' ) {
             $this->judul = "Transaksi Hutang";
-        } else if ( $request->flagz == 'UM' ) {
+        } else if ( $request->flagz == 'UM' && $request->golz == 'J'  ) {
             $this->judul = "Uang Muka Pembelian ";
         }
 		
@@ -57,6 +57,7 @@ class UtbeliController extends Controller
         //$utbeli = DB::table('utbeli')->select('NO_BUKTI', 'TGL', 'KODES','NAMAS', 'ALAMAT','KOTA', 'TOTAL','BAYAR','SISA')->where('KODES', $request['KODES'] )->where('SISA', '<>', 0 )->where('GOL', 'Y')->orderBy('KODES', 'ASC')->get();
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $utbeli = DB::SELECT("SELECT NO_BUKTI,TGL, NO_PO, KODES, NAMAS, ALAMAT, KOTA,KD_BHN, NA_BHN, KG, HARGA, ( JCONT- SCONT ) AS KIRIM, SCONT AS SISA, NOTES, RPRATE, EMKL, BL, AJU 
                             from utbeli
@@ -97,9 +98,12 @@ class UtbeliController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
-        $utbeli = DB::SELECT("SELECT * from beli  where  PER ='$periode' and FLAG ='$this->FLAGZ' 
-                AND GOL ='$this->GOLZ' AND CBG = '$CBG' ORDER BY NO_BUKTI ");
+        $utbeli = DB::SELECT("SELECT * from beli 
+                            where PER ='$periode' and FLAG ='$this->FLAGZ' 
+                                AND GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP = '$PPN' 
+                            ORDER BY NO_BUKTI ");
 		    
          return Datatables::of($utbeli)
             ->addIndexColumn()
@@ -108,7 +112,9 @@ class UtbeliController extends Controller
                 {
 
                     // url untuk delete di index
-                    $url = "'".url("utbeli/delete/" . $row->NO_ID . "/?flagz=" . $row->FLAG)."'";
+
+                    $url = "'".url("utbeli/delete/" . $row->NO_ID . "/?flagz=" . $row->FLAG . "&golz=" . $row->GOL)."'";
+
                     // batas
                     
                     $btnEdit =   ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' href="utbeli/edit/?idx
@@ -181,6 +187,7 @@ class UtbeliController extends Controller
         $judul = $this->judul;	
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         // Generate Nomor Bukti
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
@@ -195,129 +202,150 @@ class UtbeliController extends Controller
 
 
 
-        if ( $request->flagz == 'TH'  ) {
+        if ( $request->flagz == 'TH') {
 
             $query = DB::table('beli')->select(DB::raw("TRIM(NO_BUKTI) AS NO_BUKTI"))->where('PER', $periode)
-			         ->where('FLAG', 'TH')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+			         ->where('FLAG', 'TH')->where('CBG', $CBG)->where('PKP', $PPN)->orderByDesc('NO_BUKTI')->limit(1)->get();
 			
-			if ($query != '[]') {
-            
-				$query = substr($query[0]->NO_BUKTI, -4);
-				$query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-				$no_bukti = 'AY' . $CBG . $tahun . $bulan . '-' . $query;
-			
-			} else {
-				$no_bukti = 'AY' . $CBG . $tahun . $bulan . '-0001';
-				}
-				
-        } else if ( $request->flagz == 'TH' && $request->golz == 'Z' ) {
+            if( $GOLZ =='J' ){
 
-            $query = DB::table('beli')->select(DB::raw("TRIM(NO_BUKTI) AS NO_BUKTI"))->where('PER', $periode)
-			         ->where('FLAG', 'TH')->where('GOL', 'Z')->orderByDesc('NO_BUKTI')->limit(1)->get();
-			
-			if ($query != '[]') {
-            
-				$query = substr($query[0]->NO_BUKTI, -4);
-				$query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-				$no_bukti = 'AZ' . $tahun . $bulan . '-' . $query;
-			
-			} else {
-				$no_bukti = 'AZ' . $tahun . $bulan . '-0001';
-				}
+                if( $PPN =='1' ){
+        
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'THY'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'THY'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+
+                } else {
+
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'THZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'THZ'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+            }
 
         } else if ( $request->flagz == 'UM') {
  
             $query = DB::table('beli')->select(DB::raw("TRIM(NO_BUKTI) AS NO_BUKTI"))->where('PER', $periode)
-			         ->where('FLAG', 'UM')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
-			
-			if ($query != '[]') {
+			         ->where('FLAG', 'UM')->where('CBG', $CBG)->where('PKP', $PPN)->orderByDesc('NO_BUKTI')->limit(1)->get();
+
+            if( $GOLZ =='J' ){
             
-				$query = substr($query[0]->NO_BUKTI, -4);
-				$query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-				$no_bukti = 'UM' . $CBG . $tahun . $bulan . '-' . $query;
+                if( $PPN =='1' ){
+        
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'UMY'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'UMY'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+
+                } else {
+
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'UMZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'UMZ'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+            }
 			
-			} else {
-				$no_bukti = 'UM' . $CBG . $tahun . $bulan . '-0001';
-				}
 			
-			
-			
-            $type1 = substr( $request['BNAMA'],0,3);
+            // $type1 = substr( $request['BNAMA'],0,3);
+            $type1 = $request['TYPE'];
 		
 		
-		    if ( $type1 == 'KAS' )
-		    {
-		        
-                			$bulan    = session()->get('periode')['bulan'];
+		    if( $PPN == '1' ){
+
+                if ( $type1 == 'KAS' )
+                {          
+                            $bulan    = session()->get('periode')['bulan'];
                             $tahun    = substr(session()->get('periode')['tahun'], -2);
-                            $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKK')->where('CBG', $CBG)
-                                    ->orderByDesc('NO_BUKTI')->limit(1)->get();
-                
+                            $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                    
                             if ($query2 != '[]') {
                                 $query2 = substr($query2[0]->NO_BUKTI, -4);
                                 $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
-                                $no_bukti2 = 'BKK' . $CBG . $tahun . $bulan . '-' . $query2;
+                                $no_bukti2 = 'BKKY' . $CBG . $tahun . $bulan . '-' . $query2;
                             } else {
-                                $no_bukti2 = 'BKK' . $CBG . $tahun . $bulan . '-0001';
+                                $no_bukti2 = 'BKKY' . $CBG . $tahun . $bulan . '-0001';
                             }
-                			
-			
-		    }
-		    else
-		    {
-			 
-                			$bulan    = session()->get('periode')['bulan'];
+                            
+                }
+                else
+                {
+        
+                            $bulan    = session()->get('periode')['bulan'];
                             $tahun    = substr(session()->get('periode')['tahun'], -2);
-                            $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)
-                                    ->orderByDesc('NO_BUKTI')->limit(1)->get();
-                
+                            $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                    
                             if ($query2 != '[]') {
                                 $query2 = substr($query2[0]->NO_BUKTI, -4);
                                 $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
-                                $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-' . $query2;
+                                $no_bukti2 = 'BBKY' . $CBG . $tahun . $bulan . '-' . $query2;
                             } else {
-                                $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-0001';
+                                $no_bukti2 = 'BBKY' . $CBG . $tahun . $bulan . '-0001';
                             }
-                			
-			    
-			}
+                            
+                    
+                }
+    
+            } else {
+    
+                if ( $type1 == 'KAS' )
+                {          
+                            $bulan    = session()->get('periode')['bulan'];
+                            $tahun    = substr(session()->get('periode')['tahun'], -2);
+                            $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                    
+                            if ($query2 != '[]') {
+                                $query2 = substr($query2[0]->NO_BUKTI, -4);
+                                $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                                $no_bukti2 = 'BKKZ' . $CBG . $tahun . $bulan . '-' . $query2;
+                            } else {
+                                $no_bukti2 = 'BKKZ' . $CBG . $tahun . $bulan . '-0001';
+                            }
+                            
+                }
+                else
+                {
+        
+                            $bulan    = session()->get('periode')['bulan'];
+                            $tahun    = substr(session()->get('periode')['tahun'], -2);
+                            $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                    
+                            if ($query2 != '[]') {
+                                $query2 = substr($query2[0]->NO_BUKTI, -4);
+                                $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                                $no_bukti2 = 'BBKZ' . $CBG . $tahun . $bulan . '-' . $query2;
+                            } else {
+                                $no_bukti2 = 'BBKZ' . $CBG . $tahun . $bulan . '-0001';
+                            }
+                            
+                    
+                }
+    
+            }
 			
 			
 			
 			
 				
  
-        } else if ( $request->flagz == 'UM' && $request->golz == 'Z' ) {
+        } 
 
-            $query = DB::table('beli')->select(DB::raw("TRIM(NO_BUKTI) AS NO_BUKTI"))->where('PER', $periode)
-			         ->where('FLAG', 'UM')->where('GOL', 'Y')->orderByDesc('NO_BUKTI')->limit(1)->get();
-			
-			if ($query != '[]') {
-            
-				$query = substr($query[0]->NO_BUKTI, -4);
-				$query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-				$no_bukti = 'UN' . $tahun . $bulan . '-' . $query;
-			
-			} else {
-				$no_bukti = 'UN' . $tahun . $bulan . '-0001';
-				}
-
-
-			$bulan    = session()->get('periode')['bulan'];
-            $tahun    = substr(session()->get('periode')['tahun'], -2);
-            $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)
-                    ->orderByDesc('NO_BUKTI')->limit(1)->get();
-
-            if ($query2 != '[]') {
-                $query2 = substr($query2[0]->NO_BUKTI, -4);
-                $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-' . $query2;
-            } else {
-                $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-0001';
-            }
-			
-			
-        }
         
            $ACNOB ='';
            $NACNOB ='';
@@ -350,6 +378,7 @@ class UtbeliController extends Controller
                 'ALAMAT'           => ($request['ALAMAT'] == null) ? "" : $request['ALAMAT'],
                 'KOTA'             => ($request['KOTA'] == null) ? "" : $request['KOTA'],
                 'FLAG'             =>  $FLAGZ,
+                'GOL'              =>  $GOLZ,
                 'TOTAL'            => (float) str_replace(',', '', $request['TOTAL']),
                 'NETT'             => ($FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['TOTAL'] ),     
                 'SISA'             => ($FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['TOTAL'] ),      
@@ -364,6 +393,7 @@ class UtbeliController extends Controller
                 'USRNM'            => Auth::user()->username,
                 'created_by'       => Auth::user()->username,
                 'CBG'              => $CBG,
+                'PKP'              => $PPN,
                 'TG_SMP'           => Carbon::now()
             ]
         );
@@ -425,6 +455,7 @@ class UtbeliController extends Controller
 		$idx = $request->idx;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
 		if ( $idx =='0' && $tipx=='undo'  )
 	    {
@@ -443,6 +474,7 @@ class UtbeliController extends Controller
 		                 where PER ='$per' and FLAG ='$this->FLAGZ' 
 						 and GOL ='$this->GOLZ' and NO_BUKTI = '$buktix'
                          AND CBG = '$CBG'						 
+                         AND PKP = '$PPN'						 
 		                 ORDER BY NO_BUKTI ASC  LIMIT 1" );
 						 
 			
@@ -465,6 +497,7 @@ class UtbeliController extends Controller
 		                 where PER ='$per' and GOL ='$this->GOLZ'
 						 and FLAG ='$this->FLAGZ' 
                          AND CBG = '$CBG'  
+                         AND PKP = '$PPN'						 
 		                 ORDER BY NO_BUKTI ASC  LIMIT 1" );
 						 
 		
@@ -488,6 +521,7 @@ class UtbeliController extends Controller
 		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from beli     
 		             where PER ='$per' and GOL ='$this->GOLZ' 
 					 and FLAG ='$this->FLAGZ' AND CBG = $CBG
+                     AND PKP = '$PPN'						 
                      and NO_BUKTI < 
 					 '$buktix' ORDER BY NO_BUKTI DESC LIMIT 1" );
 			
@@ -512,6 +546,7 @@ class UtbeliController extends Controller
 		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from beli    
 		             where PER ='$per' and GOL ='$this->GOLZ' 
 					 and FLAG ='$this->FLAGZ' AND CBG = '$CBG'
+                     AND PKP = '$PPN'						 
                      and NO_BUKTI > 
 					 '$buktix' ORDER BY NO_BUKTI ASC LIMIT 1" );
 					 
@@ -532,6 +567,7 @@ class UtbeliController extends Controller
     		$bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from beli
 						where PER ='$per' and GOL ='$this->GOLZ' 
 						and FLAG ='$this->FLAGZ' AND CBG = '$CBG'  
+                        AND PKP = '$PPN'						 
 		                ORDER BY NO_BUKTI DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 
@@ -635,6 +671,9 @@ class UtbeliController extends Controller
                 'USRNM'            => Auth::user()->username,
                 'updated_by'       => Auth::user()->username,
                 'CBG'              => $CBG,
+                'FLAG'              => $FLAGZ,
+                'GOL'              => $GOLZ,
+                'PKP'              => $PPN,
                 'TGL_BL'           => date('Y-m-d', strtotime($request['TGL_BL'])),
                 'TG_SMP'           => Carbon::now()
             ]
@@ -727,11 +766,11 @@ class UtbeliController extends Controller
     {
        
        
-        $no_beli = $beli->NO_BUKTI;
+        $no_beli = $utbeli->NO_BUKTI;
 
         $file     = 'utbelic';
 
-        $flagz1 = $beli->FLAG;
+        $flagz1 = $utbeli->FLAG;
         $judul ='';
         
         if ( $flagz1 =='TH')
@@ -749,7 +788,7 @@ class UtbeliController extends Controller
         $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
 
         $query = DB::SELECT("SELECT beli.NO_BUKTI, beli.TGL, beli.KODES, beli.NAMAS, beli.TOTAL,
-                             IF(beli.FLAG ='TH', ACNOA, BACNO ) AS ACNO, IF ( BELIC.FLAG ='TH', NACNOA, BNAMA ) AS NACNO,
+                             IF(beli.FLAG ='TH', ACNOA, BACNO ) AS ACNO, IF ( BELI.FLAG ='TH', NACNOA, BNAMA ) AS NACNO,
                              beli.NOTES, beli.USRNM
                             FROM beli
                             WHERE beli.NO_BUKTI='$no_beli' 

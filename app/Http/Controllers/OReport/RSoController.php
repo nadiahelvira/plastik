@@ -102,6 +102,8 @@ class RSoController extends Controller
 			
 			$tgl_1 = date("Y-m-d", strtotime($request->tglDr));
 			$tgl_2 = date("Y-m-d", strtotime($request->tglSmp));
+			$kodec_1 = $request->kodec;
+			$kodec_2 = $request->kodec2;
 			
 
 			session()->put('filter_gol', $request->gol);
@@ -153,6 +155,8 @@ class RSoController extends Controller
 				'TGL' => $query[$key]->TGL,
 				'TGL_1' => $tgl_1,
 				'TGL_2' => $tgl_2,
+				'KODEC_1' => $kodec_1,
+				'KODEC_2' => $kodec_2,
 				'KODEC' => $query[$key]->KODEC,
 				'NAMAC' => $query[$key]->NAMAC,
 				'KD_BRG' => $query[$key]->KD_BRG,

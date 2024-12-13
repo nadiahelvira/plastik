@@ -77,6 +77,10 @@ class RPoController extends Controller
 				$filtercbg = " and po.CBG='".$request->cbg."' ";
 			}
 			
+			$tgl_1 = date("Y-m-d", strtotime($request->tglDr));
+			$tgl_2 = date("Y-m-d", strtotime($request->tglSmp));
+			$kodes_1 = $request->kodes;
+			$kodes_2 = $request->kodes2;
 			
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodes1', $request->kodes);
@@ -131,6 +135,10 @@ class RPoController extends Controller
 			array_push($data, array(
 				'NO_PO' => $query[$key]->NO_BUKTI,
 				'TGL' => $query[$key]->TGL,
+				'TGL_1' => $tgl_1,
+				'TGL_2' => $tgl_2,
+				'KODES_1' => $kodes_1,
+				'KODES_2' => $kodes_2,
 				'KODES' => $query[$key]->KODES,
 				'NAMAS' => $query[$key]->NAMAS,
 				'KD_BRG' => $query[$key]->KD_BRG,

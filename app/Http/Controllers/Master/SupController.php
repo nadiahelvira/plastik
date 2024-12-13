@@ -39,20 +39,23 @@ class SupController extends Controller
     
     public function browse(Request $request)
     {
-
+		$PPN = Auth::user()->PPN;
 		
     	if (!empty(request('q'))) {
 
 
                  $sup = DB::SELECT("SELECT NO_ID, KODES, NAMAS, ALAMAT, KOTA, NOTBAY, KONTAK, AKTIF, CASE WHEN PKP = '1' THEN '(PKP)' ELSE '(NON PKP)' END AS PKP2,
                             PKP, HARI
-                            FROM sup WHERE NAMAS LIKE ('%$request->q%') ORDER BY NAMAS "); 
+                            FROM sup 
+                            WHERE PKP = '$PPN' AND NAMAS LIKE ('%$request->q%') 
+                            ORDER BY NAMAS "); 
 	
     	    
         } else {
 			$sup = DB::SELECT("SELECT NO_ID, KODES, NAMAS, ALAMAT, KOTA, NOTBAY, KONTAK, AKTIF, CASE WHEN PKP = '1' THEN '(PKP)' ELSE '(NON PKP)' END AS PKP2,
                                 PKP, HARI
                             FROM sup
+                            WHERE PKP = '$PPN'
                             ORDER BY NAMAS ");			
 		}
 		
@@ -67,6 +70,7 @@ class SupController extends Controller
 	
     public function getSup( Request $request )
     {
+		// $PPN = Auth::user()->PPN;
 		
         $sup = DB::SELECT("SELECT * from sup ORDER BY KODES ");
 	

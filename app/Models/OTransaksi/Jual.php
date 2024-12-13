@@ -24,6 +24,6 @@ class Jual extends Model
         "NOTES", "TOTAL_QTY", "TOTAL", "TDPP", "TPPN", "NETT", "SISA",  "USRNM", 
         "TG_SMP", "NO_SO", "GOL", "NO_SURATS", 
         "CBG", "KODEP", "NAMAP", "RING", "KOM", "TYPE", "TDISK", "HARI", "TDPP",
-        "BACNO", "BNAMA", "ACNOB", "NACNOB", "PKP", "TOTAL_TKOM"
+        "BACNO", "BNAMA", "ACNOB", "NACNOB", "PKP", "TOTAL_TKOM", "NO_BANK"
     ];
 }

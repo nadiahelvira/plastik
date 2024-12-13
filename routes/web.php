@@ -14,10 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Dashboard
+// Route::get('/', 'App\Http\Controllers\DashboardController@index')->middleware(['auth']);
+// Route::get('/dashboard', 'App\Http\Controllers\DashboardController@index')->middleware(['auth']);
 Route::get('/', 'App\Http\Controllers\DashboardController@index')->middleware(['auth']);
-Route::get('/dashboard', 'App\Http\Controllers\DashboardController@index')->middleware(['auth']);
+Route::get('/dashboard', 'App\Http\Controllers\DashboardController@dashboard_plain')->middleware(['auth']);
+
 // Chart Dashboard
+// Route::get('/chart', 'App\Http\Controllers\DashboardController@chart')->middleware(['auth']);
+
 Route::get('/chart', 'App\Http\Controllers\DashboardController@chart')->middleware(['auth']);
+
 
 // Route::get('/', function () {
 //     return view('dashboard');
@@ -39,6 +45,7 @@ Route::post('/profile/update', 'App\Http\Controllers\ProfileController@update')-
 Route::post('/profile/setting/update', 'App\Http\Controllers\ProfileController@updateSetting')->middleware(['auth']);
 
 ////////
+
 // Master Account
 Route::get('/account', 'App\Http\Controllers\FMaster\AccountController@index')->middleware(['auth'])->name('account');
 
@@ -315,9 +322,9 @@ Route::get('fo/index-posting', 'App\Http\Controllers\Master\FoController@index_p
 Route::get('/fourut', 'App\Http\Controllers\Master\FoUrutController@index')->middleware(['auth'])->name('fourut');
 Route::post('/fourut/store', 'App\Http\Controllers\Master\FoUrutController@store')->middleware(['auth'])->name('fourut/store');
 Route::get('/get-fourut', 'App\Http\Controllers\Master\FoUrutController@getFourut')->middleware(['auth'])->name('get-fourut');
-Route::get('/fourut/show/{fo}', 'App\Http\Controllers\Master\FoUrutController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('fourutid');
-Route::get('/fourut/edit/{fo}', 'App\Http\Controllers\Master\FoUrutController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('fourut.edit');
-Route::post('/fourut/update/{fo}', 'App\Http\Controllers\Master\FoUrutController@update')->middleware(['auth', 'role:superadmin|operational'])->name('fourut.update');
+Route::get('/fourut/show/{fo}', 'App\Http\Controllers\Master\FoUrutController@show')->name('fourutid');
+Route::get('/fourut/edit/{fo}', 'App\Http\Controllers\Master\FoUrutController@edit')->name('fourut.edit');
+Route::post('/fourut/update/{fo}', 'App\Http\Controllers\Master\FoUrutController@update')->name('fourut.update');
 
 
 // Master Proses
@@ -333,7 +340,7 @@ Route::get('/get-prs-report', 'App\Http\Controllers\OReport\RPrsController@getPr
 
 
 // Manage User
-Route::get('/user/manage', 'App\Http\Controllers\UserController@index')->middleware(['auth', 'role:superadmin'])->name('user/manage');
+Route::get('/user/manage', 'App\Http\Controllers\UserController@index')->name('user/manage');
 Route::get('/user/add', 'App\Http\Controllers\UserController@create')->middleware(['auth', 'role:user|superadmin'])->name('user/add');
 Route::get('/get-user', 'App\Http\Controllers\UserController@getUser')->middleware(['auth', 'role:user|superadmin'])->name('get-user');
 Route::post('/user/add', 'App\Http\Controllers\UserController@store')->middleware(['auth', 'role:user|superadmin'])->name('user/add');
@@ -418,10 +425,10 @@ Route::get('/get-orderk', 'App\Http\Controllers\OTransaksi\OrderkController@getO
 Route::get('/rorderk', 'App\Http\Controllers\OReport\ROrderkController@report')->middleware(['auth'])->name('rorderk');
 Route::get('/get-orderk-report', 'App\Http\Controllers\OReport\ROderkController@getOrderkReport')->middleware(['auth'])->name('get-orderk-report');
 
-Route::get('/orderk/show/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('orderkid');
-Route::get('/orderk/edit', 'App\Http\Controllers\OTransaksi\OrderkController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('orderk.edit');
-Route::post('/orderk/update/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@update')->middleware(['auth', 'role:superadmin|operational'])->name('orderk.update');
-Route::get('/orderk/delete/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@destroy')->middleware(['auth', 'role:superadmin'])->name('orderk.delete');
+Route::get('/orderk/show/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@show')->name('orderkid');
+Route::get('/orderk/edit', 'App\Http\Controllers\OTransaksi\OrderkController@edit')->name('orderk.edit');
+Route::post('/orderk/update/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@update')->name('orderk.update');
+Route::get('/orderk/delete/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@destroy')->name('orderk.delete');
 
 Route::get('/orderk/browseSo', 'App\Http\Controllers\OTransaksi\OrderkController@browseSo')->middleware(['auth']);
 Route::get('/orderk/browse', 'App\Http\Controllers\OTransaksi\OrderkController@browse')->middleware(['auth']);
@@ -444,10 +451,10 @@ Route::get('/get-pakai', 'App\Http\Controllers\OTransaksi\PakaiController@getPak
 Route::get('/rpakai', 'App\Http\Controllers\OReport\RPakaiController@report')->middleware(['auth'])->name('rpakai');
 Route::get('/get-pakai-report', 'App\Http\Controllers\OReport\RPakaiController@getPakaiReport')->middleware(['auth'])->name('get-pakai-report');
 
-Route::get('/pakai/show/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('pakaiid');
-Route::get('/pakai/edit', 'App\Http\Controllers\OTransaksi\PakaiController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('pakai.edit');
-Route::post('/pakai/update/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@update')->middleware(['auth', 'role:superadmin|operational'])->name('pakai.update');
-Route::get('/pakai/delete/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@destroy')->middleware(['auth', 'role:superadmin'])->name('pakai.delete');
+Route::get('/pakai/show/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@show')->name('pakaiid');
+Route::get('/pakai/edit', 'App\Http\Controllers\OTransaksi\PakaiController@edit')->name('pakai.edit');
+Route::post('/pakai/update/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@update')->name('pakai.update');
+Route::get('/pakai/delete/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@destroy')->name('pakai.delete');
 
 Route::get('/pakai/browseOk', 'App\Http\Controllers\OTransaksi\PakaiController@browseOk')->middleware(['auth']);
 Route::get('/pakai/browsePrs', 'App\Http\Controllers\OTransaksi\PakaiController@browsePrs')->middleware(['auth']);
@@ -467,10 +474,10 @@ Route::get('/get-terima', 'App\Http\Controllers\OTransaksi\TerimaController@getT
 Route::get('/rterima', 'App\Http\Controllers\OReport\RTerimaController@report')->middleware(['auth'])->name('rterima');
 Route::get('/get-terima-report', 'App\Http\Controllers\OReport\RTerimaController@getTerimaReport')->middleware(['auth'])->name('get-terima-report');
 
-Route::get('/terima/show/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('terimaid');
-Route::get('/terima/edit', 'App\Http\Controllers\OTransaksi\TerimaController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('terima.edit');
-Route::post('/terima/update/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@update')->middleware(['auth', 'role:superadmin|operational'])->name('terima.update');
-Route::get('/terima/delete/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@destroy')->middleware(['auth', 'role:superadmin'])->name('terima.delete');
+Route::get('/terima/show/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@show')->name('terimaid');
+Route::get('/terima/edit', 'App\Http\Controllers\OTransaksi\TerimaController@edit')->name('terima.edit');
+Route::post('/terima/update/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@update')->name('terima.update');
+Route::get('/terima/delete/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@destroy')->name('terima.delete');
 
 Route::get('/terima/browsePakai', 'App\Http\Controllers\OTransaksi\TerimaController@browsePakai')->middleware(['auth']);
 Route::get('/terima/browsePakaid', 'App\Http\Controllers\OTransaksi\TerimaController@browsePakaid')->middleware(['auth']);
@@ -559,10 +566,10 @@ Route::get('/get-surats', 'App\Http\Controllers\OTransaksi\SuratsController@getS
 Route::get('/rsurats', 'App\Http\Controllers\OReport\RSuratsController@report')->middleware(['auth'])->name('rsurats');
 Route::get('/surats/browse', 'App\Http\Controllers\OTransaksi\SuratsController@browse')->middleware(['auth'])->name('surats/browse');
 
-Route::get('/surats/show/{surats}', 'App\Http\Controllers\OTransaksi\SuratsController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('suratsid');
-Route::get('/surats/edit', 'App\Http\Controllers\OTransaksi\SuratsController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('surats.edit');
-Route::post('/surats/update/{surats}', 'App\Http\Controllers\OTransaksi\SuratsController@update')->middleware(['auth', 'role:superadmin|operational'])->name('surats.update');
-Route::get('/surats/delete/{surats}', 'App\Http\Controllers\OTransaksi\SuratsController@destroy')->middleware(['auth', 'role:superadmin'])->name('surats.delete');
+Route::get('/surats/show/{surats}', 'App\Http\Controllers\OTransaksi\SuratsController@show')->name('suratsid');
+Route::get('/surats/edit', 'App\Http\Controllers\OTransaksi\SuratsController@edit')->name('surats.edit');
+Route::post('/surats/update/{surats}', 'App\Http\Controllers\OTransaksi\SuratsController@update')->name('surats.update');
+Route::get('/surats/delete/{surats}', 'App\Http\Controllers\OTransaksi\SuratsController@destroy')->name('surats.delete');
 
 Route::get('/surats/browseCust', 'App\Http\Controllers\OTransaksi\SuratsController@browseCust')->middleware(['auth']);
 Route::get('/surats/browseSo', 'App\Http\Controllers\OTransaksi\SuratsController@browseSo')->middleware(['auth']);
@@ -590,10 +597,10 @@ Route::get('/get-deli', 'App\Http\Controllers\OTransaksi\DeliController@getDeli'
 Route::get('/rdeli', 'App\Http\Controllers\OReport\RDeliController@report')->middleware(['auth'])->name('rdeli');
 Route::get('/deli/browse', 'App\Http\Controllers\OTransaksi\DeliController@browse')->middleware(['auth'])->name('deli/browse');
 
-Route::get('/deli/show/{deli}', 'App\Http\Controllers\OTransaksi\DeliController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('deliid');
-Route::get('/deli/edit', 'App\Http\Controllers\OTransaksi\DeliController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('deli.edit');
-Route::post('/deli/update/{deli}', 'App\Http\Controllers\OTransaksi\DeliController@update')->middleware(['auth', 'role:superadmin|operational'])->name('deli.update');
-Route::get('/deli/delete/{deli}', 'App\Http\Controllers\OTransaksi\DeliController@destroy')->middleware(['auth', 'role:superadmin'])->name('deli.delete');
+Route::get('/deli/show/{deli}', 'App\Http\Controllers\OTransaksi\DeliController@show')->name('deliid');
+Route::get('/deli/edit', 'App\Http\Controllers\OTransaksi\DeliController@edit')->name('deli.edit');
+Route::post('/deli/update/{deli}', 'App\Http\Controllers\OTransaksi\DeliController@update')->name('deli.update');
+Route::get('/deli/delete/{deli}', 'App\Http\Controllers\OTransaksi\DeliController@destroy')->name('deli.delete');
 
 Route::get('/deli/browseCust', 'App\Http\Controllers\OTransaksi\DeliController@browseCust')->middleware(['auth']);
 Route::get('/deli/browseSo', 'App\Http\Controllers\OTransaksi\DeliController@browseSo')->middleware(['auth']);
@@ -619,10 +626,10 @@ Route::get('/get-jual', 'App\Http\Controllers\OTransaksi\JualController@getJual'
 Route::get('/rjual', 'App\Http\Controllers\OReport\RJualController@report')->middleware(['auth'])->name('rjual');
 Route::get('/get-jual-report', 'App\Http\Controllers\OReport\RJualController@getJualReport')->middleware(['auth'])->name('get-jual-report');
 
-Route::get('/jual/show/{jual}', 'App\Http\Controllers\OTransaksi\JualController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('jualid');
-Route::get('/jual/edit/{jual}', 'App\Http\Controllers\OTransaksi\JualController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('jual.edit');
-Route::post('/jual/update/{jual}', 'App\Http\Controllers\OTransaksi\JualController@update')->middleware(['auth', 'role:superadmin|operational'])->name('jual.update');
-Route::get('/jual/delete/{jual}', 'App\Http\Controllers\OTransaksi\JualController@destroy')->middleware(['auth', 'role:superadmin'])->name('jual.delete');
+Route::get('/jual/show/{jual}', 'App\Http\Controllers\OTransaksi\JualController@show')->name('jualid');
+Route::get('/jual/edit/{jual}', 'App\Http\Controllers\OTransaksi\JualController@edit')->name('jual.edit');
+Route::post('/jual/update/{jual}', 'App\Http\Controllers\OTransaksi\JualController@update')->name('jual.update');
+Route::get('/jual/delete/{jual}', 'App\Http\Controllers\OTransaksi\JualController@destroy')->name('jual.delete');
 
 Route::get('/jual/browseSj', 'App\Http\Controllers\OTransaksi\JualController@browseSj')->middleware(['auth']);
 Route::get('/jual/browseSuratsd', 'App\Http\Controllers\OTransaksi\JualController@browseSuratsd')->middleware(['auth']);
@@ -921,170 +928,170 @@ Route::get('/get-bankk', 'App\Http\Controllers\FTransaksi\BankkController@getBan
 //Dynamic Route
 
 // User
-Route::get('/user/show/{user}', 'App\Http\Controllers\UserController@show')->middleware(['auth', 'role:superadmin'])->name('userid');
-Route::get('/user/edit/{user}', 'App\Http\Controllers\UserController@edit')->middleware(['auth', 'role:superadmin'])->name('useredit');
-Route::get('/user/delete/{user}', 'App\Http\Controllers\UserController@destroy')->middleware(['auth', 'role:superadmin'])->name('userid');
-Route::post('/user/update/{user}', 'App\Http\Controllers\UserController@update')->middleware(['auth', 'role:superadmin'])->name('userid');
+Route::get('/user/show/{user}', 'App\Http\Controllers\UserController@show')->name('userid');
+Route::get('/user/edit/{user}', 'App\Http\Controllers\UserController@edit')->name('useredit');
+Route::get('/user/delete/{user}', 'App\Http\Controllers\UserController@destroy')->name('userid');
+Route::post('/user/update/{user}', 'App\Http\Controllers\UserController@update')->name('userid');
 
 
 
 // // Bahan
-// Route::get('/bhn/show/{bhn}', 'App\Http\Controllers\Master\BhnController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('bhnid');
-// Route::get('/bhn/edit/{bhn}', 'App\Http\Controllers\Master\BhnController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('bhn.edit');
-// Route::post('/bhn/update/{bhn}', 'App\Http\Controllers\Master\BhnController@update')->middleware(['auth', 'role:superadmin|operational'])->name('bhn.update');
-// Route::get('/bhn/delete/{bhn}', 'App\Http\Controllers\Master\BhnController@destroy')->middleware(['auth', 'role:superadmin'])->name('bhn.delete');
+// Route::get('/bhn/show/{bhn}', 'App\Http\Controllers\Master\BhnController@show')->name('bhnid');
+// Route::get('/bhn/edit/{bhn}', 'App\Http\Controllers\Master\BhnController@edit')->name('bhn.edit');
+// Route::post('/bhn/update/{bhn}', 'App\Http\Controllers\Master\BhnController@update')->name('bhn.update');
+// Route::get('/bhn/delete/{bhn}', 'App\Http\Controllers\Master\BhnController@destroy')->name('bhn.delete');
 
 
 // // Barang
-// Route::get('/brg/show/{brg}', 'App\Http\Controllers\Master\BrgController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('brgid');
-// Route::get('/brg/edit/{brg}', 'App\Http\Controllers\Master\BrgController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('brg.edit');
-// Route::post('/brg/update/{brg}', 'App\Http\Controllers\Master\BrgController@update')->middleware(['auth', 'role:superadmin|operational'])->name('brg.update');
-// Route::get('/brg/delete/{brg}', 'App\Http\Controllers\Master\BrgController@destroy')->middleware(['auth', 'role:superadmin'])->name('brg.delete');
+// Route::get('/brg/show/{brg}', 'App\Http\Controllers\Master\BrgController@show')->name('brgid');
+// Route::get('/brg/edit/{brg}', 'App\Http\Controllers\Master\BrgController@edit')->name('brg.edit');
+// Route::post('/brg/update/{brg}', 'App\Http\Controllers\Master\BrgController@update')->name('brg.update');
+// Route::get('/brg/delete/{brg}', 'App\Http\Controllers\Master\BrgController@destroy')->name('brg.delete');
 
 
 // // Formula
-// Route::get('/fo/show/{fo}', 'App\Http\Controllers\Master\FoController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('foid');
-// Route::get('/fo/edit/{fo}', 'App\Http\Controllers\Master\FoController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('fo.edit');
-// Route::post('/fo/update/{fo}', 'App\Http\Controllers\Master\FoController@update')->middleware(['auth', 'role:superadmin|operational'])->name('fo.update');
-// Route::get('/fo/delete/{fo}', 'App\Http\Controllers\Master\FoController@destroy')->middleware(['auth', 'role:superadmin'])->name('fo.delete');
+// Route::get('/fo/show/{fo}', 'App\Http\Controllers\Master\FoController@show')->name('foid');
+// Route::get('/fo/edit/{fo}', 'App\Http\Controllers\Master\FoController@edit')->name('fo.edit');
+// Route::post('/fo/update/{fo}', 'App\Http\Controllers\Master\FoController@update')->name('fo.update');
+// Route::get('/fo/delete/{fo}', 'App\Http\Controllers\Master\FoController@destroy')->name('fo.delete');
 
 
 // // Proses
-// Route::get('/prs/show/{prs}', 'App\Http\Controllers\Master\PrsController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('prsid');
-// Route::get('/prs/edit/{prs}', 'App\Http\Controllers\Master\PrsController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('prs.edit');
-// Route::post('/prs/update/{prs}', 'App\Http\Controllers\Master\PrsController@update')->middleware(['auth', 'role:superadmin|operational'])->name('prs.update');
-// Route::get('/prs/delete/{prs}', 'App\Http\Controllers\Master\PrsController@destroy')->middleware(['auth', 'role:superadmin'])->name('prs.delete');
+// Route::get('/prs/show/{prs}', 'App\Http\Controllers\Master\PrsController@show')->name('prsid');
+// Route::get('/prs/edit/{prs}', 'App\Http\Controllers\Master\PrsController@edit')->name('prs.edit');
+// Route::post('/prs/update/{prs}', 'App\Http\Controllers\Master\PrsController@update')->name('prs.update');
+// Route::get('/prs/delete/{prs}', 'App\Http\Controllers\Master\PrsController@destroy')->name('prs.delete');
 
 // Po Non
-Route::get('/pon/show/{pon}', 'App\Http\Controllers\OTransaksi\PonController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('ponid');
-Route::get('/pon/edit/{pon}', 'App\Http\Controllers\OTransaksi\PonController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('pon.edit');
-Route::post('/pon/update/{pon}', 'App\Http\Controllers\OTransaksi\PonController@update')->middleware(['auth', 'role:superadmin|operational'])->name('pon.update');
-Route::get('/pon/delete/{pon}', 'App\Http\Controllers\OTransaksi\PonController@destroy')->middleware(['auth', 'role:superadmin'])->name('pon.delete');
+Route::get('/pon/show/{pon}', 'App\Http\Controllers\OTransaksi\PonController@show')->name('ponid');
+Route::get('/pon/edit/{pon}', 'App\Http\Controllers\OTransaksi\PonController@edit')->name('pon.edit');
+Route::post('/pon/update/{pon}', 'App\Http\Controllers\OTransaksi\PonController@update')->name('pon.update');
+Route::get('/pon/delete/{pon}', 'App\Http\Controllers\OTransaksi\PonController@destroy')->name('pon.delete');
 
 
 // Po Sparepart
-Route::get('/pos/show/{pos}', 'App\Http\Controllers\OTransaksi\PosController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('posid');
-Route::get('/pos/edit/{pos}', 'App\Http\Controllers\OTransaksi\PosController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('pos.edit');
-Route::post('/pos/update/{pos}', 'App\Http\Controllers\OTransaksi\PosController@update')->middleware(['auth', 'role:superadmin|operational'])->name('pos.update');
-Route::get('/pos/delete/{pos}', 'App\Http\Controllers\OTransaksi\PosController@destroy')->middleware(['auth', 'role:superadmin'])->name('pos.delete');
+Route::get('/pos/show/{pos}', 'App\Http\Controllers\OTransaksi\PosController@show')->name('posid');
+Route::get('/pos/edit/{pos}', 'App\Http\Controllers\OTransaksi\PosController@edit')->name('pos.edit');
+Route::post('/pos/update/{pos}', 'App\Http\Controllers\OTransaksi\PosController@update')->name('pos.update');
+Route::get('/pos/delete/{pos}', 'App\Http\Controllers\OTransaksi\PosController@destroy')->name('pos.delete');
 
 // Po Bahan Baku
-Route::get('/pob/show/{pob}', 'App\Http\Controllers\OTransaksi\PobController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('pobid');
-Route::get('/pob/edit/{pob}', 'App\Http\Controllers\OTransaksi\PobController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('pob.edit');
-Route::post('/pob/update/{pob}', 'App\Http\Controllers\OTransaksi\PobController@update')->middleware(['auth', 'role:superadmin|operational'])->name('pob.update');
-Route::get('/pob/delete/{pob}', 'App\Http\Controllers\OTransaksi\PobController@destroy')->middleware(['auth', 'role:superadmin'])->name('pob.delete');
+Route::get('/pob/show/{pob}', 'App\Http\Controllers\OTransaksi\PobController@show')->name('pobid');
+Route::get('/pob/edit/{pob}', 'App\Http\Controllers\OTransaksi\PobController@edit')->name('pob.edit');
+Route::post('/pob/update/{pob}', 'App\Http\Controllers\OTransaksi\PobController@update')->name('pob.update');
+Route::get('/pob/delete/{pob}', 'App\Http\Controllers\OTransaksi\PobController@destroy')->name('pob.delete');
 
 
 
 // So
-Route::get('/so/show/{so}', 'App\Http\Controllers\OTransaksi\SoController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('soid');
-Route::get('/so/edit/{so}', 'App\Http\Controllers\OTransaksi\SoController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('so.edit');
-Route::post('/so/update/{so}', 'App\Http\Controllers\OTransaksi\SoController@update')->middleware(['auth', 'role:superadmin|operational'])->name('so.update');
-Route::get('/so/delete/{so}', 'App\Http\Controllers\OTransaksi\SoController@destroy')->middleware(['auth', 'role:superadmin'])->name('so.delete');
+Route::get('/so/show/{so}', 'App\Http\Controllers\OTransaksi\SoController@show')->name('soid');
+Route::get('/so/edit/{so}', 'App\Http\Controllers\OTransaksi\SoController@edit')->name('so.edit');
+Route::post('/so/update/{so}', 'App\Http\Controllers\OTransaksi\SoController@update')->name('so.update');
+Route::get('/so/delete/{so}', 'App\Http\Controllers\OTransaksi\SoController@destroy')->name('so.delete');
 
 
 // So Bahan Baku
-Route::get('/sob/show/{sob}', 'App\Http\Controllers\OTransaksi\SobController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('sobid');
-Route::get('/sob/edit/{sob}', 'App\Http\Controllers\OTransaksi\SobController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('sob.edit');
-Route::post('/sob/update/{sob}', 'App\Http\Controllers\OTransaksi\SobController@update')->middleware(['auth', 'role:superadmin|operational'])->name('sob.update');
-Route::get('/sob/delete/{sob}', 'App\Http\Controllers\OTransaksi\SobController@destroy')->middleware(['auth', 'role:superadmin'])->name('sob.delete');
+Route::get('/sob/show/{sob}', 'App\Http\Controllers\OTransaksi\SobController@show')->name('sobid');
+Route::get('/sob/edit/{sob}', 'App\Http\Controllers\OTransaksi\SobController@edit')->name('sob.edit');
+Route::post('/sob/update/{sob}', 'App\Http\Controllers\OTransaksi\SobController@update')->name('sob.update');
+Route::get('/sob/delete/{sob}', 'App\Http\Controllers\OTransaksi\SobController@destroy')->name('sob.delete');
 
 
 // So Non
-Route::get('/son/show/{son}', 'App\Http\Controllers\OTransaksi\SonController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('sonid');
-Route::get('/son/edit/{son}', 'App\Http\Controllers\OTransaksi\SonController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('son.edit');
-Route::post('/son/update/{son}', 'App\Http\Controllers\OTransaksi\SonController@update')->middleware(['auth', 'role:superadmin|operational'])->name('son.update');
-Route::get('/son/delete/{son}', 'App\Http\Controllers\OTransaksi\SonController@destroy')->middleware(['auth', 'role:superadmin'])->name('son.delete');
+Route::get('/son/show/{son}', 'App\Http\Controllers\OTransaksi\SonController@show')->name('sonid');
+Route::get('/son/edit/{son}', 'App\Http\Controllers\OTransaksi\SonController@edit')->name('son.edit');
+Route::post('/son/update/{son}', 'App\Http\Controllers\OTransaksi\SonController@update')->name('son.update');
+Route::get('/son/delete/{son}', 'App\Http\Controllers\OTransaksi\SonController@destroy')->name('son.delete');
 
 // So Bahan Baku
-Route::get('/sob/show/{sob}', 'App\Http\Controllers\OTransaksi\SobController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('sobid');
-Route::get('/sob/edit/{son}', 'App\Http\Controllers\OTransaksi\SobController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('sob.edit');
-Route::post('/sob/update/{son}', 'App\Http\Controllers\OTransaksi\SobController@update')->middleware(['auth', 'role:superadmin|operational'])->name('sob.update');
-Route::get('/sob/delete/{son}', 'App\Http\Controllers\OTransaksi\SobController@destroy')->middleware(['auth', 'role:superadmin'])->name('sob.delete');
+Route::get('/sob/show/{sob}', 'App\Http\Controllers\OTransaksi\SobController@show')->name('sobid');
+Route::get('/sob/edit/{son}', 'App\Http\Controllers\OTransaksi\SobController@edit')->name('sob.edit');
+Route::post('/sob/update/{son}', 'App\Http\Controllers\OTransaksi\SobController@update')->name('sob.update');
+Route::get('/sob/delete/{son}', 'App\Http\Controllers\OTransaksi\SobController@destroy')->name('sob.delete');
 
 
 // Orderk
-Route::get('/orderk/show/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('orderkid');
-Route::get('/orderk/edit/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('orderk.edit');
-Route::post('/orderk/update/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@update')->middleware(['auth', 'role:superadmin|operational'])->name('orderk.update');
-Route::get('/orderk/delete/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@destroy')->middleware(['auth', 'role:superadmin'])->name('orderk.delete');
+Route::get('/orderk/show/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@show')->name('orderkid');
+Route::get('/orderk/edit/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@edit')->name('orderk.edit');
+Route::post('/orderk/update/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@update')->name('orderk.update');
+Route::get('/orderk/delete/{orderk}', 'App\Http\Controllers\OTransaksi\OrderkController@destroy')->name('orderk.delete');
 
 
 // Kik
-Route::get('/kik/show/{kik}', 'App\Http\Controllers\OTransaksi\KikController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('kikid');
-Route::get('/kik/edit/{kik}', 'App\Http\Controllers\OTransaksi\KikController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('kik.edit');
-Route::post('/kik/update/{kik}', 'App\Http\Controllers\OTransaksi\KikController@update')->middleware(['auth', 'role:superadmin|operational'])->name('kik.update');
-Route::get('/kik/delete/{kik}', 'App\Http\Controllers\OTransaksi\KikController@destroy')->middleware(['auth', 'role:superadmin'])->name('kik.delete');
+Route::get('/kik/show/{kik}', 'App\Http\Controllers\OTransaksi\KikController@show')->name('kikid');
+Route::get('/kik/edit/{kik}', 'App\Http\Controllers\OTransaksi\KikController@edit')->name('kik.edit');
+Route::post('/kik/update/{kik}', 'App\Http\Controllers\OTransaksi\KikController@update')->name('kik.update');
+Route::get('/kik/delete/{kik}', 'App\Http\Controllers\OTransaksi\KikController@destroy')->name('kik.delete');
 
 // Pakai
-Route::get('/pakai/show/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('pakaiid');
-Route::get('/pakai/edit/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('pakai.edit');
-Route::post('/pakai/update/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@update')->middleware(['auth', 'role:superadmin|operational'])->name('pakai.update');
-Route::get('/pakai/delete/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@destroy')->middleware(['auth', 'role:superadmin'])->name('pakai.delete');
+Route::get('/pakai/show/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@show')->name('pakaiid');
+Route::get('/pakai/edit/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@edit')->name('pakai.edit');
+Route::post('/pakai/update/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@update')->name('pakai.update');
+Route::get('/pakai/delete/{pakai}', 'App\Http\Controllers\OTransaksi\PakaiController@destroy')->name('pakai.delete');
 
 // Pakai Sparepart
-Route::get('/pakais/show/{pakais}', 'App\Http\Controllers\OTransaksi\PakaisController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('pakaisid');
-Route::get('/pakais/edit/{pakais}', 'App\Http\Controllers\OTransaksi\PakaisController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('pakais.edit');
-Route::post('/pakais/update/{pakais}', 'App\Http\Controllers\OTransaksi\PakaisController@update')->middleware(['auth', 'role:superadmin|operational'])->name('pakais.update');
-Route::get('/pakais/delete/{pakais}', 'App\Http\Controllers\OTransaksi\PakaisController@destroy')->middleware(['auth', 'role:superadmin'])->name('pakais.delete');
+Route::get('/pakais/show/{pakais}', 'App\Http\Controllers\OTransaksi\PakaisController@show')->name('pakaisid');
+Route::get('/pakais/edit/{pakais}', 'App\Http\Controllers\OTransaksi\PakaisController@edit')->name('pakais.edit');
+Route::post('/pakais/update/{pakais}', 'App\Http\Controllers\OTransaksi\PakaisController@update')->name('pakais.update');
+Route::get('/pakais/delete/{pakais}', 'App\Http\Controllers\OTransaksi\PakaisController@destroy')->name('pakais.delete');
 
 // Terima
-Route::get('/terima/show/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('terimaid');
-Route::get('/terima/edit/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('terima.edit');
-Route::post('/terima/update/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@update')->middleware(['auth', 'role:superadmin|operational'])->name('terima.update');
-Route::get('/terima/delete/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@destroy')->middleware(['auth', 'role:superadmin'])->name('terima.delete');
+Route::get('/terima/show/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@show')->name('terimaid');
+Route::get('/terima/edit/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@edit')->name('terima.edit');
+Route::post('/terima/update/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@update')->name('terima.update');
+Route::get('/terima/delete/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@destroy')->name('terima.delete');
 
 // Stocka Sparepart
-Route::get('/stockas/show/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('stockasid');
-Route::get('/stockas/edit/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('stockas.edit');
-Route::post('/stockas/update/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@update')->middleware(['auth', 'role:superadmin|operational'])->name('stockas.update');
-Route::get('/stockas/delete/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@destroy')->middleware(['auth', 'role:superadmin'])->name('stockas.delete');
+Route::get('/stockas/show/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@show')->name('stockasid');
+Route::get('/stockas/edit/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@edit')->name('stockas.edit');
+Route::post('/stockas/update/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@update')->name('stockas.update');
+Route::get('/stockas/delete/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@destroy')->name('stockas.delete');
 
 
 // Beli
-Route::get('/beli/show/{beli}', 'App\Http\Controllers\OTransaksi\BeliController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('beliid');
-Route::get('/beli/edit/{beli}', 'App\Http\Controllers\OTransaksi\BeliController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('beli.edit');
-Route::post('/beli/update/{beli}', 'App\Http\Controllers\OTransaksi\BeliController@update')->middleware(['auth', 'role:superadmin|operational'])->name('beli.update');
-Route::get('/beli/delete/{beli}', 'App\Http\Controllers\OTransaksi\BeliController@destroy')->middleware(['auth', 'role:superadmin'])->name('beli.delete');
+Route::get('/beli/show/{beli}', 'App\Http\Controllers\OTransaksi\BeliController@show')->name('beliid');
+Route::get('/beli/edit/{beli}', 'App\Http\Controllers\OTransaksi\BeliController@edit')->name('beli.edit');
+Route::post('/beli/update/{beli}', 'App\Http\Controllers\OTransaksi\BeliController@update')->name('beli.update');
+Route::get('/beli/delete/{beli}', 'App\Http\Controllers\OTransaksi\BeliController@destroy')->name('beli.delete');
 
 // Beli Non
-Route::get('/belin/show/{belin}', 'App\Http\Controllers\OTransaksi\BelinController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('belinid');
-Route::get('/belin/edit/{belin}', 'App\Http\Controllers\OTransaksi\BelinController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('belin.edit');
-Route::post('/belin/update/{belin}', 'App\Http\Controllers\OTransaksi\BelinController@update')->middleware(['auth', 'role:superadmin|operational'])->name('belin.update');
-Route::get('/belin/delete/{belin}', 'App\Http\Controllers\OTransaksi\BelinController@destroy')->middleware(['auth', 'role:superadmin'])->name('belin.delete');
+Route::get('/belin/show/{belin}', 'App\Http\Controllers\OTransaksi\BelinController@show')->name('belinid');
+Route::get('/belin/edit/{belin}', 'App\Http\Controllers\OTransaksi\BelinController@edit')->name('belin.edit');
+Route::post('/belin/update/{belin}', 'App\Http\Controllers\OTransaksi\BelinController@update')->name('belin.update');
+Route::get('/belin/delete/{belin}', 'App\Http\Controllers\OTransaksi\BelinController@destroy')->name('belin.delete');
 
 
 // Beli Bahan Baku
-Route::get('/belib/show/{belib}', 'App\Http\Controllers\OTransaksi\BelibController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('belibid');
-Route::get('/belib/edit/{belib}', 'App\Http\Controllers\OTransaksi\BelibController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('belib.edit');
-Route::post('/belib/update/{belib}', 'App\Http\Controllers\OTransaksi\BelibController@update')->middleware(['auth', 'role:superadmin|operational'])->name('belib.update');
-Route::get('/belib/delete/{belib}', 'App\Http\Controllers\OTransaksi\BelibController@destroy')->middleware(['auth', 'role:superadmin'])->name('belib.delete');
+Route::get('/belib/show/{belib}', 'App\Http\Controllers\OTransaksi\BelibController@show')->name('belibid');
+Route::get('/belib/edit/{belib}', 'App\Http\Controllers\OTransaksi\BelibController@edit')->name('belib.edit');
+Route::post('/belib/update/{belib}', 'App\Http\Controllers\OTransaksi\BelibController@update')->name('belib.update');
+Route::get('/belib/delete/{belib}', 'App\Http\Controllers\OTransaksi\BelibController@destroy')->name('belib.delete');
 
 // Beli Sparepart
-Route::get('/belis/show/{belis}', 'App\Http\Controllers\OTransaksi\BelisController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('belisid');
-Route::get('/belis/edit/{belis}', 'App\Http\Controllers\OTransaksi\BelisController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('belis.edit');
-Route::post('/belis/update/{belis}', 'App\Http\Controllers\OTransaksi\BelisController@update')->middleware(['auth', 'role:superadmin|operational'])->name('belis.update');
-Route::get('/belis/delete/{belis}', 'App\Http\Controllers\OTransaksi\BelisController@destroy')->middleware(['auth', 'role:superadmin'])->name('belis.delete');
+Route::get('/belis/show/{belis}', 'App\Http\Controllers\OTransaksi\BelisController@show')->name('belisid');
+Route::get('/belis/edit/{belis}', 'App\Http\Controllers\OTransaksi\BelisController@edit')->name('belis.edit');
+Route::post('/belis/update/{belis}', 'App\Http\Controllers\OTransaksi\BelisController@update')->name('belis.update');
+Route::get('/belis/delete/{belis}', 'App\Http\Controllers\OTransaksi\BelisController@destroy')->name('belis.delete');
 
 
 
 // Thut
-Route::get('/thut/show/{thut}', 'App\Http\Controllers\OTransaksi\ThutController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('thutid');
-Route::get('/thut/edit/{thut}', 'App\Http\Controllers\OTransaksi\ThutController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('thut.edit');
-Route::post('/thut/update/{thut}', 'App\Http\Controllers\OTransaksi\ThutController@update')->middleware(['auth', 'role:superadmin|operational'])->name('thut.update');
-Route::get('/thut/delete/{thut}', 'App\Http\Controllers\OTransaksi\ThutController@destroy')->middleware(['auth', 'role:superadmin'])->name('thut.delete');
+Route::get('/thut/show/{thut}', 'App\Http\Controllers\OTransaksi\ThutController@show')->name('thutid');
+Route::get('/thut/edit/{thut}', 'App\Http\Controllers\OTransaksi\ThutController@edit')->name('thut.edit');
+Route::post('/thut/update/{thut}', 'App\Http\Controllers\OTransaksi\ThutController@update')->name('thut.update');
+Route::get('/thut/delete/{thut}', 'App\Http\Controllers\OTransaksi\ThutController@destroy')->name('thut.delete');
 
 // Thut Non
-Route::get('/thutn/show/{thutn}', 'App\Http\Controllers\OTransaksi\ThutnController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('thutnid');
-Route::get('/thutn/edit/{thutn}', 'App\Http\Controllers\OTransaksi\ThutnController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('thutn.edit');
-Route::post('/thutn/update/{thutn}', 'App\Http\Controllers\OTransaksi\ThutnController@update')->middleware(['auth', 'role:superadmin|operational'])->name('thutn.update');
-Route::get('/thutn/delete/{thutn}', 'App\Http\Controllers\OTransaksi\ThutnController@destroy')->middleware(['auth', 'role:superadmin'])->name('thutn.delete');
+Route::get('/thutn/show/{thutn}', 'App\Http\Controllers\OTransaksi\ThutnController@show')->name('thutnid');
+Route::get('/thutn/edit/{thutn}', 'App\Http\Controllers\OTransaksi\ThutnController@edit')->name('thutn.edit');
+Route::post('/thutn/update/{thutn}', 'App\Http\Controllers\OTransaksi\ThutnController@update')->name('thutn.update');
+Route::get('/thutn/delete/{thutn}', 'App\Http\Controllers\OTransaksi\ThutnController@destroy')->name('thutn.delete');
 
 // Thut Bahan Baku
-Route::get('/thutb/b/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('thutbid');
-Route::get('/thutb/edit/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('thutb.edit');
-Route::post('/thutb/update/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@update')->middleware(['auth', 'role:superadmin|operational'])->name('thutb.update');
-Route::get('/thutb/delete/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@destroy')->middleware(['auth', 'role:superadmin'])->name('thutb.delete');
+Route::get('/thutb/b/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@show')->name('thutbid');
+Route::get('/thutb/edit/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@edit')->name('thutb.edit');
+Route::post('/thutb/update/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@update')->name('thutb.update');
+Route::get('/thutb/delete/{thutb}', 'App\Http\Controllers\OTransaksi\ThutbController@destroy')->name('thutb.delete');
 
 
 
@@ -1094,59 +1101,59 @@ Route::post('jasper-thut-report', 'App\Http\Controllers\OReport\RThutController@
 
 
 // Um Beli 
-Route::get('/um/show/{um}', 'App\Http\Controllers\OTransaksi\UmController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('umid');
-Route::get('/um/edit/{um}', 'App\Http\Controllers\OTransaksi\UmController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('um.edit');
-Route::post('/um/update/{um}', 'App\Http\Controllers\OTransaksi\UmController@update')->middleware(['auth', 'role:superadmin|operational'])->name('um.update');
-Route::get('/um/delete/{um}', 'App\Http\Controllers\OTransaksi\UmController@destroy')->middleware(['auth', 'role:superadmin'])->name('um.delete');
+Route::get('/um/show/{um}', 'App\Http\Controllers\OTransaksi\UmController@show')->name('umid');
+Route::get('/um/edit/{um}', 'App\Http\Controllers\OTransaksi\UmController@edit')->name('um.edit');
+Route::post('/um/update/{um}', 'App\Http\Controllers\OTransaksi\UmController@update')->name('um.update');
+Route::get('/um/delete/{um}', 'App\Http\Controllers\OTransaksi\UmController@destroy')->name('um.delete');
 
 // Um Beli Bahan Baku
-Route::get('/umb/show/{umb}', 'App\Http\Controllers\OTransaksi\UmbController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('umbid');
-Route::get('/umb/edit/{umb}', 'App\Http\Controllers\OTransaksi\UmbController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('umb.edit');
-Route::post('/umb/update/{umb}', 'App\Http\Controllers\OTransaksi\UmbController@update')->middleware(['auth', 'role:superadmin|operational'])->name('umb.update');
-Route::get('/umb/delete/{umb}', 'App\Http\Controllers\OTransaksi\UmbController@destroy')->middleware(['auth', 'role:superadmin'])->name('umb.delete');
+Route::get('/umb/show/{umb}', 'App\Http\Controllers\OTransaksi\UmbController@show')->name('umbid');
+Route::get('/umb/edit/{umb}', 'App\Http\Controllers\OTransaksi\UmbController@edit')->name('umb.edit');
+Route::post('/umb/update/{umb}', 'App\Http\Controllers\OTransaksi\UmbController@update')->name('umb.update');
+Route::get('/umb/delete/{umb}', 'App\Http\Controllers\OTransaksi\UmbController@destroy')->name('umb.delete');
 
 // Um Beli Non
-Route::get('/umn/show/{umn}', 'App\Http\Controllers\OTransaksi\UmnController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('umnid');
-Route::get('/umn/edit/{umn}', 'App\Http\Controllers\OTransaksi\UmnController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('umn.edit');
-Route::post('/umn/update/{umn}', 'App\Http\Controllers\OTransaksi\UmnController@update')->middleware(['auth', 'role:superadmin|operational'])->name('umn.update');
-Route::get('/umn/delete/{umn}', 'App\Http\Controllers\OTransaksi\UmnController@destroy')->middleware(['auth', 'role:superadmin'])->name('umn.delete');
+Route::get('/umn/show/{umn}', 'App\Http\Controllers\OTransaksi\UmnController@show')->name('umnid');
+Route::get('/umn/edit/{umn}', 'App\Http\Controllers\OTransaksi\UmnController@edit')->name('umn.edit');
+Route::post('/umn/update/{umn}', 'App\Http\Controllers\OTransaksi\UmnController@update')->name('umn.update');
+Route::get('/umn/delete/{umn}', 'App\Http\Controllers\OTransaksi\UmnController@destroy')->name('umn.delete');
 
 
 // Um Beli Saprepart
-Route::get('/ums/show/{ums}', 'App\Http\Controllers\OTransaksi\UmsController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('umsid');
-Route::get('/ums/edit/{ums}', 'App\Http\Controllers\OTransaksi\UmsController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('ums.edit');
-Route::post('/ums/update/{ums}', 'App\Http\Controllers\OTransaksi\UmsController@update')->middleware(['auth', 'role:superadmin|operational'])->name('ums.update');
-Route::get('/ums/delete/{ums}', 'App\Http\Controllers\OTransaksi\UmsController@destroy')->middleware(['auth', 'role:superadmin'])->name('ums.delete');
+Route::get('/ums/show/{ums}', 'App\Http\Controllers\OTransaksi\UmsController@show')->name('umsid');
+Route::get('/ums/edit/{ums}', 'App\Http\Controllers\OTransaksi\UmsController@edit')->name('ums.edit');
+Route::post('/ums/update/{ums}', 'App\Http\Controllers\OTransaksi\UmsController@update')->name('ums.update');
+Route::get('/ums/delete/{ums}', 'App\Http\Controllers\OTransaksi\UmsController@destroy')->name('ums.delete');
 
 
 
 // Jual
-Route::get('/jual/show/{jual}', 'App\Http\Controllers\OTransaksi\JualController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('jualid');
-Route::get('/jual/edit/{jual}', 'App\Http\Controllers\OTransaksi\JualController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('jual.edit');
-Route::post('/jual/update/{jual}', 'App\Http\Controllers\OTransaksi\JualController@update')->middleware(['auth', 'role:superadmin|operational'])->name('jual.update');
-Route::get('/jual/delete/{jual}', 'App\Http\Controllers\OTransaksi\JualController@destroy')->middleware(['auth', 'role:superadmin'])->name('jual.delete');
+Route::get('/jual/show/{jual}', 'App\Http\Controllers\OTransaksi\JualController@show')->name('jualid');
+Route::get('/jual/edit/{jual}', 'App\Http\Controllers\OTransaksi\JualController@edit')->name('jual.edit');
+Route::post('/jual/update/{jual}', 'App\Http\Controllers\OTransaksi\JualController@update')->name('jual.update');
+Route::get('/jual/delete/{jual}', 'App\Http\Controllers\OTransaksi\JualController@destroy')->name('jual.delete');
 
 // Jual
-Route::get('/jualn/show/{jualn}', 'App\Http\Controllers\OTransaksi\JualnController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('jualnid');
-Route::get('/jualn/edit/{jualn}', 'App\Http\Controllers\OTransaksi\JualnController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('jualn.edit');
-Route::post('/jualn/update/{jualn}', 'App\Http\Controllers\OTransaksi\JualnController@update')->middleware(['auth', 'role:superadmin|operational'])->name('jualn.update');
-Route::get('/jualn/delete/{jualn}', 'App\Http\Controllers\OTransaksi\JualnController@destroy')->middleware(['auth', 'role:superadmin'])->name('jualn.delete');
+Route::get('/jualn/show/{jualn}', 'App\Http\Controllers\OTransaksi\JualnController@show')->name('jualnid');
+Route::get('/jualn/edit/{jualn}', 'App\Http\Controllers\OTransaksi\JualnController@edit')->name('jualn.edit');
+Route::post('/jualn/update/{jualn}', 'App\Http\Controllers\OTransaksi\JualnController@update')->name('jualn.update');
+Route::get('/jualn/delete/{jualn}', 'App\Http\Controllers\OTransaksi\JualnController@destroy')->name('jualn.delete');
 
 // Jual
-Route::get('/jual/show/{jual}', 'App\Http\Controllers\OTransaksi\JualController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('jualid');
-Route::get('/jual/edit/{jual}', 'App\Http\Controllers\OTransaksi\JualController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('jual.edit');
-Route::post('/jual/update/{jual}', 'App\Http\Controllers\OTransaksi\JualController@update')->middleware(['auth', 'role:superadmin|operational'])->name('jual.update');
-Route::get('/jual/delete/{jual}', 'App\Http\Controllers\OTransaksi\JualController@destroy')->middleware(['auth', 'role:superadmin'])->name('jual.delete');
+Route::get('/jual/show/{jual}', 'App\Http\Controllers\OTransaksi\JualController@show')->name('jualid');
+Route::get('/jual/edit/{jual}', 'App\Http\Controllers\OTransaksi\JualController@edit')->name('jual.edit');
+Route::post('/jual/update/{jual}', 'App\Http\Controllers\OTransaksi\JualController@update')->name('jual.update');
+Route::get('/jual/delete/{jual}', 'App\Http\Controllers\OTransaksi\JualController@destroy')->name('jual.delete');
 
 
 
 
 
 // Tpiu
-Route::get('/tpiu/show/[tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('tpiuid');
-Route::get('/tpiu/edit/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('tpiu.edit');
-Route::post('/tpiu/update/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@update')->middleware(['auth', 'role:superadmin|operational'])->name('tpiu.update');
-Route::get('/tpiu/delete/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@destroy')->middleware(['auth', 'role:superadmin'])->name('tpiu.delete');
+Route::get('/tpiu/show/[tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@show')->name('tpiuid');
+Route::get('/tpiu/edit/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@edit')->name('tpiu.edit');
+Route::post('/tpiu/update/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@update')->name('tpiu.update');
+Route::get('/tpiu/delete/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiuController@destroy')->name('tpiu.delete');
 
 Route::get('/get-tpiu-report', 'App\Http\Controllers\OReport\RTpiuController@getTpiuReport')->middleware(['auth'])->name('get-tpiu-report');
 Route::get('/jssuratsc/{tpiu:NO_ID}', 'App\Http\Controllers\OTransaksi\TpiuController@jssuratsc')->middleware(['auth']);
@@ -1154,106 +1161,106 @@ Route::post('jasper-tpiu-report', 'App\Http\Controllers\OReport\RTpiuController@
 Route::get('/tpiu/cetak/{tpiu:NO_ID}','App\Http\Controllers\OTransaksi\TpiuController@cetak')->middleware(['auth']);
 
 // Tpiu Non
-Route::get('/tpiun/show/[tpiun}', 'App\Http\Controllers\OTransaksi\TpiunController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('tpiunid');
-Route::get('/tpiun/edit/{tpiun}', 'App\Http\Controllers\OTransaksi\TpiunController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('tpiun.edit');
-Route::post('/tpiun/update/{tpiun}', 'App\Http\Controllers\OTransaksi\TpiunController@update')->middleware(['auth', 'role:superadmin|operational'])->name('tpiun.update');
-Route::get('/tpiun/delete/{tpiun}', 'App\Http\Controllers\OTransaksi\TpiunController@destroy')->middleware(['auth', 'role:superadmin'])->name('tpiun.delete');
+Route::get('/tpiun/show/[tpiun}', 'App\Http\Controllers\OTransaksi\TpiunController@show')->name('tpiunid');
+Route::get('/tpiun/edit/{tpiun}', 'App\Http\Controllers\OTransaksi\TpiunController@edit')->name('tpiun.edit');
+Route::post('/tpiun/update/{tpiun}', 'App\Http\Controllers\OTransaksi\TpiunController@update')->name('tpiun.update');
+Route::get('/tpiun/delete/{tpiun}', 'App\Http\Controllers\OTransaksi\TpiunController@destroy')->name('tpiun.delete');
 
 
 // Tpiu Bahan Baku
-Route::get('/tpiub/show/[tpiu}', 'App\Http\Controllers\OTransaksi\TpiubController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('tpiubid');
-Route::get('/tpiub/edit/{tpiub}', 'App\Http\Controllers\OTransaksi\TpiubController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('tpiub.edit');
-Route::post('/tpiub/update/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiubController@update')->middleware(['auth', 'role:superadmin|operational'])->name('tpiub.update');
-Route::get('/tpiub/delete/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiubController@destroy')->middleware(['auth', 'role:superadmin'])->name('tpiub.delete');
+Route::get('/tpiub/show/[tpiu}', 'App\Http\Controllers\OTransaksi\TpiubController@show')->name('tpiubid');
+Route::get('/tpiub/edit/{tpiub}', 'App\Http\Controllers\OTransaksi\TpiubController@edit')->name('tpiub.edit');
+Route::post('/tpiub/update/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiubController@update')->name('tpiub.update');
+Route::get('/tpiub/delete/{tpiu}', 'App\Http\Controllers\OTransaksi\TpiubController@destroy')->name('tpiub.delete');
 
 
 
 // Uj 
-Route::get('/uj/show/[uj]', 'App\Http\Controllers\OTransaksi\UjController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('ujid');
-Route::get('/uj/edit/{uj}', 'App\Http\Controllers\OTransaksi\UjController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('uj.edit');
-Route::post('/uj/update/{uj}', 'App\Http\Controllers\OTransaksi\UjController@update')->middleware(['auth', 'role:superadmin|operational'])->name('uj.update');
-Route::get('/uj/delete/{umj}', 'App\Http\Controllers\OTransaksi\UjController@destroy')->middleware(['auth', 'role:superadmin'])->name('uj.delete');
+Route::get('/uj/show/[uj]', 'App\Http\Controllers\OTransaksi\UjController@show')->name('ujid');
+Route::get('/uj/edit/{uj}', 'App\Http\Controllers\OTransaksi\UjController@edit')->name('uj.edit');
+Route::post('/uj/update/{uj}', 'App\Http\Controllers\OTransaksi\UjController@update')->name('uj.update');
+Route::get('/uj/delete/{umj}', 'App\Http\Controllers\OTransaksi\UjController@destroy')->name('uj.delete');
 
 // Umj Non
-Route::get('/ujn/show/[ujn]', 'App\Http\Controllers\OTransaksi\UjnController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('ujnid');
-Route::get('/ujn/edit/{ujn}', 'App\Http\Controllers\OTransaksi\UjnController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('ujn.edit');
-Route::post('/ujn/update/{ujn}', 'App\Http\Controllers\OTransaksi\UjnController@update')->middleware(['auth', 'role:superadmin|operational'])->name('ujn.update');
-Route::get('/ujn/delete/{ujn}', 'App\Http\Controllers\OTransaksi\UjnController@destroy')->middleware(['auth', 'role:superadmin'])->name('ujn.delete');
+Route::get('/ujn/show/[ujn]', 'App\Http\Controllers\OTransaksi\UjnController@show')->name('ujnid');
+Route::get('/ujn/edit/{ujn}', 'App\Http\Controllers\OTransaksi\UjnController@edit')->name('ujn.edit');
+Route::post('/ujn/update/{ujn}', 'App\Http\Controllers\OTransaksi\UjnController@update')->name('ujn.update');
+Route::get('/ujn/delete/{ujn}', 'App\Http\Controllers\OTransaksi\UjnController@destroy')->name('ujn.delete');
 
 // Umj Bahan Baku
-Route::get('/ujb/show/[ujb]', 'App\Http\Controllers\OTransaksi\UjbController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('ujbid');
-Route::get('/ujb/edit/{ujb}', 'App\Http\Controllers\OTransaksi\UjbController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('ujb.edit');
-Route::post('/ujb/update/{ujb}', 'App\Http\Controllers\OTransaksi\UjbController@update')->middleware(['auth', 'role:superadmin|operational'])->name('ujb.update');
-Route::get('/ujb/delete/{ujb}', 'App\Http\Controllers\OTransaksi\UjbController@destroy')->middleware(['auth', 'role:superadmin'])->name('ujb.delete');
+Route::get('/ujb/show/[ujb]', 'App\Http\Controllers\OTransaksi\UjbController@show')->name('ujbid');
+Route::get('/ujb/edit/{ujb}', 'App\Http\Controllers\OTransaksi\UjbController@edit')->name('ujb.edit');
+Route::post('/ujb/update/{ujb}', 'App\Http\Controllers\OTransaksi\UjbController@update')->name('ujb.update');
+Route::get('/ujb/delete/{ujb}', 'App\Http\Controllers\OTransaksi\UjbController@destroy')->name('ujb.delete');
 
 
 // Hut
-Route::get('/hut/show/{hut}', 'App\Http\Controllers\OTransaksi\HutController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('hutid');
-Route::get('/hut/edit/{hut}', 'App\Http\Controllers\OTransaksi\HutController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('hut.edit');
-Route::post('/hut/update/{hut}', 'App\Http\Controllers\OTransaksi\HutController@update')->middleware(['auth', 'role:superadmin|operational'])->name('hut.update');
-Route::get('/hut/delete/{hut}', 'App\Http\Controllers\OTransaksi\HutController@destroy')->middleware(['auth', 'role:superadmin'])->name('hut.delete');
+Route::get('/hut/show/{hut}', 'App\Http\Controllers\OTransaksi\HutController@show')->name('hutid');
+Route::get('/hut/edit/{hut}', 'App\Http\Controllers\OTransaksi\HutController@edit')->name('hut.edit');
+Route::post('/hut/update/{hut}', 'App\Http\Controllers\OTransaksi\HutController@update')->name('hut.update');
+Route::get('/hut/delete/{hut}', 'App\Http\Controllers\OTransaksi\HutController@destroy')->name('hut.delete');
 
 // Hut Non
-Route::get('/hutn/show/{hutn}', 'App\Http\Controllers\OTransaksi\HutnController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('hutnid');
-Route::get('/hutn/edit/{hutn}', 'App\Http\Controllers\OTransaksi\HutnController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('hutn.edit');
-Route::post('/hutn/update/{hutn}', 'App\Http\Controllers\OTransaksi\HutnController@update')->middleware(['auth', 'role:superadmin|operational'])->name('hutn.update');
-Route::get('/hutn/delete/{hutn}', 'App\Http\Controllers\OTransaksi\HutnController@destroy')->middleware(['auth', 'role:superadmin'])->name('hutn.delete');
+Route::get('/hutn/show/{hutn}', 'App\Http\Controllers\OTransaksi\HutnController@show')->name('hutnid');
+Route::get('/hutn/edit/{hutn}', 'App\Http\Controllers\OTransaksi\HutnController@edit')->name('hutn.edit');
+Route::post('/hutn/update/{hutn}', 'App\Http\Controllers\OTransaksi\HutnController@update')->name('hutn.update');
+Route::get('/hutn/delete/{hutn}', 'App\Http\Controllers\OTransaksi\HutnController@destroy')->name('hutn.delete');
 
 
 // Hut Sparepart
-Route::get('/huts/show/{huts}', 'App\Http\Controllers\OTransaksi\HutsController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('hutsid');
-Route::get('/huts/edit/{huts}', 'App\Http\Controllers\OTransaksi\HutsController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('huts.edit');
-Route::post('/huts/update/{hutn}', 'App\Http\Controllers\OTransaksi\HutsController@update')->middleware(['auth', 'role:superadmin|operational'])->name('huts.update');
-Route::get('/huts/delete/{huts}', 'App\Http\Controllers\OTransaksi\HutsController@destroy')->middleware(['auth', 'role:superadmin'])->name('huts.delete');
+Route::get('/huts/show/{huts}', 'App\Http\Controllers\OTransaksi\HutsController@show')->name('hutsid');
+Route::get('/huts/edit/{huts}', 'App\Http\Controllers\OTransaksi\HutsController@edit')->name('huts.edit');
+Route::post('/huts/update/{hutn}', 'App\Http\Controllers\OTransaksi\HutsController@update')->name('huts.update');
+Route::get('/huts/delete/{huts}', 'App\Http\Controllers\OTransaksi\HutsController@destroy')->name('huts.delete');
 
 
 
 // Hut Bahan Baku
-Route::get('/hutb/show/{hutb}', 'App\Http\Controllers\OTransaksi\HutbController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('hutbid');
-Route::get('/hutb/edit/{hutb}', 'App\Http\Controllers\OTransaksi\HutbController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('hutb.edit');
-Route::post('/hutn/update/{hutb}', 'App\Http\Controllers\OTransaksi\HutbController@update')->middleware(['auth', 'role:superadmin|operational'])->name('hutb.update');
-Route::get('/hutb/delete/{hutb}', 'App\Http\Controllers\OTransaksi\HutbController@destroy')->middleware(['auth', 'role:superadmin'])->name('hutb.delete');
+Route::get('/hutb/show/{hutb}', 'App\Http\Controllers\OTransaksi\HutbController@show')->name('hutbid');
+Route::get('/hutb/edit/{hutb}', 'App\Http\Controllers\OTransaksi\HutbController@edit')->name('hutb.edit');
+Route::post('/hutn/update/{hutb}', 'App\Http\Controllers\OTransaksi\HutbController@update')->name('hutb.update');
+Route::get('/hutb/delete/{hutb}', 'App\Http\Controllers\OTransaksi\HutbController@destroy')->name('hutb.delete');
 
 
 
 // Piu
-Route::get('/piu/show/{piu}', 'App\Http\Controllers\OTransaksi\PiuController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('piuid');
-Route::get('/piu/edit/{piu}', 'App\Http\Controllers\OTransaksi\PiuController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('piu.edit');
-Route::post('/piu/update/{piu}', 'App\Http\Controllers\OTransaksi\PiuController@update')->middleware(['auth', 'role:superadmin|operational'])->name('piu.update');
-Route::get('/piu/delete/{piu}', 'App\Http\Controllers\OTransaksi\PiuController@destroy')->middleware(['auth', 'role:superadmin'])->name('piu.delete');
+Route::get('/piu/show/{piu}', 'App\Http\Controllers\OTransaksi\PiuController@show')->name('piuid');
+Route::get('/piu/edit/{piu}', 'App\Http\Controllers\OTransaksi\PiuController@edit')->name('piu.edit');
+Route::post('/piu/update/{piu}', 'App\Http\Controllers\OTransaksi\PiuController@update')->name('piu.update');
+Route::get('/piu/delete/{piu}', 'App\Http\Controllers\OTransaksi\PiuController@destroy')->name('piu.delete');
 
 
 
 // Piu Non
-Route::get('/piun/show/{piun}', 'App\Http\Controllers\OTransaksi\PiunController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('piunid');
-Route::get('/piun/edit/{piun}', 'App\Http\Controllers\OTransaksi\PiunController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('piun.edit');
-Route::post('/piun/update/{piun}', 'App\Http\Controllers\OTransaksi\PiunController@update')->middleware(['auth', 'role:superadmin|operational'])->name('piun.update');
-Route::get('/piun/delete/{piun}', 'App\Http\Controllers\OTransaksi\PiunController@destroy')->middleware(['auth', 'role:superadmin'])->name('piun.delete');
+Route::get('/piun/show/{piun}', 'App\Http\Controllers\OTransaksi\PiunController@show')->name('piunid');
+Route::get('/piun/edit/{piun}', 'App\Http\Controllers\OTransaksi\PiunController@edit')->name('piun.edit');
+Route::post('/piun/update/{piun}', 'App\Http\Controllers\OTransaksi\PiunController@update')->name('piun.update');
+Route::get('/piun/delete/{piun}', 'App\Http\Controllers\OTransaksi\PiunController@destroy')->name('piun.delete');
 
 
 
 
 
 // Piu Bahan Baku
-Route::get('/piub/show/{piub}', 'App\Http\Controllers\OTransaksi\PiubController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('piubid');
-Route::get('/piub/edit/{piub}', 'App\Http\Controllers\OTransaksi\PiubController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('piub.edit');
-Route::post('/piub/update/{piub}', 'App\Http\Controllers\OTransaksi\PiubController@update')->middleware(['auth', 'role:superadmin|operational'])->name('piub.update');
-Route::get('/piub/delete/{piub}', 'App\Http\Controllers\OTransaksi\PiubController@destroy')->middleware(['auth', 'role:superadmin'])->name('piub.delete');
+Route::get('/piub/show/{piub}', 'App\Http\Controllers\OTransaksi\PiubController@show')->name('piubid');
+Route::get('/piub/edit/{piub}', 'App\Http\Controllers\OTransaksi\PiubController@edit')->name('piub.edit');
+Route::post('/piub/update/{piub}', 'App\Http\Controllers\OTransaksi\PiubController@update')->name('piub.update');
+Route::get('/piub/delete/{piub}', 'App\Http\Controllers\OTransaksi\PiubController@destroy')->name('piub.delete');
 
 
 
 
 // Terima
-Route::get('/terima/show/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('terimaid');
-Route::get('/terima/edit/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('terima.edit');
-Route::post('/terima/update/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@update')->middleware(['auth', 'role:superadmin|operational'])->name('terima.update');
-Route::get('/terima/delete/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@destroy')->middleware(['auth', 'role:superadmin'])->name('terima.delete');
+Route::get('/terima/show/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@show')->name('terimaid');
+Route::get('/terima/edit/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@edit')->name('terima.edit');
+Route::post('/terima/update/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@update')->name('terima.update');
+Route::get('/terima/delete/{terima}', 'App\Http\Controllers\OTransaksi\TerimaController@destroy')->name('terima.delete');
 
 // Stockas
-Route::get('/stockas/show/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@show')->middleware(['auth', 'role:superadmin|view|operational'])->name('stockasid');
-Route::get('/stockas/edit/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@edit')->middleware(['auth', 'role:superadmin|operational'])->name('stockas.edit');
-Route::post('/stockas/update/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@update')->middleware(['auth', 'role:superadmin|operational'])->name('stockas.update');
-Route::get('/stockas/delete/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@destroy')->middleware(['auth', 'role:superadmin'])->name('stockas.delete');
+Route::get('/stockas/show/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@show')->name('stockasid');
+Route::get('/stockas/edit/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@edit')->name('stockas.edit');
+Route::post('/stockas/update/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@update')->name('stockas.update');
+Route::get('/stockas/delete/{stockas}', 'App\Http\Controllers\OTransaksi\StockasController@destroy')->name('stockas.delete');
 
 
 // Operational Memo

@@ -203,8 +203,9 @@ class BrgController extends Controller
     public function getBrg( Request $request )
     {
         // ganti 5
+		// $PPN = Auth::user()->PPN;
 
-        $brg = DB::SELECT("SELECT * from brg  ORDER BY KD_BRG ");
+        $brg = DB::SELECT("SELECT * from brg ORDER BY KD_BRG ");
 	
 
         // ganti 6

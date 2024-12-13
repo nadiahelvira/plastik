@@ -2,3 +2,15 @@
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/resources/views/profile.blade.php on line 114
+[07-Dec-2024 11:28:26 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Auth' not found in /home/januar13/public_html/plastik/resources/views/profile.blade.php:114
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/resources/views/profile.blade.php on line 114
+[07-Dec-2024 16:26:18 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Auth' not found in /home/januar13/public_html/plastik/resources/views/profile.blade.php:114
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/resources/views/profile.blade.php on line 114
+[07-Dec-2024 16:44:36 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Auth' not found in /home/januar13/public_html/plastik/resources/views/profile.blade.php:114
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/resources/views/profile.blade.php on line 114

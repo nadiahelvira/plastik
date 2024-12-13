@@ -60,11 +60,12 @@ class PoController extends Controller
         $golz = $request->GOL;
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $po = DB::SELECT("SELECT distinct PO.NO_BUKTI , PO.KODES, PO.NAMAS, 
 		                  PO.ALAMAT, PO.KOTA, PO.PKP, po.GUDANG, PO.JTEMPO, PO.NOTES from po, pod 
                           WHERE PO.NO_BUKTI = POD.NO_BUKTI AND PO.GOL ='$golz'
-                          AND PO.CBG = '$CBG' AND POD.SISA > 0 AND POSTED = 1
+                          AND PO.CBG = '$CBG' AND PO.PKP ='$PPN' AND POD.SISA > 0 AND POSTED = 1
                           GROUP BY NO_BUKTI ");
         return response()->json($po);
     }
@@ -165,9 +166,10 @@ class PoController extends Controller
         $judul = $this->judul;
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $po = DB::SELECT("SELECT *, POSTED as cek from po  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
-                        AND GOL ='$this->GOLZ' AND CBG = '$CBG' ORDER BY NO_BUKTI ");
+                        AND GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP = '$PPN' ORDER BY NO_BUKTI ");
 	  
 	   
         // ganti 6
@@ -271,6 +273,7 @@ class PoController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
@@ -292,25 +295,29 @@ class PoController extends Controller
 
         } elseif($GOLZ=='J') {
 
-            if ($query != '[]') {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = 'PO' . $CBG . $tahun . $bulan . '-' . $query;
+            if( $PPN =='1' ){
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'PY'  . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'PY'  . $CBG . $tahun . $bulan . '-0001';
+                }
+
             } else {
-                $no_bukti = 'PO' . $CBG . $tahun . $bulan . '-0001';
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'PZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'PZ'  . $CBG . $tahun . $bulan . '-0001';
+                }
+                
             }
 
-        } elseif($GOLZ=='N') {
-
-            if ($query != '[]') {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = 'PON' . $CBG . $tahun . $bulan . '-' . $query;
-            } else {
-                $no_bukti = 'PON' . $CBG . $tahun . $bulan . '-0001';
-            }
-
-        }
+        } 
 
         		
 
@@ -431,6 +438,7 @@ class PoController extends Controller
 		$idx = $request->idx;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
 		if ( $idx =='0' && $tipx=='undo'  )
 	    {
@@ -449,6 +457,7 @@ class PoController extends Controller
 		                 where PER ='$per' and FLAG ='$this->FLAGZ'
                          and GOL ='$this->GOLZ' 
                          AND CBG = '$CBG'
+                         AND PKP = '$PPN'
 						 and NO_BUKTI = '$buktix'						 
 		                 ORDER BY NO_BUKTI ASC  LIMIT 1" );
 						 
@@ -473,6 +482,7 @@ class PoController extends Controller
 						 and FLAG ='$this->FLAGZ' 
                          and GOL ='$this->GOLZ' 
                          AND CBG = '$CBG'   
+                         AND PKP = '$PPN'
 		                 ORDER BY NO_BUKTI ASC  LIMIT 1" );
 						 
 		
@@ -498,6 +508,7 @@ class PoController extends Controller
 					 and FLAG ='$this->FLAGZ' 
                      and GOL ='$this->GOLZ' 
                      AND CBG = '$CBG'
+                     AND PKP = '$PPN'
                      and NO_BUKTI < 
 					 '$buktix' ORDER BY NO_BUKTI DESC LIMIT 1" );
 			
@@ -524,6 +535,7 @@ class PoController extends Controller
 					 and FLAG ='$this->FLAGZ' 
                      and GOL ='$this->GOLZ'
                      AND CBG = '$CBG' 
+                     AND PKP = '$PPN'
                      and NO_BUKTI > 
 					 '$buktix' ORDER BY NO_BUKTI ASC LIMIT 1" );
 					 
@@ -546,6 +558,7 @@ class PoController extends Controller
 						and FLAG ='$this->FLAGZ'
                         and GOL ='$this->GOLZ'
                         AND CBG = '$CBG'    
+                        AND PKP = '$PPN'
 		                ORDER BY NO_BUKTI DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 

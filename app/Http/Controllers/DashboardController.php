@@ -14,6 +14,49 @@ class DashboardController extends Controller
         return view('dashboard');
     }
 
+    public function dashboard_plain() {
+
+        // query diagram batang
+        $barBeliTotal = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM BELI WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
+        $barBeliQty = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM BELI WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
+        
+
+        $barJualTotal = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM JUAL WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
+        $barJualQty = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM JUAL WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
+
+        // query diagram pie
+        $pie1 = DB::select("Select namas , sum(total) from beli where year(tgl)=2024 group by namas limit 10");
+        $pie2 = DB::select("Select namac , sum(total) from jual where year(tgl)=2024 group by namac limit 10");
+
+
+        // $chart2 = DB::select("Select namas , sum(total) from jual where year(tgl)=2024 group by namas limit 10");
+        
+        // query data list
+        $piutang = DB::select("SELECT NO_BUKTI, NAMAC, SISA FROM JUAL WHERE  JTEMPO >= NOW() AND SISA <> '0' ORDER BY NAMAC"); 
+        $beli = DB::select("SELECT NO_BUKTI, NAMAS, SISA FROM BELI WHERE JTEMPO >=NOW() AND SISA <> '0'  ORDER BY NAMAS");
+        $saldo = DB::select("SELECT ACCOUNTD.ACNO, ACCOUNTD.NAMA, ACCOUNTD.AK12 FROM ACCOUNTD
+        JOIN account ON ACCOUNTD.ACNO = account.ACNO
+        WHERE account.BNK <> '' AND ACCOUNTD.AK12 <> '0'");
+
+        // $saldo = DB::table("account")->get();
+        // dd($saldo);
+
+        // di panggil lagi disini buat di tampilkan 
+        $result = [
+            "bar_beli_total"=>$barBeliTotal,
+            "bar_beli_qty"=>$barBeliQty,
+            "bar_jual_total"=>$barJualTotal,
+            "bar_jual_qty"=>$barJualQty,
+            "pie_beli"=>$pie1,
+            "pie_jual"=>$pie2,
+            "piutang"=>$piutang,
+            "beli"=>$beli,
+            "saldo"=>$saldo
+        ];
+        // dd($result);
+        return view('dashboard_plain')->with($result);
+    }
+
     public function chart() 
     {
 

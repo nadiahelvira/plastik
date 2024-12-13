@@ -28,6 +28,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('css/app.css')}}">
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
+
 <!-- Date Picker -->
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -70,8 +71,8 @@ function addTab(title, url) {
 
     // Activate the new tab
     $("#tabs").tabs("option", "active", tabCount - 1);
-	$('.mega-menu').hide();
-  }
+    $('.mega-menu').hide();
+    }
   
   
   
@@ -160,7 +161,7 @@ $(document).ready(function () {
   $("#tabs").tabs();
 
   // tab saat pertama kali login, akan mengarah ke sini
-  addTab("Home", "{{ Url('/sup') }}");
+  addTab("Home", "{{ Url('/orderk') }}");
  
   // Function to add a new tab
   

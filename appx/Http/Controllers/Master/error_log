@@ -1,0 +1,28 @@
+[06-Oct-2024 21:06:32 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/januar13/public_html/plastik/app/Http/Controllers/Master/KotaController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/Master/KotaController.php on line 16
+[08-Oct-2024 08:23:33 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/januar13/public_html/plastik/app/Http/Controllers/Master/BhnController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/Master/BhnController.php on line 16
+[13-Nov-2024 05:44:51 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/januar13/public_html/plastik/app/Http/Controllers/Master/GrupController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/Master/GrupController.php on line 16
+[16-Nov-2024 23:13:29 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/januar13/public_html/plastik/app/Http/Controllers/Master/MklController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/Master/MklController.php on line 16
+[17-Nov-2024 00:39:03 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/januar13/public_html/plastik/app/Http/Controllers/Master/PegawaiController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/Master/PegawaiController.php on line 16
+[17-Nov-2024 00:51:46 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/januar13/public_html/plastik/app/Http/Controllers/Master/GrupController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/Master/GrupController.php on line 16
+[19-Nov-2024 04:46:57 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/januar13/public_html/plastik/app/Http/Controllers/Master/GdgController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/Master/GdgController.php on line 16

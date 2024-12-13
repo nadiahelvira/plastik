@@ -35,6 +35,8 @@ class DeliController extends Controller
             $this->judul = "Delivery Order Bahan";
         } else if ( $request->flagz == 'DO' && $request->golz == 'J' ){
             $this->judul = "Delivery Order";
+        } else if ( $request->flagz == 'DO' && $request->golz == 'D' ){
+            $this->judul = "Delivery Order Dropship";
         }
 
         $this->FLAGZ = $request->flagz;
@@ -59,13 +61,14 @@ class DeliController extends Controller
         $golz = $request->GOL;
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $deli = DB::SELECT("SELECT distinct deli.NO_BUKTI, deli.NO_SO, deli.KODEC, deli.NAMAC, 
 		                  deli.ALAMAT, deli.KOTA, deli.KODEP, deli.NAMAP, deli.KOM, 
                           deli.RING, deli.SOPIR, deli.TRUCK
                           from deli, delid 
                           WHERE deli.NO_BUKTI = deliD.NO_BUKTI AND deli.GOL ='$golz' 
-                          AND deli.CBG = '$CBG' AND delid.SISA > 0	");
+                          AND deli.CBG = '$CBG' AND deli.PPN = '$PPN' AND delid.SISA > 0	");
         return response()->json($deli);
     }
 
@@ -74,11 +77,12 @@ class DeliController extends Controller
         $golz = $request->GOL;
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
 		$so = DB::SELECT("SELECT sod.NO_ID, so.NO_BUKTI, so.TGL, so.NAMAC, so.KODEC, so.ALAMAT, so.KOTA,
                                 sod.KD_BRG, sod.NA_BRG, sod.SATUAN, sod.QTY, SOD.KIRIM, sod.HARGA,
                                 SOD.SISA, so.KODEP, so.NAMAP, so.RING, so.KOM from so, sod 
-                        WHERE so.NO_BUKTI=sod.NO_BUKTI AND so.CBG = '$CBG' 
+                        WHERE so.NO_BUKTI=sod.NO_BUKTI AND so.CBG = '$CBG' AND so.PKP = '$PPN'
                         and sod.SISA>0 
                         -- and so.KODEC='".$request->kodec."' 
                         AND so.GOL ='$golz' AND POSTED = 1
@@ -141,9 +145,10 @@ class DeliController extends Controller
         $judul = $this->judul;
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $deli = DB::SELECT("SELECT * from deli  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
-                            and GOL ='$this->GOLZ' AND CBG = '$CBG' ORDER BY NO_BUKTI ");
+                            and GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP='$PPN' ORDER BY NO_BUKTI ");
 	  
 	   
         // ganti 6
@@ -247,6 +252,7 @@ class DeliController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
@@ -254,32 +260,60 @@ class DeliController extends Controller
         $tahun    = substr(session()->get('periode')['tahun'], -2);
 
         $query = DB::table('deli')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ)
-                ->where('GOL', $this->GOLZ)->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                ->where('GOL', $this->GOLZ)->where('CBG', $CBG)->where('PKP', $PPN)->orderByDesc('NO_BUKTI')->limit(1)->get();
 		
-        if( $GOLZ == 'J') {
+    
+        if( $GOLZ=='J'){
 
-            if( $FLAGZ=='DO'){
+            if($PPN=='1'){
 
                 if ($query != '[]')
                 {
                     $query = substr($query[0]->NO_BUKTI, -4);
                     $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                    $no_bukti = 'DO'. $CBG . $tahun . $bulan . '-' . $query;
+                    $no_bukti = 'DY'. $CBG . $tahun . $bulan . '-' . $query;
                 } else {
-                    $no_bukti = 'DO'. $CBG . $tahun . $bulan . '-0001' ;
+                    $no_bukti = 'DY'. $CBG . $tahun . $bulan . '-0001' ;
                 }	
-    
-            } elseif($FLAGZ=='AJ') {
-    
+
+            }else {
+
                 if ($query != '[]')
                 {
                     $query = substr($query[0]->NO_BUKTI, -4);
                     $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                    $no_bukti = 'AJ'. $CBG . $tahun . $bulan . '-' . $query;
+                    $no_bukti = 'DZ'. $CBG . $tahun . $bulan . '-' . $query;
                 } else {
-                    $no_bukti = 'AJ'. $CBG . $tahun . $bulan . '-0001' ;
+                    $no_bukti = 'DZ'. $CBG . $tahun . $bulan . '-0001' ;
                 }	
-    
+
+            }
+            
+
+        } elseif($GOLZ=='D') {
+
+            if($PPN=='1'){
+
+                if ($query != '[]')
+                {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'DRY'. $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'DRY'. $CBG . $tahun . $bulan . '-0001' ;
+                }	
+
+            }else {
+
+                if ($query != '[]')
+                {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'DRZ'. $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'DRZ'. $CBG . $tahun . $bulan . '-0001' ;
+                }	
+
             }
 
         }
@@ -308,7 +342,7 @@ class DeliController extends Controller
 				'KODEP'			=>($request['KODEP']==null) ? "" : $request['KODEP'],
 				'NAMAP'			=>($request['NAMAP']==null) ? "" : $request['NAMAP'],
 				'RING'			=>($request['RING']==null) ? "" : $request['RING'],
-                'PKP'           => (float) str_replace(',', '', $request['PKP']),
+                // 'PKP'           => (float) str_replace(',', '', $request['PKP']),
                 'KOM'           => (float) str_replace(',', '', $request['KOM']),
                 'TOTAL_QTY'     => (float) str_replace(',', '', $request['TQTY']),
                 'TOTAL'      	=> (float) str_replace(',', '', $request['TTOTAL']),
@@ -318,6 +352,7 @@ class DeliController extends Controller
 				'USRNM'         => Auth::user()->username,
 				'TG_SMP'        => Carbon::now(),
 				'CBG'           => $CBG,
+				'PKP'           => $PPN,
             ]
         );
 
@@ -346,6 +381,7 @@ class DeliController extends Controller
 		$NAMAC	= $request->input('NAMAC');	
 		$ALAMAT	= $request->input('ALAMAT');	
 		$KOTA	= $request->input('KOTA');	
+		$PKP	= $request->input('PKP');	
 
 		// Check jika value detail ada/tidak
 		if ($REC) {
@@ -384,6 +420,7 @@ class DeliController extends Controller
 				$detail->NAMAC	= ($NAMAC[$key]==null) ? '' : $NAMAC[$key];
 				$detail->ALAMAT	= ($ALAMAT[$key]==null) ? '' : $ALAMAT[$key];
 				$detail->KOTA	= ($KOTA[$key]==null) ? '' : $KOTA[$key];
+				$detail->PKP	= (float) str_replace(',', '', $PKP[$key]);
 
                 // $detail->JTEMPO     = date('Y-m-d', strtotime($JTEMPO[$key]));
 
@@ -396,9 +433,9 @@ class DeliController extends Controller
 		$deli = Deli::where('NO_BUKTI', $no_buktix )->first();
 
         // DB::SELECT("CALL deliins('$no_buktix')");
-        DB::SELECT("UPDATE DELI, CUST
-                    SET DELI.NAMAC = CUST.NAMAC, DELI.ALAMAT = CUST.ALAMAT, DELI.KOTA = CUST.KOTA, DELI.PKP=CUST.PKP, DELI.HARI = CUST.HARI  WHERE DELI.KODEC = CUST.KODEC 
-                    AND DELI.NO_BUKTI='$no_buktix';");
+        // DB::SELECT("UPDATE DELI, CUST
+        //             SET DELI.NAMAC = CUST.NAMAC, DELI.ALAMAT = CUST.ALAMAT, DELI.KOTA = CUST.KOTA, DELI.PKP=CUST.PKP, DELI.HARI = CUST.HARI  WHERE DELI.KODEC = CUST.KODEC 
+        //             AND DELI.NO_BUKTI='$no_buktix';");
 
         DB::SELECT("UPDATE deli,  delid
                             SET  delid.ID =  deli.NO_ID  WHERE  deli.NO_BUKTI =  delid.NO_BUKTI 
@@ -619,6 +656,7 @@ class DeliController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
@@ -638,7 +676,7 @@ class DeliController extends Controller
 				'NOTES'			=>($request['NOTES']==null) ? "" : $request['NOTES'],
                 'TOTAL_QTY'     => (float) str_replace(',', '', $request['TQTY']),
                 'TOTAL'      	=> (float) str_replace(',', '', $request['TTOTAL']),
-                'PKP'           => (float) str_replace(',', '', $request['PKP']),
+                // 'PKP'           => (float) str_replace(',', '', $request['PKP']),
                 'TDISK'      	=> (float) str_replace(',', '', $request['TDISK']),
 				'KODEP'			=>($request['KODEP']==null) ? "" : $request['KODEP'],
 				'NAMAP'			=>($request['NAMAP']==null) ? "" : $request['NAMAP'],
@@ -650,6 +688,7 @@ class DeliController extends Controller
                 'FLAG'          => $FLAGZ,
 				'TG_SMP'        => Carbon::now(),					
 				'CBG'           => $CBG,					
+				'PKP'           => $PPN,					
                 
             ]
         );
@@ -682,6 +721,7 @@ class DeliController extends Controller
 		$NAMAC	= $request->input('NAMAC');	
 		$ALAMAT	= $request->input('ALAMAT');	
 		$KOTA	= $request->input('KOTA');	
+		$PKP	= $request->input('PKP');	
        
        // Delete yang NO_ID tidak ada di input
         $query = DB::table('delid')->where('NO_BUKTI', $deli->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
@@ -720,6 +760,7 @@ class DeliController extends Controller
                         'NAMAC'   => ($NAMAC[$i]==null) ? "" : $NAMAC[$i],
                         'ALAMAT'   => ($ALAMAT[$i]==null) ? "" : $ALAMAT[$i],
                         'KOTA'   => ($KOTA[$i]==null) ? "" : $KOTA[$i],
+                        'PKP'        => (float) str_replace(',', '', $PKP[$i]),
 
                         // 'JTEMPO'     => ($JTEMPO[$i] != '') ? date("Y-m-d", strtotime($JTEMPO[$i])) : "",
                         
@@ -758,6 +799,7 @@ class DeliController extends Controller
                         'NAMAC'   => ($NAMAC[$i]==null) ? "" : $NAMAC[$i],
                         'ALAMAT'   => ($ALAMAT[$i]==null) ? "" : $ALAMAT[$i],
                         'KOTA'   => ($KOTA[$i]==null) ? "" : $KOTA[$i],
+                        'PKP'        => (float) str_replace(',', '', $PKP[$i]),
                         // 'ID_SOD'     => ($ID_SOD[$i]==null) ? "" : $ID_SOD[$i],
 
                         // 'JTEMPO'     => ($JTEMPO[$i] != '') ? date("Y-m-d", strtotime($JTEMPO[$i])) : "",
@@ -773,9 +815,9 @@ class DeliController extends Controller
 
         $no_bukti = $deli->NO_BUKTI;
 
-        DB::SELECT("UPDATE DELI, CUST
-                    SET DELI.NAMAC = CUST.NAMAC, DELI.ALAMAT = CUST.ALAMAT, DELI.KOTA = CUST.KOTA, DELI.PKP=CUST.PKP, DELI.HARI = CUST.HARI  WHERE DELI.KODEC = CUST.KODEC 
-                    AND DELI.NO_BUKTI='$no_bukti';");
+        // DB::SELECT("UPDATE DELI, CUST
+        //             SET DELI.NAMAC = CUST.NAMAC, DELI.ALAMAT = CUST.ALAMAT, DELI.KOTA = CUST.KOTA, DELI.PKP=CUST.PKP, DELI.HARI = CUST.HARI  WHERE DELI.KODEC = CUST.KODEC 
+        //             AND DELI.NO_BUKTI='$no_bukti';");
 
         DB::SELECT("UPDATE deli,  delid
                     SET  delid.ID =  deli.NO_ID  WHERE  deli.NO_BUKTI =  delid.NO_BUKTI 

@@ -34,11 +34,15 @@ class SuratsController extends Controller
         if ( $request->flagz == 'JL' && $request->golz == 'B' ) {
             $this->judul = "Surat Jalan Bahan Baku";
         } else if ( $request->flagz == 'JL' && $request->golz == 'J' ){
-            $this->judul = "Surat Jalan Barang Jadi";
+            $this->judul = "Surat Jalan";
+        } else if ( $request->flagz == 'JL' && $request->golz == 'D' ){
+            $this->judul = "Surat Jalan Dropship";
         } else if ( $request->flagz == 'AJ' && $request->golz == 'B' ){
             $this->judul = "Retur Surat Jalan Bahan";
         } else if ( $request->flagz == 'AJ' && $request->golz == 'J' ){
             $this->judul = "Retur Surat Jalan Barang";
+        } else if ( $request->flagz == 'AJ' && $request->golz == 'D' ){
+            $this->judul = "Retur Surat Jalan Dropship";
         }
 
         $this->FLAGZ = $request->flagz;
@@ -63,13 +67,14 @@ class SuratsController extends Controller
         $golz = $request->GOL;
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $surats = DB::SELECT("SELECT distinct surats.NO_BUKTI, suratsd.NO_SO, surats.KODEC, surats.NAMAC, 
 		                  surats.ALAMAT, surats.KOTA, surats.KODEP, surats.NAMAP, surats.KOM, 
                           surats.RING, surats.SOPIR, surats.TRUCK, surats.PKP, surats.TOTAL_TKOM
                           from surats, suratsd 
                           WHERE surats.NO_BUKTI = suratsD.NO_BUKTI AND surats.GOL ='$golz' 
-                          AND surats.CBG = '$CBG' AND suratsd.SISA > 0 AND POSTED= 1");
+                          AND surats.CBG = '$CBG' AND surats.PKP = '$PPN' AND suratsd.SISA > 0 AND POSTED= 1");
         return response()->json($surats);
     }
 	
@@ -111,11 +116,11 @@ class SuratsController extends Controller
                                 deli.PKP, delid.TYPE_KOM, delid.KOM, delid.TKOM, deli.TOTAL_TKOM
                             from deli, delid 
                             WHERE deli.NO_BUKTI=delid.NO_BUKTI 
-                            -- AND deli.CBG = '$CBG' 
+                            AND deli.CBG = '$CBG' 
                             -- and delid.SISA>0 
                             -- and deli.KODEC='".$request->kodec."' 
-                            -- AND deli.GOL ='$golz' 
-                            AND POSTED = 1
+                            AND deli.GOL ='$golz' 
+                            AND deli.POSTED = 1
                             GROUP BY NO_BUKTI");
 		return response()->json($deli);
 	}
@@ -123,8 +128,10 @@ class SuratsController extends Controller
     public function browseDo_Cust(Request $request)
     {
         $golz = $request->GOL;
+        $no_do = $request->NO_DO;
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
 		$deli = DB::SELECT("SELECT delid.NO_ID, deli.NO_BUKTI, delid.NO_SO, deli.TGL, delid.NAMAC, delid.KODEC, delid.ALAMAT, delid.KOTA,
                                 delid.KD_BRG, delid.NA_BRG, delid.SATUAN, delid.QTY, delid.KIRIM, delid.HARGA,
@@ -132,7 +139,10 @@ class SuratsController extends Controller
                                 deli.PKP, delid.TYPE_KOM, delid.KOM, delid.TKOM, deli.TOTAL_TKOM
                             from deli, delid 
                             WHERE deli.NO_BUKTI=delid.NO_BUKTI 
-                            -- AND deli.CBG = '$CBG' 
+                            AND deli.CBG = '$CBG' 
+                            AND delid.PKP = '$PPN' 
+                            AND deli.GOL = '$golz' 
+                            AND deli.NO_BUKTI = '$no_do'
                             -- and delid.SISA>0 
                             -- and deli.KODEC='".$request->kodec."' 
                             -- AND deli.GOL ='$golz' 
@@ -232,9 +242,10 @@ class SuratsController extends Controller
         $judul = $this->judul;
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $surats = DB::SELECT("SELECT * from surats  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
-                            and GOL ='$this->GOLZ' AND CBG = '$CBG' ORDER BY NO_BUKTI ");
+                            and GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP = '$PPN'  ORDER BY NO_BUKTI ");
 	  
 	   
         // ganti 6
@@ -338,6 +349,7 @@ class SuratsController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
@@ -345,38 +357,86 @@ class SuratsController extends Controller
         $tahun    = substr(session()->get('periode')['tahun'], -2);
 
         $query = DB::table('surats')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ)
-                ->where('GOL', $this->GOLZ)->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                ->where('GOL', $this->GOLZ)->where('CBG', $CBG)->where('PKP', $PPN)->orderByDesc('NO_BUKTI')->limit(1)->get();
 		
         if( $GOLZ == 'J') {
 
             if( $FLAGZ=='JL'){
 
-                if ($query != '[]')
-                {
-                    $query = substr($query[0]->NO_BUKTI, -4);
-                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                    $no_bukti = 'SJ'. $CBG . $tahun . $bulan . '-' . $query;
+                if( $PPN =='1' ){
+
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'SY' . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'SY' . $CBG . $tahun . $bulan . '-0001';
+                    }
+     
                 } else {
-                    $no_bukti = 'SJ'. $CBG . $tahun . $bulan . '-0001' ;
-                }	
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'SZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'SZ'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+
     
             } elseif($FLAGZ=='AJ') {
-    
-                if ($query != '[]')
-                {
-                    $query = substr($query[0]->NO_BUKTI, -4);
-                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                    $no_bukti = 'AJ'. $CBG . $tahun . $bulan . '-' . $query;
+
+                if( $PPN =='1' ){
+
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'AY' . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'AY' . $CBG . $tahun . $bulan . '-0001';
+                    }
+     
                 } else {
-                    $no_bukti = 'AJ'. $CBG . $tahun . $bulan . '-0001' ;
-                }	
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'AZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'AZ'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
     
             }
 
+        } elseif($GOLZ=='D') {
+
+            if( $PPN =='1' ){
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'SD' . 'Y' . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'SD' . 'Y' . $CBG . $tahun . $bulan . '-0001';
+                }
+ 
+            } else {
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'SD'  . 'Z'  . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'SD'  . 'Z'  . $CBG . $tahun . $bulan . '-0001';
+                }
+                
+            }
+
         }
-        
-
-
 			
 
         $surats = Surats::create(
@@ -400,7 +460,7 @@ class SuratsController extends Controller
 				'KODEP'			=>($request['KODEP']==null) ? "" : $request['KODEP'],
 				'NAMAP'			=>($request['NAMAP']==null) ? "" : $request['NAMAP'],
 				'RING'			=>($request['RING']==null) ? "" : $request['RING'],
-                'PKP'           => (float) str_replace(',', '', $request['PKP']),
+                // 'PKP'           => (float) str_replace(',', '', $request['PKP']),
                 'KOM'           => (float) str_replace(',', '', $request['KOM']),
                 'TOTAL_QTY'     => (float) str_replace(',', '', $request['TQTY']),
                 'TOTAL'      	=> (float) str_replace(',', '', $request['TTOTAL']),
@@ -410,6 +470,7 @@ class SuratsController extends Controller
 				'USRNM'         => Auth::user()->username,
 				'TG_SMP'        => Carbon::now(),
 				'CBG'           => $CBG,
+				'PKP'           => $PPN,
             ]
         );
 
@@ -730,7 +791,7 @@ class SuratsController extends Controller
 				'KODEP'			=>($request['KODEP']==null) ? "" : $request['KODEP'],
 				'NAMAP'			=>($request['NAMAP']==null) ? "" : $request['NAMAP'],
 				'RING'			=>($request['RING']==null) ? "" : $request['RING'],
-                'PKP'           => (float) str_replace(',', '', $request['PKP']),
+                // 'PKP'           => (float) str_replace(',', '', $request['PKP']),
                 'KOM'           => (float) str_replace(',', '', $request['KOM']),
                 'HARI'           => (float) str_replace(',', '', $request['HARI']),
                 'TOTAL_TKOM'           => (float) str_replace(',', '', $request['TOTAL_TKOM']),
@@ -739,6 +800,7 @@ class SuratsController extends Controller
                 'FLAG'          => $FLAGZ,
 				'TG_SMP'        => Carbon::now(),					
 				'CBG'           => $CBG,					
+				'PKP'           => $PPN,					
                 
             ]
         );

@@ -75,12 +75,14 @@ class BeliController extends Controller
         $golz = $request->GOL;
 
 		$CBG = Auth::user()->CBG;
+		$PPN = Auth::user()->PPN;
 
         $beli = DB::SELECT("SELECT distinct beli.NO_BUKTI , beli.KODES, beli.NAMAS, 
-		                  beli.ALAMAT, beli.KOTA, beli.PKP, beli.NO_PO from beli, belid 
+		                  beli.ALAMAT, beli.KOTA, beli.PKP, beli.NO_PO, beli.GUDANG from beli, belid 
                           WHERE beli.NO_BUKTI = beliD.NO_BUKTI AND beli.FLAG='BL' 
                           AND beli.GOL ='$golz'
-                          AND beli.CBG = '$CBG'");
+                          AND beli.CBG = '$CBG'
+                          AND beli.PKP = '$PPN' ");
         return response()->json($beli);
     }
 	
@@ -126,9 +128,10 @@ class BeliController extends Controller
 		$this->setFlag($request);	
         
 		$CBG = Auth::user()->CBG;
+		$PPN = Auth::user()->PPN;
 
         $beli = DB::SELECT("SELECT * from beli  WHERE PER='$periode' and FLAG = '$this->FLAGZ' 
-                and GOL = '$this->GOLZ' AND CBG='$CBG' ORDER BY NO_BUKTI ");
+                and GOL = '$this->GOLZ' AND CBG='$CBG' AND PKP = '$PPN' ORDER BY NO_BUKTI ");
 	  
 	   
         // ganti 6
@@ -241,43 +244,92 @@ class BeliController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
         $bulan    = session()->get('periode')['bulan'];
         $tahun    = substr(session()->get('periode')['tahun'], -2);
 
-        $query = DB::table('beli')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ )->where('GOL', $GOLZ )->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+        $query = DB::table('beli')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ )->where('GOL', $GOLZ )->where('CBG', $CBG)
+                    ->where('PKP', $PPN)->orderByDesc('NO_BUKTI')->limit(1)->get();
 
-        if( $GOLZ=='B'){
+        if( $FLAGZ=='BL' ){
 
-            if ($query != '[]') {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-' . $query;
-            } else {
-                $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-0001';
-            }
+            if( $GOLZ=='B'){
 
-        } elseif($GOLZ=='J') {
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-0001';
+                }
+    
+            } elseif ($GOLZ=='J') {
+    
+                if( $PPN =='1' ){
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'BY'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'BY'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+    
+                } else {
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'BZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'BZ'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+    
+            } 
 
-            if ($query != '[]') {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = $this->FLAGZ . $CBG .  $tahun . $bulan . '-' . $query;
-            } else {
-                $no_bukti = $this->FLAGZ . $CBG .  $tahun . $bulan . '-0001';
-            }
 
-        } elseif($GOLZ=='N') {
+        } elseif( $FLAGZ=='RB'){
 
-            if ($query != '[]') {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-' . $query;
-            } else {
-                $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-0001';
-            }
+            if( $GOLZ=='B'){
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-0001';
+                }
+    
+            } elseif ($GOLZ=='J') {
+    
+                if( $PPN =='1' ){
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'RY'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'RY'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+    
+                } else {
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'RZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'RZ'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+    
+            } 
 
         }
         
@@ -429,6 +481,7 @@ class BeliController extends Controller
 		$idx = $request->idx;
 			
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
 		if ( $idx =='0' && $tipx=='undo'  )
 	    {
@@ -444,9 +497,12 @@ class BeliController extends Controller
     	   $buktix = $request->buktix;
 		   
 		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from beli
-		                 where PER ='$per' and FLAG ='$this->FLAGZ' and GOL ='$this->GOLZ' 
+		                 where PER ='$per' and FLAG ='$this->FLAGZ' 
+                         and GOL ='$this->GOLZ' 
 						 and NO_BUKTI = '$buktix'						 
-		                 and CBG = '$CBG' ORDER BY NO_BUKTI ASC  LIMIT 1" );
+		                 and CBG = '$CBG' 
+                         and PKP = '$PPN'
+                         ORDER BY NO_BUKTI ASC  LIMIT 1" );
 						 
 			
 			if(!empty($bingco)) 
@@ -467,7 +523,9 @@ class BeliController extends Controller
 		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from beli 
 		                 where PER ='$per' 
 						 and FLAG ='$this->FLAGZ' and GOL ='$this->GOLZ'    
-		                 and CBG = '$CBG' ORDER BY NO_BUKTI ASC  LIMIT 1" );
+		                 and CBG = '$CBG' 
+                         and PKP = '$PPN'
+                         ORDER BY NO_BUKTI ASC  LIMIT 1" );
 						 
 		
 			if(!empty($bingco)) 
@@ -490,7 +548,9 @@ class BeliController extends Controller
 		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from beli     
 		             where PER ='$per' 
 					 and FLAG ='$this->FLAGZ' and GOL ='$this->GOLZ'  and NO_BUKTI < 
-					 '$buktix' and CBG = '$CBG' ORDER BY NO_BUKTI DESC LIMIT 1" );
+					'$buktix' and CBG = '$CBG'
+                    and PKP = '$PPN'
+                    ORDER BY NO_BUKTI DESC LIMIT 1" );
 			
 
 			if(!empty($bingco)) 
@@ -513,7 +573,9 @@ class BeliController extends Controller
 		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from beli    
 		             where PER ='$per'  
 					 and FLAG ='$this->FLAGZ' and GOL ='$this->GOLZ' and NO_BUKTI > 
-					 '$buktix' and CBG = '$CBG' ORDER BY NO_BUKTI ASC LIMIT 1" );
+					 '$buktix' and CBG = '$CBG'
+                         and PKP = '$PPN'
+                          ORDER BY NO_BUKTI ASC LIMIT 1" );
 					 
 			if(!empty($bingco)) 
 			{
@@ -532,7 +594,9 @@ class BeliController extends Controller
     		$bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from beli
 						where PER ='$per'
 						and FLAG ='$this->FLAGZ' and GOL ='$this->GOLZ'   
-		                and CBG = '$CBG' ORDER BY NO_BUKTI DESC  LIMIT 1" );
+		                and CBG = '$CBG' 
+                         and PKP = '$PPN'
+                         ORDER BY NO_BUKTI DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 
 			{
@@ -841,7 +905,7 @@ class BeliController extends Controller
 
         $query = DB::SELECT("SELECT beli.NO_BUKTI, beli.TGL, beli.KODES, beli.NAMAS, beli.TOTAL_QTY, beli.NOTES, beli.ALAMAT, 
                                     beli.KOTA, belid.KD_BRG, belid.NA_BRG, belid.SATUAN, belid.QTY, belid.DISK,
-                                    belid.HARGA, belid.TOTAL, belid.KET, beli.TPPN, beli.NETT, beli.NO_PO, beli.USRNM
+                                    (belid.HARGA / belid.KALI) AS HARGA, belid.TOTAL, belid.KET, beli.TPPN, beli.NETT, beli.NO_PO, beli.USRNM
                             FROM beli, belid 
                             WHERE beli.NO_BUKTI='$no_beli' AND beli.NO_BUKTI = belid.NO_BUKTI 
                             ;

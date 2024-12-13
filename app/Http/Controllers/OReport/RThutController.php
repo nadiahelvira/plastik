@@ -23,6 +23,7 @@ class RThutController extends Controller
 		$kodes = Sup::orderBy('KODES')->get();
 		session()->put('filter_gol', '');
 		session()->put('filter_kodes1', '');
+		session()->put('filter_kodes2', 'ZZZ');
 		session()->put('filter_namas1', '');
 		session()->put('filter_tglDari', date("d-m-Y"));
 		session()->put('filter_tglSampai', date("d-m-Y"));
@@ -44,9 +45,14 @@ class RThutController extends Controller
 				$filtergol = " and GOL='".$request->gol."' ";
 			}
 			
-			if (!empty($request->kodes))
+			// if (!empty($request->kodes))
+			// {
+			// 	$filterkodes = " and KODES='".$request->kodes."' ";
+			// }
+		
+			if (!empty($request->kodes) && !empty($request->kodes2))
 			{
-				$filterkodes = " and KODES='".$request->kodes."' ";
+				$filterkodes = " and KODES between '".$kodes."' and '".$kodes2."' ";
 			}
 			
 			if (!empty($request->tglDr) && !empty($request->tglSmp))
@@ -56,14 +62,20 @@ class RThutController extends Controller
 				$filtertgl = " and TGL between '".$tglDrD."' and '".$tglSmpD."' ";
 			}
 			
+			$tgl_1 = date("Y-m-d", strtotime($request->tglDr));
+			$tgl_2 = date("Y-m-d", strtotime($request->tglSmp));
+			$kodes_1 = $request->kodes;
+			$kodes_2 = $request->kodes2;
+			
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodes1', $request->kodes);
+			session()->put('filter_kodes2', $request->kodes2);
 			session()->put('filter_namas1', $request->NAMAS);
 			session()->put('filter_tglDari', $request->tglDr);
 			session()->put('filter_tglSampai', $request->tglSmp);
 
 		$query = DB::SELECT("SELECT NO_BUKTI,TGL,NO_PO,KODES,NAMAS,TOTAL,NOTES,GOL, 
-									TYPE, ACNOA, NACNOA, NO_BANK
+									`TYPE`, ACNOA, NACNOA, NO_BANK
 							from beli 
 							WHERE FLAG='TH' $filtertgl $filtergol $filterkodes;
 		");
@@ -79,6 +91,10 @@ class RThutController extends Controller
 			array_push($data, array(
 				'NO_BUKTI' => $query[$key]->NO_BUKTI,
 				'TGL' => $query[$key]->TGL,
+				'TGL_1' => $tgl_1,
+				'TGL_2' => $tgl_2,
+				'KODES_1' => $kodes_1,
+				'KODES_2' => $kodes_2,
 				'NO_PO' => $query[$key]->NO_PO,
 				'KODES' => $query[$key]->KODES,
 				'NAMAS' => $query[$key]->NAMAS,

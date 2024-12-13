@@ -25,6 +25,8 @@ class User extends Authenticatable
         'privilege',
         'email',
         'password',
+        'CBG',
+        'PPN',
     ];
 
     /**

@@ -39,6 +39,10 @@ class JualController extends Controller
             $this->judul = "Penjualan Barang";
         } else if ( $request->flagz == 'AJ' && $request->golz == 'J' ) {
             $this->judul = "Retur Penjualan Barang";
+        } else if ( $request->flagz == 'JL' && $request->golz == 'D' ) {
+            $this->judul = "Penjualan Dropship";
+        } else if ( $request->flagz == 'AJ' && $request->golz == 'D' ) {
+            $this->judul = "Retur Penjualan Dropship";
         }
 		
         $this->FLAGZ = $request->flagz;
@@ -68,11 +72,12 @@ class JualController extends Controller
         $golz = $request->GOL;
 
 		$CBG = Auth::user()->CBG;
+		$PPN = Auth::user()->PPN;
 
         $jual = DB::SELECT("SELECT distinct jual.NO_BUKTI, jual.NO_SO, jual.KODEC, jual.NAMAC, 
-		                  jual.ALAMAT, jual.KOTA from jual, juald 
-                          WHERE jual.NO_BUKTI = jualD.NO_BUKTI AND jual.GOL ='$golz'
-                          AND jual.CBG = '$CBG' ");
+		                  jual.ALAMAT, jual.KOTA, jual.PKP from jual, juald 
+                          WHERE jual.NO_BUKTI = jualD.NO_BUKTI AND jual.GOL ='$golz' AND jual.FLAG ='JL'
+                          AND jual.CBG = '$CBG' AND jual.PKP = '$PPN' ");
         return response()->json($jual);
     }
 
@@ -86,7 +91,7 @@ class JualController extends Controller
         //     $filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' ";
         // }
         $sod = DB::SELECT("SELECT REC, SATUAN , QTY, HARGA, TOTAL, KET, 
-                                KD_BRG, NA_BRG, DPP, PPN, QTY_KIRIM, DISK
+                                KD_BRG, NA_BRG, DPP, PPN, QTY_KIRIM, DISK, NO_SO, TYPE_KOM, KOM, TKOM
                             from juald
                             where NO_BUKTI='".$request->nobukti."' ORDER BY NO_BUKTI ");
 	
@@ -133,9 +138,10 @@ class JualController extends Controller
         $judul = $this->judul;
    
 		$CBG = Auth::user()->CBG;
+		$PPN = Auth::user()->PPN;
 
         $jual = DB::SELECT("SELECT * from jual  where PER = '$periode' and FLAG ='$this->FLAGZ' 
-                            AND GOL ='$this->GOLZ' AND CBG='$CBG' ORDER BY NO_BUKTI ");
+                            AND GOL ='$this->GOLZ' AND CBG='$CBG' AND PKP ='$PPN' ORDER BY NO_BUKTI ");
 	   
         // ganti 6
 
@@ -241,35 +247,176 @@ class JualController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
         $bulan    = session()->get('periode')['bulan'];
         $tahun    = substr(session()->get('periode')['tahun'], -2);
 
-        $query = DB::table('jual')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ )->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+        $query = DB::table('jual')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ )
+                ->where('CBG', $CBG)->where('PKP', $PPN)->where('GOL', $GOLZ)->orderByDesc('NO_BUKTI')->limit(1)->get();
 
-        if( $GOLZ=='B'){
 
-            if ($query != '[]') {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-' . $query;
-            } else {
-                $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-0001';
+        if( $FLAGZ=='JL' ){
+
+            if( $GOLZ=='B'){
+
+                if( $PPN =='1' ){
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'JL' . 'Y' . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'JL' . 'Y' . $CBG . $tahun . $bulan . '-0001';
+                    }
+     
+                } else {
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'JL'  . 'Z'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'JL'  . 'Z'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+    
+            } elseif($GOLZ=='J') {
+    
+    
+                if( $PPN =='1' ){
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'JY' . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'JY' . $CBG . $tahun . $bulan . '-0001';
+                    }
+     
+                } else {
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'JZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'JZ'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+    
+            } elseif($GOLZ=='D') {
+    
+    
+                if( $PPN =='1' ){
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'JD' . 'Y' . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'JD' . 'Y' . $CBG . $tahun . $bulan . '-0001';
+                    }
+     
+                } else {
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'JD'  . 'Z'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'JD'  . 'Z'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+    
             }
 
-        } elseif($GOLZ=='J') {
 
-            if ($query != '[]') {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = $this->FLAGZ . $CBG .  $tahun . $bulan . '-' . $query;
-            } else {
-                $no_bukti = $this->FLAGZ . $CBG .  $tahun . $bulan . '-0001';
+        } elseif($FLAGZ=='AJ'){
+
+            if( $GOLZ=='B'){
+
+                if( $PPN =='1' ){
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'AY' . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'AY' . $CBG . $tahun . $bulan . '-0001';
+                    }
+     
+                } else {
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'AZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'AZ'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+    
+            } elseif($GOLZ=='J') {
+    
+    
+                if( $PPN =='1' ){
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'AY' . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'AY' . $CBG . $tahun . $bulan . '-0001';
+                    }
+     
+                } else {
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'AZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'AZ'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+    
+            } elseif($GOLZ=='D') {
+    
+    
+                if( $PPN =='1' ){
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'AD' . 'Y' . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'AD' . 'Y' . $CBG . $tahun . $bulan . '-0001';
+                    }
+     
+                } else {
+    
+                    if ($query != '[]') {
+                        $query = substr($query[0]->NO_BUKTI, -4);
+                        $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                        $no_bukti = 'AD'  . 'Z'  . $CBG . $tahun . $bulan . '-' . $query;
+                    } else {
+                        $no_bukti = 'AD'  . 'Z'  . $CBG . $tahun . $bulan . '-0001';
+                    }
+                    
+                }
+    
             }
 
         }
+        
 
         
 		
@@ -311,13 +458,14 @@ class JualController extends Controller
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
                 'HARI'            => (float) str_replace(',', '', $request['HARI']),
-                'PKP'            => (float) str_replace(',', '', $request['PKP']),
+                // 'PKP'            => (float) str_replace(',', '', $request['PKP']),
                 'TOTAL_TKOM'            => (float) str_replace(',', '', $request['TOTAL_TKOM']),
 
                 'USRNM'            => Auth::user()->username,
                 'TG_SMP'           => Carbon::now(),
 				'created_by'       => Auth::user()->username,
                 'CBG'              => $CBG,
+                'PKP'              => $PPN,
             ]
         );
 
@@ -642,7 +790,7 @@ class JualController extends Controller
                 'RING'            => ($request['RING'] == null) ? "" : $request['RING'],
                 'KOM'            => (float) str_replace(',', '', $request['KOM']),
                 'HARI'            => (float) str_replace(',', '', $request['HARI']),
-                'PKP'            => (float) str_replace(',', '', $request['PKP']),
+                // 'PKP'            => (float) str_replace(',', '', $request['PKP']),
                 'TOTAL_TKOM'            => (float) str_replace(',', '', $request['TOTAL_TKOM']),
 
 				'USRNM'            => Auth::user()->username,
@@ -651,6 +799,7 @@ class JualController extends Controller
                 'CBG'              => $CBG,
                 'FLAG'             => $FLAGZ,						
                 'GOL'              => $GOLZ,
+                'PKP'              => $PPN,
             ]
         );
 

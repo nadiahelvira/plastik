@@ -19,6 +19,18 @@
 	<field name="PPN" class="java.lang.String"/>
 	<field name="NETT" class="java.lang.String"/>
 	<field name="NA_BRG" class="java.lang.String"/>
+	<field name="TGL_1" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TGL_2" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="KODES_1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="KODES_2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="T_QTY" class="java.lang.String" incrementType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTY}]]></variableExpression>
 		<initialValueExpression><![CDATA[$F{QTY}]]></initialValueExpression>
@@ -202,6 +214,46 @@
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["NETT"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="512" y="52" width="60" height="20" uuid="f62126f2-1c87-4c52-892a-95c5e8def5af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TGL_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="457" y="52" width="55" height="20" uuid="268e68ba-14e2-4f77-b692-662cce91a835"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Tanggal :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="179" y="52" width="55" height="20" uuid="92750e30-8a8a-4844-8810-5198c26a396b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Supplier :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="52" width="80" height="20" uuid="954e4b1f-40ba-4fc5-bc84-472799dcb886"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{KODES_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="345" y="52" width="88" height="20" uuid="52f8123f-5560-4b62-b046-e2d4bec50e92"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{KODES_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="572" y="52" width="30" height="20" uuid="9f532fb6-fd0f-4fec-be1b-7619b96da62a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["s/d"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="602" y="52" width="60" height="20" uuid="d865f044-5c50-47b7-ba4a-705c3afb32ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TGL_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="315" y="52" width="30" height="20" uuid="c56c64b1-550e-415a-b970-3ae9b8eecae1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["s/d"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

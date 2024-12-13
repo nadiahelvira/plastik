@@ -28,25 +28,19 @@ class SoController extends Controller
     var $judul = '';
     var $FLAGZ = '';
     var $GOLZ = '';
-    var $TYPEZ = '';
 	
     function setFlag(Request $request)
     {
         if ( $request->flagz == 'SO' && $request->golz == 'B') {
             $this->judul = "Sales Order Bahan Baku";
-        } else if ( $request->flagz == 'SO' && $request->golz == 'J' && $request->typez == 'NON') {
+        } else if ( $request->flagz == 'SO' && $request->golz == 'J') {
             $this->judul = "Sales Order Barang";
-        } else if ( $request->flagz == 'SO' && $request->golz == 'DR' && $request->typez == 'NON') {
-            $this->judul = "Sales Order Dropship";
-        } else if ( $request->flagz == 'SO' && $request->golz == 'J' && $request->typez == 'PPN') {
-            $this->judul = "Sales Order Barang";
-        } else if ( $request->flagz == 'SO' && $request->golz == 'DR' && $request->typez == 'PPN') {
+        } else if ( $request->flagz == 'SO' && $request->golz == 'D') {
             $this->judul = "Sales Order Dropship";
         }
 		
         $this->FLAGZ = $request->flagz;
         $this->GOLZ = $request->golz;
-        $this->TYPEZ = $request->typez;
 
 
     }
@@ -57,7 +51,7 @@ class SoController extends Controller
 
 	    $this->setFlag($request);
         // ganti 3
-        return view('otransaksi_so.index')->with(['judul' => $this->judul, 'flagz' => $this->FLAGZ, 'golz' => $this->GOLZ, 'typez' => $this->TYPEZ ]);
+        return view('otransaksi_so.index')->with(['judul' => $this->judul, 'flagz' => $this->FLAGZ, 'golz' => $this->GOLZ ]);
 	
 		
     }
@@ -65,7 +59,6 @@ class SoController extends Controller
 	public function browse(Request $request)
     {
         $golz = $request->GOL;
-        $typez = $request->TYPE;
         $kodec = $request->KODEC;
 
         $CBG = Auth::user()->CBG;
@@ -73,10 +66,10 @@ class SoController extends Controller
         $so = DB::SELECT("SELECT SO.NO_BUKTI , SO.JTEMPO, SO.TGL, SO.KODEC, SO.NAMAC, 
                                 SO.ALAMAT, SO.KOTA, SOD.KD_BRG, SOD.NA_BRG, SOD.QTY, SOD.HARGA, SOD.KIRIM, SOD.SISA,
                                 SOD.TOTAL, SOD.PPN, SOD.DPP, SOD.DISK, SOD.SATUAN, SOD.TYPE_KOM, 
-                                SOD.KOM, SOD.TKOM, SO.TOTAL_TKOM  from so, sod 
+                                SOD.KOM, SOD.TKOM, SO.TOTAL_TKOM, SO.PKP  from so, sod 
                           WHERE SO.NO_BUKTI = SOD.NO_BUKTI 
                         --   AND SO.KODEC ='$kodec' 
-                          AND SO.GOL ='$golz' AND SO.TYPE ='$typez'
+                          AND SO.GOL ='$golz'
                           AND SOD.SISA > 0
                         --   AND CBG = '$CBG' 
                           AND POSTED = 1");
@@ -148,18 +141,18 @@ class SoController extends Controller
         }
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
 		$this->setFlag($request);
 
         $FLAGZ = $this->FLAGZ;
         $GOLZ = $this->GOLZ;
-        $TYPEZ = $this->TYPEZ;
         $judul = $this->judul;
 
         $so = DB::SELECT("SELECT NO_ID, NO_BUKTI, TGL, NAMAC, TOTAL, TOTAL_QTY, NOTES, USRNM, 
                                 POSTED, FLAG, GOL, TYPE
                         from so  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
-                        AND GOL ='$this->GOLZ' AND TYPE ='$this->TYPEZ' AND CBG = '$CBG' 
+                        AND GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP = '$PPN'
                         ORDER BY NO_BUKTI ");
 	  
 	   
@@ -173,10 +166,10 @@ class SoController extends Controller
                     //CEK POSTED di index dan edit
 
                     // url untuk delete di index
-                    $url = "'".url("so/delete/" . $row->NO_ID . "/?flagz=" . $row->FLAG . "&golz=" . $row->GOL. "&typez=" . $row->TYPE)."'";
+                    $url = "'".url("so/delete/" . $row->NO_ID . "/?flagz=" . $row->FLAG . "&golz=" . $row->GOL)."'";
                     // batas
 
-                    $btnEdit =   ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' href="so/edit/?idx=' . $row->NO_ID . '&tipx=edit&flagz=' . $row->FLAG . '&judul=' . $this->judul . '&golz=' . $row->GOL . '&typez=' . $row->TYPE .'"';					
+                    $btnEdit =   ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' href="so/edit/?idx=' . $row->NO_ID . '&tipx=edit&flagz=' . $row->FLAG . '&judul=' . $this->judul . '&golz=' . $row->GOL .'"';					
                     $btnDelete = ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' onclick="deleteRow('.$url.')"';
                     // $btnDelete = ($row->POSTED == 1) ? ' onclick= "alert(\'Transaksi ' . $row->NO_BUKTI . ' sudah diposting!\')" href="#" ' : ' onclick="return confirm(&quot; Apakah anda yakin ingin hapus? &quot;)" href="so/delete/' . $row->NO_ID . '/?flagz=' . $row->FLAG . '&golz=' . $row->GOL . '&typez=' . $row->TYPE .'" ';
 
@@ -258,10 +251,10 @@ class SoController extends Controller
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
         $GOLZ = $this->GOLZ;
-        $TYPEZ = $this->TYPEZ;
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
@@ -269,37 +262,71 @@ class SoController extends Controller
         $tahun    = substr(session()->get('periode')['tahun'], -2);
 
 	    $query = DB::table('so')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', 'SO')->where('CBG', $CBG)
-                    ->where('GOL', $this->GOLZ)->where('TYPE', $this->TYPEZ)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                    ->where('GOL', $this->GOLZ)->where('PKP', $PPN)->orderByDesc('NO_BUKTI')->limit(1)->get();
 
         if( $GOLZ=='B'){
 
-            if ($query != '[]') {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-' . $query;
-            } else {
-                $no_bukti = $this->FLAGZ . $this->GOLZ . $CBG . $tahun . $bulan . '-0001';
+            if( $PPN =='1' ){
+                
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'SY' . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'SY' . $CBG . $tahun . $bulan . '-0001';
+                }
+
             }
 
         } elseif($GOLZ=='J') {
 
-            if ($query != '[]') {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = $this->FLAGZ . $CBG . $tahun . $bulan . '-' . $query;
+            if( $PPN =='1' ){
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'SY'  . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'SY'  . $CBG . $tahun . $bulan . '-0001';
+                }
+
             } else {
-                $no_bukti = $this->FLAGZ . $CBG . $tahun . $bulan . '-0001';
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'SZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'SZ'  . $CBG . $tahun . $bulan . '-0001';
+                }
+                
             }
 
-        } elseif($GOLZ=='DR') {
+        } elseif($GOLZ=='D') {
 
-            if ($query != '[]') {
-                $query = substr($query[0]->NO_BUKTI, -4);
-                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-                $no_bukti = $this->FLAGZ . 'D' . $CBG . $tahun . $bulan . '-' . $query;
+            if( $PPN =='1' ){
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'SD' . 'Y' . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'SD' . 'Y' . $CBG . $tahun . $bulan . '-0001';
+                }
+ 
             } else {
-                $no_bukti = $this->FLAGZ . 'D' . $CBG . $tahun . $bulan . '-0001';
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'SD'  . 'Z'  . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'SD'  . 'Z'  . $CBG . $tahun . $bulan . '-0001';
+                }
+                
             }
+
+            
 
         }
 
@@ -320,7 +347,6 @@ class SoController extends Controller
                 'FLAG'             => 'SO',						
                 'GOL'              => $GOLZ,
                 'CBG'              => $CBG,
-                'TYPE'             => $TYPEZ,
                 'NOTES'            => ($request['NOTES'] == null) ? "" : $request['NOTES'],
                 'TOTAL_QTY'        => (float) str_replace(',', '', $request['TTOTAL_QTY']),
                 'TOTAL'            => (float) str_replace(',', '', $request['TTOTAL']),
@@ -429,7 +455,7 @@ class SoController extends Controller
 
 		
 					 
-        return redirect('/so/edit/?idx=' . $so->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '&golz=' . $this->GOLZ . '&typez=' . $this->TYPEZ . '');
+        return redirect('/so/edit/?idx=' . $so->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '&golz=' . $this->GOLZ .'');
 
 		
 		
@@ -451,7 +477,7 @@ class SoController extends Controller
         {
             return redirect('/so')
 			       ->with('status', 'Maaf Periode sudah ditutup!')
-                   ->with(['judul' => $judul, 'flagz' => $FLAGZ, 'golz' => $GOLZ, 'typez' => $TYPEZ]);
+                   ->with(['judul' => $judul, 'flagz' => $FLAGZ, 'golz' => $GOLZ]);
         }
 		
 		$this->setFlag($request);
@@ -617,7 +643,7 @@ class SoController extends Controller
  
          
          return view('otransaksi_so.edit', $data)
-		 ->with(['tipx' => $tipx, 'idx' => $idx, 'flagz' =>$this->FLAGZ, 'golz' =>$this->GOLZ, 'judul' => $this->judul, 'typez' =>$this->TYPEZ ]);
+		 ->with(['tipx' => $tipx, 'idx' => $idx, 'flagz' =>$this->FLAGZ, 'golz' =>$this->GOLZ, 'judul' => $this->judul ]);
 			 
  
       
@@ -683,7 +709,6 @@ class SoController extends Controller
                 'FLAG'             => 'SO',						
                 'GOL'              => $GOLZ,
                 'CBG'              => $CBG,
-                'TYPE'             => $TYPEZ,
                 'TOTAL_TKOM'       => (float) str_replace(',', '', $request['TOTAL_TKOM']),
 
                 'NAMAC_2'          => ($request['NAMAC_2'] == null) ? "" : $request['NAMAC_2'],
@@ -827,7 +852,7 @@ class SoController extends Controller
                     SET  sod.ID =  so.NO_ID  WHERE  so.NO_BUKTI =  sod.NO_BUKTI 
                     AND  so.NO_BUKTI='$no_bukti';");
 					 
-        return redirect('/so/edit/?idx=' . $so->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '&golz=' . $this->GOLZ . '&typez=' . $this->TYPEZ . '');	
+        return redirect('/so/edit/?idx=' . $so->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '&golz=' . $this->GOLZ . '');	
 		
 	   
     }
@@ -855,7 +880,7 @@ class SoController extends Controller
         {
             return redirect()->route('so')
                 ->with('status', 'Maaf Periode sudah ditutup!')
-                ->with(['judul' => $this->judul, 'flagz' => $this->FLAGZ, 'golz' => $this->GOLZ, 'typez' => $this->TYPEZ]);
+                ->with(['judul' => $this->judul, 'flagz' => $this->FLAGZ, 'golz' => $this->GOLZ]);
         }
 		
 		
@@ -863,14 +888,14 @@ class SoController extends Controller
 
         $deleteSo->delete();
 
-       return redirect('/so?flagz='.$FLAGZ.'&golz='.$GOLZ.'&golz='.$GOLZ.'&typez='.$TYPEZ)->with(['judul' => $judul, 'flagz' => $FLAGZ, 'golz' => $GOLZ, 'typez' => $TYPEZ ])->with('statusHapus', 'Data '.$beli_bh->NO_BUKTI.' berhasil dihapus');
+       return redirect('/so?flagz='.$FLAGZ.'&golz='.$GOLZ.'&golz='.$GOLZ)->with(['judul' => $judul, 'flagz' => $FLAGZ, 'golz' => $GOLZ])->with('statusHapus', 'Data '.$so->NO_BUKTI.' berhasil dihapus');
 
 
     }
     
     
     
-    public function cetak(So $so)
+    public function cetak(Request $request, So $so)
     {
 
 		$this->setFlag($request);
@@ -883,11 +908,12 @@ class SoController extends Controller
         $PHPJasperXML = new PHPJasperXML();
         $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
 
-        $query = DB::SELECT("SELECT so.NO_BUKTI, so.TGL, so.KODEC, if($GOLZ='DR', so.NAMAC_2, so.NAMAC) AS NAMAC, 
-                                    so.TOTAL_QTY, so.NOTES, if($GOLZ='DR', so.ALAMAT_2, so.NAMAC) AS ALAMAT, 
-                                    if($GOLZ='DR', so.KOTA_2, so.KOTA) AS KOTA, sod.KD_BRG, sod.NA_BRG, sod.SATUAN, sod.QTY, 
+        $query = DB::SELECT("SELECT so.NO_BUKTI, so.TGL, if(so.GOL='DR', '' , so.KODEC) AS KODEC, 
+                                    if(so.GOL='DR', so.NAMAC_2, so.NAMAC) AS NAMAC, 
+                                    so.TOTAL_QTY, so.NOTES, if(so.GOL='DR', so.ALAMAT_2, so.ALAMAT) AS ALAMAT, 
+                                    if(so.GOL='DR', so.KOTA_2, so.KOTA) AS KOTA, sod.KD_BRG, sod.NA_BRG, sod.SATUAN, sod.QTY, 
                                     sod.HARGA, sod.TOTAL, sod.KET, so.TPPN, so.NETT,
-                                    so.JTEMPO, so.TDPP, so.TDISK, sod.DISK, so.DROP
+                                    so.JTEMPO, so.TDPP, so.TDISK, sod.DISK
                             FROM so, sod 
                             WHERE so.NO_BUKTI='$no_so' AND so.NO_BUKTI = sod.NO_BUKTI 
                             ;

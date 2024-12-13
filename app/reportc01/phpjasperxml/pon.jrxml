@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="kasn" language="javascript" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bfad45cf-72e9-4697-a6dc-fa407eb0bfe2">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pon" language="javascript" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bfad45cf-72e9-4697-a6dc-fa407eb0bfe2">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -58,6 +59,18 @@
 	<field name="NOTES" class="java.lang.String"/>
 	<field name="QTY" class="java.lang.Float"/>
 	<field name="HARGA" class="java.lang.Float"/>
+	<field name="TGL_1" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TGL_2" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="KODES_1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="KODES_2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="VAR_KG" class="java.lang.Double" resetType="Group" resetGroup="KODES" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTY}]]></variableExpression>
 	</variable>
@@ -194,6 +207,46 @@
 						<font size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["SUPPLIER : "]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="595" y="5" width="55" height="20" uuid="2fda61de-230a-4ef4-b30e-6e74f180752b"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Tanggal :"]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="740" y="5" width="60" height="20" uuid="3d7b6678-4183-403b-949f-27a76184e7e4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{TGL_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="650" y="5" width="60" height="20" uuid="58eff390-ce09-4346-a41c-f222cc300723"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{TGL_1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="710" y="5" width="30" height="20" uuid="fea1b1d5-8d83-41a0-bc3a-7342bb4768bd"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["s/d"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="372" y="5" width="80" height="20" uuid="f2441c0d-2ff0-481c-8e1b-d7e1a7ca8881"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{KODES_1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="453" y="5" width="30" height="20" uuid="467436f0-5eae-4e2b-beb1-3aa2d2205699"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["s/d"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="317" y="5" width="55" height="20" uuid="dfa2bceb-d52e-46ed-a840-ba22136428b7"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Supplier :"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="483" y="5" width="88" height="20" uuid="651e8d3a-7fb7-44a4-a7ec-ccb571641b95"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{KODES_2}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>

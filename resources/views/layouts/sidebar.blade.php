@@ -34,12 +34,12 @@
       /* top: 800; */
       /* top: 50; */
       left: 100px;
-      width: 850px;
+      width: 900px;
      
       background-color: white;
       display: none;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 5px;
+      padding: 2px;
       z-index: 9999 !important;
     }
 
@@ -132,8 +132,8 @@
     }
 
     .menu-card h6 {
-      margin-top: 12px;
-	  color:black;
+      margin-top: 8px;
+	    color:black;
 	  
     }
 
@@ -175,6 +175,28 @@
         transition: margin-left 0.3s ease-in-out;
         margin-left: 100px;
       }
+    }
+
+    /* batas */
+
+    /* icon bergerak */
+
+    @keyframes wiggle {
+        0%, 100% {
+            transform: rotate(0deg);
+        }
+        25% {
+            transform: rotate(-20deg);
+        }
+        50% {
+            transform: rotate(20deg);
+        }
+        75% {
+            transform: rotate(-20deg);
+        }
+    }
+    .nav-item a:hover .nav-icon {
+        animation: wiggle 0.6s ease-in-out infinite;
     }
 
     /* batas */
@@ -221,6 +243,18 @@
                with font-awesome or any other icon font library -->
           <li class="nav-item">
             <a href="#" class="nav-link" data-bs-toggle="tooltip" title="Home">
+              <i class="nav-icon fas fa-home"></i>
+              <p>
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <!-- <a href="#" class="nav-link" data-bs-toggle="tooltip" title="Home"> -->
+
+            <!-- tammbahan untuk dashboard -->
+            <a href="#" onclick="javascript:addTab('Dashboard', '{{ url('dashboard') }}')" class="nav-link" data-bs-toggle="tooltip" title="Dashboard">
+            <!-- batas dashboard (jangan lupa web dan controller)-->
               <i class="nav-icon fas fa-home"></i>
               <p>
               </p>
@@ -297,15 +331,16 @@
 			      </div>
         </div>
 		    <div class="col-md-3">
-            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
-              <a href="javascript:addTab('Barang', '{{url('brg')}}')">
-                  <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-10px;font-size: 40px;" class="nav-icon fas fa-cube icon-orange"></i>
-                <h6>Barang</h6>
-              </a>
-			      </div>
+          <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+            <a href="javascript:addTab('Barang', '{{url('brg')}}')">
+                <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
+                <i style="margin-left:-10px;font-size: 40px;" class="nav-icon fas fa-cube icon-orange"></i>
+              <h6>Barang</h6>
+            </a>
           </div>
+        </div>
       </div>
+
 	    <div class="row">
         <div class="col-md-3">
             <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
@@ -349,7 +384,7 @@
             <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
               <a href="javascript:addTab('Lokasi','{{url('lokasi')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-crosshairs icon-green"></i>
+                  <i style="margin-left:-10px;font-size: 40px;" class="nav-icon fas fa-crosshairs icon-green"></i>
                 <h6>Lokasi</h6>
               </a>
 			      </div>
@@ -358,7 +393,7 @@
             <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe6ff;">
               <a href="javascript:addTab('Komisi','{{url('komisi')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-thumbtack icon-pink"></i>
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-thumbtack icon-pink"></i>
                 <h6>Komisi</h6>
               </a>
 			      </div>
@@ -367,7 +402,7 @@
             <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe6ff;">
               <a href="javascript:addTab('Kategori','{{url('kategori')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                  <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-folder icon-pink"></i>
+                  <i style="margin-left:-10px;font-size: 40px;" class="nav-icon fas fa-folder icon-pink"></i>
                 <h6>Kategori</h6>
               </a>
 			      </div>
@@ -417,7 +452,7 @@
             <div class="menu-card"  style="border:1px solid #aabbcc; background-color:#ffd9d9;">
                 <a href="javascript:addTab('Pembelian', '{{url('beli?flagz=BL&golz=J')}}')">
                   <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                  <i style="margin-left:-40px;font-size: 40px;" class="nav-icon fas fa-store icon-red"></i>
+                  <i style="margin-left:-8px;font-size: 40px;" class="nav-icon fas fa-store icon-red"></i>
                   <h6>Pembelian</h6>
                 </a>
 			      </div>
@@ -426,16 +461,16 @@
             <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffd9d9;">
                 <a href="javascript:addTab('Retur Pembelian', '{{url('beli?flagz=RB&golz=J')}}')">
                   <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-retweet icon-red"></i>
+                  <i style="margin-left:-15px;font-size: 40px;" class="nav-icon fas fa-retweet icon-red"></i>
                   <h6>Retur Pembelian</h6>
                 </a>
 			      </div>
         </div>
         <div class="col-md-3">
           <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ebd9ff;">
-              <a href="javascript:addTab('U.M Pembelian', '{{url('utbeli?flagz=UM')}}')">
+              <a href="javascript:addTab('U.M Pembelian', '{{url('utbeli?flagz=UM&golz=J')}}')">
                 <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
-                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-money-bill icon-purple"></i>
+                  <i style="margin-left:-15px;font-size: 40px;" class="nav-icon fas fa-money-bill icon-purple"></i>
                 <h6>U.M Pembelian</h6>
               </a>
 			    </div>
@@ -445,7 +480,7 @@
 	    <div class="row">
 		    <div class="col-md-3">
           <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ebd9ff;">
-              <a href="javascript:addTab('Transaksi Hutang', '{{url('utbeli?flagz=TH')}}')">
+              <a href="javascript:addTab('Transaksi Hutang', '{{url('utbeli?flagz=TH&golz=J')}}')">
                 <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
                   <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-hand-holding-heart icon-purple"></i>
                 <h6>Transaksi Hutang</h6>
@@ -454,7 +489,7 @@
         </div>
         <div class="col-md-3">
             <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ebd9ff;">
-              <a href="javascript:addTab('Pembayaran Hutang', '{{url('hut?flagz=B')}}')">
+              <a href="javascript:addTab('Pembayaran Hutang', '{{url('hut?flagz=B&golz=J')}}')">
                 <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
                   <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-cash-register icon-purple"></i>
                 <h6>Pembayaran Hutang</h6>
@@ -513,88 +548,121 @@
 
       <div class="row d-flex">
         <div class="col-md-3">
-            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
-              <a href="javascript:addTab('Sales Order (PPN)', '{{url('so?flagz=SO&golz=J&typez=PPN')}}')">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+              <a href="javascript:addTab('Sales Order', '{{url('so?flagz=SO&golz=J')}}')">
                 <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-green"></i>
-                <h6>Sales Order (PPN)</h6>
+                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-orange"></i>
+                <h6>Sales Order</h6>
               </a>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
-              <a href="javascript:addTab('Sales Order Dropship (PPN)', '{{url('so?flagz=SO&golz=DR&typez=PPN')}}')">
-                <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-green"></i>
-                <h6>SO Dropship (PPN)</h6>
-              </a>
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+                <a href="javascript:addTab('Delivery Order', '{{url('deli?flagz=DO&golz=J')}}')">
+                  <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-file icon-orange"></i>
+                  <h6>Delivery Order</h6>
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+                <a href="javascript:addTab('Surat Jalan', '{{url('surats?flagz=JL&golz=J')}}')">                
+                  <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-envelope-open-text icon-orange"></i>
+                  <h6>Surat Jalan</h6>
+                  <!-- <h6>Barang</h6> -->
+                </a>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
-              <a href="javascript:addTab('Sales Order (NON)', '{{url('so?flagz=SO&golz=J&typez=NON')}}')">
-                <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-green"></i>
-                <h6>Sales Order (Non)</h6>
-              </a>
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+                <a href="javascript:addTab('Penjualan', '{{url('jual?flagz=JL&golz=J')}}')">
+                <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-copy icon-orange"></i>
+                  <h6>Penjualan</h6>
+                </a>
             </div>
         </div>
 
+      </div>
+
+      <div class="row">
+
         <div class="col-md-3">
-            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
-              <a href="javascript:addTab('Sales Order Dropship (NON)', '{{url('so?flagz=SO&golz=DR&typez=NON')}}')">
-                <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
-                  <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-green"></i>
-                <h6>SO Dropship (Non)</h6>
+          <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+              <a href="javascript:addTab('Retur Penjualan', '{{url('jual?flagz=AJ&golz=J')}}')">
+                <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-retweet icon-orange"></i>
+                <h6>Retur Penjualan</h6>
               </a>
-            </div>
+          </div>
         </div>
+
       </div>
 
         <div class="row">
+
           <div class="col-md-3">
-              <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
-                  <a href="javascript:addTab('Delivery Order', '{{url('deli?flagz=DO&golz=J')}}')">
+              <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
+                <a href="javascript:addTab('Sales Order Dropship', '{{url('so?flagz=SO&golz=D')}}')">
+                  <!-- <i class="nav-icon fas fa-cart-plus icon-yellow"></i>  -->
+                    <i style="margin-left:-30px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-green"></i>
+                  <h6>SO Dropship</h6>
+                </a>
+              </div>
+          </div>
+
+          <div class="col-md-3">
+              <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
+                  <a href="javascript:addTab('Delivery Order Dropship', '{{url('deli?flagz=DO&golz=D')}}')">
                     <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-file icon-orange"></i>
-                    <h6>Delivery Order</h6>
+                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-file icon-green"></i>
+                    <h6>DO Dropship</h6>
                   </a>
               </div>
           </div>
           
           <div class="col-md-3">
-              <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
-                  <a href="javascript:addTab('Surat Jalan', '{{url('surats?flagz=JL&golz=J')}}')">                
+              <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
+                  <a href="javascript:addTab('Surat Jalan Dropship', '{{url('surats?flagz=JL&golz=D')}}')">                
                     <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
-                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-envelope-open-text icon-orange"></i>
-                    <h6>Surat Jalan</h6>
+                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-envelope-open-text icon-green"></i>
+                    <h6>Surat Jalan Dropship</h6>
                     <!-- <h6>Barang</h6> -->
                   </a>
               </div>
           </div>
 
           <div class="col-md-3">
-              <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
-                  <a href="javascript:addTab('Penjualan', '{{url('jual?flagz=JL&golz=J')}}')">
+              <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
+                  <a href="javascript:addTab('Penjualan Dropship', '{{url('jual?flagz=JL&golz=D')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
-                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-copy icon-orange"></i>
-                    <h6>Penjualan</h6>
+                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-copy icon-green"></i>
+                    <h6>Penjualan Dropship</h6>
                   </a>
               </div>
           </div>
 
-          <div class="col-md-3">
-            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
-                <a href="javascript:addTab('Retur Penjualan', '{{url('jual?flagz=AJ&golz=J')}}')">
-                  <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
-                    <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-retweet icon-orange"></i>
-                  <h6>Retur Penjualan</h6>
-                </a>
-            </div>
+        </div>
+
+      <div class="row">
+
+        <div class="col-md-3">
+          <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
+              <a href="javascript:addTab('Retur Penjualan Dropship', '{{url('jual?flagz=AJ&golz=D')}}')">
+                <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-retweet icon-green"></i>
+                <h6>Retur Penjualan DS</h6>
+              </a>
           </div>
         </div>
+
+
+      </div>
 
       <div class="row">
         <div class="col-md-3">

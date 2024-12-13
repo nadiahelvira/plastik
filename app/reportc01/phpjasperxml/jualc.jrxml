@@ -167,47 +167,47 @@
 				<text><![CDATA[INVOICE PENJUALAN]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="180" y="0" width="61" height="20" uuid="1d98b977-b97c-4a03-a035-f8c252733567"/>
+				<reportElement x="170" y="0" width="61" height="20" uuid="1d98b977-b97c-4a03-a035-f8c252733567"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["No Nota"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="20" width="61" height="20" uuid="e6e7ef84-b6f8-42d9-b20f-569cf05e106c"/>
+				<reportElement x="170" y="20" width="61" height="20" uuid="e6e7ef84-b6f8-42d9-b20f-569cf05e106c"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Tanggal"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="40" width="61" height="20" uuid="96569fe5-13cb-498a-ad64-1ad714b0694f"/>
+				<reportElement x="170" y="40" width="61" height="20" uuid="96569fe5-13cb-498a-ad64-1ad714b0694f"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Tanggal Jt"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="241" y="0" width="19" height="20" uuid="f2e2923f-9280-4c69-a79a-73ffe85d7bd2"/>
+				<reportElement x="231" y="0" width="9" height="20" uuid="f2e2923f-9280-4c69-a79a-73ffe85d7bd2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="241" y="20" width="19" height="20" uuid="ee84c863-08f7-4af4-be04-3e85d4f65a48"/>
+				<reportElement x="231" y="20" width="9" height="20" uuid="ee84c863-08f7-4af4-be04-3e85d4f65a48"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="241" y="40" width="19" height="20" uuid="039a8497-554f-45a7-a300-56fd5406cc98"/>
+				<reportElement x="231" y="40" width="9" height="20" uuid="039a8497-554f-45a7-a300-56fd5406cc98"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="260" y="20" width="61" height="20" uuid="bdb52f47-0846-438f-9b5b-5f52f37c7f09"/>
+				<reportElement x="240" y="20" width="90" height="20" uuid="bdb52f47-0846-438f-9b5b-5f52f37c7f09"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{TGL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="260" y="0" width="61" height="20" uuid="d414278f-9104-4f3c-8f93-16c9fb2f0d80"/>
+				<reportElement x="240" y="0" width="90" height="20" uuid="d414278f-9104-4f3c-8f93-16c9fb2f0d80"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{NO_BUKTI}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="260" y="40" width="61" height="20" uuid="0a60e18e-2007-497c-bdcc-5cec1001ee8f"/>
+				<reportElement x="240" y="40" width="90" height="20" uuid="0a60e18e-2007-497c-bdcc-5cec1001ee8f"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{JTEMPO}]]></textFieldExpression>
 			</textField>

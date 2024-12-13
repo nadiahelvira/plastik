@@ -33,11 +33,9 @@ class UtjualController extends Controller
 	
     function setFlag(Request $request)
     {
-        if ( $request->flagz == 'JL' && $request->golz == 'Y' ) {
-            $this->judul = "Penjualan Barang";
-        } else if ( $request->flagz == 'TP' && $request->golz == 'Y' ) {
+        if ( $request->flagz == 'TP' && $request->golz == 'J' ) {
             $this->judul = "Transaksi Piutang";
-        } else if ( $request->flagz == 'UM' && $request->golz == 'Y' ) {
+        } else if ( $request->flagz == 'UM' && $request->golz == 'J' ) {
             $this->judul = "Uang Muka Penjualan";
         }
 				
@@ -67,10 +65,11 @@ class UtjualController extends Controller
         }
 
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $utjual = DB::SELECT("SELECT NO_BUKTI,TGL,KODEC,NAMAC,ALAMAT,KOTA,TOTAL,BAYAR,SISA,TRUCK,if(DATEDIFF(date(now()),TGL)>=30,'Y','') as LEBIH30 
         from jual
-		WHERE NO_SO='" . $request['NO_SO'] . "' and SISA<>0 and GOL='Y' " . $inutbeli . " AND CBG = '$CBG' 
+		WHERE NO_SO='" . $request['NO_SO'] . "' and SISA<>0 and GOL='$request->GOL' " . $inutbeli . " AND CBG = '$CBG' AND PKP = '$PPN' 
         ORDER BY KODEC;");
 
         return response()->json($utjual);
@@ -114,9 +113,10 @@ class UtjualController extends Controller
         $judul = $this->judul;	
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $utjual = DB::SELECT("SELECT * from jual  where  PER ='$periode' and FLAG ='$this->FLAGZ' 
-                AND GOL ='$this->GOLZ' AND CBG = '$CBG' ORDER BY NO_BUKTI ");
+                AND GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP = '$PPN' ORDER BY NO_BUKTI ");
 
   
         // ganti 6
@@ -143,7 +143,7 @@ class UtjualController extends Controller
                                 <i class="fas fa-edit"></i>
                                     Edit
                                 </a>
-                                <a class="dropdown-item btn btn-danger" href="utjual/print/' . $row->NO_ID . '">
+                                <a class="dropdown-item btn btn-danger" href="jsutjualc/' . $row->NO_ID . '">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Print
                                 </a> 									
@@ -212,6 +212,7 @@ class UtjualController extends Controller
         $judul = $this->judul;	
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
@@ -224,80 +225,140 @@ class UtjualController extends Controller
 		if ( $request->flagz == 'TP' ) {
 
             $query = DB::table('jual')->select(DB::raw("TRIM(NO_BUKTI) AS NO_BUKTI"))->where('PER', $periode)
-			         ->where('FLAG', 'TP')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+			         ->where('FLAG', 'TP')->where('CBG', $CBG)->where('PKP', $PPN)->orderByDesc('NO_BUKTI')->limit(1)->get();
 			
-			if ($query != '[]') {
-            
-				$query = substr($query[0]->NO_BUKTI, -4);
-				$query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-				$no_bukti = 'TPY' . $CBG . $tahun . $bulan . '-' . $query;
-			
-			} else {
-				$no_bukti = 'TPY' . $CBG . $tahun . $bulan . '-0001';
-				}
+            if( $PPN =='1' ){
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'TPY'  . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'TPY'  . $CBG . $tahun . $bulan . '-0001';
+                }
+
+            } else {
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'TPZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'TPZ'  . $CBG . $tahun . $bulan . '-0001';
+                }
+                
+            }
+
 				
         } else if ( $request->flagz == 'UM' ) {
  
             $query = DB::table('jual')->select(DB::raw("TRIM(NO_BUKTI) AS NO_BUKTI"))->where('PER', $periode)
-			         ->where('FLAG', 'UM')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+			         ->where('FLAG', 'UM')->where('CBG', $CBG)->where('PKP', $PPN)->orderByDesc('NO_BUKTI')->limit(1)->get();
 			
-			if ($query != '[]') {
-            
-				$query = substr($query[0]->NO_BUKTI, -4);
-				$query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-				$no_bukti = 'UJ' . $CBG . $tahun . $bulan . '-' . $query;
-			
-			} else {
-				$no_bukti = 'UJ' . $CBG . $tahun . $bulan . '-0001';
-				}
+            if( $PPN =='1' ){
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'UJY'  . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'UJY'  . $CBG . $tahun . $bulan . '-0001';
+                }
+
+            } else {
+
+                if ($query != '[]') {
+                    $query = substr($query[0]->NO_BUKTI, -4);
+                    $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                    $no_bukti = 'UJZ'  . $CBG . $tahun . $bulan . '-' . $query;
+                } else {
+                    $no_bukti = 'UJZ'  . $CBG . $tahun . $bulan . '-0001';
+                }
+                
+            }
  
  			
  			
- 			            $type1 = substr( $request['BNAMA'],0,3);
+            // $type1 = substr( $request['BNAMA'],0,3);
+            $type1 = $request['TYPE'];
 		
 		
-            		    if ( $type1 =='KAS' )
-            		    {
-            		        
-                            			$bulan    = session()->get('periode')['bulan'];
-                                        $tahun    = substr(session()->get('periode')['tahun'], -2);
-                                        $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKM')->where('CBG', $CBG)
-                                                ->orderByDesc('NO_BUKTI')->limit(1)->get();
+		    if( $PPN == '1' ){
+
+                if ( $type1 == 'KAS' )
+                {          
+                            $bulan    = session()->get('periode')['bulan'];
+                            $tahun    = substr(session()->get('periode')['tahun'], -2);
+                            $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)
+                                            ->where('TYPE', 'BKM')->where('CBG', $CBG)
+                                            ->orderByDesc('NO_BUKTI')->limit(1)->get();
+                    
+                            if ($query2 != '[]') {
+                                $query2 = substr($query2[0]->NO_BUKTI, -4);
+                                $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                                $no_bukti2 = 'BKMY' . $CBG . $tahun . $bulan . '-' . $query2;
+                            } else {
+                                $no_bukti2 = 'BKMY' . $CBG . $tahun . $bulan . '-0001';
+                            }
                             
-                                        if ($query2 != '[]') {
-                                            $query2 = substr($query2[0]->NO_BUKTI, -4);
-                                            $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
-                                            $no_bukti2 = 'BKM' . $CBG . $tahun . $bulan . '-' . $query2;
-                                        } else {
-                                            $no_bukti2 = 'BKM' . $CBG . $tahun . $bulan . '-0001';
-                                        }
-                            			
-            			
-            		    }
-            		    else
-            		    {
-            			 
-                            			$bulan    = session()->get('periode')['bulan'];
-                                        $tahun    = substr(session()->get('periode')['tahun'], -2);
-                                        $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBM')->where('CBG', $CBG)
-                                                ->orderByDesc('NO_BUKTI')->limit(1)->get();
+                }
+                else
+                {
+        
+                            $bulan    = session()->get('periode')['bulan'];
+                            $tahun    = substr(session()->get('periode')['tahun'], -2);
+                            $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)
+                                    ->where('TYPE', 'BBM')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                    
+                            if ($query2 != '[]') {
+                                $query2 = substr($query2[0]->NO_BUKTI, -4);
+                                $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                                $no_bukti2 = 'BBMY' . $CBG . $tahun . $bulan . '-' . $query2;
+                            } else {
+                                $no_bukti2 = 'BBMY' . $CBG . $tahun . $bulan . '-0001';
+                            }
                             
-                                        if ($query2 != '[]') {
-                                            $query2 = substr($query2[0]->NO_BUKTI, -4);
-                                            $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
-                                            $no_bukti2 = 'BBM' . $CBG . $tahun . $bulan . '-' . $query2;
-                                        } else {
-                                            $no_bukti2 = 'BBM' . $CBG . $tahun . $bulan . '-0001';
-                                        }
-                            			
-            			    
-            			}
-			
- 			
- 			
- 			
- 			
- 			
+                    
+                }
+    
+            } else {
+    
+                if ( $type1 == 'KAS' )
+                {          
+                            $bulan    = session()->get('periode')['bulan'];
+                            $tahun    = substr(session()->get('periode')['tahun'], -2);
+                            $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)
+                            ->where('TYPE', 'BKM')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                    
+                            if ($query2 != '[]') {
+                                $query2 = substr($query2[0]->NO_BUKTI, -4);
+                                $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                                $no_bukti2 = 'BKMZ' . $CBG . $tahun . $bulan . '-' . $query2;
+                            } else {
+                                $no_bukti2 = 'BKMZ' . $CBG . $tahun . $bulan . '-0001';
+                            }
+                            
+                }
+                else
+                {
+        
+                            $bulan    = session()->get('periode')['bulan'];
+                            $tahun    = substr(session()->get('periode')['tahun'], -2);
+                            $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)
+                                        ->where('TYPE', 'BBM')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                    
+                            if ($query2 != '[]') {
+                                $query2 = substr($query2[0]->NO_BUKTI, -4);
+                                $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                                $no_bukti2 = 'BBMZ' . $CBG . $tahun . $bulan . '-' . $query2;
+                            } else {
+                                $no_bukti2 = 'BBMZ' . $CBG . $tahun . $bulan . '-0001';
+                            }
+                            
+                    
+                }
+    
+            }
 			
         } 
         
@@ -331,6 +392,7 @@ class UtjualController extends Controller
                 'USRNM'            => Auth::user()->username,
                 'created_by'       => Auth::user()->username,
                 'CBG'              => $CBG,
+                'PKP'              => $PPN,
                 'TG_SMP'           => Carbon::now()
             ]
         );
@@ -406,6 +468,7 @@ class UtjualController extends Controller
 		$idx = $request->idx;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
 		if ( $idx =='0' && $tipx=='undo'  )
 	    {
@@ -422,7 +485,7 @@ class UtjualController extends Controller
 		   
 		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from jual
 		                 where PER ='$per' and FLAG ='$this->FLAGZ'
-						 and NO_BUKTI = '$buktix' AND CBG = '$CBG'						 
+						 and NO_BUKTI = '$buktix' AND CBG = '$CBG' AND PKP = '$PPN'						 
 		                 ORDER BY NO_BUKTI ASC  LIMIT 1" );
 						 
 			
@@ -443,7 +506,7 @@ class UtjualController extends Controller
 
 		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from jual 
 		                 where PER ='$per'
-						 and FLAG ='$this->FLAGZ' AND CBG = '$CBG'    
+						 and FLAG ='$this->FLAGZ' AND CBG = '$CBG' AND PKP = '$PPN'   
 		                 ORDER BY NO_BUKTI ASC  LIMIT 1" );
 						 
 		
@@ -466,7 +529,7 @@ class UtjualController extends Controller
 			
 		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from jual      
 		             where PER ='$per'
-					 and FLAG ='$this->FLAGZ' AND CBG = '$CBG' 
+					 and FLAG ='$this->FLAGZ' AND CBG = '$CBG' AND PKP = '$PPN'
                      and NO_BUKTI < 
 					 '$buktix' ORDER BY NO_BUKTI DESC LIMIT 1" );
 			
@@ -490,7 +553,7 @@ class UtjualController extends Controller
 	   
 		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from jual    
 		             where PER ='$per'
-					 and FLAG ='$this->FLAGZ' AND CBG = '$CBG' 
+					 and FLAG ='$this->FLAGZ' AND CBG = '$CBG' AND PKP = '$PPN'
                      and NO_BUKTI > 
 					 '$buktix' ORDER BY NO_BUKTI ASC LIMIT 1" );
 					 
@@ -509,7 +572,7 @@ class UtjualController extends Controller
 		if ($tipx=='bottom') {
 		  
     		$bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from jual  where PER ='$per'
-            		  and FLAG ='$this->FLAGZ' AND CBG = '$CBG'  
+            		  and FLAG ='$this->FLAGZ' AND CBG = '$CBG' AND PKP = '$PPN' 
 		              ORDER BY NO_BUKTI DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 
@@ -589,6 +652,7 @@ class UtjualController extends Controller
         $judul = $this->judul;	
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
 		if ( $FLAGZ == 'UM' ) {
 
@@ -619,6 +683,7 @@ class UtjualController extends Controller
                 'USRNM'            => Auth::user()->username,
                 'updated_by'       => Auth::user()->username,
                 'CBG'              => $CBG,
+                'PKP'              => $PPN,
                 'TG_SMP'           => Carbon::now()
             ]
         );
@@ -706,14 +771,14 @@ class UtjualController extends Controller
 			   
     }
 	///////////////////////////////////
-	 public function cetak(Jual $utjual)
+	 public function jsutjualc(Jual $utjual)
     {
        
-       $no_beli = $beli->NO_BUKTI;
+       $no_jual = $utjual->NO_BUKTI;
 
         $file     = 'utjualc';
 
-        $flagz1 = $jual->FLAG;
+        $flagz1 = $utjual->FLAG;
         $judul ='';
         
         if ( $flagz1 =='TP')
@@ -731,14 +796,14 @@ class UtjualController extends Controller
         $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
 
         $query = DB::SELECT("SELECT jual.NO_BUKTI, jual.TGL, jual.KODEC, jual.NAMAC, jual.TOTAL,
-                             IF( jual.FLAG ='TP', ACNOA, BACNO ) AS ACNO, IF ( jualc.FLAG ='TP', NACNOA, BNAMA ) AS NACNO,
+                             IF( jual.FLAG ='TP', ACNOB, BACNO ) AS ACNO, IF ( jual.FLAG ='TP', NACNOB, BNAMA ) AS NACNO,
                              jual.NOTES, jual.USRNM
                             FROM jual
-                            WHERE jual.NO_BUKTI='$no_beli' 
+                            WHERE jual.NO_BUKTI='$no_jual' 
                             ;
 		");
 
-                DB::SELECT("UPDATE JUAL SET POSTED = 1 WHERE NO_BUKTI='$no_beli';");
+                DB::SELECT("UPDATE JUAL SET POSTED = 1 WHERE NO_BUKTI='$no_jual';");
                 
         $data = [];
 

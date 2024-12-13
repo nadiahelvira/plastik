@@ -27,7 +27,7 @@ class RBeli_gdgController extends Controller
 
 		session()->put('filter_gol', '');
 		session()->put('filter_kodes1', '');
-		session()->put('filter_kodes2', '');
+		session()->put('filter_kodes2', 'ZZZ');
 		session()->put('filter_namas1', '');
 		session()->put('filter_tglDari', date("d-m-Y"));
 		session()->put('filter_tglSampai', date("d-m-Y"));
@@ -84,7 +84,11 @@ class RBeli_gdgController extends Controller
 				$filterbrg = " and belid.KD_BRG='".$request->brg1."' ";
 			}
 			
-
+			$tgl_1 = date("Y-m-d", strtotime($request->tglDr));
+			$tgl_2 = date("Y-m-d", strtotime($request->tglSmp));
+			$kodes_1 = $request->kodes;
+			$kodes_2 = $request->kodes2;
+			
 			session()->put('filter_gol', $request->gol);
 			session()->put('filter_kodes1', $request->kodes);
 			session()->put('filter_kodes2', $request->kodes2);
@@ -97,27 +101,27 @@ class RBeli_gdgController extends Controller
 			session()->put('filter_cbg', $request->cbg);
 		
 
-		if( $filtergol == 'B'){
-			$query = DB::SELECT("SELECT trim(beli.NO_BUKTI) as NO_BUKTI, beli.TGL, beli.NO_PO, beli.KODES, 
-									beli.NAMAS, belid.KD_BHN AS KD_BRG, belid.NA_BHN AS NA_BRG,
-									belid.QTY, belid.HARGA, belid.TOTAL, beli.GOL, belid.PPN, (belid.TOTAL + belid.PPN) AS NETT 
-								from beli,belid 
-								WHERE beli.NO_BUKTI=belid.NO_BUKTI
-								$filtertgl $filtergol $filterkodes $filtercbg
-								/*order by beli.KODES,beli.NO_BUKTI*/;
-							");
-		
-		} else {
-			$query = DB::SELECT("SELECT trim(beli.NO_BUKTI) as NO_BUKTI, beli.TGL, beli.NO_PO, beli.KODES, 
-									beli.NAMAS, belid.KD_BRG, belid.NA_BRG,
-									belid.QTY, belid.HARGA, belid.TOTAL, beli.GOL, belid.PPN, (belid.TOTAL + belid.PPN) AS NETT 
-								from beli,belid 
-								WHERE beli.NO_BUKTI=belid.NO_BUKTI
-								AND beli.CBG = '$cbg' 
-								$filtertgl $filtergol $filterkodes $filtercbg 
-								/*order by beli.KODES,beli.NO_BUKTI*/;
-							");
-		}
+			if( $filtergol == 'B'){
+				$query = DB::SELECT("SELECT trim(beli.NO_BUKTI) as NO_BUKTI, beli.TGL, beli.NO_PO, beli.KODES, 
+										beli.NAMAS, belid.KD_BHN AS KD_BRG, belid.NA_BHN AS NA_BRG,
+										belid.QTY, belid.HARGA, belid.TOTAL, beli.GOL, belid.PPN, (belid.TOTAL + belid.PPN) AS NETT 
+									from beli,belid 
+									WHERE beli.NO_BUKTI=belid.NO_BUKTI
+									$filtertgl $filtergol $filterkodes $filtercbg
+									/*order by beli.KODES,beli.NO_BUKTI*/;
+								");
+			
+			} else {
+				$query = DB::SELECT("SELECT trim(beli.NO_BUKTI) as NO_BUKTI, beli.TGL, beli.NO_PO, beli.KODES, 
+										beli.NAMAS, belid.KD_BRG, belid.NA_BRG,
+										belid.QTY, belid.HARGA, belid.TOTAL, beli.GOL, belid.PPN, (belid.TOTAL + belid.PPN) AS NETT 
+									from beli,belid 
+									WHERE beli.NO_BUKTI=belid.NO_BUKTI
+									-- AND beli.CBG = '$cbg' 
+									$filtertgl $filtergol $filterkodes $filtercbg 
+									/*order by beli.KODES,beli.NO_BUKTI*/;
+								");
+			}
 			
 
 		if($request->has('filter'))
@@ -133,6 +137,10 @@ class RBeli_gdgController extends Controller
 			array_push($data, array(
 				'NO_BUKTI' => $query[$key]->NO_BUKTI,
 				'TGL' => $query[$key]->TGL,
+				'TGL_1' => $tgl_1,
+				'TGL_2' => $tgl_2,
+				'KODES_1' => $kodes_1,
+				'KODES_2' => $kodes_2,
 				'NO_PO' => $query[$key]->NO_PO,
 				'KODES' => $query[$key]->KODES,
 				'NAMAS' => $query[$key]->NAMAS,

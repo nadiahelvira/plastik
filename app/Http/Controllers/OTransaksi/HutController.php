@@ -65,11 +65,14 @@ class HutController extends Controller
 		$this->setFlag($request);	
 		
 		$CBG = Auth::user()->CBG;
+		$PPN = Auth::user()->PPN;
 
        $hut = DB::SELECT("SELECT NO_ID, NO_BUKTI, 
-	   TGL, KODES, NAMAS, KOTA, TOTAL, BAYAR, NOTES, POSTED, FLAG,
-	   USRNM from hut 
-	   where PER = '$periode' AND CBG='$CBG' ORDER BY NO_BUKTI ");
+                                TGL, KODES, NAMAS, KOTA, TOTAL, BAYAR, NOTES, POSTED, FLAG,
+                                USRNM 
+                        from hut 
+                        where PER = '$periode' AND CBG='$CBG' AND PKP = '$PPN' 
+                        ORDER BY NO_BUKTI ");
 	   	
 		
 // ganti 6
@@ -162,58 +165,113 @@ class HutController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
         $periode = $request->session()->get('periode')['bulan']. '/' . $request->session()->get('periode')['tahun'];
 		
         $bulan	= session()->get('periode')['bulan'];
 		$tahun	= substr(session()->get('periode')['tahun'],-2);
 
-        $query = DB::table('hut')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ)->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+        $query = DB::table('hut')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ)
+                ->where('CBG', $CBG)->where('PKP', $PPN)->orderByDesc('NO_BUKTI')->limit(1)->get();
+        
+        if( $PPN == '1'){
 
-        if ($query != '[]') {
-            $query = substr($query[0]->NO_BUKTI, -4);
-            $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
-            $no_bukti = 'HT' . $CBG . $tahun . $bulan . '-' . $query;
+            if ($query != '[]') {
+                $query = substr($query[0]->NO_BUKTI, -4);
+                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                $no_bukti = 'HTY' . $CBG . $tahun . $bulan . '-' . $query;
+            } else {
+                $no_bukti = 'HTY' . $CBG . $tahun . $bulan . '-0001';
+            }
         } else {
-            $no_bukti = 'HT' . $CBG . $tahun . $bulan . '-0001';
+            if ($query != '[]') {
+                $query = substr($query[0]->NO_BUKTI, -4);
+                $query = str_pad($query + 1, 4, 0, STR_PAD_LEFT);
+                $no_bukti = 'HTZ' . $CBG . $tahun . $bulan . '-' . $query;
+            } else {
+                $no_bukti = 'HTZ' . $CBG . $tahun . $bulan . '-0001';
+            }
         }
+        
+        
 
         /////////////////////////////////////////////////////////////////////////////////
 
         $type1 = substr( $request['BNAMA'],0,3);
 
-        if ( $type1 == 'KAS' )
-        {          
-                    $bulan    = session()->get('periode')['bulan'];
-                    $tahun    = substr(session()->get('periode')['tahun'], -2);
-                    $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
-            
-                    if ($query2 != '[]') {
-                        $query2 = substr($query2[0]->NO_BUKTI, -4);
-                        $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
-                        $no_bukti2 = 'BKK' . $CBG . $tahun . $bulan . '-' . $query2;
-                    } else {
-                        $no_bukti2 = 'BKK' . $CBG . $tahun . $bulan . '-0001';
-                    }
-                    
-        }
-        else
-        {
+        if( $PPN == '1' ){
 
-                    $bulan    = session()->get('periode')['bulan'];
-                    $tahun    = substr(session()->get('periode')['tahun'], -2);
-                    $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
-            
-                    if ($query2 != '[]') {
-                        $query2 = substr($query2[0]->NO_BUKTI, -4);
-                        $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
-                        $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-' . $query2;
-                    } else {
-                        $no_bukti2 = 'BBK' . $CBG . $tahun . $bulan . '-0001';
-                    }
-                    
-            
+            if ( $type1 == 'KAS' )
+            {          
+                        $bulan    = session()->get('periode')['bulan'];
+                        $tahun    = substr(session()->get('periode')['tahun'], -2);
+                        $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                
+                        if ($query2 != '[]') {
+                            $query2 = substr($query2[0]->NO_BUKTI, -4);
+                            $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                            $no_bukti2 = 'BKKY' . $CBG . $tahun . $bulan . '-' . $query2;
+                        } else {
+                            $no_bukti2 = 'BKKY' . $CBG . $tahun . $bulan . '-0001';
+                        }
+                        
+            }
+            else
+            {
+    
+                        $bulan    = session()->get('periode')['bulan'];
+                        $tahun    = substr(session()->get('periode')['tahun'], -2);
+                        $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                
+                        if ($query2 != '[]') {
+                            $query2 = substr($query2[0]->NO_BUKTI, -4);
+                            $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                            $no_bukti2 = 'BBKY' . $CBG . $tahun . $bulan . '-' . $query2;
+                        } else {
+                            $no_bukti2 = 'BBKY' . $CBG . $tahun . $bulan . '-0001';
+                        }
+                        
+                
+            }
+
+        } else {
+
+            if ( $type1 == 'KAS' )
+            {          
+                        $bulan    = session()->get('periode')['bulan'];
+                        $tahun    = substr(session()->get('periode')['tahun'], -2);
+                        $query2 = DB::table('kas')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BKK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                
+                        if ($query2 != '[]') {
+                            $query2 = substr($query2[0]->NO_BUKTI, -4);
+                            $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                            $no_bukti2 = 'BKKZ' . $CBG . $tahun . $bulan . '-' . $query2;
+                        } else {
+                            $no_bukti2 = 'BKKZ' . $CBG . $tahun . $bulan . '-0001';
+                        }
+                        
+            }
+            else
+            {
+    
+                        $bulan    = session()->get('periode')['bulan'];
+                        $tahun    = substr(session()->get('periode')['tahun'], -2);
+                        $query2 = DB::table('bank')->select('NO_BUKTI')->where('PER', $periode)->where('TYPE', 'BBK')->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                
+                        if ($query2 != '[]') {
+                            $query2 = substr($query2[0]->NO_BUKTI, -4);
+                            $query2 = str_pad($query2 + 1, 4, 0, STR_PAD_LEFT);
+                            $no_bukti2 = 'BBKZ' . $CBG . $tahun . $bulan . '-' . $query2;
+                        } else {
+                            $no_bukti2 = 'BBKZ' . $CBG . $tahun . $bulan . '-0001';
+                        }
+                        
+                
+            }
+
         }
+        
         
         
         
@@ -240,6 +298,7 @@ class HutController extends Controller
                 'NO_BANK'          => $no_bukti2,				
 				'USRNM'            => Auth::user()->username,
                 'CBG'              => $CBG,
+                'PKP'              => $PPN,
 				'TG_SMP'           => Carbon::now()
             ]
         );
@@ -517,6 +576,7 @@ class HutController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
+        $PPN = Auth::user()->PPN;
 		
 	
         $hut->update(
@@ -531,6 +591,7 @@ class HutController extends Controller
 				'BNAMA'            => ($request['BNAMA']==null) ? "" : $request['BNAMA'],
 				'TYPE'            => ($request['TYPE']==null) ? "" : $request['TYPE'],
 				'USRNM'            => Auth::user()->username,
+                'PKP'              => $PPN,
                 'CBG'              => $CBG,
 				'TG_SMP'           => Carbon::now()	
             ]

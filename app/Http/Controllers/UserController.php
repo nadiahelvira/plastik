@@ -93,7 +93,7 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
+            'password' => 'required|string|confirmed|min:3',
         ]);
 
         $user = User::create([
@@ -102,11 +102,15 @@ class UserController extends Controller
             'email'     => $request->email,
             'password'  => Hash::make($request->password),
             'divisi'    => $request->divisi,
-            'privilege' => $request->privilege
+            'privilege' => $request->privilege,
+            'CBG'       => $request->CBG,
+            'PPN'       => $request->PPN
         ]);
 
         $user->attachRole($request->divisi);
         $user->attachRole($request->privilege);
+        $user->attachRole($request->CBG);
+        $user->attachRole($request->PPN);
 
         return redirect('/user/manage')->with('status', 'User berhasil dibuat!');
     }
@@ -158,10 +162,22 @@ class UserController extends Controller
             $user->attachRole($request->privilege);
         }
 
+        if (!$user->hasRole($request->CBG)) {
+            $user->detachRole($user->CBG);
+            $user->attachRole($request->CBG);
+        }
+
+        if (!$user->hasRole($request->PPN)) {
+            $user->detachRole($user->PPN);
+            $user->attachRole($request->PPN);
+        }
+
         $user->update(
             [
                 "divisi"    => $request->divisi,
-                "privilege" => $request->privilege
+                "privilege" => $request->privilege,
+                "CBG"       => $request->CBG,
+                "PPN"       => $request->PPN
             ]
         );
         return redirect('/user/manage')->with('status', 'User berhasil diedit!');

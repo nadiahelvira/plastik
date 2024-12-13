@@ -30,6 +30,14 @@ class RSuratsController extends Controller
 		session()->put('filter_cbg', '');
 
 		$kodec = Cust::orderBy('KODEC')->get();
+		session()->put('filter_gol', '');
+		session()->put('filter_kodec1', '');
+		session()->put('filter_kodec2', 'ZZZ');
+		session()->put('filter_namac1', '');
+		session()->put('filter_kodet1', '');
+		session()->put('filter_namat1', '');
+		session()->put('filter_tglDari', date("d-m-Y"));
+		session()->put('filter_tglSampai', date("d-m-Y"));
 	
         return view('oreport_surats.report')->with(['kodec' => $kodec])->with(['cbg' => $cbg])->with(['hasil' => []]);
 		
@@ -57,9 +65,14 @@ class RSuratsController extends Controller
 				$query = $query->where('GOL', $request->gol);
 			}
 			
-			if (!empty($request->KODEC))
+			// if (!empty($request->KODEC))
+			// {
+			// 	$query = $query->where('KODEC', $request->kodec);
+			// }
+		
+			if (!empty($request->kodec) && !empty($request->kodec2))
 			{
-				$query = $query->where('KODEC', $request->kodec);
+				$filterkodec = " WHERE KODEC between '".$kodec."' and '".$kodec2."' ";
 			}
 			
 			if (!empty($request->tglDr) && !empty($request->tglSmp))
@@ -97,9 +110,14 @@ class RSuratsController extends Controller
 				$filtergol = " and a.GOL='".$request->gol."' ";
 			}
 			
-			if (!empty($request->kodec))
+			// if (!empty($request->kodec))
+			// {
+			// 	$filterkodec = " and a.KODEC='".$request->kodec."' ";
+			// }
+		
+			if (!empty($request->kodec) && !empty($request->kodec2))
 			{
-				$filterkodec = " and a.KODEC='".$request->kodec."' ";
+				$filterkodec = " WHERE a.KODEC between '".$kodec."' and '".$kodec2."' ";
 			}
 			
 			if (!empty($request->tglDr) && !empty($request->tglSmp))
@@ -114,7 +132,18 @@ class RSuratsController extends Controller
 				$filtercbg = " and a.CBG='".$request->cbg."' ";
 			}
 			
+			$tgl_1 = date("Y-m-d", strtotime($request->tglDr));
+			$tgl_2 = date("Y-m-d", strtotime($request->tglSmp));
+			$kodec_1 = $request->kodec;
+			$kodec_2 = $request->kodec2;
+			
 
+			session()->put('filter_gol', $request->gol);
+			session()->put('filter_kodec1', $request->kodec);
+			session()->put('filter_kodec2', $request->kodec2);
+			session()->put('filter_namac1', $request->NAMAC);
+			session()->put('filter_tglDari', $request->tglDr);
+			session()->put('filter_tglSampai', $request->tglSmp);
 			session()->put('filter_cbg', $request->cbg);
 			
 		$query = DB::SELECT("SELECT a.NO_BUKTI, a.TGL, b.NO_SO, a.KODEC, a.NAMAC, a.TOTAL, a.NOTES, a.GOL, a.TRUCK,
@@ -138,6 +167,10 @@ class RSuratsController extends Controller
 			array_push($data, array(
 				'NO_BUKTI' => $query[$key]->NO_BUKTI,
 				'TGL' => $query[$key]->TGL,
+				'TGL_1' => $tgl_1,
+				'TGL_2' => $tgl_2,
+				'KODEC_1' => $kodec_1,
+				'KODEC_2' => $kodec_2,
 				'NO_SO' => $query[$key]->NO_SO,
 				'KODEC' => $query[$key]->KODEC,
 				'NAMAC' => $query[$key]->NAMAC,

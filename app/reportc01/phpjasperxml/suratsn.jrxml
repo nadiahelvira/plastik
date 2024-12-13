@@ -59,6 +59,18 @@
 	<field name="HARGA" class="java.lang.Float"/>
 	<field name="NO_SO" class="java.lang.String"/>
 	<field name="TRUCK" class="java.lang.String"/>
+	<field name="TGL_1" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TGL_2" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="KODEC_1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="KODEC_2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="VAR_KG" class="java.lang.Double" resetType="None" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTY}]]></variableExpression>
 	</variable>
@@ -84,7 +96,7 @@
 		</groupFooter>
 	</group>
 	<title>
-		<band height="42" splitType="Stretch">
+		<band height="55" splitType="Stretch">
 			<staticText>
 				<reportElement x="160" y="3" width="216" height="20" uuid="df006655-2ef6-4db6-99fa-66f5e436be82"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -105,6 +117,46 @@
 					<font fontName="Tahoma"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="89" y="30" width="80" height="20" uuid="367684f6-bba4-41dc-a71d-2d72c6f49cf2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{KODEC_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="312" y="30" width="55" height="20" uuid="26fd1f76-1dba-4dea-941d-f43503899141"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Tanggal :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="30" width="88" height="20" uuid="ea8522dc-5fc0-4346-b18e-89cd0e832daf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{KODEC_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="34" y="30" width="55" height="20" uuid="16442022-1ce6-4d4c-a7a8-7f83bf34a23b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Customer :"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="457" y="30" width="60" height="20" uuid="a9c90db1-5b14-49f2-bd4b-cf7a6d5456f5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TGL_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="367" y="30" width="60" height="20" uuid="2dfb37a6-8cf1-4252-9403-7b723a5da74d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TGL_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="30" width="30" height="20" uuid="ea7c68f0-6cbd-4171-8be6-452feb60dec3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["s/d"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="30" width="30" height="20" uuid="322ce25c-5421-4a4b-9ffe-55d18b7562de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["s/d"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
