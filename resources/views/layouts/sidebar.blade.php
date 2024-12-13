@@ -154,16 +154,16 @@
 
     /* untuk block hitam */
     .main-sidebar, .main-sidebar::before {
-      width: 100px !important;
+      width: 80px !important;
     }
 
     .main-sidebar, .main-sidebar:hover {
-      width: 100px !important;
+      width: 80px !important;
     }
 
     /* bayangan putih yg ada panahnya di atur disini */
     .sidebar-mini .main-sidebar .nav-link, .sidebar-mini-md .main-sidebar .nav-link, .sidebar-mini-xs .main-sidebar .nav-link {
-      width: calc(100px - 0.5rem * 2);
+      width: calc(80px - 0.5rem * 2);
       transition: width ease-in-out 0.3s;
     }
 
@@ -173,7 +173,7 @@
     @media (min-width: 768px) {
       body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
         transition: margin-left 0.3s ease-in-out;
-        margin-left: 100px;
+        margin-left: 80px;
       }
     }
 

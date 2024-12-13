@@ -357,9 +357,9 @@
 								<!-- code text box baru -->
 								<div class="col-md-2 form-group row special-input-label">
 
-									<input type="text" class="BERAT" id="BERAT" name="BERAT" 
-										value="{{$header->BERAT}}" placeholder=" " >
-									<label for="BERAT">Berat</label>
+									<input type="text" class="ROP" id="ROP" name="ROP" 
+										value="{{$header->ROP}}" placeholder=" " >
+									<label for="ROP">ROP</label>
 								</div>
 								<!-- tutupannya -->
 
@@ -450,6 +450,9 @@
 								<li class="nav-item">
 									<a class="nav-link active" href="#brgdxInfo" data-toggle="tab">Detail</a>
 								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#brgdInfo" data-toggle="tab">Lokasi</a>
+								</li>
 							</ul>
 
 							<!--------------------------------------------------------------->
@@ -462,7 +465,7 @@
                             <table id="datatable" class="table table-striped table-border">
                                 <thead>
                                     <tr>
-										<th style="text-align: center;">No.</th>
+										<th width="50px" style="text-align: center;">No.</th>
 										<th style="text-align: center;">
 									       <label style="color:red;font-size:20px">* </label>									
                                            <label for="KD_PRS" class="form-label">Ring#</label></th>
@@ -546,7 +549,70 @@
 
 						<!----------------------------------------------------------------------------------------------->
 
+						
+
+						<div id="brgdInfo" class="tab-pane">
+
+							<table id="datatable2" class="table table-striped table-border">
+                                <thead>
+                                    <tr>
+										<th width="50px" style="text-align: center;">No.</th>
+										<th style="text-align: center;">								
+                                           <label for="CBG" class="form-label">Cabang#</label>
+										</th>
+										<th style="text-align: center;">
+									       <label style="color:red;font-size:20px">* </label>									
+                                           <label for="KODE" class="form-label">Kode</label>
+										</th>
+										<th style="text-align: center;">								
+                                           <label for="LOKASI" class="form-label">Lokasi#</label>
+										</th>
+                                    </tr>
+                                </thead>
         
+								<tbody>
+								<?php $no2=0 ?>
+								@foreach ($detail as $detail2)		
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="NO_IDY[]" id="NO_IDY{{$no2}}" type="text" value="{{$detail2->NO_ID}}" 
+                                            class="form-control NO_IDY" onkeypress="return tabE(this,event)" readonly>
+											
+                                            <input name="RECY[]" id="RECY{{$no2}}" type="text" value="{{$detail2->REC}}" class="form-control RECY" onkeypress="return tabE(this,event)" readonly style="text-align:center">
+                                        </td>
+
+										<td>
+                                            <input name="CBG[]" data-rowid={{$no2}}  id="CBG{{$no2}}" type="text" value="{{$detail2->CBG}}" class="form-control CBG" readonly>
+                                        </td>
+                                        <td>
+                                            <input name="KODE[]" onblur="browseLokasi({{$no2}})" id="KODE{{$no2}}" type="text" value="{{$detail2->KODE}}" class="form-control KODE" readonly >
+                                        </td>
+                                        <td>
+                                            <input name="LOKASI[]" id="LOKASI{{$no2}}" type="text" value="{{$detail2->LOKASI}}" class="form-control LOKASI" readonly>
+                                        </td>
+
+                                    </tr>
+								
+								<?php $no2++; ?>
+								@endforeach
+                                </tbody>
+
+								<tfoot>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tfoot>
+                            </table>
+							
+                           
+
+						</div>
+
+						<!-- ----------------------------------------- -->
+
+					</div>
+                        </div> 
+
 						<div class="mt-3 col-md-12 form-group row">
 							<div class="col-md-4">
 								<button type="button" id='TOPX'  onclick="location.href='{{url('/brg/edit/?idx=' .$idx. '&tipx=top')}}'" class="btn btn-outline-primary">Top</button>
@@ -697,21 +763,48 @@
 	  </div>
 	</div>
 
-	<div class="modal fade" id="browseLokasiModal" tabindex="-1" role="dialog" aria-labelledby="browseLokasiModalLabel" aria-hidden="true">
-	 <div class="modal-dialog mw-100 w-75" role="document">
+	<div class="modal fade" id="browseKomisiModal" tabindex="-1" role="dialog" aria-labelledby="browseKomisiModalLabel" aria-hidden="true">
+		<div class="modal-dialog mw-100 w-75" role="document">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="browseKomisiModalLabel">Cari Komisi</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-stripped table-bordered" id="table-bkomisi">
+					<thead>
+						<tr>
+							<th>Type</th>
+							<th>Komisi</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="browseCbgModal" tabindex="-1" role="dialog" aria-labelledby="browseCbgModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h5 class="modal-title" id="browseLokasiModalLabel">Cari Lokasi</h5>
+			<h5 class="modal-title" id="browseCbgModalLabel">Cari Cabang</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">&times;</span>
 			</button>
 		  </div>
 		  <div class="modal-body">
-			<table class="table table-stripped table-bordered" id="table-blokasi">
+			<table class="table table-stripped table-bordered" id="table-bcbg">
 				<thead>
 					<tr>
-						<th>Kode</th>
-						<th>Lokasi</th>
+						<th>Cabang#</th>				
 					</tr>
 				</thead>
 				<tbody>
@@ -725,32 +818,32 @@
 	  </div>
 	</div>
 
-	<div class="modal fade" id="browseKomisiModal" tabindex="-1" role="dialog" aria-labelledby="browseKomisiModalLabel" aria-hidden="true">
-	<div class="modal-dialog mw-100 w-75" role="document">
+	<div class="modal fade" id="browseLokasiModal" tabindex="-1" role="dialog" aria-labelledby="browseLokasiModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
-		<div class="modal-header">
-			<h5 class="modal-title" id="browseKomisiModalLabel">Cari Komisi</h5>
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseLokasiModalLabel">Cari Cabang</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
+			  <span aria-hidden="true">&times;</span>
 			</button>
-		</div>
-		<div class="modal-body">
-			<table class="table table-stripped table-bordered" id="table-bkomisi">
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-blokasi">
 				<thead>
 					<tr>
-						<th>Type</th>
-						<th>Komisi</th>
+						<th>Kode#</th>				
+						<th>Lokasi#</th>				
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
 			</table>
-		</div>
-		<div class="modal-footer">
+		  </div>
+		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
 		</div>
-		</div>
-	</div>
+	  </div>
 	</div>
 
 @endsection
@@ -767,6 +860,9 @@
 
 	var idrow = 1;
 	var baris = 1;
+	
+	var idrow2 = 1;
+	var baris2 = 1;
 
 	function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -784,6 +880,8 @@
 	idrow=<?=$no?>;
     baris=<?=$no?>;
 
+	idrow2=<?=$no2?>;
+    baris2=<?=$no2?>;
 		
 		$('body').on('keydown', 'input, select', function(e) {
 			if (e.key === "Enter") {
@@ -809,7 +907,8 @@
         if ( $tipx == 'new' )
 		{
 			 baru();	
-             tambah();
+             tambah();			 
+             tambah2();		
 			 
 			 $("#RING0").val('LOKAL');
 			 tambah();
@@ -850,6 +949,13 @@
 		$('body').on('click', '.del', function() {
 			var val = $(this).parents("tr").remove();
 			baris--;
+			nomor();
+			
+		});
+
+		$('body').on('click', '.del2', function() {
+			var val = $(this).parents("tr").remove();
+			baris2--;
 			nomor();
 			
 		});
@@ -1093,16 +1199,19 @@
 		
 		
 //////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-		//CHOOSE Lokasi
+////////////////////////////////////////////////////
+
 		var dTableBLokasi;
+		var rowidLokasi;
 		loadDataBLokasi = function(){
+		
 			$.ajax(
 			{
 				type: 'GET',    
-				url: '{{url('lokasi/browse')}}',
+				url: "{{url('lokasi/browse')}}",
+				async : false,
 
 				success: function( response )
 				{
@@ -1114,39 +1223,46 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBLokasi.row.add([
-							'<a href="javascript:void(0);" onclick="chooseLokasi( \''+resp[i].NAMA+'\' )">'+resp[i].KODE+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseLokasi( \''+resp[i].KODE+'\', \''+resp[i].NAMA+'\' )">'+resp[i].KODE+'</a>',
 							resp[i].NAMA,
 						]);
 					}
 					dTableBLokasi.draw();
 				}
+
+				
 			});
 		}
 		
 		dTableBLokasi = $("#table-blokasi").DataTable({
 			
 		});
-		
-		browseLokasi = function(){
+
+		browseLokasi = function(rid){
+		rowidLokasi = rid;
+			$("#KODE"+rowidLokasi).val("");			
 			loadDataBLokasi();
-			$("#browseLokasiModal").modal("show");
+	
+			
+			if ( $("#KODE"+rowidLokasi).val() == '' ) {				
+					$("#browseLokasiModal").modal("show");
+			}	
+		}
+
+		browseKomisi = function(){
+			loadDataBKomisi();
+			$("#browseKomisiModal").modal("show");
 		}
 		
-		chooseLokasi = function(NAMA){
-			$("#LOKASI").val(NAMA);
+		chooseLokasi = function(KODE, NAMA){
+			$("#KODE"+rowidLokasi).val(KODE);
+			$("#LOKASI"+rowidLokasi).val(NAMA);
 			$("#browseLokasiModal").modal("hide");
 		}
-		
-		$("#LOKASI").keypress(function(e){
 
-			if(e.keyCode == 46){
-				e.preventDefault();
-				browseLokasi();
-			}
-		}); 
-		
-		
-//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////
 		
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1430,7 +1546,7 @@
 	// sweetalert untuk tombol hapus dan close
 	
 	function hapusTrans() {
-		let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
+		let text = "Hapus Transaksi "+$('#KD_BRG').val()+"?";
 
 		var loc ='';
 		
@@ -1498,15 +1614,15 @@
 		
 	}
 
-    var hasilCek;
+	var hasilCek;
+
 	function cekBarang(kdbrg) {
 		$.ajax({
 			type: "GET",
 			url: "{{url('brg/cekbarang')}}",
             async: false,
-			data: ({ KDBRG: kdbrg, }),
+			data: ({ KD_BRG: kdbrg, }),
 			success: function(data) {
-                // hasilCek=data;
                 if (data.length > 0) {
                     $.each(data, function(i, item) {
                         hasilCek=data[i].ADA;
@@ -1514,22 +1630,15 @@
                 }
 			},
 			error: function() {
-				alert('Error cekBarang occured');
+				alert('Error cek Barang occured');
 			}
 		});
 		return hasilCek;
 	}
     
 	function simpan() {
-        //cekBarang($('#KD_BRG').val());
-        //(hasilCek==0) ? document.getElementById("entri").submit() : alert('Kode Barang '+$('#KD_BRG').val()+' sudah ada!');
-        
-        // document.getElementById("entri").submit()
 
-		// $("#LOADX").hide();
-
-		
-        hasilCek=0;
+		hasilCek=0;
 		$tipx = $('#tipx').val();
 				
         if ( $tipx == 'new' )
@@ -1538,7 +1647,23 @@
 		}
 		
 
-        (hasilCek==0) ? document.getElementById("entri").submit() : alert('Barang '+$('#KD_BRG').val()+' sudah ada!');
+        (hasilCek==0) ? document.getElementById("entri").submit() : alert('Kode Barang '+$('#KD_BRG').val()+' sudah ada!');
+	
+		$("#LOADX").hide();
+	}
+		
+    function nomor() {
+		var i = 1;
+		$(".REC").each(function() {
+			$(this).val(i++);
+		});
+
+		i = 1;
+		$(".RECY").each(function() {
+			$(this).val(i++);
+		});
+		
+	//	hitung();
 	
 	}
 
@@ -1601,6 +1726,71 @@
 			e.preventDefault();
 			e.currentTarget.blur();
 		});
+	}
+
+	function tambah2() {
+
+		var x = document.getElementById('datatable2').insertRow(baris2 + 1);
+
+		html=`<tr>
+
+				<td>
+					<input name='NO_ID[]' id='NO_ID${idrow2}' type='hidden' class='form-control NO_ID' value='new' readonly> 
+					<input name='RECY[]' id='RECY${idrow2}' type='text' class='RECY form-control' onkeypress='return tabE(this,event)' readonly>
+				</td>
+
+				<td>
+					<input name='CBG[]' data-rowid=${idrow2}  id='CBG${idrow2}' type='text' class='form-control  CBG' readonly>
+				</td>
+				<td>
+					<input name='KODE[]' onblur='browseLokasi(${idrow2})' id='KODE${idrow2}' type='text' class='form-control KODE' readonly >
+				</td>
+				<td>
+					<input name='LOKASI[]' id='LOKASI${idrow2}' type='text' class='form-control LOKASI' readonly >
+				</td>
+						
+		</tr>`;
+				
+		x.innerHTML = html;
+		var html='';
+
+
+
+		jumlahdata = 100;
+		for (i = 0; i <= jumlahdata; i++) {
+			// $("#QTY" + i.toString()).autoNumeric('init', {
+			// 	aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+
+
+			// $("#HARGA" + i.toString()).autoNumeric('init', {
+			// 	aSign: '<?php echo ''; ?>',
+			// 	vMin: '-999999999.99'
+			// });
+
+			// $("#TOTAL" + i.toString()).autoNumeric('init', {
+			// 	aSign: '<?php echo ''; ?>',
+			// 	vMin: '-999999999.99'
+			// });			 
+
+					
 		}
+
+		// $("#KD_BRG"+idrow2).keypress(function(e){
+		// 	if(e.keyCode == 46){
+		// 		e.preventDefault();
+		// 		browseBarang(eval($(this).data("rowid")));
+		// 	}
+		// }); 
+
+
+		idrow2++;
+		baris2++;
+		nomor();
+
+		$(".ronly").on('keydown paste', function(e) {
+			e.preventDefault();
+			e.currentTarget.blur();
+		});
+	}
 </script>
 @endsection

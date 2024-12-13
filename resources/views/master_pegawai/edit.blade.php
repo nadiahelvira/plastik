@@ -484,6 +484,8 @@
 		 $('#UMAKAN').attr("readonly", false);	
 		 $('#KOM').attr("readonly", false);	
 		 $('#GAJI').attr("readonly", false);
+		 $('#PINJAM').attr("readonly", false);
+		 $('#KONTAK').attr("readonly", false);
 
 
 		 $('#BANK').attr("readonly", false);	
@@ -524,6 +526,8 @@
 		$("#HP").attr("readonly", true);			
 		$("#AKT").attr("readonly", true);		
 		$('#TELPON').attr("readonly", true);
+		$('#PINJAM').attr("readonly", true);
+		$('#KONTAK').attr("readonly", true);
 
 		$('#UMAKAN').attr("readonly", true);	
 		$('#KOM').attr("readonly", true);	

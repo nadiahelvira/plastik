@@ -110,13 +110,13 @@ class SuratsController extends Controller
 
         $CBG = Auth::user()->CBG;
 		
-		$deli = DB::SELECT("SELECT delid.NO_ID, deli.NO_BUKTI, delid.NO_SO, deli.TGL, deli.NAMAC, deli.KODEC, deli.ALAMAT, deli.KOTA,
+		$deli = DB::SELECT("SELECT delid.NO_ID, deli.NO_BUKTI, delid.NO_SO, deli.TGL, delid.NAMAC, delid.KODEC, delid.ALAMAT, delid.KOTA,
                                 delid.KD_BRG, delid.NA_BRG, delid.SATUAN, delid.QTY, delid.KIRIM, delid.HARGA,
                                 delid.SISA, deli.KODEP, deli.NAMAP, deli.RING, deli.KOM, deli.HARI, delid.KD_GRUP,
                                 deli.PKP, delid.TYPE_KOM, delid.KOM, delid.TKOM, deli.TOTAL_TKOM
                             from deli, delid 
                             WHERE deli.NO_BUKTI=delid.NO_BUKTI 
-                            AND deli.CBG = '$CBG' 
+                            -- AND deli.CBG = '$CBG' 
                             -- and delid.SISA>0 
                             -- and deli.KODEC='".$request->kodec."' 
                             AND deli.GOL ='$golz' 
@@ -136,18 +136,18 @@ class SuratsController extends Controller
 		$deli = DB::SELECT("SELECT delid.NO_ID, deli.NO_BUKTI, delid.NO_SO, deli.TGL, delid.NAMAC, delid.KODEC, delid.ALAMAT, delid.KOTA,
                                 delid.KD_BRG, delid.NA_BRG, delid.SATUAN, delid.QTY, delid.KIRIM, delid.HARGA,
                                 delid.SISA, deli.KODEP, deli.NAMAP, deli.RING, deli.KOM, deli.HARI, delid.KD_GRUP,
-                                deli.PKP, delid.TYPE_KOM, delid.KOM, delid.TKOM, deli.TOTAL_TKOM
+                                deli.PKP, delid.TYPE_KOM, delid.KOM, delid.TKOM, deli.TOTAL_TKOM, deli.TRUCK, deli.SOPIR
                             from deli, delid 
                             WHERE deli.NO_BUKTI=delid.NO_BUKTI 
-                            AND deli.CBG = '$CBG' 
-                            AND delid.PKP = '$PPN' 
+                            -- AND deli.CBG = '$CBG' 
+                            -- AND delid.PKP = '$PPN' 
                             AND deli.GOL = '$golz' 
                             AND deli.NO_BUKTI = '$no_do'
                             -- and delid.SISA>0 
                             -- and deli.KODEC='".$request->kodec."' 
                             -- AND deli.GOL ='$golz' 
-                            AND POSTED = 1
-                            GROUP BY NO_BUKTI");
+                            AND deli.POSTED = 1
+                            GROUP BY delid.KODEC");
 		return response()->json($deli);
 	}
 	
@@ -172,38 +172,23 @@ class SuratsController extends Controller
     public function do_detail(Request $request)
     {
 
-        // $filterbukti = '';
+        // $filterso = '';
         // if($request->NO_SO)
         // {
 
-        //     $filterbukti = " WHERE NO_BUKTI='".$request->NO_SO."' ";
+        //     $filterso = " AND NO_SO='".$request->NO_SO."' ";
         // }
+        $kodec = $request->KODEC;
+
         $sod = DB::SELECT("SELECT REC, NO_SO, KD_BRG, NA_BRG, SATUAN , QTY, HARGA, KIRIM, SISA, TOTAL, KET, 
-                                KD_BRG, NA_BRG, PPN, DPP, DISK, TYPE_KOM, KOM, TKOM
+                                KD_BRG, NA_BRG, PPN, DPP, DISK, TYPE_KOM, KOM, TKOM, KODEC
                             from delid
-                            where NO_BUKTI='".$request->nobukti."' ORDER BY NO_BUKTI ");
+                            where NO_BUKTI='".$request->nobukti."' AND KODEC = '$kodec'
+                            ORDER BY NO_BUKTI ");
 	
 
 		return response()->json($sod);
 	}
-
-
-    // public function browse_detail2(Request $request)
-    // {
-	// 	$filterbukti = '';
-	// 	if($request->NO_PO)
-	// 	{
-	
-	// 		$filterbukti = " WHERE NO_BUKTI='".$request->NO_PO."' AND a.KD_BRG = b.KD_BRG ";
-	// 	}
-	// 	$suratsd = DB::SELECT("SELECT a.REC, a.KD_BRG, a.NA_BRG, a.SATUAN , a.QTY, a.HARGA, a.KIRIM, a.SISA, 
-    //                             b.SATUAN AS SATUAN_PO, a.QTY AS QTY_PO, '1' AS X, a.DPP, a.PPN
-    //                         from suratsd a, brg b
-    //                         $filterbukti ORDER BY NO_BUKTI ");
-	
-
-	// 	return ressuratsnse()->json($suratsd);
-	// }
 
     public function browse_suratsd(Request $request)
     {
@@ -959,52 +944,6 @@ class SuratsController extends Controller
 
     }
     
-    // public function cetak(Surats $surats)
-    // {
-    //     $no_surats = $surats->NO_BUKTI;
-
-    //     $file     = 'surats';
-    //     $PHPJasperXML = new PHPJasperXML();
-    //     $PHPJasperXML->load_xml_file(base_path() . ('/app/resuratsrtc01/phpjasperxml/' . $file . '.jrxml'));
-
-    //     $query = DB::SELECT("SELECT surats.NO_BUKTI, surats.TGL, surats.KODEC, surats.NAMAC, surats.TOTAL_QTY, surats.NOTES, surats.ALAMAT, 
-    //                 surats.KOTA, suratsd.KD_BRG, suratsd.NA_BRG, suratsd.SATUAN, suratsd.QTY, 
-    //                 suratsd.HARGA, suratsd.TOTAL, suratsd.KET, surats.PPN, surats.NETT
-    //         FROM surats, suratsd 
-    //         WHERE surats.NO_BUKTI='$no_surats' AND surats.NO_BUKTI = suratsd.NO_BUKTI 
-    //         ;
-    //     ");
-
-    //     $data = [];
-
-    //     foreach ($query as $key => $value) {
-    //         array_push($data, array(
-    //             'NO_BUKTI' => $query[$key]->NO_BUKTI,
-    //             'TGL'      => $query[$key]->TGL,
-    //             'KODEC'    => $query[$key]->KODEC,
-    //             'NAMAC'    => $query[$key]->NAMAC,
-    //             'ALAMAT'    => $query[$key]->ALAMAT,
-    //             'KOTA'    => $query[$key]->KOTA,
-    //             'KG'       => $query[$key]->KG,
-    //             'HARGA'    => $query[$key]->HARGA,
-    //             'TOTAL'    => $query[$key]->TOTAL,
-    //             'BAYAR'    => $query[$key]->BAYAR,
-    //             'NOTES'    => $query[$key]->NOTES,
-    //             'KD_BRG'    => $query[$key]->KD_BRG,
-    //             'NA_BRG'    => $query[$key]->NA_BRG,
-    //             'SATUAN'    => $query[$key]->SATUAN,
-    //             'QTY'    => $query[$key]->QTY,
-    //             'PPN'    => $query[$key]->PPN,
-    //             'NETT'    => $query[$key]->NETT,
-    //             'KET'    => $query[$key]->KET
-    //         ));
-    //     }
-		
-    //     $PHPJasperXML->setData($data);
-    //     ob_end_clean();
-    //     $PHPJasperXML->outpage("I");
-       
-    // }
 
     public function cetak(Surats $surats)
     {
@@ -1016,7 +955,8 @@ class SuratsController extends Controller
 
         $query = DB::SELECT("SELECT surats.NO_BUKTI, surats.TGL, surats.KODEC, surats.NAMAC, surats.TOTAL_QTY, surats.NOTES, surats.ALAMAT, 
                                     surats.KOTA, suratsd.KD_BRG, suratsd.NA_BRG, suratsd.SATUAN, suratsd.QTY, 
-                                    suratsd.HARGA, suratsd.TOTAL, suratsd.KET, surats.PPN, surats.NETT, surats.USRNM
+                                    suratsd.HARGA, suratsd.TOTAL, suratsd.KET, surats.PPN, 
+                                    surats.NETT, surats.USRNM, surats.TRUCK, surats.SOPIR
                             FROM surats, suratsd 
                             WHERE surats.NO_BUKTI='$no_surats' AND surats.NO_BUKTI = suratsd.NO_BUKTI 
                             ;
@@ -1029,6 +969,7 @@ class SuratsController extends Controller
             array_push($data, array(
                 'NO_BUKTI' => $query[$key]->NO_BUKTI,
                 'TGL'      => $query[$key]->TGL,
+                'TGL_CETAK'  => NOW(),
                 'KODEC'    => $query[$key]->KODEC,
                 'NAMAC'    => $query[$key]->NAMAC,
                 'ALAMAT'    => $query[$key]->ALAMAT,
@@ -1045,7 +986,9 @@ class SuratsController extends Controller
                 'PPN'    => $query[$key]->PPN,
                 'NETT'    => $query[$key]->NETT,
                 'KET'    => $query[$key]->KET,
-                'USRNM'    => $query[$key]->USRNM
+                'USRNM'    => $query[$key]->USRNM,
+                'TRUCK'    => $query[$key]->TRUCK,
+                'SOPIR'    => $query[$key]->SOPIR
             ));
         }
 		

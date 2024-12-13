@@ -35,6 +35,7 @@
 	<field name="TDPP" class="java.lang.Double"/>
 	<field name="DISK" class="java.lang.Double"/>
 	<field name="TDISK" class="java.lang.Double"/>
+	<field name="TGL_CETAK" class="java.util.Date"/>
 	<variable name="VPPN" class="java.lang.String" calculation="Sum">
 		<variableExpression><![CDATA[$F{PPN}]]></variableExpression>
 	</variable>
@@ -287,6 +288,27 @@
 				</textElement>
 				<textFieldExpression><![CDATA["QTY"]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="496" y="69" width="61" height="19" uuid="fa4c4f43-29e7-41b2-9d83-4702b6b2d03a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TGL CETAK"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy 00:00:0000">
+				<reportElement x="567" y="69" width="94" height="19" uuid="079cee06-b852-4d54-81eb-17cd848b45ed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_CETAK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="557" y="69" width="10" height="19" uuid="083cdd1a-2261-40ba-bdd5-b76fbd41d358"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<detail>

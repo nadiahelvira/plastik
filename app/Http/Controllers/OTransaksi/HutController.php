@@ -69,7 +69,7 @@ class HutController extends Controller
 
        $hut = DB::SELECT("SELECT NO_ID, NO_BUKTI, 
                                 TGL, KODES, NAMAS, KOTA, TOTAL, BAYAR, NOTES, POSTED, FLAG,
-                                USRNM 
+                                USRNM, `TYPE` 
                         from hut 
                         where PER = '$periode' AND CBG='$CBG' AND PKP = '$PPN' 
                         ORDER BY NO_BUKTI ");
@@ -744,7 +744,8 @@ class HutController extends Controller
                             ;
 		");
 
-        
+            DB::SELECT("UPDATE HUT SET POSTED = 1 WHERE NO_BUKTI='$no_hut';");
+
         $data = [];
 
         foreach ($query as $key => $value) {

@@ -214,7 +214,7 @@
 								@foreach ($detail as $fod2)		
                                     <tr>
                                         <td>
-                                            <input type="hidden" name="NO_ID[]{{$no2}}" id="NO_ID" type="text" value="{{$fod2->NO_ID}}" 
+                                            <input type="hidden" name="NO_ID[]" id="NO_ID{{$no2}}" type="text" value="{{$fod2->NO_ID}}" 
                                             class="form-control NO_ID" onkeypress="return tabE(this,event)" readonly>
 											
                                             <input name="REC[]" id="REC{{$no2}}" type="text" value="{{$fod2->REC}}" class="form-control REC" onkeypress="return tabE(this,event)" readonly style="text-align:center">
@@ -1260,7 +1260,7 @@
      }
 
 
-	 function tambah2() {
+	function tambah2() {
 
 		var x = document.getElementById('datatable2').insertRow(baris2 + 1);
 

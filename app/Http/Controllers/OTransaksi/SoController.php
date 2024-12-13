@@ -66,7 +66,7 @@ class SoController extends Controller
         $so = DB::SELECT("SELECT SO.NO_BUKTI , SO.JTEMPO, SO.TGL, SO.KODEC, SO.NAMAC, 
                                 SO.ALAMAT, SO.KOTA, SOD.KD_BRG, SOD.NA_BRG, SOD.QTY, SOD.HARGA, SOD.KIRIM, SOD.SISA,
                                 SOD.TOTAL, SOD.PPN, SOD.DPP, SOD.DISK, SOD.SATUAN, SOD.TYPE_KOM, 
-                                SOD.KOM, SOD.TKOM, SO.TOTAL_TKOM, SO.PKP  from so, sod 
+                                SOD.KOM, SOD.TKOM, SO.TOTAL_TKOM, SO.PKP, SOD.LOKASI  from so, sod 
                           WHERE SO.NO_BUKTI = SOD.NO_BUKTI 
                         --   AND SO.KODEC ='$kodec' 
                           AND SO.GOL ='$golz'
@@ -396,6 +396,7 @@ class SoController extends Controller
         $TYPE_KOM      = $request->input('TYPE_KOM');  
         $KOM           = $request->input('KOM');  
         $TKOM           = $request->input('TKOM');  
+        $LOKASI        = $request->input('LOKASI');  
 
         // Check jika value detail ada/tidak
         if ($REC) {
@@ -434,7 +435,8 @@ class SoController extends Controller
                 $detail->HARGA7       = (float) str_replace(',', '', $HARGA7[$key]); 
 				$detail->TYPE_KOM     = ($TYPE_KOM[$key] == null) ? "" :  $TYPE_KOM[$key];				
                 $detail->KOM          = (float) str_replace(',', '', $KOM[$key]); 
-                $detail->TKOM          = (float) str_replace(',', '', $TKOM[$key]); 
+                $detail->TKOM         = (float) str_replace(',', '', $TKOM[$key]); 
+				$detail->LOKASI       = ($LOKASI[$key] == null) ? "" :  $LOKASI[$key];	
 
 				$detail->KET         = ($KET[$key] == null) ? "" :  $KET[$key];				
                 $detail->save();
@@ -749,6 +751,7 @@ class SoController extends Controller
         $TYPE_KOM      = $request->input('TYPE_KOM');  
         $KOM           = $request->input('KOM');  
         $TKOM          = $request->input('TKOM');  
+        $LOKASI          = $request->input('LOKASI');  
 
         $query = DB::table('sod')->where('NO_BUKTI', $request->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
 
@@ -790,6 +793,7 @@ class SoController extends Controller
                         'TKOM'        => (float) str_replace(',', '', $TKOM[$i]),
 
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],	
+                        'LOKASI'        => ($LOKASI[$i] == null) ? "" :  $LOKASI[$i],	
 						
                     ]
                 );
@@ -834,6 +838,7 @@ class SoController extends Controller
                         'TKOM'         => (float) str_replace(',', '', $TKOM[$i]),
 
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],							
+                        'LOKASI'        => ($LOKASI[$i] == null) ? "" :  $LOKASI[$i],							
                     ]
                 );
             }
@@ -926,6 +931,7 @@ class SoController extends Controller
             array_push($data, array(
                 'NO_BUKTI' => $query[$key]->NO_BUKTI,
                 'TGL'      => $query[$key]->TGL,
+                'TGL_CETAK' => NOW(),
                 'KODEC'    => $query[$key]->KODEC,
                 'NAMAC'    => $query[$key]->NAMAC,
                 'ALAMAT'    => $query[$key]->ALAMAT,

@@ -70,7 +70,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Uraian]]></text>
+				<text><![CDATA[Notes]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="684" y="133" width="104" height="18" uuid="30c99b72-b65d-4c20-8814-2774baece9db"/>
@@ -196,7 +196,7 @@
 				<textElement>
 					<font fontName="Tahoma"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{REC}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="112" y="0" width="193" height="20" uuid="1909e532-11b3-456e-9152-7ed24f3e66c5"/>

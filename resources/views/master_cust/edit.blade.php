@@ -970,9 +970,18 @@
 	}
     
 	function simpan() {
-        cekCust($('#KODEC').val());
-        (hasilCek==0) ? document.getElementById("entri").submit() : alert('Customer '+$('#KODEC').val()+' sudah ada!');
-        // document.getElementById("entri").submit() 
+
+		
+        hasilCek=0;
+		$tipx = $('#tipx').val();
+				
+        if ( $tipx == 'new' )
+		{
+			cekCust($('#KODEC').val());		
+		}
+		
+		(hasilCek==0) ? document.getElementById("entri").submit() : alert('Customer '+$('#KODEC').val()+' sudah ada!');
+	
 
 		$("#LOADX").hide();
 	}

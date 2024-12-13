@@ -166,6 +166,25 @@
 							
 
 							<div class="form-group row">
+                                <div class="col-md-1" align="left">
+									<label style="color:red;font-size:20px">* </label>	
+                                    <label for="TRUCK" class="form-label">Truck</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control TRUCK" id="TRUCK" name="TRUCK" placeholder="Masukkan Truck" value="{{$header->TRUCK}}">
+                                </div>
+
+                                <div class="col-md-1" align="right">
+									<!-- <label style="color:red;font-size:20px">* </label>	 -->
+                                    <label for="SOPIR" class="form-label">Sopir</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control SOPIR" id="SOPIR" name="SOPIR" placeholder="Sopir" value="{{$header->SOPIR}}">
+                                </div>
+
+                            </div>
+
+							<div class="form-group row">
 								<!-- code text box baru -->
 								<div class="col-md-5 form-group row special-input-label">
 
@@ -188,7 +207,7 @@
                                     <tr>
 										<th width="50px" style="text-align: center;">No.</th>
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">SO#</th>
-                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Supplier</th>
+                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Customer</th>
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">-</th>
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Kode Barang</th>
                                         <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Uraian</th>
@@ -250,6 +269,7 @@
                                             <input hidden name="TYPE_KOM[]" id="TYPE_KOM{{$no}}" type="text" class="form-control TYPE_KOM" placeholder="Ket" value="{{$detail->TYPE_KOM}}" required>
 											<input hidden name="KOM[]"  onblur="hitung()" value="{{$detail->KOM}}" id="KOM{{$no}}" type="text" style="text-align: right"  class="form-control KOM text-primary" readonly >
 											<input hidden name="TKOM[]"  onblur="hitung()" value="{{$detail->TKOM}}" id="TKOM{{$no}}" type="text" style="text-align: right"  class="form-control TKOM text-primary" readonly >
+											<input hidden name="LOKASI[]" id="LOKASI{{$no}}" type="text" class="form-control LOKASI" placeholder="Ket" value="{{$detail->TYPE_KOM}}" readonly>
 										</td>
 										<td>
                                             <input name="KET[]" id="KET{{$no}}" type="text" class="form-control KET" placeholder="Ket" value="{{$detail->KET}}" required>
@@ -711,6 +731,60 @@
 		
 //////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		//CHOOSE Truck
+		var dTableBTruck;
+		loadDataBTruck = function(){
+			$.ajax(
+			{
+				type: 'GET',    
+				url: '{{url('truck/browse')}}',
+
+				success: function( response )
+				{
+			
+					resp = response;
+					if(dTableBTruck){
+						dTableBTruck.clear();
+					}
+					for(i=0; i<resp.length; i++){
+						
+						dTableBTruck.row.add([
+							'<a href="javascript:void(0);" onclick="chooseTruck( \''+resp[i].NOPOL+'\' )">'+resp[i].KODE+'</a>',
+							resp[i].NOPOL,
+						]);
+					}
+					dTableBTruck.draw();
+				}
+			});
+		}
+		
+		dTableBTruck = $("#table-truck").DataTable({
+			
+		});
+		
+		browseTruck = function(){
+			loadDataBTruck();
+			$("#browseTruckModal").modal("show");
+		}
+		
+		chooseTruck = function(NOPOL){
+			$("#TRUCK").val(NOPOL);
+			$("#browseTruckModal").modal("hide");
+		}
+		
+		$("#TRUCK").keypress(function(e){
+
+			if(e.keyCode == 46){
+				e.preventDefault();
+				browseTruck();
+			}
+		}); 
+		
+		
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////
 
@@ -736,7 +810,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableSo.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\',\''+resp[i].TYPE_KOM+'\',\''+resp[i].KOM+'\',\''+resp[i].TKOM+'\',\''+resp[i].TOTAL_TKOM+'\',\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\',\''+resp[i].PKP+'\')">'+resp[i].NO_BUKTI+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\',\''+resp[i].TYPE_KOM+'\',\''+resp[i].KOM+'\',\''+resp[i].TKOM+'\',\''+resp[i].TOTAL_TKOM+'\',\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\',\''+resp[i].PKP+'\',\''+resp[i].LOKASI+'\')">'+resp[i].NO_BUKTI+'</a>',
 							resp[i].TGL,
 							resp[i].NAMAC,
 							resp[i].KD_BRG,
@@ -775,7 +849,7 @@
 			$("#browseSoModal").modal("show");
 		}
 		
-		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN,SISA, HARGA, TOTAL, PPNX, DPP, DISK, TYPE_KOM, KOM, TKOM, TOTAL_TKOM, KODEC, NAMAC, ALAMAT, KOTA, PKP){
+		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN,SISA, HARGA, TOTAL, PPNX, DPP, DISK, TYPE_KOM, KOM, TKOM, TOTAL_TKOM, KODEC, NAMAC, ALAMAT, KOTA, PKP, LOKASI){
 			$("#NO_SO"+rowidSo).val(NO_BUKTI);
 			// $("#JTEMPO"+rowidSo).val(JTEMPO);
 			$("#KD_BRG"+rowidSo).val(KD_BRG);
@@ -796,6 +870,7 @@
 			$("#ALAMAT"+rowidSo).val(ALAMAT);	
 			$("#KOTA"+rowidSo).val(KOTA);	
 			$("#PKP"+rowidSo).val(PKP);	
+			$("#LOKASI"+rowidSo).val(LOKASI);	
 			$("#browseSoModal").modal("hide");
 			hitung();
 		}
@@ -861,16 +936,16 @@
 			}
 		});
 
-		// if ( $('#KODEC').val()=='' ) 
-		// {			
-		// 	check = '1';
-		// 		Swal.fire({
-		// 			icon: 'warning',
-		// 			title: 'Warning',
-		// 			text: 'No Customer Harus diisi.'
-		// 		});
-		// 		return;
-		// }
+		if ( $('#TRUCK').val()=='' ) 
+		{			
+			check = '1';
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Truck Harus diisi.'
+				});
+				return;
+		}
 
 		if ( tgl.substring(3,5) != bulanPer ) 
 		{
@@ -1033,8 +1108,8 @@
 			// $("#NAMAC").attr("readonly", true);			
 			// $("#ALAMAT").attr("readonly", true);
 			// $("#KOTA").attr("readonly", true);
-			// $("#TRUCK").attr("readonly", true);
-			// $("#SOPIR").attr("readonly", true);
+			$("#TRUCK").attr("readonly", true);
+			$("#SOPIR").attr("readonly", false);
 			// $("#VIA").attr("readonly", false);
 
 			
@@ -1104,8 +1179,8 @@
 		
 		$("#TGL").attr("readonly", true);
 		// $("#JTEMPO").attr("readonly", true);
-		// $("#KODEC").attr("readonly", true);
-	    // $("#KODEC").attr("disabled", true);
+		$("#TRUCK").attr("readonly", true);
+	    $("#SOPIR").attr("disabled", true);
 
 
 		// $("#NAMAC").attr("readonly", true);
@@ -1335,7 +1410,7 @@
                 </td>
 				
 				<td>
-		            <input name='QTY[]' onclick='select()' onblur='hitung()' value='0' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
+		            <input name='QTY[]' onclick='select()' onblur='hitung()' value='1' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
 					<input hidden name='HARGA[]' onclick='select()' onblur='hitung()' value='0' id='HARGA${idrow}' type='text' style='text-align: right' class='form-control HARGA text-primary' readonly >
 					<input hidden name='TOTAL[]' onclick='select()' onblur='hitung()' value='0' id='TOTAL${idrow}' type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly required >
 					<input hidden name='PPNX[]'  onblur='hitung()' value='0' id='PPNX${idrow}' type='text' style='text-align: right' class='form-control PPNX text-primary' readonly required >
@@ -1344,7 +1419,7 @@
 				    <input hidden name='TYPE_KOM[]' id='TYPE_KOM${idrow}' type='text' class='form-control  TYPE_KOM' required>
 					<input hidden name='KOM[]'  onblur='hitung()' value='0' id='KOM${idrow}' type='text' style='text-align: right' class='form-control KOM text-primary' >
 					<input hidden name='TKOM[]'  onblur='hitung()' value='0' id='TKOM${idrow}' type='text' style='text-align: right' class='form-control TKOM text-primary' >
-				
+					<input hidden name='LOKASI[]' id='LOKASI${idrow}' type='text' class='form-control  LOKASI' readonly>
 				
 				</td>
 				

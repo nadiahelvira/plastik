@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Master\Brg;
 use App\Models\Master\BrgDetail;
+use App\Models\Master\BrgDetail2;
 use Illuminate\Http\Request;
 use DataTables;
 use Auth;
@@ -147,7 +148,7 @@ class BrgController extends Controller
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
                                     brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
                                     brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI
-                                FROM brg, brgdx, brgd
+                                FROM brg, brgdx
                                 $filter_kd_brg and brg.KD_BRG = brgdx.KD_BRG AND brg.KD_BRG = brgd.KD_BRG
                                 AND brg.PN='0' AND brgdx.RING = '$ringx'
                                 -- AND brg. GOL='$golz'
@@ -174,8 +175,8 @@ class BrgController extends Controller
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
                                         brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
-                                brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI
-                                FROM brg, brgdx, brgd
+                                brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM
+                                FROM brg, brgdx
                                 $filter_kd_brg AND brg.KD_BRG = brgdx.KD_BRG AND brg.KD_BRG = brgd.KD_BRG
                                 AND brg.PN<>'0' AND brgdx.RING = '$ringx'
                                 -- AND brg.GOL='$golz'
@@ -185,8 +186,8 @@ class BrgController extends Controller
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
                                         brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
-                                brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI
-                                FROM brg, brgdx, brgd
+                                brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM
+                                FROM brg, brgdx
                                 WHERE brg.PN<>'0' AND brg.KD_BRG = brgdx.KD_BRG AND brg.KD_BRG = brgd.KD_BRG
                                 -- AND brg.GOL='$golz' 
                                 AND brgdx.RING = '$ringx'
@@ -297,7 +298,7 @@ class BrgController extends Controller
                 'ACNOB'             => ($request['ACNOB'] == null) ? "" : $request['ACNOB'],
                 'NACNOB'            => ($request['NACNOB'] == null) ? "" : $request['NACNOB'],
                 'KALI'              => (float) str_replace(',', '', $request['KALI']),
-                'BERAT'               => (float) str_replace(',', '', $request['BERAT']),
+                'ROP'               => (float) str_replace(',', '', $request['ROP']),
                 'HJUAL'             => (float) str_replace(',', '', $request['HJUAL']),
                 'PN'                => ($request['PN'] == null) ? "" : $request['PN'],
                 'MERK'              => ($request['MERK'] == null) ? "" : $request['MERK'],
@@ -317,6 +318,7 @@ class BrgController extends Controller
         
         
         $REC	= $request->input('REC');
+		$RECY	= $request->input('RECY');
 		$RING	= $request->input('RING');
 		$HARGA	= $request->input('HARGA');
 		$HARGA2	= $request->input('HARGA2');
@@ -325,6 +327,10 @@ class BrgController extends Controller
 		$HARGA5	= $request->input('HARGA5');
 		$HARGA6	= $request->input('HARGA6');
 		$HARGA7	= $request->input('HARGA7');
+        
+        $CBG = $request->input('CBG');
+		$KODE	= $request->input('KODE');
+		$LOKASI	= $request->input('LOKASI');
         
         // Check jika value detail ada/tidak
         if ($REC) {
@@ -350,6 +356,20 @@ class BrgController extends Controller
             }
         }	
 
+        if ($RECY) {
+            foreach ($RECY as $key => $value) {
+                // Declare new data di Model
+                $detail2    = new BrgDetail2;
+
+                // Insert ke Database
+                $detail2->KD_BRG = ($request['KD_BRG'] == null) ? "" : $request['KD_BRG'];		
+				$detail2->REC	    = $RECY[$key];
+				$detail2->CBG   = Auth::user()->CBG;
+				$detail2->KODE	= ($KODE[$key]==null) ? "" :  $KODE[$key];
+				$detail2->LOKASI	= ($LOKASI[$key]==null) ? "" :  $LOKASI[$key];
+                $detail2->save();
+            }
+        }	
         //  ganti 11
 
 	    $kd_brgx = $request['KD_BRG'];
@@ -359,6 +379,10 @@ class BrgController extends Controller
         DB::SELECT("UPDATE brg,  brgdx
                             SET  brgdx.ID =  brg.NO_ID  WHERE  brg.KD_BRG =  brgdx.KD_BRG 
 							AND  brg.KD_BRG='$kd_brgx';");
+
+        DB::SELECT("UPDATE brg,  brgd
+                            SET  brgd.ID =  brg.NO_ID  WHERE  brg.KD_BRG =  brgd.KD_BRG 
+                            AND  brg.KD_BRG='$no_buktix';");
 					       
         //return redirect('/brg/edit/?idx=' . $brg->NO_ID . '&tipx=edit')->with('statusInsert', 'Data baru berhasil ditambahkan');
 		return redirect('/brg')->with('statusInsert', 'Data baru berhasil ditambahkan');	
@@ -513,11 +537,13 @@ class BrgController extends Controller
 
         $kd_brg = $brg->KD_BRG;
         $brgDetail = DB::table('brgdx')->where('KD_BRG', $kd_brg)->get();
+        $brgDetail2 = DB::table('brgd')->where('KD_BRG', $kd_brg)->get();
 
 
 		 $data = [
                     'header'        => $brg,
                     'detail'        => $brgDetail,
+                    'detail2'        => $brgDetail2
                 ];				
         return view('master_brg.edit', $data)->with(['tipx' => $tipx, 'idx' => $idx ]);
 		 
@@ -571,7 +597,7 @@ class BrgController extends Controller
                 'ACNOB'             => ($request['ACNOB'] == null) ? "" : $request['ACNOB'],
                 'NACNOB'            => ($request['NACNOB'] == null) ? "" : $request['NACNOB'],
                 'KALI'              => (float) str_replace(',', '', $request['KALI']),			 
-                'BERAT'               => (float) str_replace(',', '', $request['BERAT']),			 
+                'ROP'               => (float) str_replace(',', '', $request['ROP']),			 
                 'HJUAL'             => (float) str_replace(',', '', $request['HJUAL']),			 
                 'SMIN'              => (float) str_replace(',', '', $request['SMIN']),			 
                 'SMAX'              => (float) str_replace(',', '', $request['SMAX']),			 
@@ -599,8 +625,10 @@ class BrgController extends Controller
         // Update Detail
         $length = sizeof($request->input('REC'));
         $NO_ID  = $request->input('NO_ID');
+        $NO_IDY  = $request->input('NO_IDY');
 
         $REC	= $request->input('REC');
+		$RECY	= $request->input('RECY');
 		$RING	= $request->input('RING');
 		$HARGA	= $request->input('HARGA');
 		$HARGA2	= $request->input('HARGA2');
@@ -608,7 +636,11 @@ class BrgController extends Controller
 		$HARGA4	= $request->input('HARGA4');
 		$HARGA5	= $request->input('HARGA5');		
 		$HARGA6	= $request->input('HARGA6');		
-		$HARGA7	= $request->input('HARGA7');		
+		$HARGA7	= $request->input('HARGA7');	
+        
+        $CBG = $request->input('CBG');
+		$KODE	= $request->input('KODE');		
+		$LOKASI	= $request->input('LOKASI');		
 
         $query = DB::table('brgdx')->where('KD_BRG', $request->KD_BRG)->whereNotIn('NO_ID',  $NO_ID)->delete();
 
@@ -663,12 +695,49 @@ class BrgController extends Controller
 
         ////////////////////////////////////////////////////
 
+        $query2 = DB::table('brgd')->where('KD_BRG', $request->KD_BRG)->whereNotIn('NO_ID',  $NO_IDY)->delete();
+
+        // Update / Insert
+        for ($i = 0; $i < $length; $i++) {
+            // Insert jika NO_ID baru
+            if ($NO_IDY[$i] == 'new') {
+                $insert = BrgDetail2::create(
+                    [
+                        'KD_BRG'   => $request->KD_BRG,
+                        'REC'        => $RECY[$i],
+						'CBG'        => Auth::user()->CBG,
+                        'KODE'     => ($KODE[$i]==null) ? "" : $KODE[$i],
+                        'LOKASI'     => ($LOKASI[$i]==null) ? "" : $LOKASI[$i],
+						
+                    ]
+                );
+            } else {
+                // Update jika NO_ID sudah ada
+                $upsert = BrgDetail2::updateOrCreate(
+                    [
+                        'KD_BRG'  => $request->KD_BRG,
+                        'NO_ID'     => (int) str_replace(',', '', $NO_IDY[$i])
+                    ],
+
+                    [
+                        'REC'        => $RECY[$i],
+
+						'CBG'        => Auth::user()->CBG,
+                        'KODE'     => ($KODE[$i]==null) ? "" : $KODE[$i],						
+                        'LOKASI'     => ($LOKASI[$i]==null) ? "" : $LOKASI[$i],						
+                    ]
+                );
+            }
+        } 
+
+        /////////////////////////////////////////////////////////////
+
         $brg = Brg::where('KD_BRG', $kd_brgx )->first();
 
         //  ganti 21
 
         //return redirect('/brg/edit/?idx=' . $brg->NO_ID . '&tipx=edit');
-		return redirect('/brg')->with('statusInsert', 'Data baru berhasil diupdate');
+		return redirect('/brg')->with('status', 'Data berhasil diupdate');
 		
     }
 
@@ -698,7 +767,7 @@ class BrgController extends Controller
 
     public function cekbarang(Request $request)
     {
-        $getItem = DB::SELECT('select count(*) as ADA from brg where KD_BRG ="' . $request->KDBRG . '"');
+        $getItem = DB::SELECT('select count(*) as ADA from brg where KD_BRG ="' . $request->KD_BRG . '"');
 
         return $getItem;
     }

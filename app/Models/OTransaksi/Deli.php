@@ -21,6 +21,6 @@ class Deli extends Model
     [
         "NO_BUKTI", "TGL", "PER", "FLAG", "TRUCK", "SOPIR", "VIA", "KODEC", "NAMAC", "ALAMAT", "KOTA", "NOTES", 
         "TOTAL_QTY", "TOTAL", "USRNM", "TG_SMP", "GOL", "NO_SO", "JTEMPO", "CBG", 
-        "KODEP", "NAMAP", "RING", "KOM", "TDISK", "NO_DO", "HARI", "PKP", "TOTAL_TKOM"
+        "KODEP", "NAMAP", "RING", "KOM", "TDISK", "NO_DO", "HARI", "PKP", "TOTAL_TKOM", "TRUCK", "SOPIR"
     ];
 }

@@ -20,7 +20,7 @@ class Brg extends Model
     protected $fillable = 
     [
         "KD_BRG", "NA_BRG", "JENIS", "SATUAN","GOL", "USRNM", "TG_SMP", "PN", "KODES", "NAMAS",
-        "SATUAN_BELI", "KALI", "ACNOA", "NACNOA", "ACNOB","NACNOB", "ROP", "HJUAL", "SMIN", "SMAX",
+        "SATUAN_BELI", "KALI", "ACNOA", "NACNOA", "ACNOB","NACNOB", "BERAT", "HJUAL", "SMIN", "SMAX",
         "created_by", "created_at", "updated_by", "updated_at", "KD_GRUP","NA_GRUP","PANJANG",
         "LEBAR", "VOLUME", "DIMENSI", "TYPE_KOM", "KOM"
 		

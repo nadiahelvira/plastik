@@ -305,12 +305,14 @@
 													<input name="TYPE_KOM[]" hidden id="TYPE_KOM{{$no}}" type="text" value="{{$detail->TYPE_KOM}}" class="form-control TYPE_KOM" readonly required>
 													<input name="KOM[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->KOM}}" id="KOM{{$no}}" type="text" style="text-align: right"  class="form-control KOM text-primary" >
 													<input name="TKOM[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->TKOM}}" id="TKOM{{$no}}" type="text" style="text-align: right"  class="form-control TKOM text-primary" >
+													<input name="LOKASI[]" hidden id="LOKASI{{$no}}" type="text" value="{{$detail->LOKASI}}" class="form-control LOKASI" readonly>
 												</td>
 												
 												<td>
 													<input name="QTY[]" onclick='select()' onblur="hitung()" value="{{$detail->QTY}}" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" >
 												</td>
-												<td><input name="HARGA[]" onclick='select()' onblur="hitung()" value="{{$detail->HARGA}}" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" readonly></td>
+												<td>
+													<input name="HARGA[]" onclick='select()' onblur="hitung()" value="{{$detail->HARGA}}" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" readonly></td>
 												
 												<td>
 													<input name="DISK[]" onblur="hitung()"  value="{{$detail->DISK}}" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK">
@@ -408,33 +410,10 @@
 									</div>
 									
 								</div>
-										
-								<div class="mt-3 col-md-12 form-group row">
-									<div class="col-md-4">
-										<button type="button" id='TOPX'  onclick="location.href='{{url('/so/edit/?idx=' .$idx. '&tipx=top&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-primary">Top</button>
-										<button type="button" id='PREVX' onclick="location.href='{{url('/so/edit/?idx='.$header->NO_ID.'&tipx=prev&flagz='.$flagz.'&golz='.$golz.'&buktix='.$header->NO_BUKTI )}}'" class="btn btn-outline-primary">Prev</button>
-										<button type="button" id='NEXTX' onclick="location.href='{{url('/so/edit/?idx='.$header->NO_ID.'&tipx=next&flagz='.$flagz.'&golz='.$golz.'&buktix='.$header->NO_BUKTI )}}'" class="btn btn-outline-primary">Next</button>
-										<button type="button" id='BOTTOMX' onclick="location.href='{{url('/so/edit/?idx=' .$idx. '&tipx=bottom&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-primary">Bottom</button>
-									</div>
-									<div class="col-md-5">
-										<button type="button" id='NEWX' onclick="location.href='{{url('/so/edit/?idx=0&tipx=new&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-warning">New</button>
-										<button type="button" id='EDITX' onclick='hidup()' class="btn btn-secondary">Edit</button>                    
-										<button type="button" id='UNDOX' onclick="location.href='{{url('/so/edit/?idx=' .$idx. '&tipx=undo&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-info">Undo</button>  
-										<button type="button" id='SAVEX' onclick='simpan()'   class="btn btn-success" class="fa fa-save"></i>Save</button>
-
-									</div>
-									<div class="col-md-3">
-										<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
-										
-										<!-- <button type="button" id='CLOSEX'  onclick="location.href='{{url('/so?flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-secondary">Close</button> -->
-										
-										<!-- tombol close sweet alert -->
-										<button type="button" id='CLOSEX' onclick="closeTrans()" class="btn btn-outline-secondary">Close</button></div>
-									</div>
-								</div>
-
-
-
+									
+							</div>
+							
+							<!----tutup page so--->	
 
 								<div {{( $golz =='D' ) ? '' : 'hidden' }} id="dropship" class="tab-pane">
 
@@ -475,16 +454,41 @@
 									</div>
 											
 								</div>
+										
+								<div class="mt-3 col-md-12 form-group row">
+									<div class="col-md-4">
+										<button type="button" id='TOPX'  onclick="location.href='{{url('/so/edit/?idx=' .$idx. '&tipx=top&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-primary">Top</button>
+										<button type="button" id='PREVX' onclick="location.href='{{url('/so/edit/?idx='.$header->NO_ID.'&tipx=prev&flagz='.$flagz.'&golz='.$golz.'&buktix='.$header->NO_BUKTI )}}'" class="btn btn-outline-primary">Prev</button>
+										<button type="button" id='NEXTX' onclick="location.href='{{url('/so/edit/?idx='.$header->NO_ID.'&tipx=next&flagz='.$flagz.'&golz='.$golz.'&buktix='.$header->NO_BUKTI )}}'" class="btn btn-outline-primary">Next</button>
+										<button type="button" id='BOTTOMX' onclick="location.href='{{url('/so/edit/?idx=' .$idx. '&tipx=bottom&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-primary">Bottom</button>
+									</div>
+									<div class="col-md-5">
+										<button type="button" id='NEWX' onclick="location.href='{{url('/so/edit/?idx=0&tipx=new&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-warning">New</button>
+										<button type="button" id='EDITX' onclick='hidup()' class="btn btn-secondary">Edit</button>                    
+										<button type="button" id='UNDOX' onclick="location.href='{{url('/so/edit/?idx=' .$idx. '&tipx=undo&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-info">Undo</button>  
+										<button type="button" id='SAVEX' onclick='simpan()'   class="btn btn-success" class="fa fa-save"></i>Save</button>
+
+									</div>
+									<div class="col-md-3">
+										<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
+										
+										<!-- <button type="button" id='CLOSEX'  onclick="location.href='{{url('/so?flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-secondary">Close</button> -->
+										
+										<!-- tombol close sweet alert -->
+										<button type="button" id='CLOSEX' onclick="closeTrans()" class="btn btn-outline-secondary">Close</button></div>
+									</div>
+								</div>
+
+
+
+
+								
 
 
 
 
 
 
-									
-							</div>
-							
-							<!----tutup page so--->	
 
 
 
@@ -852,7 +856,7 @@
 							for(i=0; i<resp.length; i++){
 								
 								dTableBBarang.row.add([
-									'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\', \''+resp[i].KD_GRUP+'\' , \''+resp[i].NA_BRG+'\' , \''+resp[i].SATUAN+'\', \''+resp[i].HARGA1+'\', \''+resp[i].HARGA2+'\', \''+resp[i].HARGA3+'\', \''+resp[i].HARGA4+'\', \''+resp[i].HARGA5+'\', \''+resp[i].HARGA6+'\', \''+resp[i].HARGA7+'\', \''+resp[i].TYPE_KOM+'\', \''+resp[i].KOM+'\' )">'+resp[i].KD_BRG+'</a>',
+									'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\', \''+resp[i].KD_GRUP+'\' , \''+resp[i].NA_BRG+'\' , \''+resp[i].SATUAN+'\', \''+resp[i].HARGA1+'\', \''+resp[i].HARGA2+'\', \''+resp[i].HARGA3+'\', \''+resp[i].HARGA4+'\', \''+resp[i].HARGA5+'\', \''+resp[i].HARGA6+'\', \''+resp[i].HARGA7+'\', \''+resp[i].TYPE_KOM+'\', \''+resp[i].KOM+'\', \''+resp[i].LOKASI+'\' )">'+resp[i].KD_BRG+'</a>',
 									resp[i].NA_BRG,
 									resp[i].SATUAN,
 								]);
@@ -875,6 +879,7 @@
 						$("#HARGA7"+rowidBarang).val(resp[0].HARGA7);
 						$("#TYPE_KOM"+rowidBarang).val(resp[0].TYPE_KOM);
 						$("#KOM"+rowidBarang).val(resp[0].KOM);
+						$("#LOKASI"+rowidBarang).val(resp[0].LOKASI);
 					}
 				}
 			});
@@ -895,7 +900,7 @@
 			}	
 		}
 		
-		chooseBarang = function(KD_BRG,KD_GRUP,NA_BRG,SATUAN, HARGA1, HARGA2, HARGA3, HARGA4, HARGA5, HARGA6, HARGA7, TYPE_KOM, KOM){
+		chooseBarang = function(KD_BRG,KD_GRUP,NA_BRG,SATUAN, HARGA1, HARGA2, HARGA3, HARGA4, HARGA5, HARGA6, HARGA7, TYPE_KOM, KOM, LOKASI){
 			$("#KD_BRG"+rowidBarang).val(KD_BRG);
 			$("#KD_GRUP"+rowidBarang).val(KD_GRUP);
 			$("#NA_BRG"+rowidBarang).val(NA_BRG);	
@@ -909,6 +914,7 @@
 			$("#HARGA7"+rowidBarang).val(HARGA7);
 			$("#TYPE_KOM"+rowidBarang).val(TYPE_KOM);
 			$("#KOM"+rowidBarang).val(KOM);
+			$("#LOKASI"+rowidBarang).val(LOKASI);
 			$("#browseBarangModal").modal("hide");
 		}
 		
@@ -1188,7 +1194,7 @@
 			 
             if( TTOTAL_QTY1 > 0 )
 			{
-					if ( TTOTAL_QTY1 > 200) 
+					if ( TTOTAL_QTY1 >= 200) 
 					{
 						var HARGAX = HARGA7X;
 
@@ -1242,7 +1248,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 	
 			
-			if( DISKX < 100 )
+			if( (DISKX > 0) && (DISKX < 100) )
 			{
 				DISKX = ( QTYX * HARGAX) * DISKX / 100 ;
 
@@ -1735,10 +1741,11 @@
 					<input name='TYPE_KOM[]' hidden id='TYPE_KOM${idrow}' type='text' class='form-control  TYPE_KOM' readonly required>
 					<input name='KOM[]' hidden onclick='select()' onblur='hitung()' value='0' id='KOM${idrow}' type='text' style='text-align: right' class='form-control KOM text-primary' required >
 					<input name='TKOM[]' hidden onclick='select()' onblur='hitung()' value='0' id='TKOM${idrow}' type='text' style='text-align: right' class='form-control TKOM text-primary' required >
-                </td>
+					<input name='LOKASI[]' hidden id='LOKASI${idrow}' type='text' class='form-control  LOKASI' readonly>
+		        </td>
 				
 				<td>
-		            <input name='QTY[]' onclick='select()' onblur='hitung()' value='0' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
+		            <input name='QTY[]' onclick='select()' onblur='hitung()' value='1' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
                 </td>
 
 				<td>

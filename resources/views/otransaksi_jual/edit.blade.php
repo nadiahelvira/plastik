@@ -1721,7 +1721,7 @@ function getSuratsd(bukti)
                 </td>
 				
 				<td>
-		            <input name='QTY[]'  onblur='hitung()' value='0' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
+		            <input name='QTY[]'  onblur='hitung()' value='1' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
                 </td>
 
 				<td>

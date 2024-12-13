@@ -82,8 +82,6 @@ class RCustController extends Controller
 		*/        
 		
 		$queryakum = DB::SELECT("SET @tglx:=last_day(concat('$tahun','-','$bulan','-01'));");
-		
-		
 		$query = DB::SELECT("
 		SELECT '$periode'as PERIOD, custd.KODEC, custd.NAMAC, custd.NO_ID, 
 		custd.AW$bulan as AW, custd.MA$bulan as MA, 
@@ -101,6 +99,8 @@ class RCustController extends Controller
 		    GROUP BY KODEC
 		) as xxx on custd.KODEC=xxx.KODEC
 		where cust.KODEC = custd.KODEC 
+		and custd.YER='$tahun' and ( custd.AW$bulan<>0 or custd.MA$bulan<>0 or custd.KE$bulan<>0 
+		or custd.LN$bulan<>0 or custd.AK$bulan<>0 )
 		order by cust.KODEC;
 		");
 

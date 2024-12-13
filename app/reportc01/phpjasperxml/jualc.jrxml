@@ -52,6 +52,7 @@
 	<field name="JTEMPO" class="java.util.Date"/>
 	<field name="DISK" class="java.lang.Double"/>
 	<field name="TAX" class="java.lang.Double"/>
+	<field name="TGL_CETAK" class="java.util.Date"/>
 	<variable name="QTY" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTY}]]></variableExpression>
 		<initialValueExpression><![CDATA[]]></initialValueExpression>
@@ -259,6 +260,29 @@
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Sub Total"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="245" y="60" width="9" height="18" uuid="cb0cc9ec-b056-41cc-ad93-2a77b084c905"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="60" width="75" height="18" uuid="d8ec0820-a1c0-4053-be80-6a055d41b8d0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Tanggal Cetak"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy 00:00:0000">
+				<reportElement x="254" y="60" width="116" height="18" uuid="1d88b4c6-ba50-4fe5-be4c-2f9de373de21"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TGL_CETAK}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

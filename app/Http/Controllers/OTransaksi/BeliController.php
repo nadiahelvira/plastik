@@ -905,7 +905,8 @@ class BeliController extends Controller
 
         $query = DB::SELECT("SELECT beli.NO_BUKTI, beli.TGL, beli.KODES, beli.NAMAS, beli.TOTAL_QTY, beli.NOTES, beli.ALAMAT, 
                                     beli.KOTA, belid.KD_BRG, belid.NA_BRG, belid.SATUAN, belid.QTY, belid.DISK,
-                                    (belid.HARGA / belid.KALI) AS HARGA, belid.TOTAL, belid.KET, beli.TPPN, beli.NETT, beli.NO_PO, beli.USRNM
+                                    (belid.HARGA / belid.KALI) AS HARGA, belid.TOTAL, belid.KET, beli.TPPN, beli.NETT,
+                                    beli.NO_PO, beli.USRNM, belid.KALI, beli.TDISK, beli.TDPP, belid.PPN, belid.DPP
                             FROM beli, belid 
                             WHERE beli.NO_BUKTI='$no_beli' AND beli.NO_BUKTI = belid.NO_BUKTI 
                             ;
@@ -933,12 +934,17 @@ class BeliController extends Controller
                 'SATUAN'    => $query[$key]->SATUAN,
                 'QTY'    => $query[$key]->QTY,
                 'DISK'    => $query[$key]->DISK,
-                'PPN'    => $query[$key]->TPPN,
                 'NETT'    => $query[$key]->NETT,
                 'KET'    => $query[$key]->KET,
                 'NO_PO'    => $query[$key]->NO_PO,
                 'JUDUL'    => $judul,
-                'USRNM'    => $query[$key]->USRNM
+                'USRNM'    => $query[$key]->USRNM,
+                'KALI'    => $query[$key]->KALI,
+                'TPPN'    => $query[$key]->TPPN,
+                'TDISK'    => $query[$key]->TDISK,
+                'TDPP'    => $query[$key]->TDPP,
+                'PPN'    => $query[$key]->PPN,
+                'DPP'    => $query[$key]->DPP
             ));
         }
 		

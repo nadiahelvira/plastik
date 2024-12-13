@@ -987,6 +987,7 @@ class JualController extends Controller
                 'NO_BUKTI' => $no_jual,
                 // 'TGL'      => date("d/m/Y", strtotime($jual->TGL)),
                 'TGL'      => $query[$key]->TGL,               
+                'TGL_CETAK'   => NOW(),               
                 'JTEMPO'      => $query[$key]->JTEMPO,               
                 'REC'      => $rec,
                 'KD_BRG'   => $query[$key]->KD_BRG,

@@ -83,9 +83,9 @@
                             
                             <th scope="col" style="text-align: center">Suplier#</th>
                             <th scope="col" style="text-align: center">Nama</th>
-							              <th scope="col" style="text-align: center">Kota</th>
                             <th scope="col" style="text-align: center">Bayar</th>
-                            <th scope="col" style="text-align: center">Notes</th>
+                            <th scope="col" style="text-align: center">Posted</th>
+							<th scope="col" style="text-align: center">Type</th>
                            
                         </tr>
                     </thead>
@@ -148,18 +148,29 @@
                     return ' <h5><span class="badge badge-pill badge-warning">' + data + '</span></h5>';
                   }
                 },
-                {data: 'KOTA', name: 'KOTA'},
                 {data: 'BAYAR', name: 'BAYAR', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},				
-                {data: 'NOTES', name: 'NOTES'},
-
+                { data: 'POSTED', name: 'POSTED',
+                  render : function(data, type, row, meta) {
+                    if(row['POSTED']=="0"){
+                        return '';
+                    }else{
+                        return '<input type="checkbox" checked style="pointer-events: none;">';
+                    }
+                  }
+                },
+                {data: 'TYPE', name: 'TYPE'},
             ],
 
             columnDefs: 
             [
                 {
                     "className": "dt-center", 
-                    "targets": 0
-                },			
+                    "targets": [8,9]
+                },	
+                {
+                    "className": "dt-right", 
+                    "targets": 7
+                },		
                 {
                   targets: 4,
                   render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' )

@@ -461,15 +461,7 @@
 				<thead>
 					<tr>
 						<th>No Bukti</th>
-						<th>No SO</th>
 						<th>Tgl</th>
-						<th>Customer</th>
-						<th>PKP</th>
-						<th>Barang</th>
-						<th>Satuan</th>
-						<th>Qty</th>
-						<th>Kirim</th>
-						<th>Sisa</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -496,16 +488,9 @@
 			<table class="table table-stripped table-bordered" id="table-bdo_cust">
 				<thead>
 					<tr>
-						<th>No Bukti</th>
+						<th>Kode</th>
+						<th>Nama</th>
 						<th>No SO</th>
-						<th>Tgl</th>
-						<th>Customer</th>
-						<th>PKP</th>
-						<th>Barang</th>
-						<th>Satuan</th>
-						<th>Qty</th>
-						<th>Kirim</th>
-						<th>Sisa</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -901,16 +886,7 @@
 					
 					dTableDo.row.add([
 						'<a href="javascript:void(0);" onclick="chooseDo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',\''+resp[i].RING+'\', \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\', \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\', \''+resp[i].KOTA+'\',  \''+resp[i].HARI+'\',  \''+resp[i].PKP+'\',  \''+resp[i].NO_SO+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TYPE_KOM+'\',  \''+resp[i].KOM+'\',  \''+resp[i].TKOM+'\',  \''+resp[i].TOTAL_TKOM+'\' )">'+resp[i].NO_BUKTI+'</a>',
-						resp[i].NO_SO,
 						resp[i].TGL,
-						resp[i].NAMAC,
-						resp[i].PKP,
-						resp[i].KD_BRG,
-						resp[i].NA_BRG,
-						resp[i].SATUAN,
-						resp[i].QTY,
-						resp[i].KIRIM,
-						resp[i].SISA,
 					]);
 				}
 				dTableDo.draw();
@@ -1016,17 +992,9 @@
 				for(i=0; i<resp.length; i++){
 					
 					dTableCust.row.add([
-						'<a href="javascript:void(0);" onclick="chooseCust(\''+resp[i].NO_BUKTI+'\', \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',\''+resp[i].RING+'\', \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\', \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\', \''+resp[i].KOTA+'\',  \''+resp[i].HARI+'\',  \''+resp[i].PKP+'\',  \''+resp[i].NO_SO+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TYPE_KOM+'\',  \''+resp[i].KOM+'\',  \''+resp[i].TKOM+'\',  \''+resp[i].TOTAL_TKOM+'\' )">'+resp[i].KODEC+'</a>',
+						'<a href="javascript:void(0);" onclick="chooseCust(\''+resp[i].NO_BUKTI+'\', \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',\''+resp[i].RING+'\', \''+resp[i].KOM+'\',  \''+resp[i].KODEC+'\', \''+resp[i].NAMAC+'\',  \''+resp[i].ALAMAT+'\', \''+resp[i].KOTA+'\',  \''+resp[i].HARI+'\',  \''+resp[i].PKP+'\',  \''+resp[i].NO_SO+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].NO_ID+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TYPE_KOM+'\',  \''+resp[i].KOM+'\',  \''+resp[i].TKOM+'\',  \''+resp[i].TOTAL_TKOM+'\',  \''+resp[i].TRUCK+'\',  \''+resp[i].SOPIR+'\' )">'+resp[i].KODEC+'</a>',
 						resp[i].NAMAC,
 						resp[i].NO_SO,
-						resp[i].TGL,
-						resp[i].PKP,
-						resp[i].KD_BRG,
-						resp[i].NA_BRG,
-						resp[i].SATUAN,
-						resp[i].QTY,
-						resp[i].KIRIM,
-						resp[i].SISA,
 					]);
 				}
 				dTableCust.draw();
@@ -1056,7 +1024,7 @@
 			$("#browseCustModal").modal("show");
 		}
 	
-	chooseCust = function(NO_BUKTI, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA, HARI, PKP, NO_SO, KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA, TYPE_KOM, KOM, TKOM, TOTAL_TKOM ){
+	chooseCust = function(NO_BUKTI, KODEP, NAMAP, RING, KOM, KODEC, NAMAC, ALAMAT, KOTA, HARI, PKP, NO_SO, KD_BRG,NA_BRG,SATUAN,QTY,NO_ID,HARGA, TYPE_KOM, KOM, TKOM, TOTAL_TKOM, TRUCK, SOPIR ){
 		$("#NO_DO").val(NO_BUKTI);
 		$("#KODEP").val(KODEP);
 		$("#NAMAP").val(NAMAP);
@@ -1068,6 +1036,8 @@
 		$("#KOTA").val(KOTA);
 		$("#HARI").val(HARI);	
 		$("#PKP").val(PKP);
+		$("#TRUCK").val(TRUCK);
+		$("#SOPIR").val(SOPIR);
 		$("NO_SO"+rowidCust).val(NO_SO);
 		$("#KD_BRG"+rowidCust).val(KD_BRG);
 		$("#NA_BRG"+rowidCust).val(NA_BRG);
@@ -1195,6 +1165,7 @@
 				url: "{{url('surats/do_detail')}}",
 				data: {
 					nobukti: bukti,
+					'KODEC': $("#KODEC").val(),
 				},
 				success: function( resp )
 				{

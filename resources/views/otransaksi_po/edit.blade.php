@@ -1192,20 +1192,20 @@
 			var PPNX = parseFloat(z.find('.PPNX').val().replace(/,/g, ''));
 			var DISKX = parseFloat(z.find('.DISK').val().replace(/,/g, ''));
 
-	     	z.find('.DISK').val(DISKX);
+	     	// z.find('.DISK').val(DISKX);
 	     		
 			var PKPX = $('#PKP').val();
 
 /////////////////////////////////////////////////////////////////////////
 
-			// if( DISKX < 100 )
+			if( (DISKX > 0) && (DISKX < 100) )
+			{
+				DISKX = ( QTYX * HARGAX) * DISKX / 100 ;
 
-			// {
-			// 	var DISKXX = ( QTYX * HARGAX) * DISKX / 100 ;
-
-			// }
+			}
 			
-			// z.find('.DISK').val(DISKXX);
+			z.find('.DISK').val(DISKX);
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -1623,7 +1623,7 @@
                 </td>
 
 				<td>
-		            <input name='QTY[]' onclick='select()' onblur='hitung()' value='0' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
+		            <input name='QTY[]' onclick='select()' onblur='hitung()' value='1' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
                 </td>
 
 				<td>
