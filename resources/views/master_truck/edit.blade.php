@@ -218,7 +218,7 @@
 
 							</div>
 							<div class="col-md-3">
-								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
+								<button type="button" id='HAPUSX' hidden onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
 								<!-- <button type="button" id='CLOSEX'  onclick="location.href='{{url('/truck' )}}'" class="btn btn-outline-secondary">Close</button> -->
 
 								<!-- tombol close sweet alert -->
@@ -458,19 +458,12 @@
 		 
 	}
 	
-	// function hapusTrans() {
-	// 	let text = "Hapus Master "+$('#KODE').val()+"?";
-	// 	if (confirm(text) == true) 
-	// 	{
-	// 		window.location ="{{url('/truck/delete/'.$header->NO_ID )}}'";
-	// 		//return true;
-	// 	} 
-	// 	return false;
-	// }
+    function hapusTrans() {
+    }
 
 	// sweetalert untuk tombol hapus dan close
 	
-	function hapusTrans() {
+	function hapusTransx() {
 		let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
 
 		var loc ='';

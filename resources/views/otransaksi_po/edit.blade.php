@@ -149,6 +149,9 @@
                                 <div class="col-md-3" >
                                   	<input type="checkbox" class="form-check-input" id="PKP" name="PKP" readonly  value="{{$header->PKP}}" {{ ($header->PKP == 1) ? 'checked' : '' }}>
                                     <label for="PKP" class="form-label">Pkp</label>
+                                    <input type="text" hidden class="form-control ZPKP" id="ZPKP" name="ZPKP" value="{{$header->PKP}}" placeholder="Masukkan Pkp" >
+                                   
+                                    
                                 </div>
 		
 							</div>
@@ -1066,6 +1069,40 @@
 		var tahunPer = {{session()->get('periode')['tahun']}};
 		
         var check = '0';
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+		$tipx = $('#tipx').val();
+		
+        if ( $tipx != 'new' )
+		{
+		    
+		    $pkp00 = $('#PKP').val();
+		    $pkp11 = $('#ZPKP').val();
+		    
+		    
+		    
+			if ( $pkp00 != $pkp11   ) 
+            {
+               
+                check = '1';
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Type PKP beda dengan Type PKP awal.'
+				});
+				return;
+                
+            }			 
+		}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+
+
 
 			if ( $('#GUDANG').val()=='' ) 
             {				

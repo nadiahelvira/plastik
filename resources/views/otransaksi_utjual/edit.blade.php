@@ -165,7 +165,16 @@
                                    <select id="KODEC"  name="KODEC" style="width: 100%" ></select>        							      
                                 </div>
 		
-		
+                                <div class="col-md-3" >
+                                  	<input type="checkbox" class="form-check-input" id="PKP" name="PKP" readonly  value="{{$header->PKP}}" {{ ($header->PKP == 1) ? 'checked' : '' }}>
+                                    <label for="PKP" class="form-label">Pkp</label>
+                                    <input type="text" hidden class="form-control ZPKP" id="ZPKP" name="ZPKP" value="{{$header->PKP}}" placeholder="Masukkan Pkp" >
+                                   
+                                    
+                                </div>
+
+                                
+                                
 		                        <div {{($flagz == 'UM') ? '' : 'hidden' }} class="col-md-1" align="center">
 									<label for="TYPE" class="form-label">Type</label>
 								</div>
@@ -973,7 +982,37 @@
         //var cekDropship = '0';
         //var noDropship = '';
 		
-			
+
+////////////////////////////////////////////////////////////////////////////////////////
+		$tipx = $('#tipx').val();
+		
+        if ( $tipx != 'new' )
+		{
+		    
+		    $pkp00 = $('#PKP').val();
+		    $pkp11 = $('#ZPKP').val();
+		    
+		    
+		    
+			if ( $pkp00 != $pkp11   ) 
+            {
+               
+                check = '1';
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Type PKP beda dengan Type PKP awal.'
+				});
+				return;
+                
+            }			 
+		}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+
 		if ( $('#KODEC').val()=='' ) 
             {			
 			    check = '1';

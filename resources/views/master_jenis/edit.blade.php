@@ -50,7 +50,7 @@
         <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-            <h1 class="m-0">Data Lokasi</h1>
+            <h1 class="m-0">Data Jenis</h1>
             </div>
 
         </div>
@@ -145,12 +145,7 @@
                                 </div>
 
 								<!-- code text box baru -->
-								<div class="col-md-3 form-group row special-input-label">
 
-									<input type="text" class="NAMA" id="NAMA" name="NAMA" 
-										value="{{$header->NAMA}}" placeholder=" " >
-									<label for="NAMA">Nama</label>
-								</div>
 								<!-- tutupannya -->
                             </div>
 
@@ -175,7 +170,7 @@
 
 							</div>
 							<div class="col-md-3">
-								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
+								<button type="button" id='HAPUSX' hidden onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
 								
 								<!-- <button type="button" id='CLOSEX'  onclick="location.href='{{url('/jenis' )}}'" class="btn btn-outline-secondary">Close</button> -->
 
@@ -299,7 +294,6 @@
 		   }
 		   
 		
-		$("#NAMA").attr("readonly", false);		
 	
 	
 	}
@@ -320,7 +314,6 @@
 	    $("#CLOSEX").attr("disabled", false);
 		
 		$("#KODE").attr("readonly", true);			
-		$("#NAMA").attr("readonly", true);	
 				
 	}
 
@@ -328,7 +321,7 @@
 	function kosong() {
 				
 		 $('#KODE').val("");	
-		 $('#NAMA').val("");	
+
 		 
 	}
 	

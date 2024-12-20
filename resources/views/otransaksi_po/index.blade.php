@@ -211,9 +211,11 @@
 		
         $("div.test_btn").html(
         '<a class="btn btn-lg btn-md btn-success" href="{{url('po/edit?flagz='.$flagz.'&golz='.$golz.'&idx=0&tipx=new')}}"> <i class="fas fa-plus fa-sm md-3" ></i></a'
+
         );
         
 
+        
         // function buat ganti tombol + onclick
         window.toggleButton = function(button) {
             const no_bukti = $(button).data('no_bukti'); // Get the no_bukti from data attribute

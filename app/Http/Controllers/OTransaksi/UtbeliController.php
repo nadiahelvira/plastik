@@ -102,7 +102,7 @@ class UtbeliController extends Controller
 		
         $utbeli = DB::SELECT("SELECT * from beli 
                             where PER ='$periode' and FLAG ='$this->FLAGZ' 
-                                AND GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP = '$PPN' 
+                                AND GOL ='$this->GOLZ' AND CBG = '$CBG'
                             ORDER BY NO_BUKTI ");
 		    
          return Datatables::of($utbeli)
@@ -180,14 +180,20 @@ class UtbeliController extends Controller
         );
 
 
-		
+	
+	    $kodesx = $request->KODES;
+        
+        $xxx= DB::table('sup')->select('PKP')->where('KODES', $kodesx)->get();
+
+        $PPN = $xxx[0]->PKP ;
+        
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
         $GOLZ = $this->GOLZ;
         $judul = $this->judul;	
 		
         $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
+
 		
         // Generate Nomor Bukti
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];

@@ -227,7 +227,7 @@
 								<button type="button" hidden id='NEWX' onclick="location.href='{{url('/account/edit/?idx=0&tipx=new')}}'" class="btn btn-warning">New</button>
 								<button type="button" hidden id='EDITX' onclick='hidup()' class="btn btn-secondary">Edit</button>                    
 								<button type="button" hidden id='UNDOX' onclick="location.href='{{url('/account/edit/?idx=' .$idx. '&tipx=undo' )}}'" class="btn btn-info">Undo</button> 
-								<button type="button" id='SAVEX' onclick='simpan()'   class="btn btn-success"<i class="fa fa-save"></i>Save</button>
+								<button type="button" id='SAVEX' onclick='simpan()'   class="btn btn-success" class="fa fa-save"></i>Save</button>
 
 							</div>
 							<div class="col-md-3">
@@ -494,7 +494,13 @@
 
 	// sweetalert untuk tombol hapus dan close
 	
+	
 	function hapusTrans() {
+	
+	    
+	}
+	
+	function hapusTransx() {
 		let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
 
 		var loc ='';

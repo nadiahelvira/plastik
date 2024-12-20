@@ -148,7 +148,7 @@ class DeliController extends Controller
         $PPN = Auth::user()->PPN;
 		
         $deli = DB::SELECT("SELECT * from deli  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
-                            and GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP='$PPN' ORDER BY NO_BUKTI ");
+                            and GOL ='$this->GOLZ' AND CBG = '$CBG'  ORDER BY NO_BUKTI ");
 	  
 	   
         // ganti 6
@@ -177,7 +177,11 @@ class DeliController extends Controller
                                 <a class="dropdown-item btn btn-danger" href="deli/cetak/' . $row->NO_ID . '">
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                     Print
-                                </a> 									
+                                </a> 
+                                <a class="dropdown-item btn btn-danger" href="deli/cetak2/' . $row->NO_ID . '">
+                                    <i class="fa fa-print" aria-hidden="true"></i>
+                                    Print Lokasi
+                                </a> 
                                 <hr></hr>
                                 <a class="dropdown-item btn btn-danger" ' . $btnDelete . '>
    
@@ -260,7 +264,7 @@ class DeliController extends Controller
         $tahun    = substr(session()->get('periode')['tahun'], -2);
 
         $query = DB::table('deli')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', $FLAGZ)
-                ->where('GOL', $this->GOLZ)->where('CBG', $CBG)->where('PKP', $PPN)->orderByDesc('NO_BUKTI')->limit(1)->get();
+                ->where('GOL', $this->GOLZ)->where('CBG', $CBG)->orderByDesc('NO_BUKTI')->limit(1)->get();
 		
     
         if( $GOLZ=='J'){
@@ -349,6 +353,8 @@ class DeliController extends Controller
                 'TDISK'      	=> (float) str_replace(',', '', $request['TDISK']),
                 'HARI'      	=> (float) str_replace(',', '', $request['HARI']),
                 'TOTAL_TKOM'      	=> (float) str_replace(',', '', $request['TOTAL_TKOM']),
+                'MAXB'      	=> (float) str_replace(',', '', $request['MAXB']),
+                'TBERAT'      	=> (float) str_replace(',', '', $request['TBERAT']),
 				'USRNM'         => Auth::user()->username,
 				'TG_SMP'        => Carbon::now(),
 				'CBG'           => $CBG,
@@ -375,7 +381,7 @@ class DeliController extends Controller
 		$KOM	= $request->input('KOM');	
 		$TKOM	= $request->input('TKOM');	
 		$LOKASI	= $request->input('LOKASI');	
-		// $JTEMPO	= $request->input('JTEMPO');	
+		$BERAT	= $request->input('BERAT');	
 		// $ID_SOD	= $request->input('ID_SOD');	
 
 		$KODEC	= $request->input('KODEC');	
@@ -423,7 +429,8 @@ class DeliController extends Controller
 				$detail->KOTA	= ($KOTA[$key]==null) ? '' : $KOTA[$key];
 				$detail->PKP	= (float) str_replace(',', '', $PKP[$key]);
 				$detail->LOKASI	= ($LOKASI[$key]==null) ? '' : $LOKASI[$key];
-
+				$detail->BERAT	= (float) str_replace(',', '', $BERAT[$key]);
+				
                 // $detail->JTEMPO     = date('Y-m-d', strtotime($JTEMPO[$key]));
 
 				$detail->save();
@@ -685,6 +692,8 @@ class DeliController extends Controller
 				'RING'			=>($request['RING']==null) ? "" : $request['RING'],
                 'KOM'           => (float) str_replace(',', '', $request['KOM']),
                 'HARI'           => (float) str_replace(',', '', $request['HARI']),
+                'MAXB'           => (float) str_replace(',', '', $request['MAXB']),
+                'TBERAT'           => (float) str_replace(',', '', $request['TBERAT']),
 				'USRNM'         => Auth::user()->username,						
                 'GOL'           => $GOLZ,
                 'FLAG'          => $FLAGZ,
@@ -725,7 +734,8 @@ class DeliController extends Controller
 		$KOTA	= $request->input('KOTA');	
 		$PKP	= $request->input('PKP');	
 		$LOKASI	= $request->input('LOKASI');	
-       
+		$BERAT	= $request->input('BERAT');	
+		
        // Delete yang NO_ID tidak ada di input
         $query = DB::table('delid')->where('NO_BUKTI', $deli->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
 
@@ -765,7 +775,8 @@ class DeliController extends Controller
                         'KOTA'   => ($KOTA[$i]==null) ? "" : $KOTA[$i],
                         'PKP'        => (float) str_replace(',', '', $PKP[$i]),
                         'LOKASI'   => ($LOKASI[$i]==null) ? "" : $LOKASI[$i],
-
+                        'BERAT'        => (float) str_replace(',', '', $BERAT[$i]),
+                        
                         // 'JTEMPO'     => ($JTEMPO[$i] != '') ? date("Y-m-d", strtotime($JTEMPO[$i])) : "",
                         
                     ]
@@ -806,6 +817,7 @@ class DeliController extends Controller
                         'PKP'        => (float) str_replace(',', '', $PKP[$i]),
                         // 'ID_SOD'     => ($ID_SOD[$i]==null) ? "" : $ID_SOD[$i],
                         'LOKASI'   => ($LOKASI[$i]==null) ? "" : $LOKASI[$i],
+                        'BERAT'        => (float) str_replace(',', '', $BERAT[$i]),
 
                         // 'JTEMPO'     => ($JTEMPO[$i] != '') ? date("Y-m-d", strtotime($JTEMPO[$i])) : "",
 
@@ -884,6 +896,62 @@ class DeliController extends Controller
                                     delid.NO_SO, deli.USRNM, delid.LOKASI
                             FROM deli, delid 
                             WHERE deli.NO_BUKTI='$no_deli' AND deli.NO_BUKTI = delid.NO_BUKTI 
+                            ;
+		");
+
+        
+        $data = [];
+
+        foreach ($query as $key => $value) {
+            array_push($data, array(
+                'NO_BUKTI' => $query[$key]->NO_BUKTI,
+                'TGL'      => $query[$key]->TGL,
+                'TGL_CETAK' => NOW(),
+                'NO_SO'    => $query[$key]->NO_SO,
+                'KODEC'    => $query[$key]->KODEC,
+                'NAMAC'    => $query[$key]->NAMAC,
+                'ALAMAT'    => $query[$key]->ALAMAT,
+                'KOTA'    => $query[$key]->KOTA,
+                'KG'       => $query[$key]->KG,
+                'HARGA'    => $query[$key]->HARGA,
+                'TOTAL'    => $query[$key]->TOTAL,
+                'BAYAR'    => $query[$key]->BAYAR,
+                'NOTES'    => $query[$key]->NOTES,
+                'KD_BRG'    => $query[$key]->KD_BRG,
+                'NA_BRG'    => $query[$key]->NA_BRG,
+                'SATUAN'    => $query[$key]->SATUAN,
+                'QTY'    => $query[$key]->QTY,
+                'PPN'    => $query[$key]->PPN,
+                'NETT'    => $query[$key]->NETT,
+                'KET'    => $query[$key]->KET,
+                'USRNM'    => $query[$key]->USRNM,
+                'TRUCK'    => $query[$key]->TRUCK,
+                'SOPIR'    => $query[$key]->SOPIR,
+                'LOKASI'    => $query[$key]->LOKASI
+            ));
+        }
+		
+        $PHPJasperXML->setData($data);
+        ob_end_clean();
+        $PHPJasperXML->outpage("I");
+       
+        DB::SELECT("UPDATE deli SET POSTED = 1 WHERE deli.NO_BUKTI='$no_deli';");
+    }
+
+    public function cetak2(Deli $deli)
+    {
+        $no_deli = $deli->NO_BUKTI;
+
+        $file     = 'delic';
+        $PHPJasperXML = new PHPJasperXML();
+        $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
+
+        $query = DB::SELECT("SELECT deli.NO_BUKTI, deli.TGL, deli.KODEC, deli.NAMAC, deli.TOTAL_QTY, deli.NOTES, deli.ALAMAT, 
+                                    deli.KOTA, delid.KD_BRG, delid.NA_BRG, delid.SATUAN, delid.QTY, 
+                                    delid.HARGA, delid.TOTAL, delid.KET, deli.PPN, deli.NETT, deli.TRUCK, deli.SOPIR,
+                                    delid.NO_SO, deli.USRNM, delid.LOKASI
+                            FROM deli, delid 
+                            WHERE deli.NO_BUKTI = delid.NO_BUKTI 
                             ;
 		");
 

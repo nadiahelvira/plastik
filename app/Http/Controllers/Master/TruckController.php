@@ -30,7 +30,7 @@ class TruckController extends Controller
     // ganti 4
     public function browse(Request $request)
     {
-        $truck = DB::SELECT("SELECT NO_ID, KODE, NOPOL
+        $truck = DB::SELECT("SELECT NO_ID, KODE, NOPOL, MAXB
                             FROM truck
                             ORDER BY KODE");
 
@@ -57,7 +57,8 @@ class TruckController extends Controller
                     $url = "'".url("truck/delete/" . $row->NO_ID )."'";
                     // batas
 
-                    $btnDelete = ' onclick="deleteRow('.$url.')"';
+                    $btnDelete = '';
+                    //' onclick="deleteRow('.$url.')"';
 
                     $btnPrivilege =
                         '
@@ -66,7 +67,7 @@ class TruckController extends Controller
                                     Edit
                                 </a>
                                 <hr></hr>
-                                <a class="dropdown-item btn btn-danger" ' . $btnDelete . '>
+                                <a hidden class="dropdown-item btn btn-danger" ' . $btnDelete . '>
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Delete
                                 </a> 

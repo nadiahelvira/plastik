@@ -6,3 +6,7 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/app/Console/Kernel.php on line 8
+[16-Dec-2024 09:25:21 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Foundation\Console\Kernel' not found in /home/januar13/public_html/plastik/app/Console/Kernel.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Console/Kernel.php on line 8

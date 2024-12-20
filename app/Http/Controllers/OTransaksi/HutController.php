@@ -71,7 +71,7 @@ class HutController extends Controller
                                 TGL, KODES, NAMAS, KOTA, TOTAL, BAYAR, NOTES, POSTED, FLAG,
                                 USRNM, `TYPE` 
                         from hut 
-                        where PER = '$periode' AND CBG='$CBG' AND PKP = '$PPN' 
+                        where PER = '$periode' AND CBG='$CBG' 
                         ORDER BY NO_BUKTI ");
 	   	
 		
@@ -160,12 +160,20 @@ class HutController extends Controller
 
 //////     nomer otomatis
 
+
+        $kodesx = $request->KODES;
+        
+        $xxx= DB::table('sup')->select('PKP')->where('KODES', $kodesx)->get();
+
+        $PPN = $xxx[0]->PKP ;
+        
+        
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
+
 		
         $periode = $request->session()->get('periode')['bulan']. '/' . $request->session()->get('periode')['tahun'];
 		

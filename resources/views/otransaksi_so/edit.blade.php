@@ -192,6 +192,8 @@
 									<div class="col-md-1" >
 										<input type="checkbox" class="form-check-input" id="PKP" name="PKP" readonly  value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}>
 										<label for="PKP" class="form-label">Pkp</label>
+										
+								        <input type="text" hidden class="form-control ZPKP" id="ZPKP" name="ZPKP" value="{{$header->PKP}}" placeholder="Masukkan Pkp" >
 									</div>
 			
 									<div class="col-md-1">								
@@ -256,6 +258,7 @@
 
 												<th width="100px" style="text-align:center">Satuan</th>
 												<th width="150px" style="text-align:center">Qty</th> 
+												<th width="150px" style="text-align:center">Stok</th> 
 												<th width="150px" style="text-align:center">Harga</th>							
 												<th width="150px" style="text-align: center;">Diskon</th>
 
@@ -302,14 +305,23 @@
 													<input name="HARGA5[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->HARGA5}}" id="HARGA5{{$no}}" type="text" style="text-align: right"  class="form-control HARGA5 text-primary" >
 													<input name="HARGA6[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->HARGA6}}" id="HARGA6{{$no}}" type="text" style="text-align: right"  class="form-control HARGA6 text-primary" >
 													<input name="HARGA7[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->HARGA7}}" id="HARGA7{{$no}}" type="text" style="text-align: right"  class="form-control HARGA7 text-primary" >
+
 													<input name="TYPE_KOM[]" hidden id="TYPE_KOM{{$no}}" type="text" value="{{$detail->TYPE_KOM}}" class="form-control TYPE_KOM" readonly required>
 													<input name="KOM[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->KOM}}" id="KOM{{$no}}" type="text" style="text-align: right"  class="form-control KOM text-primary" >
 													<input name="TKOM[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->TKOM}}" id="TKOM{{$no}}" type="text" style="text-align: right"  class="form-control TKOM text-primary" >
 													<input name="LOKASI[]" hidden id="LOKASI{{$no}}" type="text" value="{{$detail->LOKASI}}" class="form-control LOKASI" readonly>
+												
+													<input name="BERAT[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->BERAT}}" id="BERAT{{$no}}" type="text" style="text-align: right"  class="form-control BERAT text-primary" >
+													<input name="TBERAT[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->TBERAT}}" id="TBERAT{{$no}}" type="text" style="text-align: right"  class="form-control TBERAT text-primary" >
+												
+													<input name="XSO[]" hidden onclick='select()' onblur="hitung()" value="{{$detail->XSO}}" id="XSO{{$no}}" type="text" style="text-align: right"  class="form-control XSO text-primary" >
 												</td>
 												
 												<td>
 													<input name="QTY[]" onclick='select()' onblur="hitung()" value="{{$detail->QTY}}" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" >
+												</td>
+												<td>
+													<input name="SEDIA[]" onclick='select()' onblur="hitung()" value="{{$detail->SEDIA}}" id="SEDIA{{$no}}" type="text" style="text-align: right"  class="form-control SEDIA text-primary" readonly>
 												</td>
 												<td>
 													<input name="HARGA[]" onclick='select()' onblur="hitung()" value="{{$detail->HARGA}}" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" readonly></td>
@@ -726,6 +738,10 @@
 			$("#DISK" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#TKOM" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#KOM" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#BERAT" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#TBERAT" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#SEDIA" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#XSO" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 
 		}
 		
@@ -856,7 +872,7 @@
 							for(i=0; i<resp.length; i++){
 								
 								dTableBBarang.row.add([
-									'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\', \''+resp[i].KD_GRUP+'\' , \''+resp[i].NA_BRG+'\' , \''+resp[i].SATUAN+'\', \''+resp[i].HARGA1+'\', \''+resp[i].HARGA2+'\', \''+resp[i].HARGA3+'\', \''+resp[i].HARGA4+'\', \''+resp[i].HARGA5+'\', \''+resp[i].HARGA6+'\', \''+resp[i].HARGA7+'\', \''+resp[i].TYPE_KOM+'\', \''+resp[i].KOM+'\', \''+resp[i].LOKASI+'\' )">'+resp[i].KD_BRG+'</a>',
+									'<a href="javascript:void(0);" onclick="chooseBarang(\''+resp[i].KD_BRG+'\', \''+resp[i].KD_GRUP+'\' , \''+resp[i].NA_BRG+'\' , \''+resp[i].SATUAN+'\', \''+resp[i].HARGA1+'\', \''+resp[i].HARGA2+'\', \''+resp[i].HARGA3+'\', \''+resp[i].HARGA4+'\', \''+resp[i].HARGA5+'\', \''+resp[i].HARGA6+'\', \''+resp[i].HARGA7+'\', \''+resp[i].BERAT+'\',  \''+resp[i].TYPE_KOM+'\', \''+resp[i].KOM+'\', \''+resp[i].LOKASI+'\', \''+resp[i].XSO+'\', \''+resp[i].SEDIA+'\' )">'+resp[i].KD_BRG+'</a>',
 									resp[i].NA_BRG,
 									resp[i].SATUAN,
 								]);
@@ -880,6 +896,8 @@
 						$("#TYPE_KOM"+rowidBarang).val(resp[0].TYPE_KOM);
 						$("#KOM"+rowidBarang).val(resp[0].KOM);
 						$("#LOKASI"+rowidBarang).val(resp[0].LOKASI);
+						$("#XSO"+rowidBarang).val(resp[0].XSO);
+						$("#SEDIA"+rowidBarang).val(resp[0].SEDIA);
 					}
 				}
 			});
@@ -900,7 +918,7 @@
 			}	
 		}
 		
-		chooseBarang = function(KD_BRG,KD_GRUP,NA_BRG,SATUAN, HARGA1, HARGA2, HARGA3, HARGA4, HARGA5, HARGA6, HARGA7, TYPE_KOM, KOM, LOKASI){
+		chooseBarang = function(KD_BRG,KD_GRUP,NA_BRG,SATUAN, HARGA1, HARGA2, HARGA3, HARGA4, HARGA5, HARGA6, HARGA7, BERAT, TYPE_KOM, KOM, LOKASI, XSO, SEDIA){
 			$("#KD_BRG"+rowidBarang).val(KD_BRG);
 			$("#KD_GRUP"+rowidBarang).val(KD_GRUP);
 			$("#NA_BRG"+rowidBarang).val(NA_BRG);	
@@ -912,9 +930,12 @@
 			$("#HARGA5"+rowidBarang).val(HARGA5);
 			$("#HARGA6"+rowidBarang).val(HARGA6);
 			$("#HARGA7"+rowidBarang).val(HARGA7);
+			$("#BERAT"+rowidBarang).val(BERAT);
 			$("#TYPE_KOM"+rowidBarang).val(TYPE_KOM);
 			$("#KOM"+rowidBarang).val(KOM);
 			$("#LOKASI"+rowidBarang).val(LOKASI);
+			$("#XSO"+rowidBarang).val(XSO);
+			$("#SEDIA"+rowidBarang).val(SEDIA);
 			$("#browseBarangModal").modal("hide");
 		}
 		
@@ -1015,6 +1036,36 @@
 
 //////////////////////////////////////////////////////////////////
 
+	function cekDetail(){
+		var cekBarang = '';
+		$(".KD_BRG").each(function() {
+			
+			let z = $(this).closest('tr');
+			var KD_BRGX = z.find('.KD_BRG').val();
+			var QTYX = parseFloat(z.find('.QTY').val().replace(/,/g, ''));
+			var SEDIAX = parseFloat(z.find('.SEDIA').val().replace(/,/g, ''));
+
+			// alert(QTYX);
+			// alert(SEDIAX);
+			
+			if( KD_BRGX =="" )
+			{
+					cekBarang = '1';
+					
+			}	
+
+			if( QTYX > SEDIAX )
+			{
+					cekBarang = '1';
+					
+			}	
+		});
+		
+		return cekBarang;
+	}
+
+////////////////////////////////////////////////////////////////////
+
 
 	function simpan() {
 
@@ -1026,6 +1077,18 @@
 		
         var check = '0';
 
+			if (cekDetail())
+			{	
+			    check = '1';
+
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: '#Qty lebih dari Ketersediaan Stok.'
+				});
+				return;
+			}
+
 			if ( $('#NAMAC').val()=='' ) 
             {				
 			    check = '1';
@@ -1036,7 +1099,37 @@
 				});
 				return; // Stop function execution
 			}
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+		$tipx = $('#tipx').val();
 		
+        if ( $tipx != 'new' )
+		{
+		    
+		    $pkp00 = $('#PKP').val();
+		    $pkp11 = $('#ZPKP').val();
+		    
+		    
+		    
+			if ( $pkp00 != $pkp11   ) 
+            {
+               
+                check = '1';
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Type PKP beda dengan Type PKP awal.'
+				});
+				return;
+                
+            }			 
+		}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
 		
 			if ( tgl.substring(3,5) != bulanPer ) 
 			{
@@ -1169,6 +1262,8 @@
 			// var HARGAX = parseFloat(z.find('.HARGA').val().replace(/,/g, ''));
 			//var PPNX = parseFloat(z.find('.PPNX').val().replace(/,/g, ''));
 			var DISKX = parseFloat(z.find('.DISK').val().replace(/,/g, ''));
+			var BERATX = parseFloat(z.find('.BERAT').val().replace(/,/g, ''));
+			var TBERATX = parseFloat(z.find('.TBERAT').val().replace(/,/g, ''));
 			
 			var KOMX = parseFloat(z.find('.KOM').val().replace(/,/g, ''));
 			var TKOMX = 0;
@@ -1266,7 +1361,14 @@
 
 			TKOMX = KOMX * TOTALX;
 			z.find('.TKOM').val(TKOMX);
-		
+
+////////////////////////////////////////////////////////////////////////////
+
+			TBERATX = QTYX * BERATX;
+			z.find('.TBERAT').val(TBERATX);	
+
+////////////////////////////////////////////////////////////////////////////
+
 			var DPPX = 0 ;
 			var PPNX = 0;
 			
@@ -1294,6 +1396,7 @@
 		    z.find('.DISK').autoNumeric('update');			
 		    z.find('.PPNX').autoNumeric('update');	
 		    z.find('.T_KOMX').autoNumeric('update');				
+		    z.find('.TBERAT').autoNumeric('update');				
 
             // TTOTAL_QTY +=QTYX;		
             TTOTAL +=TOTALX;				
@@ -1738,16 +1841,26 @@
 		            <input name='HARGA5[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA5${idrow}' type='text' style='text-align: right' class='form-control HARGA5 text-primary' required >
 		            <input name='HARGA6[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA6${idrow}' type='text' style='text-align: right' class='form-control HARGA6 text-primary' required >
 		            <input name='HARGA7[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA7${idrow}' type='text' style='text-align: right' class='form-control HARGA7 text-primary' required >
+		            
 					<input name='TYPE_KOM[]' hidden id='TYPE_KOM${idrow}' type='text' class='form-control  TYPE_KOM' readonly required>
 					<input name='KOM[]' hidden onclick='select()' onblur='hitung()' value='0' id='KOM${idrow}' type='text' style='text-align: right' class='form-control KOM text-primary' required >
 					<input name='TKOM[]' hidden onclick='select()' onblur='hitung()' value='0' id='TKOM${idrow}' type='text' style='text-align: right' class='form-control TKOM text-primary' required >
 					<input name='LOKASI[]' hidden id='LOKASI${idrow}' type='text' class='form-control  LOKASI' readonly>
-		        </td>
+		        
+					<input name='BERAT[]' hidden onclick='select()' onblur='hitung()' value='0' id='BERAT${idrow}' type='text' style='text-align: right' class='form-control BERAT text-primary' required >
+		            <input name='TBERAT[]' hidden onclick='select()' onblur='hitung()' value='0' id='TBERAT${idrow}' type='text' style='text-align: right' class='form-control TBERAT text-primary' required >
+
+					<input name='XSO[]' hidden onclick='select()' onblur='hitung()' value='0' id='XSO${idrow}' type='text' style='text-align: right' class='form-control XSO text-primary' required >
+		            
+				</td>
 				
 				<td>
 		            <input name='QTY[]' onclick='select()' onblur='hitung()' value='1' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
                 </td>
 
+				<td>
+					<input name='SEDIA[]' onclick='select()' onblur='hitung()' value='0' id='SEDIA${idrow}' type='text' style='text-align: right' class='form-control SEDIA text-primary' readonly >
+				</td>
 				<td>
 		            <input name='HARGA[]' onclick='select()' onblur='hitung()' value='0' id='HARGA${idrow}' type='text' style='text-align: right' class='form-control HARGA text-primary' readonly >
                 </td>	
@@ -1803,6 +1916,26 @@
 			});	
 			
 			$("#TKOM" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>',
+				vMin: '-999999999.99'
+			});	
+			
+			$("#BERAT" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>',
+				vMin: '-999999999.99'
+			});	
+			
+			$("#TBERAT" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>',
+				vMin: '-999999999.99'
+			});	
+			
+			$("#XSO" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>',
+				vMin: '-999999999.99'
+			});	
+			
+			$("#SEDIA" + i.toString()).autoNumeric('init', {
 				aSign: '<?php echo ''; ?>',
 				vMin: '-999999999.99'
 			});	

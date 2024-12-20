@@ -6,3 +6,11 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/resources/views/otransaksi_piu/edit.blade_lama.php on line 621
+[16-Dec-2024 06:52:35 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function session() in /home/januar13/public_html/plastik/resources/views/otransaksi_piu/edit.blade.php:857
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/resources/views/otransaksi_piu/edit.blade.php on line 857
+[16-Dec-2024 10:37:31 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function session() in /home/januar13/public_html/plastik/resources/views/otransaksi_piu/edit.blade_lama.php:621
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/resources/views/otransaksi_piu/edit.blade_lama.php on line 621

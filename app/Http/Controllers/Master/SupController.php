@@ -39,7 +39,7 @@ class SupController extends Controller
     
     public function browse(Request $request)
     {
-		$PPN = Auth::user()->PPN;
+
 		
     	if (!empty(request('q'))) {
 
@@ -47,7 +47,7 @@ class SupController extends Controller
                  $sup = DB::SELECT("SELECT NO_ID, KODES, NAMAS, ALAMAT, KOTA, NOTBAY, KONTAK, AKTIF, CASE WHEN PKP = '1' THEN '(PKP)' ELSE '(NON PKP)' END AS PKP2,
                             PKP, HARI
                             FROM sup 
-                            WHERE PKP = '$PPN' AND NAMAS LIKE ('%$request->q%') 
+                            WHERE  NAMAS LIKE ('%$request->q%') 
                             ORDER BY NAMAS "); 
 	
     	    
@@ -55,7 +55,7 @@ class SupController extends Controller
 			$sup = DB::SELECT("SELECT NO_ID, KODES, NAMAS, ALAMAT, KOTA, NOTBAY, KONTAK, AKTIF, CASE WHEN PKP = '1' THEN '(PKP)' ELSE '(NON PKP)' END AS PKP2,
                                 PKP, HARI
                             FROM sup
-                            WHERE PKP = '$PPN'
+                            
                             ORDER BY NAMAS ");			
 		}
 		
@@ -83,7 +83,8 @@ class SupController extends Controller
                     $url = "'".url("sup/delete/" . $row->NO_ID )."'";
                     // batas
                     
-                    $btnDelete = ' onclick="deleteRow('.$url.')"';
+                    $btnDelete = '';
+                    //' onclick="deleteRow('.$url.')"';
 
                     $btnPrivilege =
                         '
@@ -93,7 +94,7 @@ class SupController extends Controller
                                 <hr>
                                 </hr>
 
-                                <a class="dropdown-item btn btn-danger" ' . $btnDelete . '>
+                                <a hidden class="dropdown-item btn btn-danger" ' . $btnDelete . '>
    
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Delete

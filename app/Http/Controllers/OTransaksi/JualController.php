@@ -141,7 +141,7 @@ class JualController extends Controller
 		$PPN = Auth::user()->PPN;
 
         $jual = DB::SELECT("SELECT * from jual  where PER = '$periode' and FLAG ='$this->FLAGZ' 
-                            AND GOL ='$this->GOLZ' AND CBG='$CBG' AND PKP ='$PPN' ORDER BY NO_BUKTI ");
+                            AND GOL ='$this->GOLZ' AND CBG='$CBG'  ORDER BY NO_BUKTI ");
 	   
         // ganti 6
 
@@ -241,14 +241,21 @@ class JualController extends Controller
 
         //////     nomer otomatis
 
+        $kodecx = $request->KODEC;
+        
+        $xxx= DB::table('cust')->select('PKP')->where('KODEC', $kodecx)->get();
+
+        $PPN = $xxx[0]->PKP ;
+        
+        
+
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
         $GOLZ = $this->GOLZ;
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
-		
+
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
         $bulan    = session()->get('periode')['bulan'];

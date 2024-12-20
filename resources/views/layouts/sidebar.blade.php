@@ -347,7 +347,7 @@
               <a href="javascript:addTab('Grup', '{{url('grup')}}')">
                   <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
                   <i style="margin-left:-25px;font-size: 40px;" class="nav-icon fas fa-layer-group icon-orange"></i>
-                <h6>Grup Barang Jual</h6>
+                <h6>Grup</h6>
               </a>
 			      </div>
         </div>
@@ -407,7 +407,32 @@
               </a>
 			      </div>
         </div>
+        <div class="col-md-3">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe6ff;">
+              <a href="javascript:addTab('Jenis','{{url('jenis')}}')">
+                  <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
+                  <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-thumbtack icon-pink"></i>
+                <h6>Jenis</h6>
+              </a>
+			      </div>
+        </div>
       </div>
+      
+      
+      <div class="row">
+        <div class="col-md-3">
+            <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
+              <a href="javascript:addTab('Merk','{{url('merk')}}')">
+                  <!-- <i class="nav-icon fas fa-anchor icon-blue" style="text-align: center;"></i> -->
+                  <i style="margin-left:-10px;font-size: 40px;" class="nav-icon fas fa-crosshairs icon-green"></i>
+                <h6>Merk</h6>
+              </a>
+			      </div>
+        </div>
+
+      </div>
+      
+      
   </li>
 <!-----------------batas ------------------------>
 

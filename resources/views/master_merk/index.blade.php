@@ -53,7 +53,7 @@
                             <th scope="col" style="text-align: center">No</th>
 			                      <th scope="col" style="text-align: center">-</th>							
                             <th scope="col" style="text-align: center">Kode</th>
-                            <th scope="col" style="text-align: center">Nama</th>
+
                         </tr>
                     </thead>
     
@@ -105,12 +105,7 @@
 			    },
 				
 				{data: 'KODE', name: 'KODE'},
-              	{data: 'NAMA', name: 'NAMA',
-                  render : function ( data, type, row, meta )
-                  {
-                    return ' <h5><span class="badge badge-pill badge-warning">' + data + '</span></h5>';
-                  }
-                },
+
 
 				
             ],

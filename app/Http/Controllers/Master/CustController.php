@@ -31,7 +31,7 @@ class CustController extends Controller
     // ganti 4
     public function browse(Request $request)
     {
-		$PPN = Auth::user()->PPN;
+
 
 	    if (!empty(request('q'))) {
 
@@ -40,7 +40,7 @@ class CustController extends Controller
                                     CASE WHEN a.PKP = '1' THEN '(PKP)' ELSE '(NON PKP)' END AS PKP2, 
                                     a.PKP, a.KODEP, a.NAMAP, a.RING, b.KOM, a.HARI
                             FROM cust a, pegawai b
-                            WHERE a.KODEP = b.KODEP and a.PKP ='$PPN' and A.NAMAC LIKE ('%$request->q%') ORDER BY NAMAC "); 
+                            WHERE a.KODEP = b.KODEP  and A.NAMAC LIKE ('%$request->q%') ORDER BY NAMAC "); 
 	
     	    
         } else {
@@ -49,7 +49,7 @@ class CustController extends Controller
                                     CASE WHEN a.PKP = '1' THEN '(PKP)' ELSE '(NON PKP)' END AS PKP2, 
                                     a.PKP, a.KODEP, a.NAMAP, a.RING, b.KOM, a.HARI
                             FROM cust a, pegawai b
-                            WHERE a.KODEP = b.KODEP and a.PKP ='$PPN' ORDER BY NAMAC "); 
+                            WHERE a.KODEP = b.KODEP  ORDER BY NAMAC "); 
                             
 		}
         
@@ -90,7 +90,8 @@ class CustController extends Controller
                     $url = "'".url("cust/delete/" . $row->NO_ID )."'";
                     // batas
 
-                    $btnDelete = ' onclick="deleteRow('.$url.')"';
+                    $btnDelete ='';
+                    //' onclick="deleteRow('.$url.')"';
 
                     $btnPrivilege =
                         '

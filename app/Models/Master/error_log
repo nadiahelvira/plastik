@@ -42,3 +42,7 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/app/Models/Master/FoDetail.php on line 8
+[14-Dec-2024 11:12:32 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/Master/Truck.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/Master/Truck.php on line 8

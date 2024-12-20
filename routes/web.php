@@ -80,6 +80,37 @@ Route::post('/jasper-nera-report', 'App\Http\Controllers\FReport\RNeraController
 
 
 
+// Master Jenis 
+Route::get('/jenis', 'App\Http\Controllers\Master\JenisController@index')->middleware(['auth'])->name('jenis');
+Route::post('/jenis/store', 'App\Http\Controllers\Master\JenisController@store')->middleware(['auth'])->name('jenis/store');
+
+    Route::get('/get-jenis', 'App\Http\Controllers\Master\JenisController@getJenis')->middleware(['auth'])->name('get-jenis');
+    Route::get('/jenis/browse', 'App\Http\Controllers\Master\JenisController@browse')->middleware(['auth'])->name('jenis/browse');
+
+// Dynamic Merk
+Route::get('/jenis/edit', 'App\Http\Controllers\Master\JenisController@edit')->middleware(['auth'])->name('jenis.edit');
+Route::post('/jenis/update/{jenis}', 'App\Http\Controllers\Master\JenisController@update')->middleware(['auth'])->name('jenis.update');
+Route::get('/jenis/delete/{jenis}', 'App\Http\Controllers\Master\JenisController@destroy')->middleware(['auth'])->name('jenis.delete');
+
+
+//////////////////////
+
+
+// Master Merk 
+Route::get('/merk', 'App\Http\Controllers\Master\MerkController@index')->middleware(['auth'])->name('merk');
+Route::post('/merk/store', 'App\Http\Controllers\Master\MerkController@store')->middleware(['auth'])->name('merk/store');
+
+    Route::get('/get-merk', 'App\Http\Controllers\Master\MerkController@getMerk')->middleware(['auth'])->name('get-merk');
+    Route::get('/merk/browse', 'App\Http\Controllers\Master\MerkController@browse')->middleware(['auth'])->name('merk/browse');
+
+// Dynamic Merk
+Route::get('/merk/edit', 'App\Http\Controllers\Master\MerkController@edit')->middleware(['auth'])->name('merk.edit');
+Route::post('/merk/update/{merk}', 'App\Http\Controllers\Master\MerkController@update')->middleware(['auth'])->name('merk.update');
+Route::get('/merk/delete/{merk}', 'App\Http\Controllers\Master\MerkController@destroy')->middleware(['auth'])->name('merk.delete');
+
+
+//////////////////////
+
 
 // Master Suplier 
 Route::get('/sup', 'App\Http\Controllers\Master\SupController@index')->middleware(['auth'])->name('sup');

@@ -175,7 +175,7 @@
 
 							</div>
 							<div class="col-md-3">
-								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
+								<button type="button" id='HAPUSX' hidden onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
 								
 								<!-- <button type="button" id='CLOSEX'  onclick="location.href='{{url('/kategori' )}}'" class="btn btn-outline-secondary">Close</button> -->
 

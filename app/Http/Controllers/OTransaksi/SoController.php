@@ -66,7 +66,8 @@ class SoController extends Controller
         $so = DB::SELECT("SELECT SO.NO_BUKTI , SO.JTEMPO, SO.TGL, SO.KODEC, SO.NAMAC, 
                                 SO.ALAMAT, SO.KOTA, SOD.KD_BRG, SOD.NA_BRG, SOD.QTY, SOD.HARGA, SOD.KIRIM, SOD.SISA,
                                 SOD.TOTAL, SOD.PPN, SOD.DPP, SOD.DISK, SOD.SATUAN, SOD.TYPE_KOM, 
-                                SOD.KOM, SOD.TKOM, SO.TOTAL_TKOM, SO.PKP, SOD.LOKASI  from so, sod 
+                                SOD.KOM, SOD.TKOM, SO.TOTAL_TKOM, SO.PKP, SOD.LOKASI, SOD.TBERAT AS BERAT
+                          from so, sod 
                           WHERE SO.NO_BUKTI = SOD.NO_BUKTI 
                         --   AND SO.KODEC ='$kodec' 
                           AND SO.GOL ='$golz'
@@ -152,7 +153,7 @@ class SoController extends Controller
         $so = DB::SELECT("SELECT NO_ID, NO_BUKTI, TGL, NAMAC, TOTAL, TOTAL_QTY, NOTES, USRNM, 
                                 POSTED, FLAG, GOL, TYPE
                         from so  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
-                        AND GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP = '$PPN'
+                        AND GOL ='$this->GOLZ' AND CBG = '$CBG' 
                         ORDER BY NO_BUKTI ");
 	  
 	   
@@ -247,6 +248,14 @@ class SoController extends Controller
             ]
         );
 
+
+        $kodecx = $request->KODEC;
+        
+        $xxx= DB::table('cust')->select('PKP')->where('KODEC', $kodecx)->get();
+
+        $PPN = $xxx[0]->PKP ;
+        
+        
         //////     nomer otomatis
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
@@ -254,7 +263,7 @@ class SoController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
+
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
@@ -397,7 +406,12 @@ class SoController extends Controller
         $KOM           = $request->input('KOM');  
         $TKOM           = $request->input('TKOM');  
         $LOKASI        = $request->input('LOKASI');  
+        $BERAT        = $request->input('BERAT');  
+        $TBERAT        = $request->input('TBERAT'); 
 
+        $XSO        = $request->input('XSO');  
+        $SEDIA        = $request->input('SEDIA');  
+        
         // Check jika value detail ada/tidak
         if ($REC) {
             foreach ($REC as $key => $value) {
@@ -437,7 +451,12 @@ class SoController extends Controller
                 $detail->KOM          = (float) str_replace(',', '', $KOM[$key]); 
                 $detail->TKOM         = (float) str_replace(',', '', $TKOM[$key]); 
 				$detail->LOKASI       = ($LOKASI[$key] == null) ? "" :  $LOKASI[$key];	
+                $detail->BERAT       = (float) str_replace(',', '', $BERAT[$key]); 
+                $detail->TBERAT       = (float) str_replace(',', '', $TBERAT[$key]); 
 
+                $detail->XSO       = (float) str_replace(',', '', $XSO[$key]); 
+                $detail->SEDIA       = (float) str_replace(',', '', $SEDIA[$key]); 
+                
 				$detail->KET         = ($KET[$key] == null) ? "" :  $KET[$key];				
                 $detail->save();
             }
@@ -455,6 +474,7 @@ class SoController extends Controller
                             SET  sod.ID =  so.NO_ID  WHERE  so.NO_BUKTI =  sod.NO_BUKTI 
 							AND  so.NO_BUKTI='$no_buktix';");
 
+        $variablell = DB::select('call soins(?)', array($no_buktix));
 		
 					 
         return redirect('/so/edit/?idx=' . $so->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '&golz=' . $this->GOLZ .'');
@@ -673,6 +693,9 @@ class SoController extends Controller
             ]
         );
 
+        $variablell = DB::select('call sodel(?)', array($so['NO_BUKTI']));
+
+
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
         $GOLZ = $this->GOLZ;
@@ -752,7 +775,12 @@ class SoController extends Controller
         $KOM           = $request->input('KOM');  
         $TKOM          = $request->input('TKOM');  
         $LOKASI          = $request->input('LOKASI');  
+        $BERAT          = $request->input('BERAT');  
+        $TBERAT          = $request->input('TBERAT'); 
 
+        $XSO          = $request->input('XSO');  
+        $SEDIA          = $request->input('SEDIA');  
+        
         $query = DB::table('sod')->where('NO_BUKTI', $request->NO_BUKTI)->whereNotIn('NO_ID',  $NO_ID)->delete();
 
         // Update / Insert
@@ -791,7 +819,12 @@ class SoController extends Controller
                         'TYPE_KOM'    => ($TYPE_KOM[$i] == null) ? "" :  $TYPE_KOM[$i],	
                         'KOM'         => (float) str_replace(',', '', $KOM[$i]),
                         'TKOM'        => (float) str_replace(',', '', $TKOM[$i]),
+                        'BERAT'        => (float) str_replace(',', '', $BERAT[$i]),
+                        'TBERAT'        => (float) str_replace(',', '', $TBERAT[$i]),
 
+                        'XSO'        => (float) str_replace(',', '', $XSO[$i]),
+                        'SEDIA'        => (float) str_replace(',', '', $SEDIA[$i]),
+                        
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],	
                         'LOKASI'        => ($LOKASI[$i] == null) ? "" :  $LOKASI[$i],	
 						
@@ -836,7 +869,12 @@ class SoController extends Controller
                         'TYPE_KOM'    => ($TYPE_KOM[$i] == null) ? "" :  $TYPE_KOM[$i],	
                         'KOM'         => (float) str_replace(',', '', $KOM[$i]),
                         'TKOM'         => (float) str_replace(',', '', $TKOM[$i]),
+                        'BERAT'         => (float) str_replace(',', '', $BERAT[$i]),
+                        'TBERAT'         => (float) str_replace(',', '', $TBERAT[$i]),
 
+                        'XSO'        => (float) str_replace(',', '', $XSO[$i]),
+                        'SEDIA'        => (float) str_replace(',', '', $SEDIA[$i]),
+                      
                         'KET'        => ($KET[$i] == null) ? "" :  $KET[$i],							
                         'LOKASI'        => ($LOKASI[$i] == null) ? "" :  $LOKASI[$i],							
                     ]
@@ -856,6 +894,8 @@ class SoController extends Controller
         DB::SELECT("UPDATE so,  sod
                     SET  sod.ID =  so.NO_ID  WHERE  so.NO_BUKTI =  sod.NO_BUKTI 
                     AND  so.NO_BUKTI='$no_bukti';");
+
+        $variablell = DB::select('call soins(?)', array($so['NO_BUKTI']));
 					 
         return redirect('/so/edit/?idx=' . $so->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '&golz=' . $this->GOLZ . '');	
 		
@@ -888,6 +928,8 @@ class SoController extends Controller
                 ->with(['judul' => $this->judul, 'flagz' => $this->FLAGZ, 'golz' => $this->GOLZ]);
         }
 		
+        $variablell = DB::select('call sodel(?)', array($so['NO_BUKTI']));
+
 		
         $deleteSo = So::find($so->NO_ID);
 

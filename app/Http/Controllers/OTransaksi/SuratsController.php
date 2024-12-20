@@ -230,7 +230,7 @@ class SuratsController extends Controller
         $PPN = Auth::user()->PPN;
 		
         $surats = DB::SELECT("SELECT * from surats  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
-                            and GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP = '$PPN'  ORDER BY NO_BUKTI ");
+                            and GOL ='$this->GOLZ' AND CBG = '$CBG'  ORDER BY NO_BUKTI ");
 	  
 	   
         // ganti 6
@@ -327,6 +327,15 @@ class SuratsController extends Controller
             ]
         );
 
+
+        $kodecx = $request->KODEC;
+        
+        $xxx= DB::table('cust')->select('PKP')->where('KODEC', $kodecx)->get();
+
+        $PPN = $xxx[0]->PKP ;
+        
+        
+        
         //////     nomer otomatis
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
@@ -334,7 +343,6 @@ class SuratsController extends Controller
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 

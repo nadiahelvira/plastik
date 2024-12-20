@@ -66,7 +66,7 @@ class KotaController extends Controller
                                     Edit
                                 </a>
                                 <hr></hr>
-                                <a class="dropdown-item btn btn-danger" ' . $btnDelete . '>
+                                <a hiddden class="dropdown-item btn btn-danger" ' . $btnDelete . '>
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Delete
                                 </a> 

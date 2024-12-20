@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 // ganti 1
 
+use App\Models\Master\Jenis;
+use App\Models\Master\Merk;
+
 use App\Models\Master\Brg;
 use App\Models\Master\BrgDetail;
 use Illuminate\Http\Request;
@@ -50,6 +53,7 @@ class BrgController extends Controller
 		$kd_brgx = $request->KD_BRG;
 		$pkpx = $request->PKP;
         $golz = $request->GOL;
+
 
 		$filter_kd_brg='';
 
@@ -134,7 +138,9 @@ class BrgController extends Controller
 		$pkpx = $request->PKP;
 		$ringx = $request->RING;
         $golz = $request->GOL;
-
+        $cbg = Auth::user()->CBG;
+        
+        
 		$filter_kd_brg='';
 
         if( $pkpx == '0' ){
@@ -145,22 +151,24 @@ class BrgController extends Controller
             } 
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                    brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
-                                    brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI
+                                    brg.SATUAN, brg.BERAT, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                    brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI,
+                                    brgd.XSO, (brgd.AK12 - brgd.XSO) AS SEDIA
                                 FROM brg, brgdx, brgd
                                 $filter_kd_brg and brg.KD_BRG = brgdx.KD_BRG AND brg.KD_BRG = brgd.KD_BRG
-                                AND brg.PN='0' AND brgdx.RING = '$ringx'
+                                AND brg.PN='0' AND brgdx.RING = '$ringx'  AND brgd.CBG = '$cbg' 
                                 -- AND brg. GOL='$golz'
                                 ORDER BY brg.KD_BRG  ");
                             
             if	( empty($brg) ) {
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                    brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
-                                    brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI
+                                    brg.SATUAN, brg.BERAT, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                    brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI,
+                                    brgd.XSO, (brgd.AK12 - brgd.XSO) AS SEDIA
                                 FROM brg, brgdx, brgd
                                 WHERE brg.KD_BRG = brgdx.KD_BRG AND brg.KD_BRG = brgd.KD_BRG
-                                AND brg.PN='0' AND brgdx.RING = '$ringx'
+                                AND brg.PN='0' AND brgdx.RING = '$ringx' AND brgd.CBG = '$cbg' 
                                 -- AND brg. GOL='$golz'
                                 ORDER BY brg.KD_BRG ");			
             }
@@ -173,23 +181,25 @@ class BrgController extends Controller
             } 
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
-                                brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI
+                                        brg.SATUAN, brg.BERAT, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                        brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI,
+                                        brgd.XSO, (brgd.AK12 - brgd.XSO) AS SEDIA
                                 FROM brg, brgdx, brgd
                                 $filter_kd_brg AND brg.KD_BRG = brgdx.KD_BRG AND brg.KD_BRG = brgd.KD_BRG
-                                AND brg.PN<>'0' AND brgdx.RING = '$ringx'
+                                AND brg.PN<>'0' AND brgdx.RING = '$ringx' AND brgd.CBG = '$cbg' 
                                 -- AND brg.GOL='$golz'
                                 ORDER BY brg.KD_BRG  ");
                             
             if	( empty($brg) ) {
                 
                 $brg = DB::SELECT("SELECT brg.KD_BRG, TRIM(REPLACE(REPLACE(REPLACE(brg.NA_BRG, '\n', ' '), '\r', ' '), '\t', ' ')) as NA_BRG,
-                                        brg.SATUAN, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
-                                brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI
+                                        brg.SATUAN, brg.BERAT, brgdx.HARGA AS HARGA1, brgdx.HARGA2, brgdx.HARGA3, brgdx.HARGA4, brgdx.HARGA5,
+                                        brgdx.HARGA6, brgdx.HARGA7, brg.KD_GRUP, brg.TYPE_KOM, brg.KOM, brgd.AK12, brgd.LOKASI,
+                                        brgd.XSO, (brgd.AK12 - brgd.XSO) AS SEDIA
                                 FROM brg, brgdx, brgd
                                 WHERE brg.PN<>'0' AND brg.KD_BRG = brgdx.KD_BRG AND brg.KD_BRG = brgd.KD_BRG
                                 -- AND brg.GOL='$golz' 
-                                AND brgdx.RING = '$ringx'
+                                AND brgdx.RING = '$ringx' AND brgd.CBG = '$cbg' 
                                 ORDER BY brg.KD_BRG ");			
             }
 
@@ -219,7 +229,8 @@ class BrgController extends Controller
                     $url = "'".url("brg/delete/" . $row->NO_ID )."'";
                     // batas
 
-                    $btnDelete = ' onclick="deleteRow('.$url.')"';
+                    $btnDelete = '';
+                    //' onclick="deleteRow('.$url.')"';
 
                     $btnPrivilege =
                         '
@@ -228,7 +239,7 @@ class BrgController extends Controller
                                     Edit
                                 </a>
                                 <hr></hr>
-                                <a class="dropdown-item btn btn-danger" ' . $btnDelete . '>
+                                <a hidden class="dropdown-item btn btn-danger" ' . $btnDelete . '>
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Delete
                                 </a> 
@@ -245,7 +256,7 @@ class BrgController extends Controller
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="brg/show/' . $row->NO_ID . '">
+                            <a hidden class="dropdown-item" href="brg/show/' . $row->NO_ID . '">
                             <i class="fas fa-eye"></i>
                                 Lihat
                             </a>
@@ -518,8 +529,12 @@ class BrgController extends Controller
 		 $data = [
                     'header'        => $brg,
                     'detail'        => $brgDetail,
-                ];				
-        return view('master_brg.edit', $data)->with(['tipx' => $tipx, 'idx' => $idx ]);
+                ];	
+                
+        $xjenis = Jenis::query()->get();
+        $xmerk = Merk::query()->get();
+        
+        return view('master_brg.edit', $data)->with(['xjenis' => $xjenis])->with(['xmerk' => $xmerk])->with(['tipx' => $tipx, 'idx' => $idx ]);
 		 
  
        

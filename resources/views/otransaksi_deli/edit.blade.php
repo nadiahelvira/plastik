@@ -151,7 +151,7 @@
                                 </div>
 								
                                 <div class="col-md-3" >
-                                   <select id="KODEC"  onchange="ambil_hari()" name="KODEC" style="width: 100%" ></select>        							      
+                                   <select id="KODEC"  name="KODEC" style="width: 100%" ></select>        							      
                                     <input type="text" hidden class="form-control HARI" id="HARI" name="HARI" value="{{$header->HARI}}" placeholder="Masukkan Hari" >
 
                                 </div>
@@ -159,8 +159,11 @@
                                 <div class="col-md-1" >
                                   	<input type="checkbox" class="form-check-input" id="PKP" name="PKP" readonly  value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}>
                                     <label for="PKP" class="form-label">Pkp</label>
+                                    <input type="text" hidden class="form-control ZPKP" id="ZPKP" name="ZPKP" value="{{$header->PKP}}" placeholder="Masukkan Pkp" >
                                 </div>
-		
+                                
+
+                                  
 							</div>
 							
 							
@@ -172,15 +175,23 @@
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text" class="form-control TRUCK" id="TRUCK" name="TRUCK" placeholder="Masukkan Truck" value="{{$header->TRUCK}}">
-                                </div>
+									<!-- <input type="text" hidden onclick="select()" class="form-control MAXB" id="MAXB" name="MAXB" placeholder="Masukkan MAXB" 
+										value="{{ number_format( $header->MAXB, 0, '.', ',') }}" style="text-align: right" > -->
+								</div>
 
                                 <div class="col-md-1" align="right">
-									<!-- <label style="color:red;font-size:20px">* </label>	 -->
                                     <label for="SOPIR" class="form-label">Sopir</label>
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text" class="form-control SOPIR" id="SOPIR" name="SOPIR" placeholder="Sopir" value="{{$header->SOPIR}}">
                                 </div>
+								<div class="col-md-1" align="right">
+                                    <label for="MAXB" class="form-label">Max Berat</label>
+                                </div>
+								<div class="col-md-2">
+									<input type="text" onclick="select()" class="form-control MAXB" id="MAXB" name="MAXB" placeholder="Masukkan MAXB" 
+										value="{{ number_format( $header->MAXB, 0, '.', ',') }}" style="text-align: right" >
+								</div>
 
                             </div>
 
@@ -215,6 +226,7 @@
                                         <th {{($golz == 'J' || $golz =='D' ) ? 'hidden' : '' }} style="text-align: center;">Uraian</th>
                                         <th style="text-align: center;">Satuan</th>
                                         <th style="text-align: center;">Qty</th>
+                                        <th style="text-align: center;">Berat</th>
 										<th style="text-align: center;">Ket</th>
 										<th style="text-align: center;"></th>
                                         <th></th>
@@ -270,7 +282,15 @@
 											<input hidden name="KOM[]"  onblur="hitung()" value="{{$detail->KOM}}" id="KOM{{$no}}" type="text" style="text-align: right"  class="form-control KOM text-primary" readonly >
 											<input hidden name="TKOM[]"  onblur="hitung()" value="{{$detail->TKOM}}" id="TKOM{{$no}}" type="text" style="text-align: right"  class="form-control TKOM text-primary" readonly >
 											<input hidden name="LOKASI[]" id="LOKASI{{$no}}" type="text" class="form-control LOKASI" placeholder="Ket" value="{{$detail->TYPE_KOM}}" readonly>
+
+
 										</td>
+
+										<td>
+											<input name="BERAT[]" onkeyup="hitung()" id="BERAT{{$no}}" type="text" style="text-align: right"  class="form-control BERAT text-primary" value="{{$detail->BERAT}}" readonly>
+
+										</td>
+										
 										<td>
                                             <input name="KET[]" id="KET{{$no}}" type="text" class="form-control KET" placeholder="Ket" value="{{$detail->KET}}" required>
                                         </td>
@@ -294,6 +314,9 @@
                                     <td>
 										<input class="form-control TQTY  text-primary font-weight-bold" style="text-align: right"  id="TQTY" name="TQTY" value="{{$header->TOTAL_QTY}}" readonly>
 										<input hidden class="form-control TOTAL_TKOM  text-primary font-weight-bold" style="text-align: right"  id="TOTAL_TKOM" name="TOTAL_TKOM" value="{{$header->TOTAL_TKOM}}" readonly>
+									</td>
+                                    <td>
+										<input class="form-control TBERAT  text-primary font-weight-bold" style="text-align: right"  id="TBERAT" name="TBERAT" value="{{$header->TBERAT}}" readonly>
 									</td>
                                     <td></td>
                                 </tfoot>
@@ -608,12 +631,15 @@
 		}    
 		
 		$("#TQTY").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#TBERAT").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 		$("#TTOTAL").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#MAXB").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
 
 
 		jumlahdata = 100;
 		for (i = 0; i <= jumlahdata; i++) {
 			$("#QTY" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#BERAT" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#HARGA" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 			$("#TOTAL" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 		}	
@@ -752,7 +778,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableBTruck.row.add([
-							'<a href="javascript:void(0);" onclick="chooseTruck( \''+resp[i].NOPOL+'\' )">'+resp[i].KODE+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseTruck( \''+resp[i].NOPOL+'\', \''+resp[i].MAXB+'\' )">'+resp[i].KODE+'</a>',
 							resp[i].NOPOL,
 						]);
 					}
@@ -770,8 +796,9 @@
 			$("#browseTruckModal").modal("show");
 		}
 		
-		chooseTruck = function(NOPOL){
+		chooseTruck = function(NOPOL, MAXB){
 			$("#TRUCK").val(NOPOL);
+			$("#MAXB").val(MAXB);
 			$("#browseTruckModal").modal("hide");
 		}
 		
@@ -810,7 +837,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableSo.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\',\''+resp[i].TYPE_KOM+'\',\''+resp[i].KOM+'\',\''+resp[i].TKOM+'\',\''+resp[i].TOTAL_TKOM+'\',\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\',\''+resp[i].PKP+'\',\''+resp[i].LOKASI+'\')">'+resp[i].NO_BUKTI+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\',\''+resp[i].TYPE_KOM+'\',\''+resp[i].KOM+'\',\''+resp[i].TKOM+'\',\''+resp[i].TOTAL_TKOM+'\',\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\',\''+resp[i].PKP+'\',\''+resp[i].LOKASI+'\', \''+resp[i].BERAT+'\')">'+resp[i].NO_BUKTI+'</a>',
 							resp[i].TGL,
 							resp[i].NAMAC,
 							resp[i].KD_BRG,
@@ -849,7 +876,7 @@
 			$("#browseSoModal").modal("show");
 		}
 		
-		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN,SISA, HARGA, TOTAL, PPNX, DPP, DISK, TYPE_KOM, KOM, TKOM, TOTAL_TKOM, KODEC, NAMAC, ALAMAT, KOTA, PKP, LOKASI){
+		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN,SISA, HARGA, TOTAL, PPNX, DPP, DISK, TYPE_KOM, KOM, TKOM, TOTAL_TKOM, KODEC, NAMAC, ALAMAT, KOTA, PKP, LOKASI, BERAT){
 			$("#NO_SO"+rowidSo).val(NO_BUKTI);
 			// $("#JTEMPO"+rowidSo).val(JTEMPO);
 			$("#KD_BRG"+rowidSo).val(KD_BRG);
@@ -871,6 +898,7 @@
 			$("#KOTA"+rowidSo).val(KOTA);	
 			$("#PKP"+rowidSo).val(PKP);	
 			$("#LOKASI"+rowidSo).val(LOKASI);	
+			$("#BERAT"+rowidSo).val(BERAT);
 			$("#browseSoModal").modal("hide");
 			hitung();
 		}
@@ -916,15 +944,6 @@
 		var tahunPer = {{session()->get('periode')['tahun']}};
 		
         var check = '0';
-		
-		
-		
-			// if (cekDetail())
-			// {	
-			//     check = '1';
-			// 	alert("#Barang ada yang kosong. ")
-			// }
-			
 			
 			$(".NO_SO").each(function() {
 			var noso = $(this).val();
@@ -934,7 +953,34 @@
 				baris--;
 				nomor();
 			}
+
 		});
+
+/////////////////////////////////////////////////////
+
+		var MAXB = parseFloat($('#MAXB').val().replace(/,/g, ''));
+		var TBERAT = parseFloat($('#TBERAT').val().replace(/,/g, ''));
+
+		// alert(MAXB);
+		// alert(TBERAT);
+		
+		if ( TBERAT > MAXB ) {
+			
+			
+			// alert('halo');
+			check = '1'; 
+			Swal.fire({
+				icon: 'warning',
+				title: 'Warning',
+				text: 'Total Berat Lebih dari Max Berat Truck'
+			});
+			return; 
+			
+		}
+
+
+
+/////////////////////////////////////////////////////
 
 		if ( $('#TRUCK').val()=='' ) 
 		{			
@@ -946,6 +992,13 @@
 				});
 				return;
 		}
+
+///////////////////////////////////////////////////////////////////////
+
+		
+
+
+/////////////////////////////////////////////////////////////////////////
 
 		if ( tgl.substring(3,5) != bulanPer ) 
 		{
@@ -973,6 +1026,8 @@
 		// {
 		// 	document.getElementById("entri").submit();  
 		// }
+
+		
 
 		if (check == '0') {
 				Swal.fire({
@@ -1019,27 +1074,36 @@
    function hitung() {
 	var TQTY = 0;
 		var TTOTAL = 0;
+		var TBERAT = 0;
 
 		$(".QTY").each(function() {
 			let z = $(this).closest('tr');
 			var QTYX = parseFloat($(this).val().replace(/,/g, ''));
 			var HARGAX = parseFloat(z.find('.HARGA').val().replace(/,/g, ''));
-		
+
+			var BERATX = parseFloat(z.find('.BERAT').val().replace(/,/g, ''));
+			
             var TOTALX = HARGAX * QTYX;
 			z.find('.TOTAL').val(TOTALX);
 		    z.find('.TOTAL').autoNumeric('update');
 		
-            TQTY += QTYX;	
+            TQTY += QTYX;
+            TBERAT += BERATX;
+            
             TTOTAL += TOTALX;	
 		});
 		
 
 		if(isNaN(TQTY)) TQTY = 0;
 		if(isNaN(TTOTAL)) TTOTAL = 0;
-
+		if(isNaN(TBERAT)) TBERAT = 0;
+		
 		$('#TQTY').val(numberWithCommas(TQTY));		
 		$('#TTOTAL').val(numberWithCommas(TTOTAL));		
-
+		$('#TBERAT').val(numberWithCommas(TBERAT));	
+		
+		$("#TBERAT").autoNumeric('update');
+		
 		$("#TQTY").autoNumeric('update');
 		$("#TTOTAL").autoNumeric('update');
 	}
@@ -1109,6 +1173,7 @@
 			// $("#ALAMAT").attr("readonly", true);
 			// $("#KOTA").attr("readonly", true);
 			$("#TRUCK").attr("readonly", true);
+			$("#MAXB").attr("readonly", true);
 			$("#SOPIR").attr("readonly", false);
 			// $("#VIA").attr("readonly", false);
 
@@ -1126,6 +1191,7 @@
 			$("#NA_BHN" + i.toString()).attr("readonly", true);
 			$("#SATUAN" + i.toString()).attr("readonly", true);
 			$("#QTY" + i.toString()).attr("readonly", true);
+			$("#BERAT" + i.toString()).attr("readonly", true);
 			$("#HARGA" + i.toString()).attr("readonly", true);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#KET" + i.toString()).attr("readonly", true);
@@ -1180,6 +1246,7 @@
 		$("#TGL").attr("readonly", true);
 		// $("#JTEMPO").attr("readonly", true);
 		$("#TRUCK").attr("readonly", true);
+		$("#MAXB").attr("readonly", true);
 	    $("#SOPIR").attr("disabled", true);
 
 
@@ -1200,6 +1267,7 @@
 			$("#NA_BHN" + i.toString()).attr("readonly", true);
 			$("#SATUAN" + i.toString()).attr("readonly", true);
 			$("#QTY" + i.toString()).attr("readonly", true);
+			$("#BERAT" + i.toString()).attr("readonly", true);
 			$("#HARGA" + i.toString()).attr("readonly", true);
 			$("#TOTAL" + i.toString()).attr("readonly", true);
 			$("#KET" + i.toString()).attr("readonly", true);
@@ -1225,7 +1293,8 @@
 		 $('#ALAMAT').val("");	
 		 $('#KOTA').val("");	
 		 $('#NOTES').val("");	
-		 $('#TTOTAL_QTY').val("0.00");	
+		 $('#TTQTY').val("0.00");	
+		 $('#TBERAT').val("0.00");	
 		 $('#TTOTAL').val("0.00");
 		 $('#NETT').val("0.00");
 		
@@ -1322,49 +1391,49 @@
 		
 	}
 
-	function ambil_hari() {
+	// function ambil_hari() {
 
 		    
-		$.ajax(
-		{
-			type: 'GET',    
-			url: "{{url('cust/browse_hari')}}",
-			data: {
-					'KODEC' : $("#KODEC").val(),
-			},
+	// 	$.ajax(
+	// 	{
+	// 		type: 'GET',    
+	// 		url: "{{url('cust/browse_hari')}}",
+	// 		data: {
+	// 				'KODEC' : $("#KODEC").val(),
+	// 		},
 			
-			success: function( response )
+	// 		success: function( response )
 
-			{
-				resp = response;
-				$("#PKP").val( resp[0].PKP );
-				$("#HARI").val( resp[0].HARI );
-				$("#KODEP").val( resp[0].KODEP );
-				$("#NAMAP").val( resp[0].NAMAP );
-				$("#RING").val( resp[0].RING );
-				$("#KOM").val( resp[0].KOM );
+	// 		{
+	// 			resp = response;
+	// 			$("#PKP").val( resp[0].PKP );
+	// 			$("#HARI").val( resp[0].HARI );
+	// 			$("#KODEP").val( resp[0].KODEP );
+	// 			$("#NAMAP").val( resp[0].NAMAP );
+	// 			$("#RING").val( resp[0].RING );
+	// 			$("#KOM").val( resp[0].KOM );
 				
 	
 	
-        		if ( $("#PKP").val() == '1' )
-        		{
+    //     		if ( $("#PKP").val() == '1' )
+    //     		{
 
-                     document.getElementById("PKP").checked = true;
+    //                  document.getElementById("PKP").checked = true;
                     	
-        		}
+    //     		}
         
-                else
-                {
-                     document.getElementById("PKP").checked = false;
+    //             else
+    //             {
+    //                  document.getElementById("PKP").checked = false;
                     
-                }
+    //             }
         				
-			}
-		});
+	// 		}
+	// 	});
 		
 		   
 	
-	}
+	// }
 	
 	
 	
@@ -1422,6 +1491,12 @@
 					<input hidden name='LOKASI[]' id='LOKASI${idrow}' type='text' class='form-control  LOKASI' readonly>
 				
 				</td>
+
+				<td>
+		            <input name='BERAT[]' onclick='select()' onblur='hitung()' value='1' id='BERAT${idrow}' type='text' style='text-align: right' class='form-control BERAT text-primary' readonly >
+
+				</td>
+				
 				
                 <td>
 				    <input name='KET[]'   id='KET${idrow}' type='text' class='form-control  KET' required>
@@ -1442,7 +1517,9 @@
 			$("#QTY" + i.toString()).autoNumeric('init', {
 				aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
 
-
+			$("#BERAT" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+				
 			$("#HARGA" + i.toString()).autoNumeric('init', {
 				aSign: '<?php echo ''; ?>',
 				vMin: '-999999999.99'

@@ -82,7 +82,8 @@ class BeliController extends Controller
                           WHERE beli.NO_BUKTI = beliD.NO_BUKTI AND beli.FLAG='BL' 
                           AND beli.GOL ='$golz'
                           AND beli.CBG = '$CBG'
-                          AND beli.PKP = '$PPN' ");
+                        --   AND beli.PKP = '$PPN' 
+                          ");
         return response()->json($beli);
     }
 	
@@ -131,7 +132,7 @@ class BeliController extends Controller
 		$PPN = Auth::user()->PPN;
 
         $beli = DB::SELECT("SELECT * from beli  WHERE PER='$periode' and FLAG = '$this->FLAGZ' 
-                and GOL = '$this->GOLZ' AND CBG='$CBG' AND PKP = '$PPN' ORDER BY NO_BUKTI ");
+                and GOL = '$this->GOLZ' AND CBG='$CBG'  ORDER BY NO_BUKTI ");
 	  
 	   
         // ganti 6
@@ -238,13 +239,20 @@ class BeliController extends Controller
         );
 
         //////     nomer otomatis
+        
+                $kodesx = $request->KODES;
+        
+        $xxx= DB::table('sup')->select('PKP')->where('KODES', $kodesx)->get();
+
+        $PPN = $xxx[0]->PKP ;
+        
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
         $GOLZ = $this->GOLZ;
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
+ 
 
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 

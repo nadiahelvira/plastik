@@ -38,3 +38,19 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/routes/api.php on line 17
+[16-Dec-2024 03:57:03 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Support\Facades\Route' not found in /home/januar13/public_html/plastik/routes/auth.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/routes/auth.php on line 13
+[16-Dec-2024 05:57:25 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Support\Facades\Artisan' not found in /home/januar13/public_html/plastik/routes/console.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/routes/console.php on line 17
+[16-Dec-2024 10:21:48 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Support\Facades\Route' not found in /home/januar13/public_html/plastik/routes/web.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/routes/web.php on line 19
+[16-Dec-2024 14:19:03 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Support\Facades\Route' not found in /home/januar13/public_html/plastik/routes/api.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/routes/api.php on line 17

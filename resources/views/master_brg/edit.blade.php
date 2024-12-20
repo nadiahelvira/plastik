@@ -260,9 +260,13 @@
 								<!-- code text box baru -->
 								<div class="col-md-2 form-group row special-input-label">
 
-									<input type="text" class="MERK" id="MERK" name="MERK" 
-										value="{{$header->MERK}}" placeholder=" " >
-									<label for="MERK">Merk</label>
+            							<select name="MERK" id="MERK" class="form-control MERK" style="width: 200px">
+            								<option value="">--Pilih Merk--</option>
+            								@foreach($xmerk as $xmerk)
+            									<option value="{{$xmerk->KODE}}" {{ $header->MERK == $xmerk->KODE ? 'selected' : '' }}>{{$xmerk->KODE}}</option>
+            								@endforeach
+            							</select>
+							
 								</div>
 								<!-- tutupannya -->
 
@@ -272,9 +276,14 @@
 								<!-- code text box baru -->
 								<div class="col-md-3 form-group row special-input-label">
 
-									<input type="text" class="JENIS" id="JENIS" name="JENIS" 
-										value="{{$header->JENIS}}" placeholder=" " >
-									<label for="JENIS">Jenis</label>
+
+            							<select name="JENIS" id="JENIS" class="form-control JENIS" style="width: 200px">
+            								<option value="">--Pilih Jenis--</option>
+            								@foreach($xjenis as $xjenis)
+            									<option value="{{$xjenis->KODE}}" {{ $header->JENIS == $xjenis->KODE ? 'selected' : '' }}>{{$xjenis->KODE}}</option>
+            								@endforeach
+            							</select>
+
 								</div>
 								<!-- tutupannya -->
 
@@ -562,7 +571,7 @@
 
 							</div>
 							<div class="col-md-3">
-								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
+								<button type="button" id='HAPUSX' hidden onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
 								
 								<!-- <button type="button" id='CLOSEX'  onclick="location.href='{{url('/brg' )}}'" class="btn btn-outline-secondary">Close</button> -->
 
@@ -1429,7 +1438,13 @@
 
 	// sweetalert untuk tombol hapus dan close
 	
+	
 	function hapusTrans() {
+	
+	    
+	}   
+	
+	function hapusTransx() {
 		let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
 
 		var loc ='';

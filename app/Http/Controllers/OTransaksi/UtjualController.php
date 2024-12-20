@@ -116,7 +116,7 @@ class UtjualController extends Controller
         $PPN = Auth::user()->PPN;
 		
         $utjual = DB::SELECT("SELECT * from jual  where  PER ='$periode' and FLAG ='$this->FLAGZ' 
-                AND GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP = '$PPN' ORDER BY NO_BUKTI ");
+                AND GOL ='$this->GOLZ' AND CBG = '$CBG'  ORDER BY NO_BUKTI ");
 
   
         // ganti 6
@@ -205,6 +205,14 @@ class UtjualController extends Controller
             ]
         );
 
+
+        $kodecx = $request->KODEC;
+        
+        $xxx= DB::table('cust')->select('PKP')->where('KODEC', $kodecx)->get();
+
+        $PPN = $xxx[0]->PKP ;
+        
+        
         // Insert Header
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
@@ -212,7 +220,7 @@ class UtjualController extends Controller
         $judul = $this->judul;	
 		
         $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
+
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 

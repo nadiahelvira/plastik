@@ -147,7 +147,8 @@ class AccountController extends Controller
                     $url = "'".url("account/delete/" . $row->NO_ID )."'";
                     // batas
 
-                    $btnDelete = ' onclick="deleteRow('.$url.')"';
+                    $btnDelete = '';
+                    //onclick="deleteRow('.$url.')"';
 
                     $btnPrivilege =
                         '
@@ -159,7 +160,7 @@ class AccountController extends Controller
                                 <a class="dropdown-item btn btn-danger" ' . $btnDelete . '">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                     Delete
-                                </a> 
+                                </a>  
                         ';
                 } else {
                     $btnPrivilege = '';

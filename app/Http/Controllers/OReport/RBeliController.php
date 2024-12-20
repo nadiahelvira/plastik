@@ -56,15 +56,10 @@ class RBeliController extends Controller
 			{
 				$filtergol = " and beli.GOL='".$request->gol."' ";
 			}
-			
-			// if (!empty($request->kodes))
-			// {
-			// 	$filterkodes = " and beli.KODES='".$request->kodes."' ";
-			// } 
 		
 			if (!empty($request->kodes) && !empty($request->kodes2))
 			{
-				$filterkodes = " WHERE beli.KODES between '".$kodes."' and '".$kodes2."' ";
+				$filterkodes = " and beli.KODES between '".$kodes."' and '".$kodes2."' ";
 			}
 			
 			if (!empty($request->cbg))
@@ -102,27 +97,14 @@ class RBeliController extends Controller
 			session()->put('filter_cbg', $request->cbg);
 		
 
-		if( $filtergol == 'B'){
-			$query = DB::SELECT("SELECT trim(beli.NO_BUKTI) as NO_BUKTI, beli.TGL, beli.NO_PO, beli.KODES, 
-									beli.NAMAS, belid.KD_BHN AS KD_BRG, belid.NA_BHN AS NA_BRG,
-									belid.QTY, belid.HARGA, belid.TOTAL, beli.GOL, belid.PPN, (belid.TOTAL + belid.PPN) AS NETT 
-								from beli,belid 
-								WHERE beli.NO_BUKTI=belid.NO_BUKTI
-								$filtertgl $filtergol $filterkodes $filtercbg
-								/*order by beli.KODES,beli.NO_BUKTI*/;
-							");
 		
-		} else {
 			$query = DB::SELECT("SELECT trim(beli.NO_BUKTI) as NO_BUKTI, beli.TGL, beli.NO_PO, beli.KODES, 
 									beli.NAMAS, belid.KD_BRG, belid.NA_BRG,
 									belid.QTY, belid.HARGA, belid.TOTAL, beli.GOL, belid.PPN, (belid.TOTAL + belid.PPN) AS NETT 
 								from beli,belid 
 								WHERE beli.NO_BUKTI=belid.NO_BUKTI
-								-- AND beli.CBG = '$cbg' 
-								$filtertgl $filtergol $filterkodes $filtercbg 
-								/*order by beli.KODES,beli.NO_BUKTI*/;
-							");
-		}
+								$filtertgl $filterkodes $filtercbg ;
+			");
 			
 
 		if($request->has('filter'))

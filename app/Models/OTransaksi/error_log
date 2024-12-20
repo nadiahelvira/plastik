@@ -54,3 +54,15 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/OrderkDetail.php on line 8
+[14-Dec-2024 13:19:37 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/PiuDetail.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/PiuDetail.php on line 8
+[16-Dec-2024 10:48:35 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/Beli.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/Beli.php on line 10
+[16-Dec-2024 12:06:15 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home/januar13/public_html/plastik/app/Models/OTransaksi/Pp.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Models/OTransaksi/Pp.php on line 10

@@ -1,0 +1,1689 @@
+@extends('layouts.plain')
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    .card {
+
+    }
+
+    .form-control:focus {
+        background-color: #b5e5f9 !important;
+    }
+
+	/* query LOADX */
+
+	.loader {
+      position: fixed;
+        top: 50%;
+        left: 50%;
+      width: 100px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side,#ffa516 90%,#0000) center/16px 16px,
+        radial-gradient(farthest-side,green   90%,#0000) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+    .loader::before {    
+      content:"";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+    @keyframes l17 { 
+      100%{transform: rotate(1turn)}
+    }
+
+	/* penutup LOADX */
+
+</style>
+
+@section('content')
+
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <form action="{{($tipx=='new')? url('/deli/store?flagz='.$flagz.'&golz='.$golz.'') : url('/deli/update/'.$header->NO_ID.'&flagz='.$flagz.'&golz='.$golz.'' ) }}" method="POST" name ="entri" id="entri" >
+  
+                        @csrf
+                        <div class="tab-content mt-3">
+
+							<!-- style text box model baru -->
+
+							<style>
+								/* Ensure specificity with class targeting */
+								.form-group.special-input-label {
+									position: relative;
+									margin-left: 5px ;
+								}
+						
+								/* Ensure only bottom border for input */
+								.form-group.special-input-label input {
+									width: 100%;
+									padding: 10px 0;
+									border: none !important;
+									border-bottom: 2px solid #ccc !important;
+									outline: none !important;
+									font-size: 16px !important;
+									background: transparent !important; /* Remove any background color */
+								}
+						
+								/* Bottom border color change on focus */
+								.form-group.special-input-label input:focus {
+									border-bottom: 2px solid #007BFF !important; /* Change color on focus */
+								}
+						
+								/* Style the label with a higher specificity */
+								.form-group.special-input-label label {
+									position: absolute;
+									top: 12px;
+									color: #888 !important;
+									font-size: 16px !important;
+									transition: 0.3s ease all;
+									pointer-events: none;
+								}
+						
+								/* Move label above input when focused or has content */
+								.form-group.special-input-label input:focus + label,
+								.form-group.special-input-label input:not(:placeholder-shown) + label {
+									top: -10px !important;
+									font-size: 12px !important;
+									color: #007BFF !important;
+								}
+							</style>
+
+							<!-- tutupannya -->
+
+                            <div class="form-group row">
+                                <div class="col-md-1" align="left">
+                                    <label for="NO_BUKTI" class="form-label">Bukti#</label>
+                                </div>
+								
+
+                                   <input type="text" class="form-control NO_ID" id="NO_ID" name="NO_ID"
+                                    placeholder="Masukkan NO_ID" value="{{$header->NO_ID ?? ''}}" hidden readonly>
+
+									<input name="tipx" class="form-control tipx" id="tipx" value="{{$tipx}}" hidden>
+									<input name="flagz" class="form-control flagz" id="flagz" value="{{$flagz}}" hidden>
+									<input name="golz" class="form-control golz" id="golz" value="{{$golz}}" hidden>
+
+								
+								
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control NO_BUKTI" id="NO_BUKTI" name="NO_BUKTI"
+                                    placeholder="Masukkan Bukti#" value="{{$header->NO_BUKTI}}" readonly>
+                                </div>
+
+                                <div class="col-md-1" align="right">
+                                    <label for="TGL" class="form-label">Tgl</label>
+                                </div>
+                                <div class="col-md-2">
+								  <input class="form-control date" id="TGL" name="TGL" data-date-format="dd-mm-yyyy" type="text" autocomplete="off" value="{{date('d-m-Y',strtotime($header->TGL))}}">
+                                </div>
+
+								
+                            </div>
+
+                            <div class="form-group row" hidden >
+                                <div class="col-md-1">	
+                                    <label for="KODEC" class="form-label">Customer#</label>
+                                </div>
+								
+                                <div class="col-md-3" >
+                                   <select id="KODEC"  onchange="ambil_hari()" name="KODEC" style="width: 100%" ></select>        							      
+                                    <input type="text" hidden class="form-control HARI" id="HARI" name="HARI" value="{{$header->HARI}}" placeholder="Masukkan Hari" >
+
+                                </div>
+		
+                                <div class="col-md-1" >
+                                  	<input type="checkbox" class="form-check-input" id="PKP" name="PKP" readonly  value="$header->PKP" {{ ($header->PKP == 1) ? 'checked' : '' }}>
+                                    <label for="PKP" class="form-label">Pkp</label>
+                                    <input type="text" hidden class="form-control ZPKP" id="ZPKP" name="ZPKP" value="{{$header->PKP}}" placeholder="Masukkan Pkp" >
+                                </div>
+                                
+
+                                  
+							</div>
+							
+							
+
+							<div class="form-group row">
+                                <div class="col-md-1" align="left">
+									<label style="color:red;font-size:20px">* </label>	
+                                    <label for="TRUCK" class="form-label">Truck</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control TRUCK" id="TRUCK" name="TRUCK" placeholder="Masukkan Truck" value="{{$header->TRUCK}}">
+									<input hidden type="text" onclick="select()" class="form-control MAXB" id="MAXB" name="MAXB" placeholder="Masukkan MAXB" 
+										value="{{ number_format( $header->MAXB, 0, '.', ',') }}" style="text-align: right" >
+								</div>
+
+                                <div class="col-md-1" align="right">
+									<!-- <label style="color:red;font-size:20px">* </label>	 -->
+                                    <label for="SOPIR" class="form-label">Sopir</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control SOPIR" id="SOPIR" name="SOPIR" placeholder="Sopir" value="{{$header->SOPIR}}">
+                                </div>
+
+                            </div>
+
+							<div class="form-group row">
+								<!-- code text box baru -->
+								<div class="col-md-5 form-group row special-input-label">
+
+									<input type="text" class="NOTES" id="NOTES" name="NOTES" 
+										value="{{$header->NOTES}}" placeholder=" " >
+									<label for="NOTES">Notes</label>
+								</div>
+								<!-- tutupannya -->
+        
+                            </div>
+							
+							<!-- loader tampil di modal  -->
+							<div class="loader" style="z-index: 1055;" id='LOADX' ></div>
+							
+
+                        <div class="tab-content mt-3">
+							
+                            <table id="datatable" class="table table-striped table-border">
+                                <thead>
+                                    <tr>
+										<th width="50px" style="text-align: center;">No.</th>
+                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">SO#</th>
+                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Customer</th>
+                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">-</th>
+                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Kode Barang</th>
+                                        <th {{($golz == 'B') ? 'hidden' : '' }} style="text-align: center;">Uraian</th>
+                                        <th {{($golz == 'J' || $golz =='D' ) ? 'hidden' : '' }} style="text-align: center;">Kode Bahan</th>
+                                        <th {{($golz == 'J' || $golz =='D' ) ? 'hidden' : '' }} style="text-align: center;">Uraian</th>
+                                        <th style="text-align: center;">Satuan</th>
+                                        <th style="text-align: center;">Qty</th>
+                                        <th style="text-align: center;">Berat</th>
+										<th style="text-align: center;">Ket</th>
+										<th style="text-align: center;"></th>
+                                        <th></th>
+                                       						
+                                    </tr>
+                                </thead>
+        
+                                <tbody id="detailDod">
+								<?php $no=0 ?>
+								@foreach ($detail as $detail)		
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="NO_ID[]{{$no}}" id="NO_ID" type="text" value="{{$detail->NO_ID}}" 
+                                            class="form-control NO_ID" onkeypress="return tabE(this,event)" readonly>
+											
+                                            <input name="REC[]" id="REC{{$no}}" type="text" value="{{$detail->REC}}" class="form-control REC" onkeypress="return tabE(this,event)" readonly style="text-align:center">
+
+										</td>
+										
+                                        <td {{($golz == 'B') ? 'hidden' : '' }}>
+                                            <input name="NO_SO[]"  id="NO_SO{{$no}}" type="text" class="form-control NO_SO" 
+											placeholder="SO#" value="{{$detail->NO_SO}}" onblur="browseSo({{$no}})">
+										
+                                        </td>
+                                        <td {{($golz == 'B') ? 'hidden' : '' }}>
+                                            <input name="KODEC[]"  id="KODEC{{$no}}" type="text" class="form-control KODEC" placeholder="" value="{{$detail->KODEC}}">
+                                        </td>
+                                        <td {{($golz == 'B') ? 'hidden' : '' }}>
+                                            <input name="NAMAC[]"  id="NAMAC{{$no}}" type="text" class="form-control NAMAC" placeholder="" value="{{$detail->NAMAC}}">
+                                            <input hidden name="ALAMAT[]" id="ALAMAT{{$no}}" type="text" class="form-control ALAMAT" placeholder="" value="{{$detail->ALAMAT}}">
+                                            <input hidden name="KOTA[]" id="KOTA{{$no}}" type="text" class="form-control KOTA" placeholder="" value="{{$detail->KOTA}}">
+                                            <input hidden name="PKP[]" id="PKP{{$no}}" type="text" class="form-control PKP" placeholder="" value="{{$detail->PKP}}">
+                                        </td>
+
+                                        <td {{($golz == 'B') ? 'hidden' : '' }}>
+                                            <input name="KD_BRG[]"  id="KD_BRG{{$no}}" type="text" class="form-control KD_BRG" placeholder="Barang#" value="{{$detail->KD_BRG}}">
+                                        </td>
+                                        <td {{($golz == 'B') ? 'hidden' : '' }}>
+                                            <input name="NA_BRG[]" id="NA_BRG{{$no}}" type="text" class="form-control NA_BRG" placeholder="Nama" value="{{$detail->NA_BRG}}">
+                                        </td>
+
+                                        <td>
+                                            <input name="SATUAN[]" id="SATUAN{{$no}}" type="text" class="form-control SATUAN" placeholder="Satuan" value="{{$detail->SATUAN}}">
+                                        </td>
+										<td>
+											<input name="QTY[]" onkeyup="hitung()" id="QTY{{$no}}" type="text" style="text-align: right"  class="form-control QTY text-primary" value="{{$detail->QTY}}">
+											<input hidden name="HARGA[]" onkeyup="hitung()" id="HARGA{{$no}}" type="text" style="text-align: right"  class="form-control HARGA text-primary" value="{{$detail->HARGA}}">
+											<input hidden name="TOTAL[]" onkeyup="hitung()" id="TOTAL{{$no}}" type="text" style="text-align: right"  class="form-control TOTAL text-primary" value="{{$detail->TOTAL}}" readonly>
+											<input hidden name="PPNX[]"  onblur="hitung()" value="{{$detail->PPN}}" id="PPNX{{$no}}" type="text" style="text-align: right"  class="form-control PPNX text-primary" readonly >
+											<input hidden name="DPP[]"  onblur="hitung()" value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP text-primary" readonly >
+											<input hidden name="DISK[]"  onblur="hitung()" value="{{$detail->DISK}}" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK text-primary" readonly >
+                                            <input hidden name="TYPE_KOM[]" id="TYPE_KOM{{$no}}" type="text" class="form-control TYPE_KOM" placeholder="Ket" value="{{$detail->TYPE_KOM}}" required>
+											<input hidden name="KOM[]"  onblur="hitung()" value="{{$detail->KOM}}" id="KOM{{$no}}" type="text" style="text-align: right"  class="form-control KOM text-primary" readonly >
+											<input hidden name="TKOM[]"  onblur="hitung()" value="{{$detail->TKOM}}" id="TKOM{{$no}}" type="text" style="text-align: right"  class="form-control TKOM text-primary" readonly >
+											<input hidden name="LOKASI[]" id="LOKASI{{$no}}" type="text" class="form-control LOKASI" placeholder="Ket" value="{{$detail->TYPE_KOM}}" readonly>
+
+
+										</td>
+
+										<td>
+											<input name="BERAT[]" onkeyup="hitung()" id="BERAT{{$no}}" type="text" style="text-align: right"  class="form-control BERAT text-primary" value="{{$detail->BERAT}}">
+
+										</td>
+										
+										<td>
+                                            <input name="KET[]" id="KET{{$no}}" type="text" class="form-control KET" placeholder="Ket" value="{{$detail->KET}}" required>
+                                        </td>
+
+                                    </tr>
+								
+								<?php $no++; ?>
+								@endforeach
+                                </tbody>
+
+								<tfoot>
+								<td></td>
+                                    <td></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }}></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }}></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }}></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }}></td>
+                                    <td {{($golz == 'B') ? 'hidden' : '' }}></td>
+                                    <td {{($golz == 'J' || $golz =='D') ? 'hidden' : '' }}></td>
+                                    <td {{($golz == 'J' || $golz =='D') ? 'hidden' : '' }}></td>
+                                    <td>
+										<input class="form-control TQTY  text-primary font-weight-bold" style="text-align: right"  id="TQTY" name="TQTY" value="{{$header->TOTAL_QTY}}" readonly>
+										<input hidden class="form-control TOTAL_TKOM  text-primary font-weight-bold" style="text-align: right"  id="TOTAL_TKOM" name="TOTAL_TKOM" value="{{$header->TOTAL_TKOM}}" readonly>
+									</td>
+                                    <td>
+										<input class="form-control TBERAT  text-primary font-weight-bold" style="text-align: right"  id="TBERAT" name="TBERAT" value="{{$header->TOTAL_BERAT}}" readonly>
+									</td>
+                                    <td></td>
+                                </tfoot>
+                            </table>
+
+							<div class="col-md-2 row">
+								<a type="button" id='PLUSX' onclick="tambah()" class="fas fa-plus fa-sm md-3" style="font-size: 20px" ></a>
+
+							</div>	
+						
+					</div>
+                        </div> 
+
+                        <hr style="margin-top: 30px; margin-buttom: 30px">
+						<!-- dari sini shelvi-->
+						
+						<!-- sampai sini shelvi-->
+						   
+						<div class="mt-3 col-md-12 form-group row">
+							<div class="col-md-4">
+								<button type="button" id='TOPX'  onclick="location.href='{{url('/deli/edit/?idx=' .$idx. '&tipx=top&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-primary">Top</button>
+								<button type="button" id='PREVX' onclick="location.href='{{url('/deli/edit/?idx='.$header->NO_ID.'&tipx=prev&flagz='.$flagz.'&golz='.$golz.'&buktix='.$header->NO_BUKTI )}}'" class="btn btn-outline-primary">Prev</button>
+								<button type="button" id='NEXTX' onclick="location.href='{{url('/deli/edit/?idx='.$header->NO_ID.'&tipx=next&flagz='.$flagz.'&golz='.$golz.'&buktix='.$header->NO_BUKTI )}}'" class="btn btn-outline-primary">Next</button>
+								<button type="button" id='BOTTOMX' onclick="location.href='{{url('/deli/edit/?idx=' .$idx. '&tipx=bottom&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-primary">Bottom</button>
+							</div>
+							<div class="col-md-5">
+								<button type="button" id='NEWX' onclick="location.href='{{url('/deli/edit/?idx=0&tipx=new&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-warning">New</button>
+								<button type="button" id='EDITX' onclick='hidup()' class="btn btn-secondary">Edit</button>                    
+								<button type="button" id='UNDOX' onclick="location.href='{{url('/deli/edit/?idx=' .$idx. '&tipx=undo&flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-info">Undo</button>  
+								<button type="button" id='SAVEX' onclick='simpan()'   class="btn btn-success" class="fa fa-save"></i>Save</button>
+
+							</div>
+							<div class="col-md-3">
+								<button type="button" id='HAPUSX'  onclick="hapusTrans()" class="btn btn-outline-danger">Hapus</button>
+
+								<!-- <button type="button" id='CLOSEX'  onclick="location.href='{{url('/deli?flagz='.$flagz.'&golz='.$golz.'' )}}'" class="btn btn-outline-secondary">Close</button> -->
+							
+								<!-- tombol close sweet alert -->
+								<button type="button" id='CLOSEX' onclick="closeTrans()" class="btn btn-outline-secondary">Close</button></div>
+							</div>
+						</div>
+						
+						
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+	<div class="modal fade" id="browseCustModal" tabindex="-1" role="dialog" aria-labelledby="browseCustModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseCustModalLabel">Cari Customer</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-bcust">
+				<thead>
+					<tr>
+						<th>Kode</th>
+						<th>Nama</th>
+						<th>Alamat</th>
+						<th>Kota</th>
+
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="browseSoModal" tabindex="-1" role="dialog" aria-labelledby="browseSoModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseSoModalLabel">Cari Sales Order</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-so">
+				<thead>
+					<tr>
+						<th>SO@</th>
+						<th>Tanggal</th>
+                        <th>Customer</th>
+                        <th>Nama</th>
+						<th>Kode</th>
+						<th>Barang</th>
+						<th>Qty</th>
+						<th>Kirim</th>	 					
+						<th>Sisa</th>
+						<th>Pilih</th>	
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" onclick="chooseSodArr()"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="browseSuratsModal" tabindex="-1" role="dialog" aria-labelledby="browseSuratsModalLabel" aria-hidden="true">
+	  <div class="modal-dialog mw-100 w-75" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseSuratsModalLabel">Cari Surat Jalan</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-bsurats">
+				<thead>
+					<tr>
+						<th>No Surat Jalan</th>
+						<th>SO</th>
+						<th>Customer</th>
+						<th>Nama</th>
+						<th>Alamat</th>
+						<th>Kota</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="browseSopirModal" tabindex="-1" role="dialog" aria-labelledby="browseSopirModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseSopirModalLabel">Cari Sopir</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-sopir">
+				<thead>
+					<tr>
+						<th>Kode</th>
+						<th>Nama</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="browseTruckModal" tabindex="-1" role="dialog" aria-labelledby="browseTruckModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="browseTruckModalLabel">Cari Truck</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<table class="table table-stripped table-bordered" id="table-truck">
+				<thead>
+					<tr>
+						<th>Kode</th>
+						<th>Nopol</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
+	
+	
+
+@endsection
+
+@section('footer-scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+<script src="{{ asset('js/autoNumerics/autoNumeric.min.js') }}"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
+<script src="{{asset('foxie_js_css/bootstrap.bundle.min.js')}}"></script>
+
+<!-- tambahan untuk sweetalert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- tutupannya -->
+
+<script>
+	var idrow = 1;
+	var baris = 1;
+
+	function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+    $(document).ready(function () {
+
+		setTimeout(function(){
+
+		$("#LOADX").hide();
+
+		},500);
+
+    idrow=<?=$no?>;
+    baris=<?=$no?>;
+
+
+       $('#KODEC').select2({
+		
+		placeholder:'Pilih Customer',
+		allowClear: true,
+        ajax: {
+			url: '{{url('cust/browse')}}',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term // Search term
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.KODEC, // The ID of the user
+                        text: item.NAMAC // The text to display
+                    }))
+                };
+            },
+            cache: true
+        },
+        
+	});
+	
+	        
+		$('body').on('keydown', 'input, select', function(e) {
+			if (e.key === "Enter") {
+				var self = $(this), form = self.parents('form:eq(0)'), focusable, next;
+				focusable = form.find('input,select,textarea').filter(':visible');
+				next = focusable.eq(focusable.index(this)+1);
+				console.log(next);
+				if (next.length) {
+					next.focus().select();
+				} else {
+					// tambah();
+					// var nomer = idrow-1;
+					// console.log("REC"+nomor);
+					// document.getElementById("REC"+nomor).focus();
+					// form.submit();
+				}
+				return false;
+			}
+		});
+
+
+		$tipx = $('#tipx').val();
+		$searchx = $('#CARI').val();
+		
+		
+        if ( $tipx == 'new' )
+		{
+			 baru();
+             tambah();				 
+		}
+
+        if ( $tipx != 'new' )
+		{
+			 ganti();			
+			 
+                
+		    	var initkode1 ="{{ $header->KODEC }}";                
+			    var initcombo1 ="{{ $header->NAMAC }}";
+				var defaultOption1 = { id: initkode1, text: initcombo1 }; // Set your default option ID and text
+                var newOption1 = new Option(defaultOption1.text, defaultOption1.id, true, true);
+                $('#KODEC').append(newOption1).trigger('change');
+			 
+		}    
+		
+		$("#TQTY").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#TBERAT").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+		$("#TTOTAL").autoNumeric('init', {aSign: '<?php echo ''; ?>',vMin: '-999999999.99'});
+
+
+		jumlahdata = 100;
+		for (i = 0; i <= jumlahdata; i++) {
+			$("#QTY" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#BERAT" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#HARGA" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+			$("#TOTAL" + i.toString()).autoNumeric('init', {aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+		}	
+				
+		
+        $('body').on('click', '.btn-delete', function() {
+			var val = $(this).parents("tr").remove();
+			baris--;
+			hitung();
+			nomor();
+			
+		});
+
+		$('.date').datepicker({  
+            dateFormat: 'dd-mm-yy'
+		});
+		
+
+
+
+
+//////////////////////////////////////////////
+
+		var dTableBCust;
+		loadDataBCust = function(){
+		
+			$.ajax(
+			{
+				type: 'GET', 		
+				url: '{{url('cust/browse')}}',
+				// data: {
+				// 	'GOL': 'Y',
+				// },
+				success: function( response )
+				{
+					resp = response;
+					if(dTableBCust){
+						dTableBCust.clear();
+					}
+					for(i=0; i<resp.length; i++){
+						
+						dTableBCust.row.add([
+							'<a href="javascript:void(0);" onclick="chooseCustomer(\''+resp[i].KODEC+'\',  \''+resp[i].NAMAC+'\',  \''+resp[i].HARI+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\', \''+resp[i].KODEP+'\',  \''+resp[i].NAMAP+'\',  \''+resp[i].RING+'\',  \''+resp[i].KOM+'\')">'+resp[i].KODEC+'</a>',
+							resp[i].NAMAC,
+							resp[i].ALAMAT,
+							resp[i].KOTA,
+						]);
+					}
+					dTableBCust.draw();
+				}
+			});
+		}
+		
+		dTableBCust = $("#table-bcust").DataTable({
+			
+		});
+		
+		browseCust = function(){
+			loadDataBCust();
+			$("#browseCustModal").modal("show");
+		}
+		
+		chooseCustomer = function(KODEC,NAMAC, HARI, ALAMAT, KOTA, KODEP, NAMAP, RING, KOM){
+			$("#KODEC").val(KODEC);
+			$("#NAMAC").val(NAMAC);
+			$("#HARI").val(HARI);
+			$("#ALAMAT").val(ALAMAT);
+			$("#KOTA").val(KOTA);		
+			$("#KODEP").val(KODEP);			
+			$("#NAMAP").val(NAMAP);			
+			$("#RING").val(RING);			
+			$("#KOM").val(KOM);			
+			$("#browseCustModal").modal("hide");
+		}
+		
+            		var PKP=$("#PKP").val();	
+            		
+            		if (PKP == 1 ) 
+            		{
+            		$("#PKP").prop('checked', true)
+            		} 
+            		else 
+            		{
+            		$("#PKP").prop('checked', false)
+            		}
+            
+            		$("#KODEC").keypress(function(e){
+            
+            			if(e.keyCode == 46){
+            				 e.preventDefault();
+            				 browseCust();
+            			}
+            		}); 
+		
+//////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		//CHOOSE Truck
+		var dTableBTruck;
+		loadDataBTruck = function(){
+			$.ajax(
+			{
+				type: 'GET',    
+				url: '{{url('truck/browse')}}',
+
+				success: function( response )
+				{
+			
+					resp = response;
+					if(dTableBTruck){
+						dTableBTruck.clear();
+					}
+					for(i=0; i<resp.length; i++){
+						
+						dTableBTruck.row.add([
+							'<a href="javascript:void(0);" onclick="chooseTruck( \''+resp[i].NOPOL+'\', \''+resp[i].MAXB+'\' )">'+resp[i].KODE+'</a>',
+							resp[i].NOPOL,
+						]);
+					}
+					dTableBTruck.draw();
+				}
+			});
+		}
+		
+		dTableBTruck = $("#table-truck").DataTable({
+			
+		});
+		
+		browseTruck = function(){
+			loadDataBTruck();
+			$("#browseTruckModal").modal("show");
+		}
+		
+		chooseTruck = function(NOPOL, MAXB){
+			$("#TRUCK").val(NOPOL);
+			$("#MAXB").val(MAXB);
+			$("#browseTruckModal").modal("hide");
+		}
+		
+		$("#TRUCK").keypress(function(e){
+
+			if(e.keyCode == 46){
+				e.preventDefault();
+				browseTruck();
+			}
+		}); 
+		
+		
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////
+
+		var dTableSo;
+		var rowidSo;
+		loadDataSo = function(){
+			
+			$.ajax(
+			{
+				type: 'GET',    
+				url: "{{url('so/browse')}}",
+				data: {
+					// kdbrg: kode,
+					'GOL': "{{$golz}}",
+					// 'KODEC': $("#KODEC").val(),
+				},
+				success: function( response )
+				{
+					resp = response;
+					if(dTableSo){
+						dTableSo.clear();
+					}
+					// for(i=0; i<resp.length; i++){
+						
+					// 	dTableSo.row.add([
+					// 		'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\',\''+resp[i].TYPE_KOM+'\',\''+resp[i].KOM+'\',\''+resp[i].TKOM+'\',\''+resp[i].TOTAL_TKOM+'\',\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\',\''+resp[i].PKP+'\',\''+resp[i].LOKASI+'\', \''+resp[i].BERAT+'\')">'+resp[i].NO_BUKTI+'</a>',
+					// 		resp[i].TGL,
+					// 		resp[i].NAMAC,
+					// 		resp[i].KD_BRG,
+					// 		resp[i].NA_BRG,
+					// 		resp[i].QTY,
+					// 		resp[i].KIRIM,
+					// 		resp[i].SISA,
+
+
+					// 	]);
+					// }
+
+					for(i=0; i<resp.length; i++){
+
+							dTableSo.row.add([
+							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\' , \''+resp[i].SATUAN+'\' , \''+resp[i].QTY+'\', \''+resp[i].HARGA+'\', \''+resp[i].TOTAL+'\', \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\', \''+resp[i].DISK+'\', \''+resp[i].TYPE_KOM+'\', \''+resp[i].KOM+'\', \''+resp[i].TKOM+'\', \''+resp[i].TOTAL_TKOM+'\', \''+resp[i].KODEC+'\', \''+resp[i].NAMAC+'\', \''+resp[i].ALAMAT+'\', \''+resp[i].KOTA+'\', \''+resp[i].PKP+'\', \''+resp[i].LOKASI+'\', \''+resp[i].BERAT+'\'  )">'+resp[i].NO_BUKTI+'<input id="pilihNoBukti'+i+'" hidden value="'+resp[i].NO_BUKTI+'"></input></a>',
+							resp[i].TGL+'<input id="pilihTgl'+i+'" hidden value="'+resp[i].TGL+'"></input><label for="pilihTgl" id="pilihTgl'+i+'" value="'+resp[i].TGL+'">'+'</label>',
+							resp[i].KODEC+'<input id="pilihKodec'+i+'" hidden value="'+resp[i].KODEC+'"></input><label for="pilihKodec" id="pilihKodec'+i+'" value="'+resp[i].KODEC+'">'+'</label>',
+							resp[i].NAMAC+'<input id="pilihNamac'+i+'" hidden value="'+resp[i].NAMAC+'"></input><label for="pilihNamac" id="pilihNamac'+i+'" value="'+resp[i].NAMAC+'">'+'</label>',
+							resp[i].KD_BRG+'<input id="pilihKdBrg'+i+'" hidden value="'+resp[i].KD_BRG+'"></input><label for="pilihKdBrg" id="pilihKdBrg'+i+'" value="'+resp[i].KD_BRG+'">'+'</label>',
+							resp[i].NA_BRG+'<input id="pilihNaBrg'+i+'" hidden value="'+resp[i].NA_BRG+'"><label for="pilihNaBrg" id="pilihNaBrg'+i+'" value="'+resp[i].NA_BRG+'">'+'</label>',
+							resp[i].QTY+'<input id="pilihQty'+i+'" hidden value="'+resp[i].QTY+'"><label for="pilihQty" id="pilihQty'+i+'" value="'+resp[i].QTY+'">'+Intl.NumberFormat('en-US').format(resp[i].QTY)+'</label>',
+							resp[i].KIRIM+'<input id="pilihKirim'+i+'" hidden value="'+resp[i].KIRIM+'"><label for="pilihKirim" id="pilihKirim'+i+'" value="'+resp[i].KIRIM+'">'+Intl.NumberFormat('en-US').format(resp[i].KIRIM)+'</label>',
+							'<input id="pilihHarga'+i+'" hidden value="'+resp[i].HARGA+'"><label for="pilihHarga" id="pilihHarga'+i+'" value="'+resp[i].HARGA+'">'+Intl.NumberFormat('en-US').format(resp[i].HARGA)+'</label>',
+							'<input id="pilihTotal'+i+'" hidden value="'+resp[i].TOTAL+'"><label for="pilihTotal" id="pilihTotal'+i+'" value="'+resp[i].TOTAL+'">'+Intl.NumberFormat('en-US').format(resp[i].TOTAL)+'</label>',
+							'<input id="pilihPpn'+i+'" hidden value="'+resp[i].PPNX+'"><label for="pilihPpn" id="pilihPpn'+i+'" value="'+resp[i].PPNX+'">'+Intl.NumberFormat('en-US').format(resp[i].PPNX)+'</label>',
+							'<input id="pilihDpp'+i+'" hidden value="'+resp[i].DPP+'"><label for="pilihDpp" id="pilihDpp'+i+'" value="'+resp[i].DPP+'">'+Intl.NumberFormat('en-US').format(resp[i].DPP)+'</label>',
+							'<input id="pilihDisk'+i+'" hidden value="'+resp[i].DISK+'"><label for="pilihDisk" id="pilihDisk'+i+'" value="'+resp[i].DISK+'">'+Intl.NumberFormat('en-US').format(resp[i].DISK)+'</label>',
+							'<input id="pilihType'+i+'" hidden value="'+resp[i].TYPE_KOM+'"><label for="pilihType" id="pilihType'+i+'" value="'+resp[i].TYPE_KOM+'">'+'</label>',
+							'<input id="pilihKom'+i+'" hidden value="'+resp[i].KOM+'"><label for="pilihKom" id="pilihKom'+i+'" value="'+resp[i].KOM+'">'+Intl.NumberFormat('en-US').format(resp[i].KOM)+'</label>',
+							'<input id="pilihTkom'+i+'" hidden value="'+resp[i].TKOM+'"><label for="pilihTkom" id="pilihTkom'+i+'" value="'+resp[i].TKOM+'">'+Intl.NumberFormat('en-US').format(resp[i].TKOM)+'</label>',
+							'<input id="pilihTotalTkom'+i+'" hidden value="'+resp[i].TOTAL_TKOM+'"><label for="pilihTotalTkom" id="pilihTotalTkom'+i+'" value="'+resp[i].TOTAL_TKOM+'">'+Intl.NumberFormat('en-US').format(resp[i].TOTAL_TKOM)+'</label>',
+							'<input id="pilihAlamat'+i+'" hidden value="'+resp[i].ALAMAT+'"><label for="pilihAlamat" id="pilihAlamat'+i+'" value="'+resp[i].ALAMAT+'">'+'</label>',
+							'<input id="pilihKota'+i+'" hidden value="'+resp[i].KOTA+'"><label for="pilihKota" id="pilihKota'+i+'" value="'+resp[i].KOTA+'">'+'</label>',
+							'<input id="pilihPkp'+i+'" hidden value="'+resp[i].PKP+'"><label for="pilihPkp" id="pilihPkp'+i+'" value="'+resp[i].PKP+'">'+Intl.NumberFormat('en-US').format(resp[i].PKP)+'</label>',
+							'<input id="pilihLokasi'+i+'" hidden value="'+resp[i].LOKASI+'"><label for="pilihLokasi" id="pilihLokasi'+i+'" value="'+resp[i].LOKASI+'">'+'</label>',
+							'<input id="pilihSatuan'+i+'" hidden value="'+resp[i].SATUAN+'"><label for="pilihSatuan" id="pilihSatuan'+i+'" value="'+resp[i].SATUAN+'">'+'</label>',
+							'<input id="pilihBerat'+i+'" hidden value="'+resp[i].BERAT+'"><label for="pilihBerat" id="pilihBerat'+i+'" value="'+resp[i].BERAT+'">'+Intl.NumberFormat('en-US').format(resp[i].BERAT)+'</label>',
+							resp[i].SISA+'<input id="pilihSisa'+i+'" hidden value="'+resp[i].SISA+'"><label for="pilihSisa" id="pilihSisa'+i+'" value="'+resp[i].SISA+'">'+Intl.NumberFormat('en-US').format(resp[i].SISA)+'</label>',
+							'<input type="checkbox" class="form-control pilihv " id="pilih'+i+'" value="'+resp[i].KD_BRG+'"></input>',						
+						
+									
+						]);
+					}
+
+					
+					dTableSo.draw();
+				}
+			});
+		}
+		
+		dTableSo = $("#table-so").DataTable({
+
+		});
+		
+		browseSo = function(rid){
+			rowidSo = rid;
+			loadDataSo();
+			$("#browseSoModal").modal("show");
+		}
+		
+		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN,SISA, HARGA, TOTAL, PPNX, DPP, DISK, TYPE_KOM, KOM, TKOM, TOTAL_TKOM, KODEC, NAMAC, ALAMAT, KOTA, PKP, LOKASI, BERAT){
+			$("#NO_SO"+rowidSo).val(NO_BUKTI);
+			// $("#JTEMPO"+rowidSo).val(JTEMPO);
+			$("#KD_BRG"+rowidSo).val(KD_BRG);
+			$("#NA_BRG"+rowidSo).val(NA_BRG);
+			$("#SATUAN"+rowidSo).val(SATUAN);
+			$("#QTY"+rowidSo).val(SISA);
+			$("#HARGA"+rowidSo).val(HARGA);	
+			$("#TOTAL"+rowidSo).val(TOTAL);	
+			$("#PPNX"+rowidSo).val(PPNX);	
+			$("#DPP"+rowidSo).val(DPP);	
+			$("#DISK"+rowidSo).val(DISK);	
+			$("#TYPE_KOM"+rowidSo).val(TYPE_KOM);	
+			$("#KOM"+rowidSo).val(KOM);	
+			$("#TKOM"+rowidSo).val(TKOM);	
+			$("#TOTAL_TKOM").val(TOTAL_TKOM);	
+			$("#KODEC"+rowidSo).val(KODEC);	
+			$("#NAMAC"+rowidSo).val(NAMAC);	
+			$("#ALAMAT"+rowidSo).val(ALAMAT);	
+			$("#KOTA"+rowidSo).val(KOTA);	
+			$("#PKP"+rowidSo).val(PKP);	
+			$("#LOKASI"+rowidSo).val(LOKASI);	
+			$("#BERAT"+rowidSo).val(BERAT);
+			$("#browseSoModal").modal("hide");
+			hitung();
+		}
+
+
+		chooseSodArr = function(){
+				
+			var sodDipilih = $("input[type='checkbox']").map(function() {
+				var idx = dTableBSod.row(this).index();
+				var kode = null;
+				if($(this).prop("checked"))
+				{
+					kode = '"'+$(this).val()+'"';
+				} 
+				return kode;
+			}).get();
+
+
+			//var noppDipilih = $("input[type='checkbox']").map(function() {
+			var nobuktiDipilih = $(".pilihv").map(function() {
+				var kode = null;
+
+				if($(this).prop("checked"))
+				{
+					var idx = (this.id).substring(5, 7);
+					//alert(idx);
+					//alert(this.id);
+					kode = '"' + $("#pilihNoBukti"+idx).val() + '"';
+				} 
+				return kode;
+			}).get();
+			
+			var kodecDipilih = $(".pilihv").map(function() {
+				var kode = null;
+				if($(this).prop("checked"))
+				{
+					var idx = (this.id).substring(5, 7);
+					kode = '"' + $("#pilihKodec"+idx).val() + '"';
+				} 
+				return kode;
+			}).get();
+			var namacDipilih = $(".pilihv").map(function() {
+				var kode = null;
+				if($(this).prop("checked"))
+				{
+					var idx = (this.id).substring(5, 7);
+					kode = '"' + $("#pilihNamac"+idx).val() + '"';
+				} 
+				return kode;
+			}).get();
+
+			var kdbrgDipilih = $(".pilihv").map(function() {
+				var kode = null;
+				if($(this).prop("checked"))
+				{
+					var idx = (this.id).substring(5, 7);
+					kode = '"' + $("#pilihKdBrg"+idx).val() + '"';
+				} 
+				return kode;
+			}).get();
+			var nabrgDipilih = $(".pilihv").map(function() {
+				var kode = null;
+				if($(this).prop("checked"))
+				{
+					var idx = (this.id).substring(5, 7);
+					kode = '"' + $("#pilihNaBrg"+idx).val() + '"';
+				} 
+				return kode;
+			}).get();
+
+			var satuanDipilih = $(".pilihv").map(function() {
+				var kode = null;
+				if($(this).prop("checked"))
+				{
+					var idx = (this.id).substring(5, 7);
+					kode = '"' + $("#pilihSatuan"+idx).val() + '"';
+				} 
+				return kode;
+			}).get();
+
+			var qtyDipilih = $(".pilihv").map(function() {
+				var kode = null;
+				if($(this).prop("checked"))
+				{
+					var idx = (this.id).substring(5, 7);
+					kode = '"' + $("#pilihSisa"+idx).val() + '"';
+				} 
+				return kode;
+			}).get();
+
+			// var kirimDipilih = $(".pilihv").map(function() {
+			// 	var kode = null;
+			// 	if($(this).prop("checked"))
+			// 	{
+			// 		var idx = (this.id).substring(5, 7);
+			// 		kode = '"' + $("#pilihKirim"+idx).val() + '"';
+			// 	} 
+			// 	return kode;
+			// }).get();
+
+			// var sisaDipilih = $(".pilihv").map(function() {
+			// 	var kode = null;
+			// 	if($(this).prop("checked"))
+			// 	{
+			// 		var idx = (this.id).substring(5, 7);
+			// 		kode = '"' + $("#pilihSisa"+idx).val() + '"';
+			// 	} 
+			// 	return kode;
+			// }).get();
+
+			var beratDipilih = $(".pilihv").map(function() {
+				var kode = null;
+				if($(this).prop("checked"))
+				{
+					var idx = (this.id).substring(5, 7);
+					kode = '"' + $("#pilihBerat"+idx).val() + '"';
+				} 
+				return kode;
+			}).get();
+			
+
+			var nobuktiArr = JSON.parse("[" + nobuktiDipilih + "]");
+			var kodecArr = JSON.parse("[" + kodecDipilih + "]");
+			var namacArr = JSON.parse("[" + namacDipilih + "]");
+			var kdbrgArr = JSON.parse("[" + kdbrgDipilih + "]");
+			var nabrgArr = JSON.parse("[" + nabrgDipilih + "]");
+			var satuanArr = JSON.parse("[" + satuanDipilih + "]");
+			var qtyArr = JSON.parse("[" + qtyDipilih + "]");
+			// var kirimArr = JSON.parse("[" + kirimDipilih + "]");
+			// var sisaArr = JSON.parse("[" + sisaDipilih + "]");
+			var beratArr = JSON.parse("[" + beratDipilih + "]");
+
+			//alert(noppArr);
+
+			//	while (idrow<(parseInt(rowidPod)+parseInt(nopoArr.length)))
+
+			//alert(idrow);
+			//alert(baris);
+			//alert(noppArr.length);
+			while (idrow<parseInt(nobuktiArr.length))
+			{
+				tambah();			
+			};
+				
+			for (i=0 ; i<nobuktiArr.length ; i++) 
+			{
+
+				$("#NO_SO"+(parseInt(rowidSod)+i)).val(nobuktiArr[i]);
+				$("#KODEC"+(parseInt(rowidSod)+i)).val(kodecArr[i]);
+				$("#NAMAC"+(parseInt(rowidSod)+i)).val(namacArr[i]);
+				$("#KD_BRG"+(parseInt(rowidSod)+i)).val(kdbrgArr[i]);
+				$("#NA_BRG"+(parseInt(rowidSod)+i)).val(nabrgArr[i]);
+				$("#SATUAN"+(parseInt(rowidSod)+i)).val(satuanArr[i]);
+				$("#QTY"+(parseInt(rowidSod)+i)).val(qtyArr[i]);
+				$("#BERAT"+(parseInt(rowidSod)+i)).val(beratArr[i]);
+			};
+
+			$("#browseSoModal").modal("hide");
+
+			}
+
+		
+		$("#NO_SO").keypress(function(e){
+			if(e.keyCode == 46){
+				e.preventDefault();
+				browseSo();
+			}
+		}); 
+
+//////////////////////////////////////////////////////////////////
+
+
+
+}); 
+
+
+//////////////////////////////////////////////////////////////////
+	function cekDetail(){
+		var cekBarang = '';
+		$(".KD_BRG").each(function() {
+			
+			let z = $(this).closest('tr');
+			var KD_BRGX = z.find('.KD_BRG').val();
+			
+			if( KD_BRGX =="" )
+			{
+					cekBarang = '1';
+					
+			}	
+		});
+		
+		return cekBarang;
+	}
+
+
+ 	function simpan() {
+		hitung();
+		
+		var tgl = $('#TGL').val();
+		var bulanPer = {{session()->get('periode')['bulan']}};
+		var tahunPer = {{session()->get('periode')['tahun']}};
+		
+        var check = '0';
+		
+		
+		
+			// if (cekDetail())
+			// {	
+			//     check = '1';
+			// 	alert("#Barang ada yang kosong. ")
+			// }
+			
+			
+			$(".NO_SO").each(function() {
+			var noso = $(this).val();
+			if(noso=='')
+			{
+				var val = $(this).parents("tr").remove();
+				baris--;
+				nomor();
+			}
+		});
+
+		if ( $('#TRUCK').val()=='' ) 
+		{			
+			check = '1';
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Truck Harus diisi.'
+				});
+				return;
+		}
+
+		if ( tgl.substring(3,5) != bulanPer ) 
+		{
+			check = '1';
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Bulan tidak sama dengan Periode'
+				});
+				return; // Stop function execution
+		}	
+
+		if ( tgl.substring(tgl.length-4) != tahunPer )
+		{
+			check = '1';
+				Swal.fire({
+					icon: 'warning',
+					title: 'Warning',
+					text: 'Tahun tidak sama dengan Periode'
+				});
+				return; // Stop function execution
+		}	 
+	
+		// if ( check == '0' )
+		// {
+		// 	document.getElementById("entri").submit();  
+		// }
+
+		if (check == '0') {
+				Swal.fire({
+					title: 'Are you sure?',
+					text: 'Are you sure you want to save?',
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonText: 'Yes, save it!',
+					cancelButtonText: 'No, cancel',
+				}).then((result) => {
+					if (result.isConfirmed) {
+						document.getElementById("entri").submit();
+					} else {
+						Swal.fire({
+							icon: 'info',
+							title: 'Cancelled',
+							text: 'Your data was not saved'
+						});
+					}
+				});
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: 'Masih ada kesalahan'
+				});
+			}
+
+		// tutupannya
+	
+		$("#LOADX").hide();
+	}
+		
+    function nomor() {
+		var i = 1;
+		$(".REC").each(function() {
+			$(this).val(i++);
+		});
+		
+	//	hitung();
+	
+	}
+
+   function hitung() {
+	var TQTY = 0;
+		var TTOTAL = 0;
+		var TBERAT = 0;
+
+		$(".QTY").each(function() {
+			let z = $(this).closest('tr');
+			var QTYX = parseFloat($(this).val().replace(/,/g, ''));
+			var HARGAX = parseFloat(z.find('.HARGA').val().replace(/,/g, ''));
+
+			var BERATX = parseFloat(z.find('.BERAT').val().replace(/,/g, ''));
+			
+            var TOTALX = HARGAX * QTYX;
+			z.find('.TOTAL').val(TOTALX);
+		    z.find('.TOTAL').autoNumeric('update');
+		
+            TQTY += QTYX;
+            TBERAT += BERATX;
+            
+            TTOTAL += TOTALX;	
+		});
+		
+
+		if(isNaN(TQTY)) TQTY = 0;
+		if(isNaN(TTOTAL)) TTOTAL = 0;
+		if(isNaN(TBERAT)) TBERAT = 0;
+		
+		$('#TQTY').val(numberWithCommas(TQTY));		
+		$('#TTOTAL').val(numberWithCommas(TTOTAL));		
+		$('#TBERAT').val(numberWithCommas(TBERAT));	
+		
+		$("#TBERAT").autoNumeric('update');
+		
+		$("#TQTY").autoNumeric('update');
+		$("#TTOTAL").autoNumeric('update');
+	}
+
+
+	$(".NO_SO").keypress(function(e){
+		if(e.keyCode == 46){
+			e.preventDefault();
+			browseSo(eval($(this).data("rowid")));
+		}
+	});
+	
+  
+	function baru() {
+		
+		 kosong();
+		 hidup();
+	
+	}
+	
+	function ganti() {
+		
+		 mati();
+	
+	}
+	
+	function batal() {
+		
+		// alert($header[0]->NO_BUKTI);
+		
+		 //$('#NO_BUKTI').val($header[0]->NO_BUKTI);	
+		 mati();
+	
+	}
+	
+ 
+
+	
+	
+	function hidup() {
+
+		
+		$("#TOPX").attr("disabled", true);
+	    $("#PREVX").attr("disabled", true);
+	    $("#NEXTX").attr("disabled", true);
+	    $("#BOTTOMX").attr("disabled", true);
+
+	    $("#NEWX").attr("disabled", true);
+	    $("#EDITX").attr("disabled", true);
+	    $("#UNDOX").attr("disabled", false);
+	    $("#SAVEX").attr("disabled", false);
+		
+	    $("#HAPUSX").attr("disabled", true);
+//	    $("#CLOSEX").attr("disabled", true);
+
+		$("#CARI").attr("readonly", true);	
+	    $("#SEARCHX").attr("disabled", true);
+		
+	    $("#PLUSX").attr("hidden", false)
+		   
+			$("#NO_BUKTI").attr("readonly", true);		   
+			$("#NO_SO").attr("readonly", true);		   
+			$("#TGL").attr("readonly", false);
+			// $("#JTEMPO").attr("readonly", false);
+			// $("#KODEC").attr("readonly", true);
+			// $("#NAMAC").attr("readonly", true);			
+			// $("#ALAMAT").attr("readonly", true);
+			// $("#KOTA").attr("readonly", true);
+			$("#TRUCK").attr("readonly", true);
+			$("#SOPIR").attr("readonly", false);
+			// $("#VIA").attr("readonly", false);
+
+			
+			$("#NOTES").attr("readonly", false);
+				
+
+		jumlahdata = 100;
+		for (i = 0; i <= jumlahdata; i++) {
+			$("#REC" + i.toString()).attr("readonly", true);
+			$("#KD_BRG" + i.toString()).attr("readonly", true);
+			$("#NO_SO" + i.toString()).attr("readonly", true);
+			$("#NA_BRG" + i.toString()).attr("readonly", true);
+			$("#KD_BHN" + i.toString()).attr("readonly", true);
+			$("#NA_BHN" + i.toString()).attr("readonly", true);
+			$("#SATUAN" + i.toString()).attr("readonly", true);
+			$("#QTY" + i.toString()).attr("readonly", true);
+			$("#BERAT" + i.toString()).attr("readonly", true);
+			$("#HARGA" + i.toString()).attr("readonly", true);
+			$("#TOTAL" + i.toString()).attr("readonly", true);
+			$("#KET" + i.toString()).attr("readonly", true);
+			$("#KODEC" + i.toString()).attr("readonly", true);
+			$("#NAMAC" + i.toString()).attr("readonly", true);
+			$("#ALAMAT" + i.toString()).attr("readonly", true);
+			$("#KOTA" + i.toString()).attr("readonly", true);
+			$("#DELETEX" + i.toString()).attr("hidden", false);
+
+			$tipx = $('#tipx').val();
+		
+			
+			// if ( $tipx != 'new' )
+			// {
+			// 	$("#NO_SO" + i.toString()).attr("readonly", true);	
+			// 	$("#NO_SO" + i.toString()).removeAttr('onblur');
+				
+			// 	$("#KD_BRG" + i.toString()).attr("readonly", true);	
+			// 	$("#KD_BRG" + i.toString()).removeAttr('onblur');
+			// } 
+		}
+
+		
+	}
+
+
+	function mati() {
+
+		
+	    $("#TOPX").attr("disabled", false);
+	    $("#PREVX").attr("disabled", false);
+	    $("#NEXTX").attr("disabled", false);
+	    $("#BOTTOMX").attr("disabled", false);
+
+
+	    $("#NEWX").attr("disabled", false);
+	    $("#EDITX").attr("disabled", false);
+	    $("#UNDOX").attr("disabled", true);
+	    $("#SAVEX").attr("disabled", true);
+	    $("#HAPUSX").attr("disabled", false);
+	    $("#CLOSEX").attr("disabled", false);
+
+		$("#CARI").attr("readonly", false);	
+	    $("#SEARCHX").attr("disabled", false);
+		
+		
+	    $("#PLUSX").attr("hidden", true)
+		
+	    $(".NO_BUKTI").attr("readonly", true);	
+	    $(".NO_SO").attr("readonly", true);	
+		
+		$("#TGL").attr("readonly", true);
+		// $("#JTEMPO").attr("readonly", true);
+		$("#TRUCK").attr("readonly", true);
+	    $("#SOPIR").attr("disabled", true);
+
+
+		// $("#NAMAC").attr("readonly", true);
+		// $("#ALAMAT").attr("readonly", true);
+		// $("#KOTA").attr("readonly", true);
+
+		
+		$("#NOTES").attr("readonly", true);
+
+		
+		jumlahdata = 100;
+		for (i = 0; i <= jumlahdata; i++) {
+			$("#REC" + i.toString()).attr("readonly", true);
+			$("#KD_BRG" + i.toString()).attr("readonly", true);
+			$("#NA_BRG" + i.toString()).attr("readonly", true);
+			$("#KD_BHN" + i.toString()).attr("readonly", true);
+			$("#NA_BHN" + i.toString()).attr("readonly", true);
+			$("#SATUAN" + i.toString()).attr("readonly", true);
+			$("#QTY" + i.toString()).attr("readonly", true);
+			$("#BERAT" + i.toString()).attr("readonly", true);
+			$("#HARGA" + i.toString()).attr("readonly", true);
+			$("#TOTAL" + i.toString()).attr("readonly", true);
+			$("#KET" + i.toString()).attr("readonly", true);
+			$("#KODEC" + i.toString()).attr("readonly", true);
+			$("#NAMAC" + i.toString()).attr("readonly", true);
+			$("#ALAMAT" + i.toString()).attr("readonly", true);
+			$("#KOTA" + i.toString()).attr("readonly", true);
+			$("#PKP" + i.toString()).attr("readonly", true);
+			
+			$("#DELETEX" + i.toString()).attr("hidden", true);
+		}
+
+
+		
+	}
+
+
+	function kosong() {
+				
+		 $('#NO_BUKTI').val("+");		
+		 $('#KODEC').val("");	
+		 $('#NAMAC').val("");	
+		 $('#ALAMAT').val("");	
+		 $('#KOTA').val("");	
+		 $('#NOTES').val("");	
+		 $('#TTQTY').val("0.00");	
+		 $('#TBERAT').val("0.00");	
+		 $('#TTOTAL').val("0.00");
+		 $('#NETT').val("0.00");
+		
+		var html = '';
+		$('#detailx').html(html);	
+		
+	}
+	
+	// function hapusTrans() {
+	// 	let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
+	// 	if (confirm(text) == true) 
+	// 	{
+	// 		window.location ="{{url('/surats/delete/'.$header->NO_ID .'/?flagz='.$flagz.'' )}}";
+	// 		//return true;
+	// 	} 
+	// 	return false;
+	// }
+
+	// sweetalert untuk tombol hapus dan close
+	
+	function hapusTrans() {
+		let text = "Hapus Transaksi "+$('#NO_BUKTI').val()+"?";
+
+		var loc ='';
+		var flagz = "{{ $flagz }}";
+		var golz = "{{ $golz }}";
+		
+		Swal.fire({
+			title: 'Are you sure?',
+			text: text,
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!',
+			cancelButtonText: 'Cancel'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Show a success message before redirecting to delete the data
+				Swal.fire({
+					title: 'Deleted!',
+					text: 'Data has been deleted.',
+					icon: 'success',
+					confirmButtonText: 'OK'
+				}).then(() => {
+					// Redirect to delete the data after user confirms the success message
+	            	loc = "{{ url('/deli/delete/'.$header->NO_ID) }}" + '?flagz=' + encodeURIComponent(flagz) + 
+						  '&golz=' + encodeURIComponent(golz) ;
+
+		            // alert(loc);
+	            	window.location = loc;
+		
+				});
+			}
+		});
+	}
+	
+	function closeTrans() {
+		console.log("masuk");
+		var loc ='';
+		var flagz = "{{ $flagz }}";
+		var golz = "{{ $golz }}";
+		
+		Swal.fire({
+			title: 'Are you sure?',
+			text: 'Do you really want to close this page? Unsaved changes will be lost.',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, close it',
+			cancelButtonText: 'No, stay here'
+		}).then((result) => {
+			if (result.isConfirmed) {
+	        	loc = "{{ url('/deli/') }}" + '?flagz=' + encodeURIComponent(flagz) + '&golz=' + encodeURIComponent(golz) ;
+				window.location = loc ;
+			} else {
+				Swal.fire({
+					icon: 'info',
+					title: 'Cancelled',
+					text: 'You stayed on the page'
+				});
+			}
+		});
+	}
+
+	// tutupannya
+	
+
+	function CariBukti() {
+		
+		var flagz = "{{ $flagz }}";
+		var cari = $("#CARI").val();
+		var loc = "{{ url('/surats/edit/') }}" + '?idx={{ $header->NO_ID}}&tipx=search&flagz=' + encodeURIComponent(flagz) + '&buktix=' +encodeURIComponent(cari);
+		window.location = loc;
+		
+	}
+
+	function ambil_hari() {
+
+		    
+		$.ajax(
+		{
+			type: 'GET',    
+			url: "{{url('cust/browse_hari')}}",
+			data: {
+					'KODEC' : $("#KODEC").val(),
+			},
+			
+			success: function( response )
+
+			{
+				resp = response;
+				$("#PKP").val( resp[0].PKP );
+				$("#HARI").val( resp[0].HARI );
+				$("#KODEP").val( resp[0].KODEP );
+				$("#NAMAP").val( resp[0].NAMAP );
+				$("#RING").val( resp[0].RING );
+				$("#KOM").val( resp[0].KOM );
+				
+	
+	
+        		if ( $("#PKP").val() == '1' )
+        		{
+
+                     document.getElementById("PKP").checked = true;
+                    	
+        		}
+        
+                else
+                {
+                     document.getElementById("PKP").checked = false;
+                    
+                }
+        				
+			}
+		});
+		
+		   
+	
+	}
+	
+	
+	
+    function tambah() {
+
+        var x = document.getElementById('datatable').insertRow(baris + 1);
+ 
+		html=`<tr>
+
+                <td>
+ 					<input name='NO_ID[]' id='NO_ID${idrow}' type='hidden' class='form-control NO_ID' value='new' readonly> 
+					<input name='REC[]' id='REC${idrow}' type='text' class='REC form-control' onkeypress='return tabE(this,event)' readonly>
+	            </td>
+				<td {{( $golz =='J' || $golz =='D' ) ? '' : 'hidden' }} >
+				    <input name='NO_SO[]' data-rowid=${idrow} onclick='browseSo(${idrow})' id='NO_SO${idrow}' type='text' class='form-control  NO_SO' readonly>
+					
+				</td>
+				<td {{( $golz =='J' || $golz =='D' ) ? '' : 'hidden' }} >
+				    <input name='KODEC[]' data-rowid=${idrow} id='KODEC${idrow}' type='text' class='form-control  KODEC' readonly>
+                </td>
+				<td {{( $golz =='J' || $golz =='D' ) ? '' : 'hidden' }} >
+				    <input name='NAMAC[]' data-rowid=${idrow} id='NAMAC${idrow}' type='text' class='form-control  NAMAC' readonly>
+				    <input hidden name='ALAMAT[]' data-rowid=${idrow} id='ALAMAT${idrow}' type='text' class='form-control  ALAMAT' readonly>
+				    <input hidden name='KOTA[]' data-rowid=${idrow} id='KOTA${idrow}' type='text' class='form-control  KOTA' readonly>
+				    <input hidden name='PKP[]' data-rowid=${idrow} id='PKP${idrow}' type='text' class='form-control  PKP' readonly>
+                </td>
+				<td {{( $golz =='J' || $golz =='D' ) ? '' : 'hidden' }} >
+				    <input name='KD_BRG[]' data-rowid=${idrow} id='KD_BRG${idrow}' type='text' class='form-control  KD_BRG' readonly>
+                </td>
+                <td {{( $golz =='J' || $golz =='D' ) ? '' : 'hidden' }} >
+				    <input name='NA_BRG[]'   id='NA_BRG${idrow}' type='text' class='form-control  NA_BRG' required readonly>
+                </td>
+
+                <td>
+				    <input name='SATUAN[]'  id='SATUAN${idrow}' type='text' class='form-control  SATUAN' readonly required>
+		            <input name='HARGA1[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA1${idrow}' type='text' style='text-align: right' class='form-control HARGA1 text-primary' required >
+		            <input name='HARGA2[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA2${idrow}' type='text' style='text-align: right' class='form-control HARGA2 text-primary' required >
+		            <input name='HARGA3[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA3${idrow}' type='text' style='text-align: right' class='form-control HARGA3 text-primary' required >
+		            <input name='HARGA4[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA4${idrow}' type='text' style='text-align: right' class='form-control HARGA4 text-primary' required >
+		            <input name='HARGA5[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA5${idrow}' type='text' style='text-align: right' class='form-control HARGA5 text-primary' required >
+		            <input name='HARGA6[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA6${idrow}' type='text' style='text-align: right' class='form-control HARGA6 text-primary' required >
+		            <input name='HARGA7[]' hidden onclick='select()' onblur='hitung()' value='0' id='HARGA7${idrow}' type='text' style='text-align: right' class='form-control HARGA7 text-primary' required >
+                </td>
+				
+				<td>
+		            <input name='QTY[]' onclick='select()' onblur='hitung()' value='1' id='QTY${idrow}' type='text' style='text-align: right' class='form-control QTY text-primary' required >
+					<input hidden name='HARGA[]' onclick='select()' onblur='hitung()' value='0' id='HARGA${idrow}' type='text' style='text-align: right' class='form-control HARGA text-primary' readonly >
+					<input hidden name='TOTAL[]' onclick='select()' onblur='hitung()' value='0' id='TOTAL${idrow}' type='text' style='text-align: right' class='form-control TOTAL text-primary' readonly required >
+					<input hidden name='PPNX[]'  onblur='hitung()' value='0' id='PPNX${idrow}' type='text' style='text-align: right' class='form-control PPNX text-primary' readonly required >
+					<input hidden name='DPP[]'  onblur='hitung()' value='0' id='DPP${idrow}' type='text' style='text-align: right' class='form-control DPP text-primary' readonly required >
+					<input hidden name='DISK[]'  onblur='hitung()' value='0' id='DISK${idrow}' type='text' style='text-align: right' class='form-control DISK text-primary' >
+				    <input hidden name='TYPE_KOM[]' id='TYPE_KOM${idrow}' type='text' class='form-control  TYPE_KOM' required>
+					<input hidden name='KOM[]'  onblur='hitung()' value='0' id='KOM${idrow}' type='text' style='text-align: right' class='form-control KOM text-primary' >
+					<input hidden name='TKOM[]'  onblur='hitung()' value='0' id='TKOM${idrow}' type='text' style='text-align: right' class='form-control TKOM text-primary' >
+					<input hidden name='LOKASI[]' id='LOKASI${idrow}' type='text' class='form-control  LOKASI' readonly>
+				
+				</td>
+
+				<td>
+		            <input name='BERAT[]' onclick='select()' onblur='hitung()' value='1' id='BERAT${idrow}' type='text' style='text-align: right' class='form-control BERAT text-primary' required >
+
+				</td>
+				
+				
+                <td>
+				    <input name='KET[]'   id='KET${idrow}' type='text' class='form-control  KET' required>
+                </td>
+				
+                <td>
+					<button type='button' id='DELETEX${idrow}'  class='btn btn-sm btn-circle btn-outline-danger btn-delete' onclick=''> <i class='fa fa-fw fa-trash'></i> </button>
+                </td>				
+         </tr>`;
+				
+        x.innerHTML = html;
+        var html='';
+		
+		
+		
+		jumlahdata = 100;
+		for (i = 0; i <= jumlahdata; i++) {
+			$("#QTY" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+
+			$("#BERAT" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>', vMin: '-999999999.99'});
+				
+			$("#HARGA" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>',
+				vMin: '-999999999.99'
+			});
+
+			$("#TOTAL" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>',
+				vMin: '-999999999.99'
+			});	
+
+			$("#KOM" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>',
+				vMin: '-999999999.99'
+			});			
+
+			$("#TKOM" + i.toString()).autoNumeric('init', {
+				aSign: '<?php echo ''; ?>',
+				vMin: '-999999999.99'
+			});	 
+
+					
+		}
+
+		
+
+
+        idrow++;
+        baris++;
+        nomor();
+		
+		$(".ronly").on('keydown paste', function(e) {
+             e.preventDefault();
+             e.currentTarget.blur();
+         });
+    }
+</script>
+<!-- 
+<script src="autonumeric.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/autonumeric@4.5.4"></script>
+<script src="https://unpkg.com/autonumeric"></script> -->
+@endsection

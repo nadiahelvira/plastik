@@ -158,12 +158,19 @@ class PiuController extends Controller
 
 //////     nomer otomatis
 
+        $kodecx = $request->KODEC;
+        
+        $xxx= DB::table('cust')->select('PKP')->where('KODEC', $kodecx)->get();
+
+        $PPN = $xxx[0]->PKP ;
+        
+        
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
+
 		
         $periode = $request->session()->get('periode')['bulan']. '/' . $request->session()->get('periode')['tahun'];
 		

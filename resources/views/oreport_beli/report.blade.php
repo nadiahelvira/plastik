@@ -44,14 +44,14 @@
 							<input type="text" class="form-control kodes2" id="kodes2" name="kodes2" placeholder="ZZZ" value="{{ session()->get('filter_kodes2') }}" readonly>
 						</div>  
 
-						<div class="col-md-2">
+						<!-- <div class="col-md-2">
 							<label><strong>Gol :</strong></label>
 							
 							<select name="gol" id="gol" class="form-control gol">
 								<option value="J" {{ session()->get('filter_gol')=='J' ? 'selected': ''}}>J</option>
 								<option value="B" {{ session()->get('filter_gol')=='B' ? 'selected': ''}}>B</option>
 							</select>
-						</div>
+						</div> -->
 
 						<div class="col-md-2">
 							<label><strong>Cabang :</strong></label>

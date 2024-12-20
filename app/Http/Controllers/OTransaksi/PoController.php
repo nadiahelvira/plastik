@@ -23,7 +23,7 @@ class PoController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resbelinse
+     * @return \Illuminate\Http\Response
      */
     var $judul = '';
     var $FLAGZ = '';
@@ -65,7 +65,9 @@ class PoController extends Controller
         $po = DB::SELECT("SELECT distinct PO.NO_BUKTI , PO.KODES, PO.NAMAS, 
 		                  PO.ALAMAT, PO.KOTA, PO.PKP, po.GUDANG, PO.JTEMPO, PO.NOTES from po, pod 
                           WHERE PO.NO_BUKTI = POD.NO_BUKTI AND PO.GOL ='$golz'
-                          AND PO.CBG = '$CBG' AND PO.PKP ='$PPN' AND POD.SISA > 0 AND POSTED = 1
+                          AND PO.CBG = '$CBG' 
+                        --   AND PO.PKP ='$PPN' 
+                          AND POD.SISA > 0 AND POSTED = 1
                           GROUP BY NO_BUKTI ");
         return response()->json($po);
     }
@@ -168,9 +170,9 @@ class PoController extends Controller
         $CBG = Auth::user()->CBG;
         $PPN = Auth::user()->PPN;
 		
-        $po = DB::SELECT("SELECT *, POSTED as cek from po  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
-                        AND GOL ='$this->GOLZ' AND CBG = '$CBG' AND PKP = '$PPN' ORDER BY NO_BUKTI ");
 	  
+        $po = DB::SELECT("SELECT *, POSTED as cek from po  WHERE PER='$periode' and FLAG ='$this->FLAGZ' 
+                        AND GOL ='$this->GOLZ' AND CBG = '$CBG'  ORDER BY NO_BUKTI ");
 	   
         // ganti 6
 
@@ -248,7 +250,7 @@ class PoController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Resbelinse
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -267,13 +269,25 @@ class PoController extends Controller
         );
 
         //////     nomer otomatis
+
+        $kodesx = $request->KODES;
+        
+        $xxx= DB::table('sup')->select('PKP')->where('KODES', $kodesx)->get();
+
+        $PPN = $xxx[0]->PKP ;
+        
 		$this->setFlag($request);
         $FLAGZ = $this->FLAGZ;
         $GOLZ = $this->GOLZ;
         $judul = $this->judul;
 		
         $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
+        
+        /////////////////////////////////////////
+        
+
+		/////////////////////////////////////////
+		
 		
         $periode = $request->session()->get('periode')['bulan'] . '/' . $request->session()->get('periode')['tahun'];
 
@@ -281,7 +295,7 @@ class PoController extends Controller
         $tahun    = substr(session()->get('periode')['tahun'], -2);
 
         $query = DB::table('po')->select('NO_BUKTI')->where('PER', $periode)->where('FLAG', 'PO')->where('CBG', $CBG)
-                ->where('GOL', $this->GOLZ )->orderByDesc('NO_BUKTI')->limit(1)->get();
+                ->where('GOL', $this->GOLZ )->where('PKP', $PPN )->orderByDesc('NO_BUKTI')->limit(1)->get();
 
         if( $GOLZ=='B'){
 
@@ -403,13 +417,11 @@ class PoController extends Controller
                     SET PO.NAMAS = SUP.NAMAS, PO.ALAMAT = SUP.ALAMAT, PO.KOTA = SUP.KOTA, PO.PKP=SUP.PKP, PO.HARI = SUP.HARI  WHERE PO.KODES = SUP.KODES 
                     AND PO.NO_BUKTI='$no_buktix';");
 
-
-
-
         DB::SELECT("UPDATE po,  pod
                             SET  pod.ID =  po.NO_ID  WHERE  po.NO_BUKTI =  pod.NO_BUKTI 
 							AND  po.NO_BUKTI='$no_buktix';");
 
+        // $variablell = DB::select('call poins(?)', array($no_buktix));
 		
 					 
         return redirect('/po/edit/?idx=' . $po->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&golz=' . $this->GOLZ . '&judul=' . $this->judul . '');
@@ -620,7 +632,7 @@ class PoController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Master\Rute  $rute
-     * @return \Illuminate\Http\Resbelinse
+     * @return \Illuminate\Http\Response
      */
 
     // ganti 18
@@ -635,6 +647,9 @@ class PoController extends Controller
                 'TGL'      => 'required'
             ]
         );
+
+        // $variablell = DB::select('call podel(?)', array($po['NO_BUKTI']));
+
 
 		$this->setFlag($request);
         $GOLZ = $this->GOLZ;
@@ -767,6 +782,8 @@ class PoController extends Controller
         DB::SELECT("UPDATE po,  pod
                     SET  pod.ID =  po.NO_ID  WHERE  po.NO_BUKTI =  pod.NO_BUKTI 
                     AND  po.NO_BUKTI='$no_bukti';");
+
+        // $variablell = DB::select('call poins(?)', array($po['NO_BUKTI']));
 					 
         return redirect('/po/edit/?idx=' . $po->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&golz=' . $this->GOLZ . '&judul=' . $this->judul . '');	
 		
@@ -777,7 +794,7 @@ class PoController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Master\Rute  $rute
-     * @return \Illuminate\Http\Resbelinse
+     * @return \Illuminate\Http\Response
      */
 
     // ganti 22
@@ -804,6 +821,9 @@ class PoController extends Controller
         }
 		
         $deletePo = Po::find($po->NO_ID);
+
+        // $variablell = DB::select('call podel(?)', array($po['NO_BUKTI']));//
+
 
         $deletePo->delete();
         // return redirect('/po?flagz=' . $FLAGZ . '&golz=J')

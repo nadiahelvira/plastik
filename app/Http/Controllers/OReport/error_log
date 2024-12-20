@@ -58,3 +58,7 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RPiuPerTahunController.php on line 13
+[16-Dec-2024 19:35:07 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\OReport\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RKartuhController.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/OReport/RKartuhController.php on line 14
