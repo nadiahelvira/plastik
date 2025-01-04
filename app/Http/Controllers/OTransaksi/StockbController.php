@@ -491,7 +491,7 @@ class StockbController extends Controller
 
         ];
  
- 		$sup = DB::SELECT("SELECT KODES, CONCAT(NAMAS,'-',KOTA) AS NAMAS FROM SUP 
+ 		$sup = DB::SELECT("SELECT KODES, CONCAT(NAMAS,'-',KOTA) AS NAMAS FROM sup 
 		                 ORDER BY NAMAS ASC" );
 		
          

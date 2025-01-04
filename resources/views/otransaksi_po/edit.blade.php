@@ -70,6 +70,11 @@
     .row {
         margin-bottom: 8px !important;
     }
+
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
 </style>
 
 @section('content')
@@ -1293,7 +1298,7 @@
 		});
 
 		
-		NETTX = TDPPX + TPPNX ;
+		NETTX = TDPPX + TPPNX - TDISK;
 		
 		if(isNaN(TTOTAL_QTY)) TTOTAL_QTY = 0;
 

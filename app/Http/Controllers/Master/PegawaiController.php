@@ -269,7 +269,7 @@ class PegawaiController extends Controller
 			
     	   $kodex = $request->kodex;
 			
-		   $bingco = DB::SELECT("SELECT NO_ID, KODEP from CUST      
+		   $bingco = DB::SELECT("SELECT NO_ID, KODEP from pegawai      
 		             where KODEP < 
 					 '$kodex' ORDER BY KODEP DESC LIMIT 1" );
 			
@@ -293,7 +293,7 @@ class PegawaiController extends Controller
 				
       	   $kodex = $request->kodex;
 	   
-		   $bingco = DB::SELECT("SELECT NO_ID, KODEP from CUST    
+		   $bingco = DB::SELECT("SELECT NO_ID, KODEP from pegawai    
 		             where KODEP > 
 					 '$kodex' ORDER BY KODEP ASC LIMIT 1" );
 					 
@@ -311,7 +311,7 @@ class PegawaiController extends Controller
 
 		if ($tipx=='bottom') {
 		  
-    		$bingco = DB::SELECT("SELECT NO_ID, KODEP from CUST     
+    		$bingco = DB::SELECT("SELECT NO_ID, KODEP from pegawai     
 		              ORDER BY KODEP DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 

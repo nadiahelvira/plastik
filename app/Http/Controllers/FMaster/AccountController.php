@@ -134,7 +134,7 @@ class AccountController extends Controller
     {
         // ganti 5
 
-        $account =  DB::SELECT("SELECT * from ACCOUNT ORDER BY ACNO ");
+        $account =  DB::SELECT("SELECT * from account ORDER BY ACNO ");
 
         // ganti 6
 
@@ -309,7 +309,7 @@ class AccountController extends Controller
 			
     	   $kodex = $request->kodex;
 			
-		   $bingco = DB::SELECT("SELECT NO_ID, ACNO from ACCOUNT      
+		   $bingco = DB::SELECT("SELECT NO_ID, ACNO from account     
 		             where ACNO < 
 					 '$kodex' ORDER BY ACNO DESC LIMIT 1" );
 			
@@ -333,7 +333,7 @@ class AccountController extends Controller
 				
       	   $kodex = $request->kodex;
 	   
-		   $bingco = DB::SELECT("SELECT NO_ID, ACNO from ACCOUNT    
+		   $bingco = DB::SELECT("SELECT NO_ID, ACNO from account    
 		             where ACNO > 
 					 '$kodex' ORDER BY ACNO ASC LIMIT 1" );
 					 
@@ -351,7 +351,7 @@ class AccountController extends Controller
 
 		if ($tipx=='bottom') {
 		  
-    		$bingco = DB::SELECT("SELECT NO_ID, ACNO from ACCOUNT     
+    		$bingco = DB::SELECT("SELECT NO_ID, ACNO from account     
 		              ORDER BY ACNO DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 

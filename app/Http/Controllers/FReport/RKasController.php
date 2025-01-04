@@ -56,7 +56,7 @@ class RKasController extends Controller
 		$xakhir1      = $query[0]->AWAL;
 
 		$query = DB::SELECT("
-			SELECT SUM(KASD.DEBET) AS DEBET, SUM(KASD.KREDIT) AS KREDIT 
+			SELECT SUM(kasd.DEBET) AS DEBET, SUM(kasd.KREDIT) AS KREDIT 
 			FROM kas, kasd 
 			WHERE kas.NO_BUKTI = kasd.NO_BUKTI AND kas.tgl <'$tglDrD'  and kas.BACNO='$acno' and kas.PER='$periode' $filterpeg ;
 		");
@@ -65,7 +65,7 @@ class RKasController extends Controller
 
 
 		$query = DB::SELECT("
-			SELECT SUM(KASD.DEBET) AS DEBET, SUM(KASD.KREDIT) AS KREDIT 
+			SELECT SUM(kasd.DEBET) AS DEBET, SUM(kasd.KREDIT) AS KREDIT 
 			FROM kas, kasd 
 			WHERE kas.NO_BUKTI = kasd.NO_BUKTI AND kas.tgl >='$tglDrD' and kas.tgl <= '$tglSmpD' and kas.BACNO='$acno' and kas.PER='$periode' $filterpeg ;
 		");

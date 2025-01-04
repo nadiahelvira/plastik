@@ -31,7 +31,7 @@ class PiuController extends Controller
     function setFlag(Request $request)
     {
         if ( $request->flagz == 'B' ) {
-            $this->judul = "Pembayaran Piutang";
+            $this->judul = "Pembayaran piutang";
         } 
 		
         $this->FLAGZ = $request->flagz;
@@ -71,7 +71,8 @@ class PiuController extends Controller
         $piu = DB::SELECT("SELECT NO_ID, NO_BUKTI, 
                                 TGL, KODEC, NAMAC, KOTA, TOTAL, BAYAR, NOTES, FLAG, POSTED, 
                                 USRNM from piu 
-                           where PER = '$periode' AND CBG = '$CBG' AND PKP = '$PPN' ORDER BY NO_BUKTI ");
+                           where PER = '$periode' AND CBG = '$CBG' 
+                           ORDER BY NO_BUKTI ");
 	   	
 		
 // ganti 6
@@ -96,7 +97,7 @@ class PiuController extends Controller
                                 <i class="fas fa-edit"></i>
                                     Edit
                                 </a>	
-                                <a class="dropdown-item btn btn-danger" href="piu/print/' . $row->NO_ID . '">
+                                <a class="dropdown-item btn btn-danger" href="piu/cetak/' . $row->NO_ID . '">
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                     Print
                                 </a> 									
@@ -327,7 +328,7 @@ class PiuController extends Controller
 		if ($REC) {
 			foreach ($REC as $key => $value) {
 				// Declare new data di Model
-				$detail	= new PiuDetail;
+				$detail	= new Piudetail;
 				
 				// Insert ke Database
 				$detail->NO_BUKTI = $no_bukti;			
@@ -355,13 +356,13 @@ class PiuController extends Controller
 		$piu = Piu::where('NO_BUKTI', $no_buktix )->first();
 
 
-        DB::SELECT("UPDATE PIU, CUST
-                            SET PIU.NAMAC = CUST.NAMAC  WHERE PIU.KODEC = CUST.KODEC 
-							AND PIU.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE piu, cust
+                            SET piu.NAMAC = cust.NAMAC  WHERE piu.KODEC = cust.KODEC 
+							AND piu.NO_BUKTI='$no_buktix';");
 
-        DB::SELECT("UPDATE PIU, ACCOUNT
-                            SET PIU.BNAMA = ACCOUNT.NAMA  WHERE PIU.BACNO = ACCOUNT.ACNO 
-							AND PIU.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE piu, account
+                            SET piu.BNAMA = account.NAMA  WHERE piu.BACNO = account.ACNO 
+							AND piu.NO_BUKTI='$no_buktix';");
 							
 
         DB::SELECT("UPDATE piu, piud
@@ -553,12 +554,12 @@ class PiuController extends Controller
 		 }
 
         $no_bukti = $piu->NO_BUKTI;
-	    $piuDetail = DB::table('piud')->where('NO_BUKTI', $no_bukti)->get();	
+	    $piudetail = DB::table('piud')->where('NO_BUKTI', $no_bukti)->get();	
 		
 		
 		$data = [
             'header'        => $piu,
-            'detail'        => $piuDetail,
+            'detail'        => $piudetail,
 			
         ];
  
@@ -645,7 +646,7 @@ class PiuController extends Controller
         for ($i=0;$i<$length;$i++) {
             // Insert jika NO_ID baru
             if ($NO_ID[$i] == 'new') {
-                $insert = PiuDetail::create(
+                $insert = Piudetail::create(
                     [
                         'NO_BUKTI'   => $request->NO_BUKTI,
                         'REC'        => $REC[$i],
@@ -664,7 +665,7 @@ class PiuController extends Controller
                 );
             } else {
                 // Update jika NO_ID sudah ada
-                $upsert = PiuDetail::updateOrCreate(
+                $upsert = Piudetail::updateOrCreate(
                     [
                         'NO_BUKTI'  => $request->NO_BUKTI,
                         'NO_ID'     => (int) str_replace(',', '', $NO_ID[$i])
@@ -691,13 +692,13 @@ class PiuController extends Controller
 
 //  ganti 21
 
-        DB::SELECT("UPDATE PIU, CUST
-                            SET PIU.NAMAC = CUST.NAMAC  WHERE PIU.KODEC = CUST.KODEC 
-							AND PIU.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE piu, cust
+                            SET piu.NAMAC = cust.NAMAC  WHERE piu.KODEC = cust.KODEC 
+							AND piu.NO_BUKTI='$no_buktix';");
 
-        DB::SELECT("UPDATE PIU, ACCOUNT
-                            SET PIU.BNAMA = ACCOUNT.NAMA  WHERE PIU.BACNO = ACCOUNT.ACNO 
-							AND PIU.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE piu, account
+                            SET piu.BNAMA = account.NAMA  WHERE piu.BACNO = account.ACNO 
+							AND piu.NO_BUKTI='$no_buktix';");
 							
 
         DB::SELECT("UPDATE piu, piud
@@ -708,7 +709,7 @@ class PiuController extends Controller
         $variablell = DB::select('call piuins(?,?)', array($piu['NO_BUKTI'], 'X'));
 		
 
- 		$piu = Piu::where('NO_BUKTI', $no_buktix )->first();
+ 		$piu = piu::where('NO_BUKTI', $no_buktix )->first();
 					 
         return redirect('/piu/edit/?idx=' . $piu->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '');	
 	
@@ -745,11 +746,11 @@ class PiuController extends Controller
 		
 		
 // ganti 23
-        $deletePiu = Piu::find($piu->NO_ID);
+        $deletepiu = piu::find($piu->NO_ID);
 
 // ganti 24
 
-        $deletePiu->delete();
+        $deletepiu->delete();
 
 // ganti 
        return redirect('/piu?flagz='.$FLAGZ)->with(['judul' => $judul, 'flagz' => $FLAGZ ])->with('statusHapus', 'Data '.$piu->NO_BUKTI.' berhasil dihapus');
@@ -761,10 +762,49 @@ class PiuController extends Controller
    
     public function cetak(Piu $piu)
     {
-       
+        $no_piu = $piu->NO_BUKTI;
+
+        $file     = 'piuc';
+        $PHPJasperXML = new PHPJasperXML();
+        $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
+
+        $query = DB::SELECT("SELECT piu.NO_BUKTI, piu.TGL, piu.KODEC, piu.NAMAC, piu.ALAMAT, piu.KOTA, 
+                                    piu.BACNO, piu.NOTES,
+                                    piud.NO_FAKTUR, piud.TOTAL, piud.BAYAR, piud.SISA, piu.USRNM
+                            FROM piu, piud 
+                            WHERE piu.NO_BUKTI='$no_piu' AND piu.NO_BUKTI = piud.NO_BUKTI 
+                            ;
+		");
+
+            DB::SELECT("UPDATE piu SET POSTED = 1 WHERE NO_BUKTI='$no_piu';");
+
+        $data = [];
+
+        foreach ($query as $key => $value) {
+            array_push($data, array(
+                'NO_BUKTI' => $query[$key]->NO_BUKTI,
+                'TGL'      => $query[$key]->TGL,
+                'KODES'    => $query[$key]->KODES,
+                'NAMAS'    => $query[$key]->NAMAS,
+                'ALAMAT'    => $query[$key]->ALAMAT,
+                'KOTA'    => $query[$key]->KOTA,
+                'BACNO'    => $query[$key]->BACNO,
+                'NACNO'    => $query[$key]->NACNO,
+                'NOTES'    => $query[$key]->NOTES,
+                'NO_FAKTUR'    => $query[$key]->NO_FAKTUR,
+                'TOTAL'    => $query[$key]->TOTAL,
+                'BAYAR'    => $query[$key]->BAYAR,
+                'SISA'    => $query[$key]->SISA,
+                'USRNM'    => $query[$key]->USRNM
+            ));
+        }
+		
+        $PHPJasperXML->setData($data);
+        ob_end_clean();
+        $PHPJasperXML->outpage("I");
     }
  
-    public function getDetailPiu(){
+    public function getDetailpiu(){
 
         $no_bukti = $_GET['no_bukti'];
         $result = DB::table('piud')->where('NO_BUKTI', $no_bukti)->get();

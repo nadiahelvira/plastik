@@ -247,13 +247,13 @@ class BankController extends Controller
 		
 		$bank = Bank::where('NO_BUKTI', $no_buktix )->first();
 
-        DB::SELECT("UPDATE BANK, ACCOUNT
-                            SET BANK.BNAMA = ACCOUNT.NAMA  WHERE BANK.BACNO = ACCOUNT.ACNO 
-							AND BANK.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE bank, account
+                            SET bank.BNAMA = account.NAMA  WHERE bank.BACNO = account.ACNO 
+							AND bank.NO_BUKTI='$no_buktix';");
 							
-        DB::SELECT("UPDATE BANK, BANKD
-                            SET BANKD.ID = BANK.NO_ID  WHERE BANK.NO_BUKTI = BANKD.NO_BUKTI 
-							AND BANK.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE bank, bankd
+                            SET bankd.ID = bank.NO_ID  WHERE  bank.NO_BUKTI = bankd.NO_BUKTI 
+							AND bank.NO_BUKTI='$no_buktix';");
 							
         //return redirect('/bank/edit/?idx=' . $bank->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '');
 		return redirect('/bank?flagz='.$FLAGZ)->with(['judul' => $judul, 'flagz' => $FLAGZ ]);
@@ -291,7 +291,7 @@ class BankController extends Controller
 		if ($tipx=='top') {
 			
 		   	
-		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from BANK 
+		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from bank 
 		                 where PER ='$per' and TYPE ='$this->FLAGZ' 
                          AND CGB = '$CGB'    
 		                 ORDER BY NO_BUKTI ASC  LIMIT 1" );
@@ -315,7 +315,7 @@ class BankController extends Controller
 			
     	   $buktix = $request->buktix;
 			
-		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from BANK      
+		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from bank      
 		             where PER ='$per' and TYPE ='$this->FLAGZ' and NO_BUKTI < 
 					 '$buktix' 
                      AND CGB = '$CGB'
@@ -339,7 +339,7 @@ class BankController extends Controller
 				
       	   $buktix = $request->buktix;
 	   
-		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from BANK    
+		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from bank    
 		             where PER ='$per' and TYPE ='$this->FLAGZ' and NO_BUKTI > 
 					 '$buktix'
                      AND CGB = '$CGB'     
@@ -359,7 +359,7 @@ class BankController extends Controller
 
 		if ($tipx=='bottom') {
 		  
-    		$bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from Bank
+    		$bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from bank
             		  where PER ='$per' and TYPE ='$this->FLAGZ'   
 		              AND CGB = '$CGB'
                       ORDER BY NO_BUKTI DESC  LIMIT 1" );
@@ -530,13 +530,13 @@ class BankController extends Controller
 		
 		$bank = Bank::where('NO_BUKTI', $no_buktix )->first();
 
-        DB::SELECT("UPDATE BANK, ACCOUNT
-                            SET BANK.BNAMA = ACCOUNT.NAMA  WHERE BANK.BACNO = ACCOUNT.ACNO 
-							AND BANK.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE bank, account
+                            SET bank.BNAMA = account.NAMA  WHERE bank.BACNO = account.ACNO 
+							AND bank.NO_BUKTI='$no_buktix';");
 							
-        DB::SELECT("UPDATE BANK, BANKD
-                            SET BANKD.ID = BANK.NO_ID  WHERE BANK.NO_BUKTI = BANKD.NO_BUKTI 
-							AND BANK.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE bank, bankd
+                            SET bankd.ID = bank.NO_ID  WHERE bank.NO_BUKTI = bankd.NO_BUKTI 
+							AND bank.NO_BUKTI='$no_buktix';");
 							
         //return redirect('/bank/edit/?idx=' . $bank->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '');
 		return redirect('/bank?flagz='.$FLAGZ)->with(['judul' => $judul, 'flagz' => $FLAGZ ]);

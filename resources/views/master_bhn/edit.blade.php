@@ -7,6 +7,11 @@
     .form-control:focus {
         background-color: #E0FFFF !important;
     }
+
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
 </style>
 
 @section('content')

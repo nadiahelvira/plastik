@@ -950,7 +950,6 @@
                     </a>
                   </div>
               </div>
-
               
               <div class="col-md-3">
                   <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
@@ -958,6 +957,16 @@
                         <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
                           <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-store icon-orange"></i>
                         <h6>Pembelian Gudang</h6>
+                      </a>
+                  </div>
+              </div>
+
+              <div class="col-md-3">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ffe0ba;">
+                    <a href="javascript:addTab('Report Sisa Hutang', '{{url('rsisahut')}}')" >
+                        <!-- <i class="nav-icon fas fa-store icon-white"></i> -->
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-industry icon-orange"></i>
+                        <h6>Sisa Hutang</h6>
                       </a>
                   </div>
               </div>
@@ -1064,6 +1073,15 @@
                       </a>
                   </div>
                 </div>
+                <div class="col-md-3">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
+                      <a href="javascript:addTab('Report Sisa Piutang', '{{url('rsisapiu')}}')" >
+                        <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-money-bill icon-green"></i>
+                        <h6>Sisa Piutang</h6>
+                      </a>
+                  </div>
+                </div>
               </div>
             
             </div>
@@ -1072,6 +1090,70 @@
 
           </li>
 
+
+<!--------------Kartu---------------->          
+
+
+<li class="nav-item">          
+            <a href="#" class="nav-link" data-bs-toggle="tooltip" title="Kartu">
+              <i class="nav-icon fas fa-book icon-red"></i>
+              <p>
+              </p>
+            </a>
+			
+<!------- penambahan tampilan baru ------->
+
+
+          <div class="mega-menu" id="e">
+
+            <!-- penambahan judul di menu -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3>KARTU</h3>
+                    <hr style=" height: 5px;
+                      background-color: #333; 
+                      border: none; 
+                      margin: 20px 0; "/>
+                  </div>
+                </div>
+
+            <!-- batas -->
+
+            <div class="row d-flex">
+              <div class="col-md-3">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
+                    <a href="javascript:addTab('Kartu Stock', '{{url('rkarstk')}}')">
+    
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-cart-plus icon-green"></i>
+                      <h6>Kartu Stock</h6>
+                    </a>
+                  </div>
+              </div>
+              <div class="col-md-3">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
+                      <a href="javascript:addTab('Kartu Hutang', '{{url('rkartuh')}}')">
+  
+                          <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-store icon-green"></i>
+                        <h6>Kartu Hutang</h6>
+                      </a>
+                  </div>
+              </div>
+              <div class="col-md-3">
+                  <div class="menu-card" style="border:1px solid #aabbcc; background-color:#ccffd2;">
+                    <a href="javascript:addTab('Kartu Piutang', '{{url('rkartup')}}')" >
+  
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-industry icon-green"></i>
+                      <h6>Kartu Piutang</h6>
+                    </a>
+                  </div>
+              </div>
+            </div>
+          
+          </div>
+
+<!----- batas ----->
+
+          </li> 
 
 <!-- ...................................................................................... -->
 
@@ -1299,7 +1381,7 @@
               </div>
               <div class="col-md-3">
                 <div class="menu-card" style="">
-                      <a href="javascript:addTab('Neraca', '{{url('rnera')}}')">
+                    <a href="javascript:addTab('Neraca', '{{url('rnera')}}')">
                       <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
                         <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-bezier-curve icon-pink"></i>
                       <h6>Neraca</h6>
@@ -1350,6 +1432,17 @@
                     </a>
                   </div>
               </div>
+
+              <div class="col-md-3">
+                  <div class="menu-card" style="">
+                    <a href="javascript:addTab('Import Excel', '{{url('import_excel')}}')">
+                      <!-- <i class="nav-icon fas fa-crop icon-orange"></i> -->
+                        <i style="margin-left:-5px;font-size: 40px;" class="nav-icon fas fa-bezier-curve icon-pink"></i>
+                      <h6>Import Excel</h6>
+                    </a>
+                  </div>
+              </div>
+
             <!--  <div class="col-md-3">
                   <div class="menu-card" style="">
                       <a href="{{url('po_selesai/index-posting')}}">

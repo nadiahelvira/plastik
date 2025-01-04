@@ -30,7 +30,7 @@ class GdgController extends Controller
 // ganti 4
     public function browse()
     {
-		$Gdg = DB::table('Gdg')->select('KODE', 'NAMA')->orderBy('KODE', 'ASC')->get();
+		$Gdg = DB::table('gdg')->select('KODE', 'NAMA')->orderBy('KODE', 'ASC')->get();
 		return response()->json($Gdg);
 	}
 
@@ -211,7 +211,7 @@ class GdgController extends Controller
 			
     	   $kodex = $request->kodex;
 			
-		   $bingco = DB::SELECT("SELECT NO_ID, KODE from GDG      
+		   $bingco = DB::SELECT("SELECT NO_ID, KODE from gdg      
 		             where KODE < 
 					 '$kodex' ORDER BY KODE DESC LIMIT 1" );
 			
@@ -235,7 +235,7 @@ class GdgController extends Controller
 				
       	   $kodex = $request->kodex;
 	   
-		   $bingco = DB::SELECT("SELECT NO_ID, KODE from GDG    
+		   $bingco = DB::SELECT("SELECT NO_ID, KODE from gdg   
 		             where KODE > 
 					 '$kodex' ORDER BY KODE ASC LIMIT 1" );
 					 
@@ -253,7 +253,7 @@ class GdgController extends Controller
 
 		if ($tipx=='bottom') {
 		  
-    		$bingco = DB::SELECT("SELECT NO_ID, KODE from GDG     
+    		$bingco = DB::SELECT("SELECT NO_ID, KODE from gdg     
 		              ORDER BY KODE DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 

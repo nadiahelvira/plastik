@@ -80,12 +80,12 @@ class DeliController extends Controller
         $PPN = Auth::user()->PPN;
 		
 		$so = DB::SELECT("SELECT sod.NO_ID, so.NO_BUKTI, so.TGL, so.NAMAC, so.KODEC, so.ALAMAT, so.KOTA,
-                                sod.KD_BRG, sod.NA_BRG, sod.SATUAN, sod.QTY, SOD.KIRIM, sod.HARGA,
-                                SOD.SISA, so.KODEP, so.NAMAP, so.RING, so.KOM from so, sod 
+                                sod.KD_BRG, sod.NA_BRG, sod.SATUAN, sod.QTY, sod.KIRIM, sod.HARGA,
+                                sod.SISA, so.KODEP, so.NAMAP, so.RING, so.KOM from so, sod 
                         WHERE so.NO_BUKTI=sod.NO_BUKTI AND so.CBG = '$CBG' AND so.PKP = '$PPN'
                         and sod.SISA>0 
                         -- and so.KODEC='".$request->kodec."' 
-                        AND so.GOL ='$golz' AND POSTED = 1
+                        AND so.GOL ='$golz' AND so.POSTED = 1
                         GROUP BY NO_BUKTI");
 		return response()->json($so);
 	}
@@ -441,10 +441,10 @@ class DeliController extends Controller
 		
 		$deli = Deli::where('NO_BUKTI', $no_buktix )->first();
 
-        // DB::SELECT("CALL deliins('$no_buktix')");
-        // DB::SELECT("UPDATE DELI, CUST
-        //             SET DELI.NAMAC = CUST.NAMAC, DELI.ALAMAT = CUST.ALAMAT, DELI.KOTA = CUST.KOTA, DELI.PKP=CUST.PKP, DELI.HARI = CUST.HARI  WHERE DELI.KODEC = CUST.KODEC 
-        //             AND DELI.NO_BUKTI='$no_buktix';");
+         DB::SELECT("CALL deliins('$no_buktix')");
+         DB::SELECT("UPDATE deli, cust
+                     SET deli.NAMAC = cust.NAMAC, deli.ALAMAT = cust.ALAMAT, deli.KOTA = cust.KOTA, deli.PKP=cust.PKP, deli.HARI = cust.HARI  WHERE deli.KODEC = cust.KODEC 
+                     AND deli.NO_BUKTI='$no_buktix';");
 
         DB::SELECT("UPDATE deli,  delid
                             SET  delid.ID =  deli.NO_ID  WHERE  deli.NO_BUKTI =  delid.NO_BUKTI 
@@ -627,7 +627,7 @@ class DeliController extends Controller
 
         ];
  
- 		$sup = DB::SELECT("SELECT KODES, CONCAT(NAMAS,'-',KOTA) AS NAMAS FROM SUP 
+ 		$sup = DB::SELECT("SELECT KODES, CONCAT(NAMAS,'-',KOTA) AS NAMAS FROM sup 
 		                 ORDER BY NAMAS ASC" );
 		
          
@@ -832,9 +832,9 @@ class DeliController extends Controller
 
         $no_bukti = $deli->NO_BUKTI;
 
-        // DB::SELECT("UPDATE DELI, CUST
-        //             SET DELI.NAMAC = CUST.NAMAC, DELI.ALAMAT = CUST.ALAMAT, DELI.KOTA = CUST.KOTA, DELI.PKP=CUST.PKP, DELI.HARI = CUST.HARI  WHERE DELI.KODEC = CUST.KODEC 
-        //             AND DELI.NO_BUKTI='$no_bukti';");
+        DB::SELECT("UPDATE deli, cust
+                     SET deli.NAMAC = cust.NAMAC, deli.ALAMAT = cust.ALAMAT, deli.KOTA = cust.KOTA, deli.PKP=cust.PKP, deli.HARI = cust.HARI  WHERE deli.KODEC = cust.KODEC 
+                     AND deli.NO_BUKTI='$no_bukti';");
 
         DB::SELECT("UPDATE deli,  delid
                     SET  delid.ID =  deli.NO_ID  WHERE  deli.NO_BUKTI =  delid.NO_BUKTI 
@@ -871,7 +871,7 @@ class DeliController extends Controller
                 ->with(['judul' => $this->judul, 'flagz' => $this->FLAGZ, 'golz' => $this->GOLZ]);
         }
         
-        // DB::SELECT("CALL delidel('$deli->NO_BUKTI')");
+         DB::SELECT("CALL delidel('$deli->NO_BUKTI')");
 		
         $deleteDeli = Deli::find($deli->NO_ID);
 
@@ -952,6 +952,7 @@ class DeliController extends Controller
                                     delid.NO_SO, deli.USRNM, delid.LOKASI
                             FROM deli, delid 
                             WHERE deli.NO_BUKTI = delid.NO_BUKTI 
+                            GROUP BY LOKASI
                             ;
 		");
 

@@ -7,6 +7,11 @@
 <style>  
     th { font-size: 13px; }
     td { font-size: 13px; }
+
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
 </style>
 
 @section('content')

@@ -51,6 +51,11 @@
     }
 
 	/* penutup LOADX */
+
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
 </style>
 
 @section('content')
@@ -258,7 +263,7 @@
 
 												<th width="100px" style="text-align:center">Satuan</th>
 												<th width="150px" style="text-align:center">Qty</th> 
-												<th width="150px" style="text-align:center">Stok</th> 
+												<th width="150px" style="text-align:center">Sedia(-SO)</th> 
 												<th width="150px" style="text-align:center">Harga</th>							
 												<th width="150px" style="text-align: center;">Diskon</th>
 
@@ -1866,7 +1871,7 @@
                 </td>	
 
 				<td>
-					<input name='DISK[]'  onblur='hitung()' value='0' id='DISK${idrow}' type='text' style='text-align: right' class='form-control DISK text-primary' >
+					<input name='DISK[]'  onclick='select()' onblur='hitung()' value='0' id='DISK${idrow}' type='text' style='text-align: right' class='form-control DISK text-primary' >
 					<input name='KET[]'  hidden  id='KET${idrow}' type='text' class='form-control  KET' required>
 				</td>
 				

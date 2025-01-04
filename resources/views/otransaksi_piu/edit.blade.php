@@ -747,7 +747,7 @@
 		chooseJual = function(NO_BUKTI, TGL, KODEC, NAMAC, TOTAL, BAYAR, SISA){
 			$("#NO_FAKTUR"+rowidJual).val(NO_BUKTI);
 			$("#TGL_FAKTUR"+rowidJual).val(TGL);
-			$("#TOTAL"+rowidJual).val(TOTAL);
+			$("#TOTAL"+rowidJual).val(SISA);
 			$("#BAYAR"+rowidJual).val(SISA);	
 			$("#TOTAL"+rowidJual).autoNumeric('update');
 			$("#BAYAR"+rowidJual).autoNumeric('update');
@@ -792,7 +792,7 @@
 				if($(this).prop("checked"))
 				{
 					var idx = (this.id).substring(5, 7);
-					kode = '"' + $("#pilihTotal"+idx).text() + '"';
+					kode = '"' + $("#pilihSisa"+idx).text() + '"';
 				} 
 				return kode;
 			}).get();

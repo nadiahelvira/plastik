@@ -32,6 +32,11 @@
             8px 8px 15px #a7aaa7,
             -8px -8px 15px #f4ddb3;
     } 
+
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
 </style>
 
 @section('content')

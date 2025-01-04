@@ -213,7 +213,7 @@ class MemoController extends Controller
         if ($REC) {
             foreach ($REC as $key => $value) {
                 // Declare new data di Model
-                $detail    = new MemoDetail;
+                $detail    = new memodetail;
 
                 // Insert ke Database
                 $detail->NO_BUKTI = $no_bukti;
@@ -240,9 +240,9 @@ class MemoController extends Controller
 		
 		$memo = Memo::where('NO_BUKTI', $no_buktix )->first();
 
-        DB::SELECT("UPDATE MEMO, MEMOD
-                            SET MEMOD.ID = MEMO.NO_ID  WHERE MEMO.NO_BUKTI = MEMOD.NO_BUKTI 
-							AND MEMO.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE memo, memod
+                            SET memod.ID = memo.NO_ID  WHERE memo.NO_BUKTI = memod.NO_BUKTI 
+							AND memo.NO_BUKTI='$no_buktix';");
 							
         //return redirect('/memo/edit/?idx=' . $memo->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '');
 		return redirect('/memo?flagz='.$FLAGZ)->with(['judul' => $judul, 'flagz' => $FLAGZ ]);
@@ -283,7 +283,7 @@ class MemoController extends Controller
 		if ($tipx=='top') {
 			
 		   	
-		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from MEMO 
+		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from memo 
 		                 where PER ='$per' and FLAG ='$this->FLAGZ'     
 		                 and CBG = '$CBG' ORDER BY NO_BUKTI ASC  LIMIT 1" );
 						 
@@ -380,7 +380,7 @@ class MemoController extends Controller
 	     }
 		 else
 		 {
-				$memo = new Memo;
+				$memo = new memo;
                 $memo->TGL = Carbon::now();
       
 				
@@ -390,10 +390,10 @@ class MemoController extends Controller
 		
         $no_bukti = $memo->NO_BUKTI;
 				
-        $memoDetail = DB::table('memod')->where('NO_BUKTI', $no_bukti)->get();
+        $memodetail = DB::table('memod')->where('NO_BUKTI', $no_bukti)->get();
         $data = [
             'header'        => $memo,
-            'detail'        => $memoDetail
+            'detail'        => $memodetail
         ];
  
          
@@ -475,7 +475,7 @@ class MemoController extends Controller
         for ($i = 0; $i < $length; $i++) {
             // Insert jika NO_ID baru
             if ($NO_ID[$i] == 'new') {
-                $insert = MemoDetail::create(
+                $insert = memodetail::create(
                     [
                         'NO_BUKTI'   => $no_buktix,
                         'REC'        => $REC[$i],
@@ -494,7 +494,7 @@ class MemoController extends Controller
                 );
             } else {
                 // Update jika NO_ID sudah ada
-                $update = MemoDetail::updateOrCreate(
+                $update = memodetail::updateOrCreate(
                     [
                         'NO_BUKTI'  => $no_buktix,
                         'NO_ID'     => (int) str_replace(',', '', $NO_ID[$i])
@@ -523,9 +523,9 @@ class MemoController extends Controller
 
 		$memo = Memo::where('NO_BUKTI', $no_buktix )->first();
 
-        DB::SELECT("UPDATE MEMO, MEMOD
-                            SET MEMOD.ID = MEMO.NO_ID  WHERE MEMO.NO_BUKTI = MEMOD.NO_BUKTI 
-							AND MEMO.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE memo, memod
+                            SET memod.ID = memo.NO_ID  WHERE memo.NO_BUKTI = memod.NO_BUKTI 
+							AND memo.NO_BUKTI='$no_buktix';");
 							
         //return redirect('/memo/edit/?idx=' . $memo->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '');
 		return redirect('/memo?flagz='.$FLAGZ)->with(['judul' => $judul, 'flagz' => $FLAGZ ]);
@@ -558,11 +558,11 @@ class MemoController extends Controller
 
 
         // ganti 23
-        $deleteMemo = Memo::find($memo->NO_ID);
+        $deletememo = Memo::find($memo->NO_ID);
 
         // ganti 24
 
-        $deleteMemo->delete();
+        $deletememo->delete();
 
         // ganti 
         // ganti 
@@ -613,7 +613,7 @@ class MemoController extends Controller
         $PHPJasperXML->outpage("I");
     }
 
-    public function getDetailMemo(){
+    public function getDetailmemo(){
 
         $no_bukti = $_GET['no_bukti'];
         $result = DB::table('memod')->where('NO_BUKTI', $no_bukti)->get();

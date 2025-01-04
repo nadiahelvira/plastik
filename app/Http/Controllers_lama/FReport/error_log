@@ -1,0 +1,12 @@
+[19-Nov-2024 04:39:11 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\FReport\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/FReport/RMemoController.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/FReport/RMemoController.php on line 14
+[19-Nov-2024 05:27:07 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\FReport\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/FReport/RNeraController.php:15
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/FReport/RNeraController.php on line 15
+[19-Nov-2024 05:49:20 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function App\Http\Controllers\FReport\base_path() in /home/januar13/public_html/plastik/app/Http/Controllers/FReport/RAccountController.php:15
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/FReport/RAccountController.php on line 15

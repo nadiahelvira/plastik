@@ -86,7 +86,7 @@ class RbankController extends Controller
 				SELECT ACNO AS BACNO, NAMA AS BNAMA, AW$bulan AS AWAL 
 				from accountd WHERE ACNO='$acno' and YER='$tahun'
 				UNION ALL
-				SELECT BACNO AS BACNO, BNAMA AS BNAMA, SUM(BANKD.DEBET - BANKD.KREDIT ) AS AWAL 
+				SELECT BACNO AS BACNO, BNAMA AS BNAMA, SUM(bankd.DEBET - bankd.KREDIT ) AS AWAL 
 				from bank, bankd where bank.NO_BUKTI=bankd.NO_BUKTI and bank.TGL<'$tglDrD' 
 				and bank.BACNO='$acno' and bank.PER='$periode'
 			) as AWAL00
@@ -132,7 +132,7 @@ class RbankController extends Controller
         $xawal1      = $xawal1 + $query[0]->DEBET - $query[0]->KREDIT;		
 	
         $query = DB::SELECT("
-			SELECT SUM(BANKD.DEBET) AS DEBET, SUM(BANKD.KREDIT) AS KREDIT 
+			SELECT SUM(bankd.DEBET) AS DEBET, SUM(bankd.KREDIT) AS KREDIT 
 			FROM bank, bankd 
 			WHERE bank.NO_BUKTI = bankd.NO_BUKTI AND bank.tgl >='$tglDrD' and bank.tgl <= '$tglSmpD' and bank.BACNO='$acno' and bank.PER='$periode' ;
 		");	

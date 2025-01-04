@@ -24,6 +24,11 @@
     canvas {
         max-height: 300px;
     }
+
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
 </style>
 
 @section('content')

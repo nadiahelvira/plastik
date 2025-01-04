@@ -76,8 +76,9 @@ class JualController extends Controller
 
         $jual = DB::SELECT("SELECT distinct jual.NO_BUKTI, jual.NO_SO, jual.KODEC, jual.NAMAC, 
 		                  jual.ALAMAT, jual.KOTA, jual.PKP from jual, juald 
-                          WHERE jual.NO_BUKTI = jualD.NO_BUKTI AND jual.GOL ='$golz' AND jual.FLAG ='JL'
-                          AND jual.CBG = '$CBG' AND jual.PKP = '$PPN' ");
+                          WHERE jual.NO_BUKTI = juald.NO_BUKTI AND jual.GOL ='$golz' AND jual.FLAG ='JL'
+                          AND jual.CBG = '$CBG' 
+                          ");
         return response()->json($jual);
     }
 
@@ -500,7 +501,7 @@ class JualController extends Controller
         if ($REC) {
             foreach ($REC as $key => $value) {
                 // Declare new data di Model
-                $detail    = new JualDetail;
+                $detail    = new jualdetail;
 
                 // Insert ke Database
                 $detail->NO_BUKTI    = $no_bukti;
@@ -722,11 +723,11 @@ class JualController extends Controller
 		 }
 
         $no_bukti = $jual->NO_BUKTI;
-	    $jualDetail = DB::table('juald')->where('NO_BUKTI', $no_bukti)->orderBy('REC')->get();	
+	    $jualdetail = DB::table('juald')->where('NO_BUKTI', $no_bukti)->orderBy('REC')->get();	
 		
 		$data = [
             'header'        => $jual,
-            'detail'        => $jualDetail,
+            'detail'        => $jualdetail,
 			
         ];
  
@@ -842,7 +843,7 @@ class JualController extends Controller
         for ($i = 0; $i < $length; $i++) {
             // Insert jika NO_ID baru
             if ($NO_ID[$i] == 'new') {
-                $insert = JualDetail::create(
+                $insert = jualdetail::create(
                     [
                         'NO_BUKTI'   => $request->NO_BUKTI,
                         'REC'        => $REC[$i],
@@ -871,7 +872,7 @@ class JualController extends Controller
                 );
             } else {
                 // Update jika NO_ID sudah ada
-                $upsert = JualDetail::updateOrCreate(
+                $upsert = jualdetail::updateOrCreate(
                     [
                         'NO_BUKTI'  => $request->NO_BUKTI,
                         'NO_ID'     => (int) str_replace(',', '', $NO_ID[$i])
@@ -909,7 +910,7 @@ class JualController extends Controller
         //  ganti 21
         $variablell = DB::select('call jualins(?)', array($jual['NO_BUKTI']));
 
- 		$jual = Jual::where('NO_BUKTI', $no_buktix )->first();
+ 		$jual = jual::where('NO_BUKTI', $no_buktix )->first();
 
         $no_bukti = $jual->NO_BUKTI;
 
@@ -953,11 +954,11 @@ class JualController extends Controller
 
         // ganti 23
 		
-        $deleteJual = Jual::find($jual->NO_ID);
+        $deletejual = jual::find($jual->NO_ID);
 
         // ganti 24
 
-        $deleteJual->delete();
+        $deletejual->delete();
 
         // ganti 
        return redirect('/jual?flagz='.$FLAGZ.'&golz='.$GOLZ)->with(['judul' => $judul, 'flagz' => $FLAGZ, 'golz' => $GOLZ ])->with('statusHapus', 'Data '.$jual->NO_BUKTI.' berhasil dihapus');
@@ -1027,7 +1028,7 @@ class JualController extends Controller
 	
 	
 	
-    public function getDetailJual(){
+    public function getDetailjual(){
 
         $no_bukti = $_GET['no_bukti'];
         $result = DB::table('juald')->where('NO_BUKTI', $no_bukti)->get();

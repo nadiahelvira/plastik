@@ -211,7 +211,7 @@ class LokasiController extends Controller
 			
     	   $kodex = $request->kodex;
 			
-		   $bingco = DB::SELECT("SELECT NO_ID, KODE from GDG      
+		   $bingco = DB::SELECT("SELECT NO_ID, KODE from lokasi     
 		             where KODE < 
 					 '$kodex' ORDER BY KODE DESC LIMIT 1" );
 			
@@ -235,7 +235,7 @@ class LokasiController extends Controller
 				
       	   $kodex = $request->kodex;
 	   
-		   $bingco = DB::SELECT("SELECT NO_ID, KODE from GDG    
+		   $bingco = DB::SELECT("SELECT NO_ID, KODE from lokasi    
 		             where KODE > 
 					 '$kodex' ORDER BY KODE ASC LIMIT 1" );
 					 
@@ -253,7 +253,7 @@ class LokasiController extends Controller
 
 		if ($tipx=='bottom') {
 		  
-    		$bingco = DB::SELECT("SELECT NO_ID, KODE from GDG     
+    		$bingco = DB::SELECT("SELECT NO_ID, KODE from lokasi     
 		              ORDER BY KODE DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 

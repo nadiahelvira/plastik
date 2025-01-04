@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.plain')
 
 @section('content')
 <div class="content-wrapper">
@@ -31,14 +31,14 @@
                         </div>
 						
 						<div class="form-group row">
-                            <div class="col-md-1">
+                            <!-- <div class="col-md-1">
                                 <label><strong>Gol :</strong></label>
                                 
                                 <select name="gol" id="gol" class="form-control gol">
                                     <option value="Y" {{ session()->get('filter_gol')=='Y' ? 'selected': ''}}>Y</option>
                                     <option value="Z" {{ session()->get('filter_gol')=='Z' ? 'selected': ''}}>Z</option>
                                 </select>
-                            </div>
+                            </div> -->
 							<!--
 							<div class="col-md-3">
 								<label><strong>Customer :</strong></label>

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 // ganti 1
 
 use App\Models\OTransaksi\Jual;
-use App\Models\OTransaksi\Jualutbeli;
 use Illuminate\Http\Request;
 use DataTables;
 use Auth;
@@ -56,42 +55,12 @@ class UtjualController extends Controller
 
     public function browse(Request $request)
     {
-        //$utjual = DB::table('jual')->select('NO_BUKTI', 'TGL', 'KODEC','NAMAC', 'ALAMAT','KOTA', 'TOTAL','BAYAR','SISA')->where('NO_SO', $request['NO_SO'] )->where('SISA', '<>', 0 )->where('GOL', 'Y')->orderBy('KODEC', 'ASC')->get();
 
-        $listutbeli = implode(",", $request->listutbeli);
-        $inutbeli = '';
-        if ($request->listutbeli) {
-            $inutbeli = " and NO_BUKTI not in ($listutbeli) ";
-        }
-
-        $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
-		
-        $utjual = DB::SELECT("SELECT NO_BUKTI,TGL,KODEC,NAMAC,ALAMAT,KOTA,TOTAL,BAYAR,SISA,TRUCK,if(DATEDIFF(date(now()),TGL)>=30,'Y','') as LEBIH30 
-        from jual
-		WHERE NO_SO='" . $request['NO_SO'] . "' and SISA<>0 and GOL='$request->GOL' " . $inutbeli . " AND CBG = '$CBG' AND PKP = '$PPN' 
-        ORDER BY KODEC;");
-
-        return response()->json($utjual);
     }
 
     public function browseuang(Request $request)
     {
-        //$beli = DB::table('beli')->select('NO_BUKTI', 'TGL', 'KODES','NAMAS', 'ALAMAT','KOTA', 'TOTAL','BAYAR','SISA')->where('KODES', $request['KODES'] )->where('SISA', '<>', 0 )->where('GOL', 'Y')->orderBy('KODES', 'ASC')->get();
-
-		$listutbeli = implode(",", $request->listutbeli);
-        $inutbeli = '';
-        if ($request->listutbeli) {
-            $inutbeli = " and NO_BUKTI not in ($listutbeli) ";
-        }
-
-        $CBG = Auth::user()->CBG;
-		
-        $utjual = DB::SELECT("SELECT NO_BUKTI,TGL, NO_SO, KODEC, NAMAC, RPTOTAL AS TOTAL, RPBAYAR AS BAYAR, RPSISA AS SISA  from jual
-		WHERE  NO_SO='" . $request['NO_SO'] . "' AND RPSISA<>'0'  AND CBG = '$CBG'
-        ORDER BY NO_BUKTI; ");
-
-        return response()->json($utjual);
+ 
     }
 	
 	
@@ -375,7 +344,7 @@ class UtjualController extends Controller
 
         // ganti 10
 
-        $utjual = Jual::create(
+        $utjual = jual::create(
             [
                 'NO_BUKTI'         => $no_bukti,
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
@@ -411,17 +380,17 @@ class UtjualController extends Controller
 		
 		
 				
-	    DB::SELECT("UPDATE JUAL, CUST
-                            SET JUAL.NAMAC = CUST.NAMAC, JUAL.ALAMAT = CUST.ALAMAT, JUAL.KOTA = CUST.KOTA  WHERE JUAL.KODEC = CUST.KODEC 
-							AND JUAL.NO_BUKTI='$no_buktix';");
+	    DB::SELECT("UPDATE jual, cust
+                            SET jual.NAMAC = cust.NAMAC, jual.ALAMAT = cust.ALAMAT, jual.KOTA = cust.KOTA  WHERE jual.KODEC = cust.KODEC 
+							AND jual.NO_BUKTI='$no_buktix';");
 
-        DB::SELECT("UPDATE JUAL, ACCOUNT
-                            SET JUAL.BNAMA = ACCOUNT.NAMA  WHERE JUAL.BACNO = ACCOUNT.ACNO 
-							AND JUAL.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE jual, account
+                            SET jual.BNAMA = account.NAMA  WHERE jual.BACNO = account.ACNO 
+							AND jual.NO_BUKTI='$no_buktix';");
 							
-        DB::SELECT("UPDATE JUAL, ACCOUNT
-                            SET JUAL.NACNOB = ACCOUNT.NAMA  WHERE JUAL.ACNOB = ACCOUNT.ACNO 
-							AND JUAL.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE jual, account
+                            SET jual.NACNOB = account.NAMA  WHERE jual.ACNOB = account.ACNO 
+							AND jual.NO_BUKTI='$no_buktix';");
 		
 
         //  ganti 11
@@ -434,7 +403,7 @@ class UtjualController extends Controller
 		
 
 		
-		$utjual = Jual::where('NO_BUKTI', $no_buktix )->first();
+		$utjual = jual::where('NO_BUKTI', $no_buktix )->first();
 					 
         //return redirect('/utjual/edit/?idx=' . $kas->NO_ID . '&tipx=edit&golz=' . $this->GOLZ . '&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '');
 		return redirect('/utjual?flagz='.$FLAGZ)
@@ -635,7 +604,7 @@ class UtjualController extends Controller
 
     // ganti 18
 
-    public function update(Request $request, Jual $utjual)
+    public function update(Request $request, jual $utjual)
     {
 
         $this->validate(
@@ -701,17 +670,17 @@ class UtjualController extends Controller
 
 	    $no_buktix = $utjual->NO_BUKTI;
 		
-	    DB::SELECT("UPDATE JUAL, CUST
-                            SET JUAL.NAMAC = CUST.NAMAC, JUAL.ALAMAT = CUST.ALAMAT, JUAL.KOTA = CUST.KOTA  WHERE JUAL.KODEC = CUST.KODEC 
-							AND JUAL.NO_BUKTI='$no_buktix';");
+	    DB::SELECT("UPDATE jual, cust
+                            SET jual.NAMAC = cust.NAMAC, jual.ALAMAT = cust.ALAMAT, jual.KOTA = cust.KOTA  WHERE jual.KODEC = cust.KODEC 
+							AND jual.NO_BUKTI='$no_buktix';");
 
-        DB::SELECT("UPDATE JUAL, ACCOUNT
-                            SET JUAL.BNAMA = ACCOUNT.NAMA  WHERE JUAL.BACNO = ACCOUNT.ACNO 
-							AND JUAL.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE jual, account
+                            SET jual.BNAMA = account.NAMA  WHERE jual.BACNO = account.ACNO 
+							AND jual.NO_BUKTI='$no_buktix';");
 							
-        DB::SELECT("UPDATE JUAL, ACCOUNT
-                            SET JUAL.NACNOB = ACCOUNT.NAMA  WHERE JUAL.ACNOB = ACCOUNT.ACNO 
-							AND JUAL.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE jual, account
+                            SET jual.NACNOB = account.NAMA  WHERE jual.ACNOB = account.ACNO 
+							AND jual.NO_BUKTI='$no_buktix';");
 							
 
 		if ( $FLAGZ == 'UM' ) {
@@ -724,7 +693,7 @@ class UtjualController extends Controller
 		
 		
 		
-		$utjual = Jual::where('NO_BUKTI', $no_buktix )->first();
+		$utjual = jual::where('NO_BUKTI', $no_buktix )->first();
 					 
         //return redirect('/utjual/edit/?idx=' . $utjual->NO_ID . '&tipx=edit&golz=' . $this->GOLZ . '&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '');			
 		return redirect('/utjual?flagz='.$FLAGZ)
@@ -736,7 +705,7 @@ class UtjualController extends Controller
     
    
 	
-    public function destroy( Request $request, Jual $utjual)
+    public function destroy( Request $request, jual $utjual)
     {
 
 		$this->setFlag($request);
@@ -765,11 +734,11 @@ class UtjualController extends Controller
         }
 		
         // ganti 23
-        $deleteJual = Jual::find($utjual->NO_ID);
+        $deletejual = jual::find($utjual->NO_ID);
 
         // ganti 24
 
-        $deleteJual->delete();
+        $deletejual->delete();
 
         // ganti 
 		return redirect('/utjual?flagz='.$FLAGZ)
@@ -779,7 +748,7 @@ class UtjualController extends Controller
 			   
     }
 	///////////////////////////////////
-	 public function jsutjualc(Jual $utjual)
+	 public function jsutjualc(jual $utjual)
     {
        
        $no_jual = $utjual->NO_BUKTI;
@@ -811,7 +780,7 @@ class UtjualController extends Controller
                             ;
 		");
 
-                DB::SELECT("UPDATE JUAL SET POSTED = 1 WHERE NO_BUKTI='$no_jual';");
+                DB::SELECT("UPDATE jual SET POSTED = 1 WHERE NO_BUKTI='$no_jual';");
                 
         $data = [];
 

@@ -63,15 +63,15 @@ class SoController extends Controller
 
         $CBG = Auth::user()->CBG;
 		
-        $so = DB::SELECT("SELECT SO.NO_BUKTI , SO.JTEMPO, SO.TGL, SO.KODEC, SO.NAMAC, 
-                                SO.ALAMAT, SO.KOTA, SOD.KD_BRG, SOD.NA_BRG, SOD.QTY, SOD.HARGA, SOD.KIRIM, SOD.SISA,
-                                SOD.TOTAL, SOD.PPN, SOD.DPP, SOD.DISK, SOD.SATUAN, SOD.TYPE_KOM, 
-                                SOD.KOM, SOD.TKOM, SO.TOTAL_TKOM, SO.PKP, SOD.LOKASI, SOD.TBERAT AS BERAT
+        $so = DB::SELECT("SELECT so.NO_BUKTI , so.JTEMPO, so.TGL, so.KODEC, so.NAMAC, 
+                                so.ALAMAT, so.KOTA, sod.KD_BRG, sod.NA_BRG, sod.QTY, sod.HARGA, sod.KIRIM2 AS KIRIM, sod.SISA2 AS SISA,
+                                sod.TOTAL, sod.PPN, sod.DPP, sod.DISK, sod.SATUAN, sod.TYPE_KOM, 
+                                sod.KOM, sod.TKOM, so.TOTAL_TKOM, so.PKP, sod.LOKASI, sod.TBERAT AS BERAT
                           from so, sod 
-                          WHERE SO.NO_BUKTI = SOD.NO_BUKTI 
-                        --   AND SO.KODEC ='$kodec' 
-                          AND SO.GOL ='$golz'
-                          AND SOD.SISA > 0
+                          WHERE so.NO_BUKTI = sod.NO_BUKTI 
+                        --   AND so.KODEC ='$kodec' 
+                          AND so.GOL ='$golz'
+                          AND sod.SISA2 > 0
                         --   AND CBG = '$CBG' 
                           AND POSTED = 1");
         return response()->json($so);
@@ -433,7 +433,8 @@ class SoController extends Controller
                 $detail->SATUAN      = ($SATUAN[$key] == null) ? "" :  $SATUAN[$key];				
                 $detail->QTY         = (float) str_replace(',', '', $QTY[$key]);
                 $detail->SISA         = (float) str_replace(',', '', $QTY[$key]);
- 
+                $detail->SISA2         = (float) str_replace(',', '', $QTY[$key]);
+                
                 $detail->HARGA       = (float) str_replace(',', '', $HARGA[$key]);
                 $detail->TOTAL       = (float) str_replace(',', '', $TOTAL[$key]); 
                 $detail->PPN       = (float) str_replace(',', '', $PPNX[$key]); 
@@ -466,9 +467,9 @@ class SoController extends Controller
 		
 		$so = So::where('NO_BUKTI', $no_buktix )->first();
 
-        DB::SELECT("UPDATE SO, CUST
-                    SET SO.NAMAC = CUST.NAMAC, SO.ALAMAT = CUST.ALAMAT, SO.KOTA = CUST.KOTA, SO.PKP=CUST.PKP, SO.HARI = CUST.HARI  WHERE SO.KODEC = CUST.KODEC 
-                    AND SO.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE so, cust
+                    SET so.NAMAC = cust.NAMAC, so.ALAMAT = cust.ALAMAT, so.KOTA = cust.KOTA, so.PKP=cust.PKP, so.HARI = cust.HARI  WHERE so.KODEC = cust.KODEC 
+                    AND so.NO_BUKTI='$no_buktix';");
 
         DB::SELECT("UPDATE so, sod
                             SET  sod.ID =  so.NO_ID  WHERE  so.NO_BUKTI =  sod.NO_BUKTI 
@@ -802,7 +803,8 @@ class SoController extends Controller
                         'SATUAN'     => ($SATUAN[$i] == null) ? "" :  $SATUAN[$i],						
                         'QTY'        => (float) str_replace(',', '', $QTY[$i]),
                         'SISA'        => (float) str_replace(',', '', $QTY[$i]),
-
+                        'SISA2'        => (float) str_replace(',', '', $QTY[$i]),
+                        
                         'HARGA'      => (float) str_replace(',', '', $HARGA[$i]),
                         'TOTAL'      => (float) str_replace(',', '', $TOTAL[$i]),
                         'PPN'      => (float) str_replace(',', '', $PPNX[$i]),
@@ -849,6 +851,7 @@ class SoController extends Controller
                         'SATUAN'     => ($SATUAN[$i] == null) ? "" :  $SATUAN[$i],						
                         'QTY'        => (float) str_replace(',', '', $QTY[$i]),
                         'SISA'        => (float) str_replace(',', '', $QTY[$i]),
+                        'SISA2'        => (float) str_replace(',', '', $QTY[$i]),
                         'FLAG'       => $this->FLAGZ,
                         'GOL'        => $this->GOLZ,
                         'PER'        => $periode,
@@ -886,9 +889,9 @@ class SoController extends Controller
 
         $no_bukti = $so->NO_BUKTI;
 
-        DB::SELECT("UPDATE SO, CUST
-                    SET SO.NAMAC = CUST.NAMAC, SO.ALAMAT = CUST.ALAMAT, SO.KOTA = CUST.KOTA, SO.PKP=CUST.PKP, SO.HARI = CUST.HARI  WHERE SO.KODEC = CUST.KODEC 
-                    AND SO.NO_BUKTI='$no_bukti';");
+        DB::SELECT("UPDATE so, cust
+                    SET so.NAMAC = cust.NAMAC, so.ALAMAT = cust.ALAMAT, so.KOTA = cust.KOTA, so.PKP=cust.PKP, so.HARI = cust.HARI  WHERE so.KODEC = cust.KODEC 
+                    AND so.NO_BUKTI='$no_bukti';");
 
 
         DB::SELECT("UPDATE so,  sod
@@ -1000,7 +1003,7 @@ class SoController extends Controller
         ob_end_clean();
         $PHPJasperXML->outpage("I");
        
-        DB::SELECT("UPDATE SO SET POSTED = 1 WHERE SO.NO_BUKTI='$no_so';");
+        DB::SELECT("UPDATE so SET POSTED = 1 WHERE NO_BUKTI='$no_so';");
     }
 	
 	

@@ -34,69 +34,233 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
   @yield('styles')
-  <script>
-   var tabCount = 0; // To uniquely identify each tab and iframe
 
-function addTab(title, url) {
+  {{-- code lama --}}
+  {{-- <script>
+          var tabCount = 0; // To uniquely identify each tab and iframe
 
-    tabCount++;
+        function addTab(title, url) {
 
-    // Create unique IDs for the tab and its content
-    const tabId = `tab-${tabCount}`;
-    const iframeId = `iframe-${tabCount}`;
+            tabCount++;
 
-    // Add the tab header with the link
-    $("#tabs ul").append(`
-        <li id="tab-header-${tabCount}">
-            <a href="#${tabId}">${title}</a>
-            <span class="ui-icon ui-icon-close" role="button" onclick="closeTab(${tabCount})"></span>
-        </li>
-    `);
+            // Create unique IDs for the tab and its content
+            const tabId = `tab-${tabCount}`;
+            const iframeId = `iframe-${tabCount}`;
 
-    // Add the tab content with an iframe and set src to the specified URL
+            // Add the tab header with the link
+            $("#tabs ul").append(`
+                <li id="tab-header-${tabCount}">
+                    <a href="#${tabId}">${title}</a>
+                    <span class="ui-icon ui-icon-close" role="button" onclick="closeTab(${tabCount})"></span>
+                </li>
+            `);
 
-    // untuk mengatur besarnya kotak, ubah height.nya
+            // Add the tab content with an iframe and set src to the specified URL
 
-    $("#tabs").append(`<div id="${tabId}" class="tab-content"><iframe id="${iframeId}" src="${url}" width="100%" 
-    height="650px" 
-    frameborder="0"></iframe></div>`);
+            // untuk mengatur besarnya kotak, ubah height.nya
 
-    // batas
+            $("#tabs").append(`<div id="${tabId}" class="tab-content"><iframe id="${iframeId}" src="${url}" width="100%" 
+            height="600px" 
+            frameborder="0"></iframe></div>`);
+
+            // batas
 
 
- 
+        
 
-    // Refresh the tabs to recognize new tab added dynamically
-    $("#tabs").tabs("refresh");
+            // Refresh the tabs to recognize new tab added dynamically
+            $("#tabs").tabs("refresh");
 
-    // Activate the new tab
-    $("#tabs").tabs("option", "active", tabCount - 1);
-    $('.mega-menu').hide();
-    }
-  
-  
-  
+            // Activate the new tab
+            $("#tabs").tabs("option", "active", tabCount - 1);
+            $('.mega-menu').hide();
+            }
+          
+          
+          
 
-function closeTab(tabIndex) {
-    // Remove the tab header and content
-    $(`#tab-header-${tabIndex}`).remove();
-    $(`#tab-${tabIndex}`).remove();
+        function closeTab(tabIndex) {
+            // Remove the tab header and content
+            $(`#tab-header-${tabIndex}`).remove();
+            $(`#tab-${tabIndex}`).remove();
 
-    // Refresh the tabs to reflect the changes
-    $("#tabs").tabs("refresh");
+            // Refresh the tabs to reflect the changes
+            $("#tabs").tabs("refresh");
 
-    // Activate the previous tab if any
-     const activeTabs = $("#tabs ul li").length;
-    if (activeTabs > 0) {
-        // Activate the previous tab if any
-        $("#tabs").tabs("option", "active", activeTabs - 1);
-    } else {
-        // If no tabs are left, reload the page
-        location.reload();
-    }
-}
-  
-  </script>
+            // Activate the previous tab if any
+            const activeTabs = $("#tabs ul li").length;
+            if (activeTabs > 0) {
+                // Activate the previous tab if any
+                $("#tabs").tabs("option", "active", activeTabs - 1);
+            } else {
+                // If no tabs are left, reload the page
+                location.reload();
+            }
+        }
+          
+  </script> --}}
+
+
+{{-- code baru --}}
+    <script>
+        var tabCount = 0; // To uniquely identify each tab and iframe
+        var iframeHistories = {}; // Object to store navigation histories for each iframe
+        var openTabs = {}; // To track open iframes by their URL
+
+        function addTab(title, url) {
+            // Check if an iframe with the same URL already exists
+            const existingTabId = Object.keys(openTabs).find(tabId => openTabs[tabId] === url);
+
+            if (existingTabId) {
+                // Focus on the existing tab
+                $("#tabs").tabs("option", "active", parseInt(existingTabId.split('-')[1]) - 1);
+                $('.mega-menu').hide();
+                return;
+            }
+
+            // Limit the number of tabs to 5
+            if (Object.keys(openTabs).length >= 10) {
+                alert("You can only open up to 10 tabs.");
+                $('.mega-menu').hide();
+                return;
+            }
+
+            tabCount++;
+
+            const tabId = `tab-${tabCount}`;
+            const iframeId = `iframe-${tabCount}`;
+
+            // Initialize history for the iframe
+            iframeHistories[iframeId] = [url];
+            openTabs[tabId] = url; // Track the open tab by its URL
+
+            // Add the tab header with the link
+            $("#tabs ul").append(`
+                <li id="tab-header-${tabCount}">
+                    <a href="#${tabId}">${title}</a>
+                    <span class="ui-icon ui-icon-close" role="button" onclick="closeTab(${tabCount})"></span>
+                </li>
+            `);
+
+            
+
+            // Add the tab content with an iframe (untuk atur besar kotak putih, ubah di hightnya)
+            $("#tabs").append(`
+                <div id="${tabId}" class="tab-content">
+                    <iframe id="${iframeId}" src="${url}" width="100%" height="650px" frameborder="0"></iframe>
+                </div>
+            `);
+
+            // Refresh the tabs to recognize new tab added dynamically
+            $("#tabs").tabs("refresh");
+            $("#tabs").tabs("option", "active", tabCount - 1);
+            $('.mega-menu').hide();
+
+            // Inject the "Back" and "Refresh" buttons inside the iframe after it loads
+            $(`#${iframeId}`).on('load', function() {
+                const iframe = this;
+
+                try {
+                    const doc = iframe.contentDocument || iframe.contentWindow.document;
+
+                    // Create a button container if it doesn't exist
+                    if (!doc.getElementById('button-container')) {
+                        const buttonContainer = doc.createElement('div');
+                        buttonContainer.id = 'button-container';
+                        buttonContainer.style.position = 'relative';
+                        buttonContainer.style.display = 'flex';
+                        buttonContainer.style.justifyContent = 'start';
+                        buttonContainer.style.padding = '10px';
+                        buttonContainer.style.backgroundColor = '#f8f9fa';
+                        buttonContainer.style.borderBottom = '1px solid #ccc';
+                        buttonContainer.style.zIndex = '1000';
+
+                        // Create the Back button
+                        const backButton = doc.createElement('button');
+                        backButton.id = 'iframe-back-button';
+                        backButton.innerText = 'Back';
+                        backButton.style.marginRight = '10px';
+                        backButton.style.padding = '10px 20px';
+                        backButton.style.backgroundColor = '#6c757d';
+                        backButton.style.color = '#fff';
+                        backButton.style.border = 'none';
+                        backButton.style.cursor = 'pointer';
+                        backButton.onclick = function() {
+                            const history = iframeHistories[iframeId];
+                            if (history && history.length > 1) {
+                                // Remove the current URL and get the previous URL
+                                history.pop();
+                                const previousUrl = history[history.length - 1];
+                                iframe.src = previousUrl; // Navigate to the previous URL
+                            } else {
+                                alert("No previous page in this iframe's history.");
+                            }
+                        };
+
+                        // Create the Refresh button
+                        const refreshButton = doc.createElement('button');
+                        refreshButton.id = 'iframe-refresh-button';
+                        refreshButton.innerText = 'Refresh';
+                        refreshButton.style.padding = '10px 20px';
+                        refreshButton.style.backgroundColor = '#28a745';
+                        refreshButton.style.color = '#fff';
+                        refreshButton.style.border = 'none';
+                        refreshButton.style.cursor = 'pointer';
+                        refreshButton.onclick = function() {
+                            iframe.contentWindow.location.reload();
+                        };
+
+                        // Add buttons to the container
+                        buttonContainer.appendChild(backButton);
+                        buttonContainer.appendChild(refreshButton);
+
+                        // Prepend the container to the body of the iframe content
+                        doc.body.insertBefore(buttonContainer, doc.body.firstChild);
+                    }
+
+                    // Add current URL to iframe's history stack if it's not already the last entry
+                    const currentUrl = iframe.contentWindow.location.href;
+                    const history = iframeHistories[iframeId];
+                    if (history[history.length - 1] !== currentUrl) {
+                        history.push(currentUrl);
+                    }
+                } catch (error) {
+                    console.warn('Unable to inject buttons inside the iframe due to cross-origin restrictions.');
+                }
+            });
+        }
+
+        function closeTab(tabIndex) {
+            const tabId = `tab-${tabIndex}`;
+            const iframeId = `iframe-${tabIndex}`;
+
+            // Remove history and openTabs entry for the iframe
+            delete iframeHistories[iframeId];
+            delete openTabs[tabId];
+
+            $(`#tab-header-${tabIndex}`).remove();
+            $(`#tab-${tabIndex}`).remove();
+
+            // Refresh tabs
+            $("#tabs").tabs("refresh");
+
+            const activeTabs = $("#tabs ul li`").length;
+            if (activeTabs > 0) {
+                $("#tabs").tabs("option", "active", activeTabs - 1);
+            } else {
+                location.reload();
+            }
+        }
+
+        // $(document).ready(function() {
+        //     $("#tabs").tabs();
+        //     addTab("Home", "{{ Url('/sup') }}");
+        // });
+    </script>
+
+{{-- batas --}}
+
+
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -108,7 +272,7 @@ function closeTab(tabIndex) {
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <!-- <div class="content-header"> -->
       <div class="container-fluid">
         <div class="row mb-2">
 		<div class="col-md-12">

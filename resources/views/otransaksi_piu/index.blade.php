@@ -75,15 +75,16 @@
                         <tr>
                             <th scope="col" style="text-align: center"></th>
                             <th scope="col" style="text-align: center">#</th>
-				     		            <th scope="col" style="text-align: center">-</th>							
+				     		<th scope="col" style="text-align: center">-</th>							
                             <th scope="col" style="text-align: center">Bukti#</th>
                             <th scope="col" style="text-align: center">Tgl</th>
                             
                             <th scope="col" style="text-align: center">Customer#</th>
                             <th scope="col" style="text-align: center">Nama</th>
-							              <th scope="col" style="text-align: center">Kota</th>
+							<th scope="col" style="text-align: center">Kota</th>
                             <th scope="col" style="text-align: center">Bayar</th>
                             <th scope="col" style="text-align: center">Notes</th>
+                            <th scope="col" style="text-align: center">Posted</th>
                            
                         </tr>
                     </thead>
@@ -149,6 +150,16 @@
                 {data: 'KOTA', name: 'KOTA'},
                 {data: 'BAYAR', name: 'BAYAR', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},				
                 {data: 'NOTES', name: 'NOTES'},
+                
+                { data: 'POSTED', name: 'POSTED',
+                  render : function(data, type, row, meta) {
+                    if(row['POSTED']=="0"){
+                        return '';
+                    }else{
+                        return '<input type="checkbox" checked style="pointer-events: none;">';
+                    }
+                  }
+                },
 
             ],
 

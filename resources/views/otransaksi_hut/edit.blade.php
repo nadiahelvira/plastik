@@ -46,6 +46,11 @@
 
 	/* penutup LOADX */
 
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
+
 </style>
 
 @section('content')
@@ -703,7 +708,7 @@
 		
 		chooseBeli = function(NO_BUKTI, TOTAL, SISA){
 			$("#NO_FAKTUR"+rowidBeli).val(NO_BUKTI);
-			$("#TOTAL"+rowidBeli).val(TOTAL);
+			$("#TOTAL"+rowidBeli).val(SISA);
 			$("#BAYAR"+rowidBeli).val(SISA);	
 			$("#TOTAL"+rowidBeli).autoNumeric('update');
 			$("#BAYAR"+rowidBeli).autoNumeric('update');
@@ -737,7 +742,7 @@
 				if($(this).prop("checked"))
 				{
 					var idx = (this.id).substring(5, 7);
-					kode = '"' + $("#pilihTotal"+idx).text() + '"';
+					kode = '"' + $("#pilihSisa"+idx).text() + '"';
 				} 
 				return kode;
 			}).get();

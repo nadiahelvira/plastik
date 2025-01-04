@@ -446,7 +446,7 @@ class BrgController extends Controller
 			
     	   $kodex = $request->kodex;
 			
-		   $bingco = DB::SELECT("SELECT NO_ID, KD_BRG from BRG      
+		   $bingco = DB::SELECT("SELECT NO_ID, KD_BRG from brg     
 		             where KD_BRG < 
 					 '$kodex' ORDER BY KD_BRG DESC LIMIT 1" );
 			
@@ -470,7 +470,7 @@ class BrgController extends Controller
 				
       	   $kodex = $request->kodex;
 	   
-		   $bingco = DB::SELECT("SELECT NO_ID, KD_BRG from BRG   
+		   $bingco = DB::SELECT("SELECT NO_ID, KD_BRG from brg   
 		             where KD_BRG > 
 					 '$kodex' ORDER BY KD_BRG ASC LIMIT 1" );
 					 
@@ -488,7 +488,7 @@ class BrgController extends Controller
 
 		if ($tipx=='bottom') {
 		  
-    		$bingco = DB::SELECT("SELECT NO_ID, KD_BRG from BRG     
+    		$bingco = DB::SELECT("SELECT NO_ID, KD_BRG from brg     
 		              ORDER BY KD_BRG DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 

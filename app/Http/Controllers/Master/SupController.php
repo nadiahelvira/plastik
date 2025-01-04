@@ -304,7 +304,7 @@ class SupController extends Controller
 			
     	   $kodex = $request->kodex;
 			
-		   $bingco = DB::SELECT("SELECT NO_ID, KODES from SUP     
+		   $bingco = DB::SELECT("SELECT NO_ID, KODES from sup     
 		             where KODES < 
 					 '$kodex' ORDER BY KODES DESC LIMIT 1" );
 			
@@ -328,7 +328,7 @@ class SupController extends Controller
 				
       	   $kodex = $request->kodex;
 	   
-		   $bingco = DB::SELECT("SELECT NO_ID, KODES from SUP    
+		   $bingco = DB::SELECT("SELECT NO_ID, KODES from sup   
 		             where KODES > 
 					 '$kodex' ORDER BY KODES ASC LIMIT 1" );
 					 
@@ -346,7 +346,7 @@ class SupController extends Controller
 
 		if ($tipx=='bottom') {
 		  
-    		$bingco = DB::SELECT("SELECT NO_ID, KODES from SUP    
+    		$bingco = DB::SELECT("SELECT NO_ID, KODES from sup    
 		              ORDER BY KODES DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 

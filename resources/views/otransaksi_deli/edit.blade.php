@@ -45,6 +45,11 @@
 
 	/* penutup LOADX */
 
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
+
 </style>
 
 @section('content')
@@ -837,7 +842,7 @@
 					for(i=0; i<resp.length; i++){
 						
 						dTableSo.row.add([
-							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].QTY+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\',\''+resp[i].TYPE_KOM+'\',\''+resp[i].KOM+'\',\''+resp[i].TKOM+'\',\''+resp[i].TOTAL_TKOM+'\',\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\',\''+resp[i].PKP+'\',\''+resp[i].LOKASI+'\', \''+resp[i].BERAT+'\')">'+resp[i].NO_BUKTI+'</a>',
+							'<a href="javascript:void(0);" onclick="chooseSo(\''+resp[i].NO_BUKTI+'\',  \''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\',  \''+resp[i].SATUAN+'\',  \''+resp[i].HARGA+'\',  \''+resp[i].TOTAL+'\',  \''+resp[i].PPNX+'\', \''+resp[i].DPP+'\' ,\''+resp[i].DISK+'\',\''+resp[i].TYPE_KOM+'\',\''+resp[i].KOM+'\',\''+resp[i].TKOM+'\',\''+resp[i].TOTAL_TKOM+'\',\''+resp[i].KODEC+'\',\''+resp[i].NAMAC+'\',\''+resp[i].ALAMAT+'\',\''+resp[i].KOTA+'\',\''+resp[i].PKP+'\',\''+resp[i].LOKASI+'\', \''+resp[i].BERAT+'\', \''+resp[i].SISA+'\')">'+resp[i].NO_BUKTI+'</a>',
 							resp[i].TGL,
 							resp[i].NAMAC,
 							resp[i].KD_BRG,
@@ -876,13 +881,12 @@
 			$("#browseSoModal").modal("show");
 		}
 		
-		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN,SISA, HARGA, TOTAL, PPNX, DPP, DISK, TYPE_KOM, KOM, TKOM, TOTAL_TKOM, KODEC, NAMAC, ALAMAT, KOTA, PKP, LOKASI, BERAT){
+		chooseSo = function(NO_BUKTI, KD_BRG,NA_BRG, SATUAN, HARGA, TOTAL, PPNX, DPP, DISK, TYPE_KOM, KOM, TKOM, TOTAL_TKOM, KODEC, NAMAC, ALAMAT, KOTA, PKP, LOKASI, BERAT, SISA){
 			$("#NO_SO"+rowidSo).val(NO_BUKTI);
 			// $("#JTEMPO"+rowidSo).val(JTEMPO);
 			$("#KD_BRG"+rowidSo).val(KD_BRG);
 			$("#NA_BRG"+rowidSo).val(NA_BRG);
 			$("#SATUAN"+rowidSo).val(SATUAN);
-			$("#QTY"+rowidSo).val(SISA);
 			$("#HARGA"+rowidSo).val(HARGA);	
 			$("#TOTAL"+rowidSo).val(TOTAL);	
 			$("#PPNX"+rowidSo).val(PPNX);	
@@ -899,6 +903,7 @@
 			$("#PKP"+rowidSo).val(PKP);	
 			$("#LOKASI"+rowidSo).val(LOKASI);	
 			$("#BERAT"+rowidSo).val(BERAT);
+			$("#QTY"+rowidSo).val(SISA);
 			$("#browseSoModal").modal("hide");
 			hitung();
 		}

@@ -56,6 +56,11 @@
 
 	/* penutup LOADX */
 
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
+
 </style>
 
 @section('content')
@@ -1376,8 +1381,11 @@ function getSuratsd(bukti)
 			
 			if (FLAGZ == 'AJ'){
 				
-				var QTYX  = ( QTYX * -1 ) ;			
+				var QTYX  = ( QTYX * -1 ) ;	
+				var DISK  = ( DISK * -1 ) ;	
+				
 				z.find('.QTY').autoNumeric('update');
+				z.find('.DISK').autoNumeric('update');
 
 			}
 

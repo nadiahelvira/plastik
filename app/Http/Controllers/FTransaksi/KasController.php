@@ -38,10 +38,10 @@ class KasController extends Controller
     {
         if ( $request->flagz == 'BKK' ) {
             // $this->judul = "Sumber Dana Keluar";
-            $this->judul = "Kas Keluar";
+            $this->judul = "kas Keluar";
         } else if ( $request->flagz == 'BKM' ) {
             // $this->judul = "Sumber Dana Masuk";
-            $this->judul = "Kas Masuk";
+            $this->judul = "kas Masuk";
         }
 		
         $this->FLAGZ = $request->flagz;
@@ -68,10 +68,10 @@ class KasController extends Controller
     {
         $NO_BUKTI = $request->NO_BUKTI;
 
-        $kel = DB::SELECT("SELECT KAS.NO_ID AS NO_IDHX, KAS.NO_BUKTI, KAS.TGL, KAS.BACNO, KAS.BNAMA, KAS.KET, KAS.JUMLAH AS TJUMLAH,
-		                   KASD.REC, KASD.NO_ID, KASD.ACNO, KASD.NACNO, KASD.URAIAN, KASD.JUMLAH, KASD.VAL FROM 
-						   KAS, KASD WHERE KAS.NO_BUKTI = KASD.NO_BUKTI and KASD.VAL = 0 
-						   AND KAS.NO_BUKTI ='$NO_BUKTI' ");
+        $kel = DB::SELECT("SELECT kas.NO_ID AS NO_IDHX, kas.NO_BUKTI, kas.TGL, kas.BACNO, kas.BNAMA, kas.KET, kas.JUMLAH AS TJUMLAH,
+		                   kasd.REC, kasd.NO_ID, kasd.ACNO, kasd.NACNO, kasd.URAIAN, kasd.JUMLAH, kasd.VAL FROM 
+						   kas, kasd WHERE kas.NO_BUKTI = kasd.NO_BUKTI and kasd.VAL = 0 
+						   AND kas.NO_BUKTI ='$NO_BUKTI' ");
        
 		return response()->json($kel);
     }
@@ -248,7 +248,7 @@ class KasController extends Controller
         if ($REC) {
             foreach ($REC as $key => $value) {
                 // Declare new data di Model
-                $detail    = new KasDetail;
+                $detail    = new kasdetail;
 
                 // Insert ke Database
                 $detail->NO_BUKTI = $no_bukti;
@@ -271,15 +271,15 @@ class KasController extends Controller
 		
 	    $no_buktix = $no_bukti;
 		
-		$kas = Kas::where('NO_BUKTI', $no_buktix )->first();
+		$kas = kas::where('NO_BUKTI', $no_buktix )->first();
 
-        DB::SELECT("UPDATE KAS, ACCOUNT
-                            SET KAS.BNAMA = ACCOUNT.NAMA  WHERE KAS.BACNO = ACCOUNT.ACNO 
-							AND KAS.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE kas, account
+                            SET kas.BNAMA = account.NAMA  WHERE kas.BACNO = ACCOUNT.ACNO 
+							AND kas.NO_BUKTI='$no_buktix';");
 							
-        DB::SELECT("UPDATE KAS, KASD
-                            SET KASD.ID = KAS.NO_ID  WHERE KAS.NO_BUKTI = KASD.NO_BUKTI 
-							AND KAS.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE kas, kasd
+                            SET kasd.ID = kas.NO_ID  WHERE kas.NO_BUKTI = kasd.NO_BUKTI 
+							AND kas.NO_BUKTI='$no_buktix';");
 							
         //return redirect('/kas/edit/?idx=' . $kas->NO_ID . '&tipx=edit&flagz=' . $this->FLAGZ . '&judul=' . $this->judul . '');
 		return redirect('/kas?flagz='.$FLAGZ)->with(['judul' => $judul, 'flagz' => $FLAGZ ]);
@@ -371,7 +371,7 @@ class KasController extends Controller
 			
     	   $buktix = $request->buktix;
 			
-		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from KAS      
+		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from kas      
 		             where PER ='$per' and TYPE ='$this->FLAGZ' 
                      and CBG = '$CBG' and NO_BUKTI < 
 					 '$buktix' ORDER BY NO_BUKTI DESC LIMIT 1" );
@@ -394,7 +394,7 @@ class KasController extends Controller
 				
       	   $buktix = $request->buktix;
 	   
-		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from KAS    
+		   $bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from kas    
 		             where PER ='$per' and TYPE ='$this->FLAGZ' 
                      and CBG = '$CBG' and NO_BUKTI > 
 					 '$buktix' ORDER BY NO_BUKTI ASC LIMIT 1" );
@@ -413,7 +413,7 @@ class KasController extends Controller
 
 		if ($tipx=='bottom') {
 		  
-    		$bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from KAS  where PER ='$per'
+    		$bingco = DB::SELECT("SELECT NO_ID, NO_BUKTI from kas  where PER ='$per'
             			and TYPE ='$this->FLAGZ' 
                         and CBG = '$CBG'   
 		                ORDER BY NO_BUKTI DESC  LIMIT 1" );
@@ -442,22 +442,22 @@ class KasController extends Controller
 
        	if ( $idx != 0 ) 
 		{
-			$kas = Kas::where('NO_ID', $idx )->first();	
+			$kas = kas::where('NO_ID', $idx )->first();	
 	     }
 		 else
 		 {
-				$kas = new Kas;
+				$kas = new kas;
                 $kas->TGL = Carbon::now();
       
 				
 		 }
 
         $no_bukti = $kas->NO_BUKTI;				
-        $kasDetail = DB::table('kasd')->where('NO_BUKTI', $no_bukti)->get();
+        $kasdetail = DB::table('kasd')->where('NO_BUKTI', $no_bukti)->get();
 
         $data = [
             'header'        => $kas,
-            'detail'        => $kasDetail
+            'detail'        => $kasdetail
         ];
  
          
@@ -543,7 +543,7 @@ class KasController extends Controller
         for ($i = 0; $i < $length; $i++) {
             // Insert jika NO_ID baru
             if ($NO_ID[$i] == 'new') {
-                $insert = KasDetail::create(
+                $insert = kasdetail::create(
                     [
                         'NO_BUKTI'   => $no_buktix,
                         'REC'        => $REC[$i],
@@ -566,7 +566,7 @@ class KasController extends Controller
                 );
             } else {
                 // Update jika NO_ID sudah ada
-                $update = KasDetail::updateOrCreate(
+                $update = kasdetail::updateOrCreate(
                     [
                         'NO_BUKTI'  => $no_buktix,
                         'NO_ID'     => (int) str_replace(',', '', $NO_ID[$i])
@@ -592,13 +592,13 @@ class KasController extends Controller
 		
 		$kas = Kas::where('NO_BUKTI', $no_buktix )->first();
 
-        DB::SELECT("UPDATE KAS, ACCOUNT
-                            SET KAS.BNAMA = ACCOUNT.NAMA  WHERE KAS.BACNO = ACCOUNT.ACNO 
-							AND KAS.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE kas, account
+                            SET kas.BNAMA = account.NAMA  WHERE kas.BACNO = ACCOUNT.ACNO 
+							AND kas.NO_BUKTI='$no_buktix';");
 							
-        DB::SELECT("UPDATE KAS, KASD
-                            SET KASD.ID = KAS.NO_ID  WHERE KAS.NO_BUKTI = KASD.NO_BUKTI 
-							AND KAS.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE kas, kasd
+                            SET kasd.ID = kas.NO_ID  WHERE kas.NO_BUKTI = kasd.NO_BUKTI 
+							AND kas.NO_BUKTI='$no_buktix';");
 							
 		return redirect('/kas?flagz='.$FLAGZ)->with(['judul' => $judul, 'flagz' => $FLAGZ  ]);
 
@@ -638,10 +638,10 @@ class KasController extends Controller
         $variablell = DB::select('call kasdel(?)', array($kas['NO_BUKTI']));
 
         // ganti 23
-        $deleteKas = Kas::find($kas->NO_ID);
+        $deletekas = kas::find($kas->NO_ID);
 
         // ganti 24
-        $deleteKas->delete();
+        $deletekas->delete();
 
 		 
         // ganti 
@@ -661,9 +661,9 @@ class KasController extends Controller
 
 		$judul = '';
 		if($kas->TYPE =='BKK'){
-			$judul ='Bukti Kas Keluar';
+			$judul ='Bukti kas Keluar';
 		} else {
-			$judul = 'Bukti Kas Masuk';
+			$judul = 'Bukti kas Masuk';
 		}
 		
         $query = DB::SELECT("
@@ -700,7 +700,7 @@ class KasController extends Controller
         $PHPJasperXML->outpage("I");
     }
 
-    public function getDetailKas(){
+    public function getDetailkas(){
 
         $no_bukti = $_GET['no_bukti'];
         $result = DB::table('kasd')->where('NO_BUKTI', $no_bukti)->get();

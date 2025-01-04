@@ -72,6 +72,11 @@
     }
 
 	/* penutup LOADX */
+
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
 	
 </style>
 

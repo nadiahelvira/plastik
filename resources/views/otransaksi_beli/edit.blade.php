@@ -56,6 +56,11 @@
 
 	/* penutup LOADX */
 
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
+
 </style>
 
 @section('content')
@@ -351,7 +356,7 @@
 												<input name="DPP[]" onblur="hitung()"  value="{{$detail->DPP}}" id="DPP{{$no}}" type="text" style="text-align: right"  class="form-control DPP" readonly>
 											</td>
 											<td>
-												<input name="DISK[]" onblur="hitung()"  value="0" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK" readonly>
+												<input name="DISK[]" onblur="hitung()"  value="{{$detail->DISK}}" id="DISK{{$no}}" type="text" style="text-align: right"  class="form-control DISK" readonly>
 											</td>
 											<td>
 												<input name="KET[]" id="KET{{$no}}" type="text" class="form-control KET" value="{{$detail->KET}}"  >
@@ -1340,8 +1345,11 @@
 	
 			if (FLAGZ == 'RB'){
 				
-				var QTY_POX  = ( QTY_POX * -1 ) ;			
+				var QTY_POX  = ( QTY_POX * -1 ) ;
+				var DISKX  = ( DISKX * -1 ) ;
+				
 				z.find('.QTY_PO').autoNumeric('update');
+				z.find('.DISKX').autoNumeric('update');
 
 			} 
 
@@ -1397,7 +1405,7 @@
 		});
 
 		
-		NETTX = TDPPX + TPPNX ;
+		NETTX = TDPPX + TPPNX - TDISK;
 
 		
 		if(isNaN(TTOTAL_QTY)) TTOTAL_QTY = 0;

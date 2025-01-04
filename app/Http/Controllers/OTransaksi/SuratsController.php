@@ -73,8 +73,9 @@ class SuratsController extends Controller
 		                  surats.ALAMAT, surats.KOTA, surats.KODEP, surats.NAMAP, surats.KOM, 
                           surats.RING, surats.SOPIR, surats.TRUCK, surats.PKP, surats.TOTAL_TKOM
                           from surats, suratsd 
-                          WHERE surats.NO_BUKTI = suratsD.NO_BUKTI AND surats.GOL ='$golz' 
-                          AND surats.CBG = '$CBG' AND surats.PKP = '$PPN' AND suratsd.SISA > 0 AND POSTED= 1");
+                          WHERE surats.NO_BUKTI = suratsd.NO_BUKTI AND surats.GOL ='$golz' 
+                          AND surats.CBG = '$CBG' 
+                          AND suratsd.SISA > 0 AND POSTED= 1");
         return response()->json($surats);
     }
 	
@@ -717,7 +718,7 @@ class SuratsController extends Controller
 
         ];
  
- 		$sup = DB::SELECT("SELECT KODES, CONCAT(NAMAS,'-',KOTA) AS NAMAS FROM SUP 
+ 		$sup = DB::SELECT("SELECT KODES, CONCAT(NAMAS,'-',KOTA) AS NAMAS FROM sup 
 		                 ORDER BY NAMAS ASC" );
 		
          
@@ -1004,7 +1005,7 @@ class SuratsController extends Controller
         ob_end_clean();
         $PHPJasperXML->outpage("I");
        
-        DB::SELECT("UPDATE surats SET POSTED = 1 WHERE surats.NO_BUKTI='$no_surats';");
+        DB::SELECT("UPDATE surats SET POSTED = 1 WHERE NO_BUKTI='$no_surats';");
     }
 	
 	

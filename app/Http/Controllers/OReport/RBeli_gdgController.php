@@ -64,7 +64,7 @@ class RBeli_gdgController extends Controller
 		
 			if (!empty($request->kodes) && !empty($request->kodes2))
 			{
-				$filterkodes = " WHERE beli.KODES between '".$kodes."' and '".$kodes2."' ";
+				$filterkodes = " and beli.KODES between '".$kodes."' and '".$kodes2."' ";
 			}
 			
 			if (!empty($request->cbg))

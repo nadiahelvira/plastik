@@ -17,12 +17,12 @@ class DashboardController extends Controller
     public function dashboard_plain() {
 
         // query diagram batang
-        $barBeliTotal = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM BELI WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
-        $barBeliQty = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM BELI WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
+        $barBeliTotal = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM beli WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
+        $barBeliQty = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM beli WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
         
 
-        $barJualTotal = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM JUAL WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
-        $barJualQty = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM JUAL WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
+        $barJualTotal = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM jual WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
+        $barJualQty = DB::select("SELECT MONTHNAME(TGL) as month, SUM(TOTAL) FROM jual WHERE YEAR(TGL)='2024' GROUP BY MONTH(TGL)");
 
         // query diagram pie
         $pie1 = DB::select("Select namas , sum(total) from beli where year(tgl)=2024 group by namas limit 10");
@@ -32,11 +32,11 @@ class DashboardController extends Controller
         // $chart2 = DB::select("Select namas , sum(total) from jual where year(tgl)=2024 group by namas limit 10");
         
         // query data list
-        $piutang = DB::select("SELECT NO_BUKTI, NAMAC, SISA FROM JUAL WHERE  JTEMPO >= NOW() AND SISA <> '0' ORDER BY NAMAC"); 
-        $beli = DB::select("SELECT NO_BUKTI, NAMAS, SISA FROM BELI WHERE JTEMPO >=NOW() AND SISA <> '0'  ORDER BY NAMAS");
-        $saldo = DB::select("SELECT ACCOUNTD.ACNO, ACCOUNTD.NAMA, ACCOUNTD.AK12 FROM ACCOUNTD
-        JOIN account ON ACCOUNTD.ACNO = account.ACNO
-        WHERE account.BNK <> '' AND ACCOUNTD.AK12 <> '0'");
+        $piutang = DB::select("SELECT NO_BUKTI, NAMAC, SISA FROM jual WHERE  JTEMPO >= NOW() AND SISA <> '0' ORDER BY NAMAC"); 
+        $beli = DB::select("SELECT NO_BUKTI, NAMAS, SISA FROM beli WHERE JTEMPO >=NOW() AND SISA <> '0'  ORDER BY NAMAS");
+        $saldo = DB::select("SELECT accountd.ACNO, accountd.NAMA, accountd.AK12 FROM accountd
+        JOIN account ON accountd.ACNO = account.ACNO
+        WHERE account.BNK <> '' AND accountd.AK12 <> '0'");
 
         // $saldo = DB::table("account")->get();
         // dd($saldo);

@@ -26,14 +26,14 @@
 					<form method="POST" action="{{url('jasper-sup-report')}}">
 					@csrf
 					<div class="form-group row">
-						<div class="col-md-1">
-							<label><strong>Gol :</strong></label>
+						<!--<div class="col-md-1">-->
+						<!--	<label><strong>Gol :</strong></label>-->
 							
-							<select name="gol" id="gol" class="form-control gol">
-								<option value="Y" {{ session()->get('filter_gol')=='Y' ? 'selected': ''}}>Y</option>
-								<option value="Z" {{ session()->get('filter_gol')=='Z' ? 'selected': ''}}>Z</option>
-							</select>
-						</div>
+						<!--	<select name="gol" id="gol" class="form-control gol">-->
+						<!--		<option value="Y" {{ session()->get('filter_gol')=='Y' ? 'selected': ''}}>Y</option>-->
+						<!--		<option value="Z" {{ session()->get('filter_gol')=='Z' ? 'selected': ''}}>Z</option>-->
+						<!--	</select>-->
+						<!--</div>-->
 						<div class="col-md-2">
 							<label><strong>Periode :</strong></label>
 							<select name="perio" id="perio" class="form-control perio" style="width: 200px">

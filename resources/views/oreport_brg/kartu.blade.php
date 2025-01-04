@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.plain')
 
 @section('content')
 <div class="content-wrapper">
@@ -25,48 +25,22 @@
                 <div class="card-body">
                     <form method="POST" action="{{url('jasper-stok-kartu')}}">
                     @csrf
+                    
                     <div class="form-group row">
-                        <!--
-                        <div class="col-md-3">
-                            <label><strong>Barang :</strong></label>
-                            
-                            <select name="brg" id="brg" class="form-control brg" style="width: 200px">
-                                <option value="{{ session()->get('filter_brg') }}">{{ session()->get('filter_brg') ? session()->get('filter_brg') : '--Pilih Barang--' }}</option>
-                                @foreach($brg as $brgD)
-                                    <option value="{{$brgD->KD_BRG}}">{{$brgD->KD_BRG}} {{$brgD->NA_BRG}}</option>
-                                @endforeach
-                            </select>
-                        </div> -->
-                        
-                        <!-- <div class="col-md-1" align="right"><strong>Barang :</strong></div> 
-                        <div class="col-md-2">
-                            <input type="text" class="form-control brg1" id="brg1" name="brg1" placeholder="Pilih Barang# 1" value="{{ session()->get('filter_brg1') }}" readonly>
-                        </div>  -->
-                        <div class="col-md-1" align="right"><strong>Barang :</strong></div>
-                        <div class="col-md-2">
-                            <select class="form-control brg1" name="brg1" id="brg1" onchange="fillBrg(this.id)">
-									<option value="{{ session()->get('filter_brg1') }}" {{ (session()->get('filter_brg1') != '') ? 'selected' : '' }}>{{ session()->get('filter_brg1') }}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="text" class="form-control nabrg1" id="nabrg1" name="nabrg1" placeholder="Nama" value="{{ session()->get('filter_nabrg1') }}" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <!-- <div class="col-md-1" align="right"><strong>s/d</strong></div> 
-                        <div class="col-md-2">
-                            <input type="text" class="form-control brg2" id="brg2" name="brg2" placeholder="Pilih Barang# 2" value="{{ session()->get('filter_brg2') }}" readonly>
-                        </div> --> 
-                        <div class="col-md-1" align="right"><strong>s/d</strong></div>
-                        <div class="col-md-2">
-                            <select class="form-control brg2" name="brg2" id="brg2" onchange="fillBrg(this.id)">
-									<option value="{{ session()->get('filter_brg2') }}" {{ (session()->get('filter_brg2') != '') ? 'selected' : '' }}>{{ session()->get('filter_brg2') }}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="text" class="form-control nabrg2" id="nabrg2" name="nabrg2" placeholder="Nama" value="{{ session()->get('filter_nabrg2') }}" readonly>
-                        </div>
-                    </div>
+						<div class="col-md-2">							
+							<label class="form-label">Barang 1</label>				
+							<input type="text" class="form-control brg" id="brg" name="brg" placeholder="Pilih Barang" value="{{ session()->get('filter_brg1') }}" readonly>
+						</div>  
+
+						<div class="col-md-1">
+							<label class="form-label"> s.d </label>
+						</div> 
+						
+						<div class="col-md-2">						
+							<label class="form-label">Barang 2</label>
+							<input type="text" class="form-control brg2" id="brg2" name="brg2" placeholder="ZZZ" value="{{ session()->get('filter_brg2') }}" readonly>
+						</div> 
+					</div> 
                     
                     <!-- Filter Tanggal -->
                     <div class="form-group row">
@@ -246,6 +220,8 @@
         </div>
     </div>
 </div>
+
+
 	<div class="modal fade" id="browseBrgModal" tabindex="-1" role="dialog" aria-labelledby="browseBrgModalLabel" aria-hidden="true">
 	  	<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -261,7 +237,34 @@
 						<tr>
 							<th>Barang#</th>
 							<th>Nama</th>
-							<th>Satuan</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+			</div>
+	  	</div>
+	</div>
+
+    <div class="modal fade" id="browseBrg2Modal" tabindex="-1" role="dialog" aria-labelledby="browseBrg2ModalLabel" aria-hidden="true">
+	  	<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="browseBrg2ModalLabel">Cari Barang</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-stripped table-bordered" id="table-brg2">
+					<thead>
+						<tr>
+							<th>Barang#</th>
+							<th>Nama</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -283,7 +286,6 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
-        select2_kd_brg();
 		
         $('.date').datepicker({  
             dateFormat: 'dd-mm-yy'
@@ -415,166 +417,103 @@
     });
     
     var dTableBrg;
-    loadDataBrg = function(indeks){
-    
-        $.ajax(
-        {
-            type: 'GET', 		
-            url: "{{url('brg/browse')}}",
-            data: {
-                'GOL': 'Y',
-            },
-            success: function( response )
-            {
-                resp = response;
-                if(dTableBrg){
-                    dTableBrg.clear();
-                }
-                for(i=0; i<resp.length; i++){
-                    
-                    dTableBrg.row.add([
-                        '<a href="javascript:void(0);" onclick="chooseBrg(\''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\', \''+indeks+'\')">'+resp[i].KD_BRG+'</a>',
-                        resp[i].NA_BRG,
-                        resp[i].SATUAN,
-                    ]);
-                }
-                dTableBrg.draw();
-            }
-        });
-    }
-    
-    dTableBrg = $("#table-brg").DataTable({
-        
-    });
-    
-    browseBrg = function(indeks){
-        loadDataBrg(indeks);
-        $("#browseBrgModal").modal("show");
-    }
-    
-    chooseBrg = function(KD_BRG, NA_BRG, indeks){
-        $("#brg"+indeks).val(KD_BRG);
-        $("#nabrg"+indeks).val(NA_BRG);	
-        $("#browseBrgModal").modal("hide");
-    }
-    /*
-    $("#brg1").keypress(function(e){
-        if(e.keyCode == 46){
-            e.preventDefault();
-            browseBrg(1);
-        }
-    });
-
-    $("#brg2").keypress(function(e){
-        if(e.keyCode == 46){
-            e.preventDefault();
-            browseBrg(2);
-        }
-    }); */
+	loadDataBrg = function(){
 	
-    function select2_kd_brg() {
-        $('#brg1').select2({
-            ajax: {
-                url: "{{ url('brg/get-select-kdbrg') }}",
-                dataType: "json",
-                type: "GET",
-                delay: 250,
-                data: function(params) {
-                    return {
-                        search: params.term,
-                        page: params.page
-                    }
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: data.items,
-                        pagination: {
-                            more: data.total_count
-                        }
-                    };
-                },
-                cache: true
-            },
-			allowClear: true,
-            dropdownCssClass: "bigdrop",
-            // dropdownAutoWidth: true,
-            placeholder: 'Pilih Barang ...',
-            minimumInputLength: 0,
-            templateResult: format,
-            templateSelection: formatSelection,
-            theme: "classic",
-        });
-        
-        $('#brg2').select2({
-            ajax: {
-                url: "{{ url('brg/get-select-kdbrg') }}",
-                dataType: "json",
-                type: "GET",
-                delay: 250,
-                data: function(params) {
-                    return {
-                        search: params.term,
-                        page: params.page
-                    }
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: data.items,
-                        pagination: {
-                            more: data.total_count
-                        }
-                    };
-                },
-                cache: true
-            },
-			allowClear: true,
-            dropdownCssClass: "bigdrop",
-            // dropdownAutoWidth: true,
-            placeholder: 'Pilih Barang ...',
-            minimumInputLength: 0,
-            templateResult: format,
-            templateSelection: formatSelection,
-            theme: "classic",
-        });
-    }
-
-    function format(repo) {
-        if (repo.loading) {
-            return repo.text;
-        }
-
-        var $container = $(
-            "<div class='select2-result-repository clearfix text_input'>" +
-            "<div class='select2-result-repository__title text_input'></div>" +
-            "</div>"
-        );
-
-        $container.find(".select2-result-repository__title").text(repo.text+' - '+repo.na_brg);
-        return $container;
-    }
-
-	var kdbarang = '';
-	var namabarang = '';
-
-    function formatSelection(repo) {
-        kdbarang = repo.id;
-        namabarang = repo.na_brg;
-        return repo.text;
-    }
-    
-	function fillBrg(id) {
-        $('#na'+id).val(namabarang);
-        if(kdbarang=="{{ session()->get('filter_brg1') }}" && id=='brg1') 
-        {
-            $('#na'+id).val("{{ session()->get('filter_nabrg1') }}");
-        }
-        if(kdbarang=="{{ session()->get('filter_brg2') }}" && id=='brg2') 
-        {
-            $('#na'+id).val("{{ session()->get('filter_nabrg2') }}");
-        }
+		$.ajax(
+		{
+			type: 'GET', 		
+			url: "{{url('brg/browse_koreksi')}}",
+			
+			success: function( response )
+			{
+				resp = response;
+				if(dTableBrg){
+					dTableBrg.clear();
+				}
+				for(i=0; i<resp.length; i++){
+					
+					dTableBrg.row.add([
+						'<a href="javascript:void(0);" onclick="chooseBrg(\''+resp[i].KD_BRG+'\',  \''+resp[i].NA_BRG+'\', \''+resp[i].ALAMAT+'\',  \''+resp[i].KOTA+'\')">'+resp[i].KD_BRG+'</a>',
+						resp[i].NA_BRG,
+					]);
+				}
+				dTableBrg.draw();
+			}
+		});
 	}
+	
+	dTableBrg = $("#table-brg").DataTable({
+		
+	});
+	
+	browseBrg = function(){
+		loadDataBrg();
+		$("#browseBrgModal").modal("show");
+	}
+	
+	chooseBrg = function(KD_BRG){
+		$("#brg").val(KD_BRG);
+		$("#browseBrgModal").modal("hide");
+	}
+	
+	$("#brg").keypress(function(e){
+		if(e.keyCode == 46){
+			e.preventDefault();
+			browseBrg();
+		}
+	});
+
+/////////////////////////////////////////////////////////////////////
+
+	
+    var dTableBrg2;
+	loadDataBrg2 = function(){
+	
+		$.ajax(
+		{
+			type: 'GET', 		
+			url: "{{url('brg/browse_koreksi')}}",
+			
+			success: function( response )
+			{
+				resp = response;
+				if(dTableBrg2){
+					dTableBrg2.clear();
+				}
+				for(i=0; i<resp.length; i++){
+					
+					dTableBrg2.row.add([
+						'<a href="javascript:void(0);" onclick="chooseBrg2(\''+resp[i].KD_BRG+'\')">'+resp[i].KD_BRG+'</a>',
+						resp[i].NA_BRG,
+					]);
+				}
+				dTableBrg2.draw();
+			}
+		});
+	}
+	
+	dTableBrg2 = $("#table-brg2").DataTable({
+		
+	});
+	
+	browseBrg2 = function(){
+		loadDataBrg2();
+		$("#browseBrg2Modal").modal("show");
+	}
+	
+	chooseBrg2 = function(KD_BRG){
+		$("#brg2").val(KD_BRG);
+		$("#browseBrg2Modal").modal("hide");
+	}
+	
+	$("#brg2").keypress(function(e){
+		if(e.keyCode == 46){
+			e.preventDefault();
+			browseBrg2();
+		}
+	});
+
+///////////////////////////////////////////////////////////////////
 </script>
 @endsection
 

@@ -647,6 +647,7 @@ Route::get('/get-deli-report', 'App\Http\Controllers\OReport\RDeliController@get
 Route::get('/jsdelic/{deli:NO_ID}', 'App\Http\Controllers\OTransaksi\DeliController@jsdelic')->middleware(['auth']);
 Route::post('jasper-deli-report', 'App\Http\Controllers\OReport\RDeliController@jasperDeliReport')->middleware(['auth']);
 Route::get('/deli/cetak/{deli:NO_ID}','App\Http\Controllers\OTransaksi\DeliController@cetak')->middleware(['auth']);
+Route::get('/deli/cetak2/{deli:NO_ID}','App\Http\Controllers\OTransaksi\DeliController@cetak2')->middleware(['auth']);
 
 
 // Operational Penjualan
@@ -873,6 +874,7 @@ Route::get('/piu/delete/{piu}', 'App\Http\Controllers\OTransaksi\PiuController@d
 Route::post('piu/posting', 'App\Http\Controllers\OTransaksi\PiuController@posting')->middleware(['auth']);
 Route::get('piu/index-posting', 'App\Http\Controllers\OTransaksi\PiuController@index_posting')->middleware(['auth']);
 Route::get('/piu/browse_piud', 'App\Http\Controllers\OTransaksi\PiuController@browse_piud')->middleware(['auth'])->name('piu/browse_piud');
+Route::get('/piu/cetak/{piu:NO_ID}','App\Http\Controllers\OTransaksi\PiuController@cetak')->middleware(['auth']);
 
 
 // Operational Transaksi Kik
@@ -1345,21 +1347,41 @@ Route::post('/bank/update/{bank}', 'App\Http\Controllers\FTransaksi\BankControll
 Route::get('/bank/delete/{bank}', 'App\Http\Controllers\FTransaksi\BankController@destroy')->middleware(['auth'])->name('bank.delete');
 
 
-
-
 //Report
 Route::post('/rmemo/cetak', 'App\Http\Controllers\FReport\RMemoController@cetak')->middleware(['auth'])->name('rmemo.cetak');
 
 
 
+// Laporan Kartu Stok
+Route::get('/rkarstk', 'App\Http\Controllers\OReport\RKarstkController@kartu')->middleware(['auth']);
+Route::get('/get-stok-kartu', 'App\Http\Controllers\OReport\RKarstkController@getStokKartu')->middleware(['auth']);
+Route::post('jasper-stok-kartu', 'App\Http\Controllers\OReport\RKarstkController@jasperStokKartu')->middleware(['auth']);
+
+// Laporan Kartu Hutang
+Route::get('/rkartuh', 'App\Http\Controllers\OReport\RKartuhController@kartu')->middleware(['auth']);
+Route::get('/get-hut-kartu', 'App\Http\Controllers\OReport\RKartuhController@getHutKartu')->middleware(['auth']);
+Route::post('jasper-hut-kartu', 'App\Http\Controllers\OReport\RKartuhController@jasperHutKartu')->middleware(['auth']);
+
+// Laporan Kartu Piutang
+Route::get('/rkartup', 'App\Http\Controllers\OReport\RKartupController@kartu')->middleware(['auth']);
+Route::get('/get-piu-kartu', 'App\Http\Controllers\OReport\RKartupController@getPiuKartu')->middleware(['auth']);
+Route::post('jasper-piu-kartu', 'App\Http\Controllers\OReport\RKartupController@jasperPiuKartu')->middleware(['auth']);
 
 
+// Laporan Sisa Hutang
+Route::get('/rsisahut', 'App\Http\Controllers\OReport\RKartuhController@sisa')->middleware(['auth']);
+Route::get('/get-hut-sisa', 'App\Http\Controllers\OReport\RKartuhController@getHutSisa')->middleware(['auth']);
+Route::post('/jasper-hutsisa-report', 'App\Http\Controllers\OReport\RKartuhController@jasperHutSisaReport')->middleware(['auth']);
 
+// Laporan Sisa Piutang
+Route::get('/rsisapiu', 'App\Http\Controllers\OReport\RKartupController@sisa')->middleware(['auth']);
+Route::get('/get-piu-sisa', 'App\Http\Controllers\OReport\RKartupController@getPiuSisa')->middleware(['auth']);
+Route::post('/jasper-piusisa-report', 'App\Http\Controllers\OReport\RKartupController@jasperPiuSisaReport')->middleware(['auth']);
 
+#import Excel
 
-
-
-
+Route::get('/import_excel', 'App\Http\Controllers\OReport\RExcelController@report')->middleware(['auth'])->name('rexcel');
+Route::post('/import_excel/import_excel', 'App\Http\Controllers\OReport\RExcelController@import_excel');
 
 
 require __DIR__.'/auth.php';

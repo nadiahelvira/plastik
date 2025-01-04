@@ -75,6 +75,11 @@
     .row {
         margin-bottom: 8px !important;
     }
+
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
 </style>
 
 @section('content')

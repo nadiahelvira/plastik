@@ -54,34 +54,13 @@ class UtbeliController extends Controller
 
     public function browse(Request $request)
     {
-        //$utbeli = DB::table('utbeli')->select('NO_BUKTI', 'TGL', 'KODES','NAMAS', 'ALAMAT','KOTA', 'TOTAL','BAYAR','SISA')->where('KODES', $request['KODES'] )->where('SISA', '<>', 0 )->where('GOL', 'Y')->orderBy('KODES', 'ASC')->get();
 
-        $CBG = Auth::user()->CBG;
-        $PPN = Auth::user()->PPN;
-		
-        $utbeli = DB::SELECT("SELECT NO_BUKTI,TGL, NO_PO, KODES, NAMAS, ALAMAT, KOTA,KD_BHN, NA_BHN, KG, HARGA, ( JCONT- SCONT ) AS KIRIM, SCONT AS SISA, NOTES, RPRATE, EMKL, BL, AJU 
-                            from utbeli
-							WHERE  SCONT > 0 and GOL='$request->GOL' and YEAR(BELI.TGL) >= 2024 
-                            AND CBG = '$CBG'
-                            ORDER BY KODES; ");
-
-        return response()->json($utbeli);
     }
 
     public function browseuang(Request $request)
     {
 
-		$no_pox = $request->NO_PO;
-		$golx = $request->GOL;
-		
-        $CBG = Auth::user()->CBG;
-		
-        $utbeli = DB::SELECT("SELECT NO_BUKTI,TGL, NO_PO, KODES, NAMAS, RPTOTAL AS TOTAL, RPBAYAR AS BAYAR, RPSISA AS SISA
-                            from utbeli
-                            WHERE NO_PO='$no_pox' AND RPSISA<>0 and GOL='$golx' AND CBG = '$CBG'
-                            ORDER BY NO_BUKTI; ");
-        
-        return response()->json($utbeli);
+
     }
 
     public function getUtbeli(Request $request)
@@ -373,7 +352,7 @@ class UtbeliController extends Controller
            
 
         // Insert Header
-        $utbeli = Beli::create(
+        $utbeli = beli::create(
             [
                 'NO_BUKTI'         => $no_bukti,
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
@@ -390,8 +369,8 @@ class UtbeliController extends Controller
                 'SISA'             => ($FLAGZ == 'UM') ? (float) str_replace(',', '', $request['TOTAL'] ) * -1  : (float) str_replace(',', '', $request['TOTAL'] ),      
                 'ACNOA'            => ($request['ACNOA'] == null) ? "" : $request['ACNOA'],
                 'NACNOA'           => ($request['NACNOA'] == null) ? "" : $request['NACNOA'],
-                'ACNOB'            => $ACNOB,
-                'NACNOB'           => $NACNOB,
+                'ACNOB'            => '211101',
+                'NACNOB'           => 'HUTANG DAGANG',
                 'BACNO'            => ($request['BACNO'] == null) ? "" : $request['BACNO'],
                 'BNAMA'            => ($request['BNAMA'] == null) ? "" : $request['BNAMA'],
                 'TYPE'             => ($request['TYPE'] == null) ? "" : $request['TYPE'],
@@ -410,17 +389,17 @@ class UtbeliController extends Controller
 	    $no_buktix = $no_bukti;
 		
 		
-	    DB::SELECT("UPDATE BELI, SUP
-                            SET BELI.NAMAS = SUP.NAMAS, BELI.ALAMAT = SUP.ALAMAT, BELI.KOTA = SUP.KOTA  WHERE BELI.KODES = SUP.KODES 
-							AND BELI.NO_BUKTI='$no_buktix';");
+	    DB::SELECT("UPDATE beli, sup
+                            SET beli.NAMAS = sup.NAMAS, beli.ALAMAT = sup.ALAMAT, beli.KOTA = sup.KOTA  WHERE beli.KODES = sup.KODES 
+							AND beli.NO_BUKTI='$no_buktix';");
 
-        DB::SELECT("UPDATE BELI, ACCOUNT
-                            SET BELI.BNAMA = ACCOUNT.NAMA  WHERE BELI.BACNO = ACCOUNT.ACNO 
-							AND BELI.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE beli, account
+                            SET beli.BNAMA = account.NAMA  WHERE beli.BACNO = account.ACNO 
+							AND beli.NO_BUKTI='$no_buktix';");
 							
-        DB::SELECT("UPDATE BELI, ACCOUNT
-                            SET BELI.NACNOA = ACCOUNT.NAMA  WHERE BELI.ACNOA = ACCOUNT.ACNO 
-							AND BELI.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE beli, account
+                            SET beli.NACNOA = account.NAMA  WHERE beli.ACNOA = account.ACNO 
+							AND beli.NO_BUKTI='$no_buktix';");
 						
 		
 		if ( $FLAGZ == 'UM' ) {
@@ -432,7 +411,7 @@ class UtbeliController extends Controller
 		
 		
 		
-		$utbeli = Beli::where('NO_BUKTI', $no_buktix )->first();
+		$utbeli = beli::where('NO_BUKTI', $no_buktix )->first();
 					 
 		return redirect('/utbeli?flagz='.$FLAGZ.'&golz='.$GOLZ)
 	   ->with(['judul' => $judul, 'golz' => $GOLZ, 'flagz' => $FLAGZ ]);
@@ -629,7 +608,7 @@ class UtbeliController extends Controller
 
 
 
-    public function update(Request $request, Beli $utbeli)
+    public function update(Request $request, beli $utbeli)
     {
         $this->validate(
             $request,
@@ -675,7 +654,9 @@ class UtbeliController extends Controller
                 'BACNO'            => ($request['BACNO'] == null) ? "" : $request['BACNO'],
                 'BNAMA'            => ($request['BNAMA'] == null) ? "" : $request['BNAMA'],				
                 'TYPE'             => ($request['TYPE'] == null) ? "" : $request['TYPE'],				
-                'NOTES'             => ($request['NOTES'] == null) ? "" : $request['NOTES'],				
+                'NOTES'             => ($request['NOTES'] == null) ? "" : $request['NOTES'],	
+                'ACNOB'            => '211101',
+                'NACNOB'           => 'HUTANG DAGANG',			
                 'USRNM'            => Auth::user()->username,
                 'updated_by'       => Auth::user()->username,
                 'CBG'              => $CBG,
@@ -690,17 +671,17 @@ class UtbeliController extends Controller
 		$no_buktix = $utbeli->NO_BUKTI;
 		
 	
-	   DB::SELECT("UPDATE BELI, SUP
-                            SET BELI.NAMAS = SUP.NAMAS, BELI.ALAMAT = SUP.ALAMAT, BELI.KOTA = SUP.KOTA  WHERE BELI.KODES = SUP.KODES 
-							AND BELI.NO_BUKTI='$no_buktix';");
+	   DB::SELECT("UPDATE beli, sup
+                            SET beli.NAMAS = sup.NAMAS, beli.ALAMAT = sup.ALAMAT, beli.KOTA = sup.KOTA  WHERE beli.KODES = sup.KODES 
+							AND beli.NO_BUKTI='$no_buktix';");
 
-        DB::SELECT("UPDATE BELI, ACCOUNT
-                            SET BELI.BNAMA = ACCOUNT.NAMA  WHERE BELI.BACNO = ACCOUNT.ACNO 
-							AND BELI.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE beli, account
+                            SET beli.BNAMA = account.NAMA  WHERE beli.BACNO = account.ACNO 
+							AND beli.NO_BUKTI='$no_buktix';");
 							
-        DB::SELECT("UPDATE BELI, ACCOUNT
-                            SET BELI.NACNOA = ACCOUNT.NAMA  WHERE BELI.ACNOA = ACCOUNT.ACNO 
-							AND BELI.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE beli, account
+                            SET beli.NACNOA = account.NAMA  WHERE beli.ACNOA = account.ACNO 
+							AND beli.NO_BUKTI='$no_buktix';");
 	
 
 		if ( $FLAGZ == 'UM' ) {
@@ -712,7 +693,7 @@ class UtbeliController extends Controller
         }
 		
 	
-		$utbeli = Beli::where('NO_BUKTI', $no_buktix )->first();
+		$utbeli = beli::where('NO_BUKTI', $no_buktix )->first();
 	
 	
 	 
@@ -722,7 +703,7 @@ class UtbeliController extends Controller
 
     }
 
-    public function destroy( Request $request, Beli $utbeli)
+    public function destroy( Request $request, beli $utbeli)
     {
 
 		$this->setFlag($request);
@@ -752,8 +733,8 @@ class UtbeliController extends Controller
              $variablell = DB::select('call thutdel(?)', array($utbeli['NO_BUKTI']));
         }
 		
-        $deleteBeli = Beli::find($utbeli->NO_ID);
-        $deleteBeli->delete();
+        $deletebeli = beli::find($utbeli->NO_ID);
+        $deletebeli->delete();
 
 		return redirect('/utbeli?flagz='.$FLAGZ.'&golz='.$GOLZ)
 		       ->with(['judul' => $judul, 'golz' => $GOLZ, 'flagz' => $FLAGZ ])
@@ -763,14 +744,14 @@ class UtbeliController extends Controller
 
     }
 
-    public function repost(Beli $utbeli)
+    public function repost(beli $utbeli)
     {
         DB::SELECT("UPDATE utbeli SET POSTED=0 WHERE NO_ID=".$utbeli->NO_ID." AND FLAG in ('BD','BN')");
         return redirect('/utbelin')->with('status', 'Data '.$utbeli->NO_BUKTI.' berhasil dibuka posting');
     }
 	
 	
-	public function jsutbelic(Beli $utbeli)
+	public function jsutbelic(beli $utbeli)
     {
        
        
@@ -796,14 +777,14 @@ class UtbeliController extends Controller
         $PHPJasperXML->load_xml_file(base_path() . ('/app/reportc01/phpjasperxml/' . $file . '.jrxml'));
 
         $query = DB::SELECT("SELECT beli.NO_BUKTI, beli.TGL, beli.KODES, beli.NAMAS, beli.TOTAL,
-                             IF(beli.FLAG ='TH', ACNOA, BACNO ) AS ACNO, IF ( BELI.FLAG ='TH', NACNOA, BNAMA ) AS NACNO,
+                             IF(beli.FLAG ='TH', ACNOA, BACNO ) AS ACNO, IF ( beli.FLAG ='TH', NACNOA, BNAMA ) AS NACNO,
                              beli.NOTES, beli.USRNM
                             FROM beli
                             WHERE beli.NO_BUKTI='$no_beli' 
                             ;
 		");
 
-                DB::SELECT("UPDATE BELI SET POSTED = 1 WHERE NO_BUKTI='$no_beli';");
+                DB::SELECT("UPDATE beli SET POSTED = 1 WHERE NO_BUKTI='$no_beli';");
                 
         $data = [];
 

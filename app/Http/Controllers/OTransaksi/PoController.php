@@ -62,12 +62,12 @@ class PoController extends Controller
         $CBG = Auth::user()->CBG;
         $PPN = Auth::user()->PPN;
 		
-        $po = DB::SELECT("SELECT distinct PO.NO_BUKTI , PO.KODES, PO.NAMAS, 
-		                  PO.ALAMAT, PO.KOTA, PO.PKP, po.GUDANG, PO.JTEMPO, PO.NOTES from po, pod 
-                          WHERE PO.NO_BUKTI = POD.NO_BUKTI AND PO.GOL ='$golz'
-                          AND PO.CBG = '$CBG' 
-                        --   AND PO.PKP ='$PPN' 
-                          AND POD.SISA > 0 AND POSTED = 1
+        $po = DB::SELECT("SELECT distinct po.NO_BUKTI , po.KODES, po.NAMAS, 
+		                  po.ALAMAT, po.KOTA, po.PKP, po.GUDANG, po.JTEMPO, po.NOTES from po, pod 
+                          WHERE po.NO_BUKTI = pod.NO_BUKTI AND po.GOL ='$golz'
+                          AND po.CBG = '$CBG' 
+                        --   AND po.PKP ='$PPN' 
+                          AND pod.SISA > 0 AND POSTED = 1
                           GROUP BY NO_BUKTI ");
         return response()->json($po);
     }
@@ -413,9 +413,9 @@ class PoController extends Controller
 		$po = Po::where('NO_BUKTI', $no_buktix )->first();
 
 
-        DB::SELECT("UPDATE PO, SUP
-                    SET PO.NAMAS = SUP.NAMAS, PO.ALAMAT = SUP.ALAMAT, PO.KOTA = SUP.KOTA, PO.PKP=SUP.PKP, PO.HARI = SUP.HARI  WHERE PO.KODES = SUP.KODES 
-                    AND PO.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE po, sup
+                    SET po.NAMAS = sup.NAMAS, po.ALAMAT = sup.ALAMAT, po.KOTA = sup.KOTA, po.PKP=sup.PKP, po.HARI = sup.HARI  WHERE po.KODES = sup.KODES 
+                    AND po.NO_BUKTI='$no_buktix';");
 
         DB::SELECT("UPDATE po,  pod
                             SET  pod.ID =  po.NO_ID  WHERE  po.NO_BUKTI =  pod.NO_BUKTI 
@@ -617,7 +617,7 @@ class PoController extends Controller
 
         ];
  
- 		$sup = DB::SELECT("SELECT KODES, CONCAT(NAMAS,'-',KOTA) AS NAMAS FROM SUP 
+ 		$sup = DB::SELECT("SELECT KODES, CONCAT(NAMAS,'-',KOTA) AS NAMAS FROM sup
 		                 ORDER BY NAMAS ASC" );
 		
          
@@ -677,6 +677,7 @@ class PoController extends Controller
                 'TDISK'            => (float) str_replace(',', '', $request['TDISK']),
                 'TDPP'            => (float) str_replace(',', '', $request['TDPP']),
                 'TPPN'            => (float) str_replace(',', '', $request['TPPN']),
+                'NETT'            => (float) str_replace(',', '', $request['NETT']),
                 'HARI'             => (float) str_replace(',', '', $request['HARI']),
 				'USRNM'            => Auth::user()->username,
                 'TG_SMP'           => Carbon::now(),
@@ -774,9 +775,9 @@ class PoController extends Controller
 
         $no_bukti = $po->NO_BUKTI;
         
-        DB::SELECT("UPDATE PO, SUP
-                    SET PO.NAMAS = SUP.NAMAS, PO.ALAMAT = SUP.ALAMAT, PO.KOTA = SUP.KOTA, PO.PKP=SUP.PKP, PO.HARI = SUP.HARI  WHERE PO.KODES = SUP.KODES 
-                    AND PO.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE po, sup
+                    SET po.NAMAS = sup.NAMAS, po.ALAMAT = sup.ALAMAT, po.KOTA = sup.KOTA, po.PKP=sup.PKP, po.HARI = sup.HARI  WHERE po.KODES = sup.KODES 
+                    AND po.NO_BUKTI='$no_buktix';");
 
 
         DB::SELECT("UPDATE po,  pod
@@ -889,7 +890,7 @@ class PoController extends Controller
         ob_end_clean();
         $PHPJasperXML->outpage("I");
 
-        DB::SELECT("UPDATE PO SET POSTED = 1 WHERE PO.NO_BUKTI='$no_po';");
+        DB::SELECT("UPDATE po SET POSTED = 1 WHERE po.NO_BUKTI='$no_po';");
 
     }
 	
@@ -918,7 +919,7 @@ class PoController extends Controller
 			   $NO_BUKTIXZ  = $NO_BUKTI[$key];
 			  
 
-                    DB::SELECT("UPDATE PO SET POSTED = 1 WHERE PO.NO_BUKTI='$NO_BUKTIXZ'");
+                    DB::SELECT("UPDATE po SET POSTED = 1 WHERE po.NO_BUKTI='$NO_BUKTIXZ'");
                   
 			}
 		}

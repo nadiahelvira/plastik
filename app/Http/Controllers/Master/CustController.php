@@ -295,7 +295,7 @@ class CustController extends Controller
 			
     	   $kodex = $request->kodex;
 			
-		   $bingco = DB::SELECT("SELECT NO_ID, KODEC from CUST      
+		   $bingco = DB::SELECT("SELECT NO_ID, KODEC from cust      
 		             where KODEC < 
 					 '$kodex' ORDER BY KODEC DESC LIMIT 1" );
 			
@@ -319,7 +319,7 @@ class CustController extends Controller
 				
       	   $kodex = $request->kodex;
 	   
-		   $bingco = DB::SELECT("SELECT NO_ID, KODEC from CUST    
+		   $bingco = DB::SELECT("SELECT NO_ID, KODEC from cust   
 		             where KODEC > 
 					 '$kodex' ORDER BY KODEC ASC LIMIT 1" );
 					 
@@ -337,7 +337,7 @@ class CustController extends Controller
 
 		if ($tipx=='bottom') {
 		  
-    		$bingco = DB::SELECT("SELECT NO_ID, KODEC from CUST     
+    		$bingco = DB::SELECT("SELECT NO_ID, KODEC from cust     
 		              ORDER BY KODEC DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 

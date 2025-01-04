@@ -204,7 +204,7 @@ class MklController extends Controller
 			
     	   $kodex = $request->kodex;
 			
-		   $bingco = DB::SELECT("SELECT NO_ID, KODE from MKL      
+		   $bingco = DB::SELECT("SELECT NO_ID, KODE from mkl      
 		             where KODE < 
 					 '$kodex' ORDER BY ACNO DESC LIMIT 1" );
 			
@@ -228,7 +228,7 @@ class MklController extends Controller
 				
       	   $kodex = $request->kodex;
 	   
-		   $bingco = DB::SELECT("SELECT NO_ID, KODE from MKL    
+		   $bingco = DB::SELECT("SELECT NO_ID, KODE from mkl   
 		             where KODE > 
 					 '$kodex' ORDER BY KODE ASC LIMIT 1" );
 					 
@@ -246,7 +246,7 @@ class MklController extends Controller
 
 		if ($tipx=='bottom') {
 		  
-    		$bingco = DB::SELECT("SELECT NO_ID, KODE from MKL    
+    		$bingco = DB::SELECT("SELECT NO_ID, KODE from mkl    
 		              ORDER BY KODE DESC  LIMIT 1" );
 					 
 			if(!empty($bingco)) 

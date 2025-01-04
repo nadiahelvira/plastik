@@ -79,7 +79,7 @@ class BeliController extends Controller
 
         $beli = DB::SELECT("SELECT distinct beli.NO_BUKTI , beli.KODES, beli.NAMAS, 
 		                  beli.ALAMAT, beli.KOTA, beli.PKP, beli.NO_PO, beli.GUDANG from beli, belid 
-                          WHERE beli.NO_BUKTI = beliD.NO_BUKTI AND beli.FLAG='BL' 
+                          WHERE beli.NO_BUKTI = belid.NO_BUKTI AND beli.FLAG='BL' 
                           AND beli.GOL ='$golz'
                           AND beli.CBG = '$CBG'
                         --   AND beli.PKP = '$PPN' 
@@ -357,7 +357,7 @@ class BeliController extends Controller
                 'JTEMPO'              => date('Y-m-d', strtotime($request['JTEMPO'])),
                 'PER'              => $periode,
 				'NO_PO'            => ($request['NO_PO'] == null) ? "" : $request['NO_PO'],
-				'NO_BELI'            => ($request['NO_BELI'] == null) ? "" : $request['NO_BELI'],
+				'NO_beli'            => ($request['NO_beli'] == null) ? "" : $request['NO_beli'],
                 'KODES'            => ($request['KODES'] == null) ? "" : $request['KODES'],
                 'NAMAS'            => ($request['NAMAS'] == null) ? "" : $request['NAMAS'],
                 'ALAMAT'           => ($request['ALAMAT'] == null) ? "" : $request['ALAMAT'],
@@ -406,7 +406,7 @@ class BeliController extends Controller
         if ($REC) {
             foreach ($REC as $key => $value) {
                 // Declare new data di Model
-                $detail    = new BeliDetail;
+                $detail    = new belidetail;
 
                 // Insert ke Database
                 $detail->NO_BUKTI    = $no_bukti;
@@ -445,9 +445,9 @@ class BeliController extends Controller
 
 
 
-        DB::SELECT("UPDATE BELI, SUP
-                    SET BELI.NAMAS = SUP.NAMAS, BELI.ALAMAT = SUP.ALAMAT, BELI.KOTA = SUP.KOTA, BELI.PKP=SUP.PKP  WHERE BELI.KODES = SUP.KODES 
-                    AND BELI.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE beli, sup
+                    SET beli.NAMAS = sup.NAMAS, beli.ALAMAT = sup.ALAMAT, beli.KOTA = sup.KOTA, beli.PKP=sup.PKP  WHERE beli.KODES = sup.KODES 
+                    AND beli.NO_BUKTI='$no_buktix';");
                     
 
         DB::SELECT("UPDATE beli,  belid
@@ -642,11 +642,11 @@ class BeliController extends Controller
 		 }
 
         $no_bukti = $beli->NO_BUKTI;
-        $beliDetail = DB::table('belid')->where('NO_BUKTI', $no_bukti)->orderBy('REC')->get();
+        $belidetail = DB::table('belid')->where('NO_BUKTI', $no_bukti)->orderBy('REC')->get();
 		
 		$data = [
             'header'        => $beli,
-			'detail'        => $beliDetail
+			'detail'        => $belidetail
 
         ];
  
@@ -668,7 +668,7 @@ class BeliController extends Controller
 
     // ganti 18
 
-    public function update(Request $request, Beli $beli)
+    public function update(Request $request, beli $beli)
     {
 
         $this->validate(
@@ -704,7 +704,7 @@ class BeliController extends Controller
                 'TGL'              => date('Y-m-d', strtotime($request['TGL'])),
                 'JTEMPO'              => date('Y-m-d', strtotime($request['JTEMPO'])),
                 'NO_PO'            => ($request['NO_PO'] == null) ? "" : $request['NO_PO'],
-                'NO_BELI'            => ($request['NO_BELI'] == null) ? "" : $request['NO_BELI'],
+                'NO_beli'            => ($request['NO_beli'] == null) ? "" : $request['NO_beli'],
                 'KODES'            => ($request['KODES'] == null) ? "" : $request['KODES'],
                 'NAMAS'            => ($request['NAMAS'] == null) ? "" : $request['NAMAS'],
                 'ALAMAT'           => ($request['ALAMAT'] == null) ? "" : $request['ALAMAT'],
@@ -760,7 +760,7 @@ class BeliController extends Controller
         for ($i = 0; $i < $length; $i++) {
             // Insert jika NO_ID baru
             if ($NO_ID[$i] == 'new') {
-                $insert = BeliDetail::create(
+                $insert = belidetail::create(
                     [
                         'NO_BUKTI'   => $request->NO_BUKTI,
                         'REC'        => $REC[$i],
@@ -787,7 +787,7 @@ class BeliController extends Controller
                 );
             } else {
                 // Update jika NO_ID sudah ada
-                $upsert = BeliDetail::updateOrCreate(
+                $upsert = belidetail::updateOrCreate(
                     [
                         'NO_BUKTI'  => $request->NO_BUKTI,
                         'NO_ID'     => (int) str_replace(',', '', $NO_ID[$i])
@@ -821,14 +821,14 @@ class BeliController extends Controller
 
         //  ganti 21
 
- 		$beli = Beli::where('NO_BUKTI', $no_buktix )->first();
+ 		$beli = beli::where('NO_BUKTI', $no_buktix )->first();
 
         $no_bukti = $beli->NO_BUKTI;
 
 
-        DB::SELECT("UPDATE BELI, SUP
-                    SET BELI.NAMAS = SUP.NAMAS, BELI.ALAMAT = SUP.ALAMAT, BELI.KOTA = SUP.KOTA, BELI.PKP=SUP.PKP  WHERE BELI.KODES = SUP.KODES 
-                    AND BELI.NO_BUKTI='$no_buktix';");
+        DB::SELECT("UPDATE beli, sup
+                    SET beli.NAMAS = sup.NAMAS, beli.ALAMAT = sup.ALAMAT, beli.KOTA = sup.KOTA, beli.PKP=sup.PKP  WHERE beli.KODES = sup.KODES 
+                    AND beli.NO_BUKTI='$no_buktix';");
                     
 
         DB::SELECT("UPDATE beli,  belid
@@ -874,11 +874,11 @@ class BeliController extends Controller
 
         // ganti 23
 		
-        $deleteBeli = Beli::find($beli->NO_ID);
+        $deletebeli = Beli::find($beli->NO_ID);
 
         // ganti 24
 
-        $deleteBeli->delete();
+        $deletebeli->delete();
 
         // ganti 
 
@@ -920,7 +920,7 @@ class BeliController extends Controller
                             ;
 		");
 
-                DB::SELECT("UPDATE BELI SET POSTED = 1 WHERE NO_BUKTI='$no_beli';");
+                DB::SELECT("UPDATE beli SET POSTED = 1 WHERE NO_BUKTI='$no_beli';");
                 
         $data = [];
 
@@ -969,7 +969,7 @@ class BeliController extends Controller
     }
 	
 	
-	public function getDetailBeli(){
+	public function getDetailbeli(){
 
         $no_bukti = $_GET['no_bukti'];
         $result = DB::table('belid')->where('NO_BUKTI', $no_bukti)->get();

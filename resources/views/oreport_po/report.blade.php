@@ -44,9 +44,10 @@
 								@endforeach
 							</select>
 						</div>
-					</div>
-					
-					<div class="form-group row">	
+						
+						<div class="col-md-2">
+						</div>
+						    
 						<div class="col-md-2">						
 							<label class="form-label">Suplier 1</label>
 							<input type="text" class="form-control kodes" id="kodes" name="kodes" placeholder="Pilih Suplier" value="{{ session()->get('filter_kodes1') }}" readonly>
@@ -63,6 +64,10 @@
 							<input type="text" class="form-control kodes2" id="kodes2" name="kodes2" placeholder="ZZZ" value="{{ session()->get('filter_kodes2') }}" readonly>
 						</div>  
 					</div>
+					
+					<!--<div class="form-group row">	-->
+						
+					<!--</div>-->
 
 					<!-- <div class="form-group row">
 						<div class="col-md-2">						

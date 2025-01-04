@@ -1,0 +1,4 @@
+[16-Dec-2024 21:15:23 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/januar13/public_html/plastik/app/Http/Controllers/FMaster/AccountController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/januar13/public_html/plastik/app/Http/Controllers/FMaster/AccountController.php on line 16

@@ -31,6 +31,11 @@
     
     th { font-size: 13px; }
     td { font-size: 13px; }
+
+    /* menghilangkan padding */
+    .content-header {
+        padding: 0 !important;
+    }
 </style>
 
 
@@ -69,6 +74,90 @@
             <div class="card">
               <div class="card-body">
 
+              <!-- filter kolom di index -->
+
+                <!-- Button to open modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#columnModal">
+                    Filter Columns
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="columnModal" tabindex="-1" aria-labelledby="columnModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="columnModalLabel">Toggle Columns</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close">X</button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Column visibility checkboxes -->
+                                <form id="columnToggleForm">
+                                    <div class="form-check">
+                                        <input class="form-check-input column-checkbox" type="checkbox"
+                                            value="0" id="columnDetail" checked>
+                                        <label class="form-check-label" for="columnDetail">Detail</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input column-checkbox" type="checkbox"
+                                            value="1" id="columnNo" checked>
+                                        <label class="form-check-label" for="columnNo">No</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input column-checkbox" type="checkbox"
+                                            value="2" id="columnAction" checked>
+                                        <label class="form-check-label" for="columnAction">Action</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input column-checkbox" type="checkbox"
+                                            value="3" id="columnBukti" checked>
+                                        <label class="form-check-label" for="columnBukti">Bukti#</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input column-checkbox" type="checkbox"
+                                            value="4" id="columnTgl" checked>
+                                        <label class="form-check-label" for="columnTgl">Tgl</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input column-checkbox" type="checkbox"
+                                            value="5" id="columnSup" checked>
+                                        <label class="form-check-label" for="columnSup">Suplier#</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input column-checkbox" type="checkbox"
+                                            value="6" id="columnNama" checked>
+                                        <label class="form-check-label" for="columnNama">Nama</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input column-checkbox" type="checkbox"
+                                            value="7" id="columnBayar">
+                                        <label class="form-check-label" for="columnBayar">Bayar</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input column-checkbox" type="checkbox"
+                                            value="8" id="columnType">
+                                        <label class="form-check-label" for="columnType">Type</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input column-checkbox" type="checkbox"
+                                            value="9" id="columnPost">
+                                        <label class="form-check-label" for="columnPost">Posted</label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary"
+                                    id="applyColumnToggle">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+             <!-- batas filter -->
+
 				<input name="flagz"  class="form-control flagz" id="flagz" value="{{$flagz}}" hidden >
 
 
@@ -84,8 +173,8 @@
                             <th scope="col" style="text-align: center">Suplier#</th>
                             <th scope="col" style="text-align: center">Nama</th>
                             <th scope="col" style="text-align: center">Bayar</th>
-                            <th scope="col" style="text-align: center">Posted</th>
 							<th scope="col" style="text-align: center">Type</th>
+                            <th scope="col" style="text-align: center">Posted</th>
                            
                         </tr>
                     </thead>
@@ -103,7 +192,25 @@
 @endsection
 
 @section('javascripts')
+
+<!-- filter kolom di index -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- batas filter  -->
+
 <script>
+
+    // filter kolom di index
+        window.addEventListener('message', (event) => {
+            if (event.origin !== window.location.origin) {
+                console.warn('Origin mismatch!');
+                return;
+            }
+
+            const currentData = event.data;
+            console.log(currentData); // Use currentData as needed
+        });
+    // batas filter
+
   $(document).ready(function() {
         var dataTable = $('.datatable').DataTable({
             processing: true,
@@ -149,6 +256,9 @@
                   }
                 },
                 {data: 'BAYAR', name: 'BAYAR', render: $.fn.dataTable.render.number( ',', '.', 0, '' )},				
+                
+                {data: 'TYPE', name: 'TYPE'},
+                
                 { data: 'POSTED', name: 'POSTED',
                   render : function(data, type, row, meta) {
                     if(row['POSTED']=="0"){
@@ -158,7 +268,6 @@
                     }
                   }
                 },
-                {data: 'TYPE', name: 'TYPE'},
             ],
 
             columnDefs: 
@@ -187,6 +296,24 @@
 				stateSave:true,
 
         });
+
+        // filter kolom di index
+
+        // Handle column visibility toggle
+        $('#applyColumnToggle').on('click', function() {
+            $('#columnToggleForm .column-checkbox').each(function() {
+                var column = dataTable.column($(this).val());
+                column.visible($(this).is(':checked'));
+            });
+            $('#columnModal').modal('hide'); // Close the modal
+        });
+
+        $('#columnToggleForm .column-checkbox').each(function() {
+            var column = dataTable.column($(this).val());
+            column.visible($(this).is(':checked'));
+        });
+        
+        // batas filter
 		
         $("div.test_btn").html('<a class="btn btn-lg btn-md btn-success" href="{{url('hut/edit?flagz='.$flagz.'&idx=0&tipx=new')}}"> <i class="fas fa-plus fa-sm md-3" ></i></a');
 
